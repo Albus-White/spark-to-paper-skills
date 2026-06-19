@@ -1,0 +1,55 @@
+{
+  "name": "ts_iieta",
+  "display_name": "Traitement du Signal (IIETA)",
+  "engine": {
+    "documentclass": "[10pt,twocolumn,a4paper]{article}",
+    "style_package": "ts_iieta",
+    "is_class": false,
+    "assets": ["ts_iieta.sty", "iieta_logo.png"],
+    "main_template": "main.tex.tmpl"
+  },
+  "sections": [
+    {"id": "introduction", "title": "Introduction", "words": [800, 1200],
+     "recipe": {"paragraphs": 5, "contrib_items": 3, "min_cites": 8}},
+    {"id": "related_work", "title": "Related Works", "words": [800, 1200],
+     "recipe": {"theme_subsections": 3, "closing_paragraph": true, "cites_per_theme": [5, 9]}},
+    {"id": "method", "title": "Methodology", "words": [2000, 3000],
+     "recipe": {"require_notation_table": true, "min_pseudocode": 1, "design_rationale": true}},
+    {"id": "experiments", "title": "Experimental Results", "words": [1000, 1500],
+     "recipe": {"subsections": 3, "result_tables": ["main_results", "secondary_results", "ablation_results"],
+                "display_math": false}},
+    {"id": "analysis", "title": "Discussion and Analysis", "words": [900, 1400],
+     "recipe": {"display_math": false, "require_failure_mode": true}},
+    {"id": "conclusion", "title": "Conclusion", "words": [200, 280],
+     "recipe": {"paragraphs": 1, "lists": false}}
+  ],
+  "writing_order": ["method", "related_work", "introduction", "experiments", "analysis", "conclusion", "abstract"],
+  "abstract": {"words": [150, 220], "paragraphs": 1, "cites": false, "math": false, "single_paragraph": true},
+  "contributions": {"count": 3},
+  "title": {"max_words": 14, "max_chars": 120},
+  "keywords": {"min": 4, "max": 6, "cap": 6, "lowercase": false},
+  "citations": {
+    "style": "numeric",
+    "natbib_options": "numbers,square,comma,sort&compress",
+    "bibstyle": "unsrtnat",
+    "floor": 40,
+    "types": ["CORE", "CONTEXT", "BASELINE", "METRIC", "DEFINITION"],
+    "per_section_coverage": {"related_work": [20, 30], "introduction": [8, 12]},
+    "in_abstract": false,
+    "in_headings": false,
+    "merge_adjacent": true
+  },
+  "tables": {"caption_position": "above", "min": 3},
+  "experiment_complexity": "moderate",
+  "figures": {"caption_position": "below", "min": 5, "distribute_across": ["method", "experiments", "analysis"]},
+  "headings": {"case": "upper", "numbered": true},
+  "masthead": {
+    "journal": "Traitement du Signal",
+    "homepage": "iieta.org/journals/ts",
+    "band_rgb": [66, 177, 234],
+    "copyright": "CC BY 4.0",
+    "doi_prefix": "10.18280/ts.",
+    "default_vol": "43", "default_issue": "2", "default_month": "April", "default_year": "2026"
+  },
+  "results_mode": "proposal"
+}

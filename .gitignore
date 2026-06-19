@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+# Environments
+.venv/
+venv/
+.env
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+# Per-paper run outputs (generated, not source)
+*_run/

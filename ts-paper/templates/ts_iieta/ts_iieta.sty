@@ -1,0 +1,186 @@
+%% ts_iieta.sty — unofficial LaTeX style for "Traitement du Signal" (IIETA)
+%% Reproduces the two-column journal look of IIETA / Traitement du Signal
+%% (the journal ships only a Word template; this mimics the published PDFs:
+%%  Vol. 43 No. 2, e.g. 10.18280/ts.430201/02/03).
+%%
+%% Use with:  \documentclass[10pt,twocolumn,a4paper]{article}\usepackage{ts_iieta}
+%% Front matter is set via the \tsSet* commands, then \tsmaketitle{<abstract>}.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ts_iieta}[2026/06/13 v0.1 Unofficial Traitement du Signal (IIETA) journal style]
+
+% ── Page geometry (A4, two columns) ──
+\RequirePackage[a4paper,top=1.5cm,bottom=2.0cm,left=1.3cm,right=1.3cm,columnsep=0.6cm]{geometry}
+\setlength{\columnsep}{0.6cm}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+
+% ── Fonts: Times text + Times math (robust; IIETA uses Times New Roman) ──
+\RequirePackage[utf8]{inputenc}  % compile-net: stray Unicode degrades instead of hard-erroring
+\RequirePackage[T1]{fontenc}
+\RequirePackage{mathptmx}
+\RequirePackage{microtype}
+
+% ── Core packages ──
+\RequirePackage{amsmath,amssymb,amsfonts}
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}  % algorithmicx: mixed-case \State/\For/\If/\Require as emitted by the write stage
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{multirow}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+\RequirePackage{adjustbox}
+\RequirePackage{xcolor}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{url}
+\RequirePackage{titlesec}
+\RequirePackage{caption}
+\RequirePackage{fancyhdr}
+\RequirePackage{natbib}
+
+% Numbered [n] citations in citation order; sort&compress merges/orders runs ([3-5], [10, 11])
+\setcitestyle{numbers,square,comma,sort&compress}
+
+% ── Body text size / leading ──
+\renewcommand{\normalsize}{\fontsize{10}{12}\selectfont}
+\normalsize
+
+% ── IIETA masthead blue (sampled from published TS PDFs) ──
+\definecolor{tsblue}{RGB}{66,177,234}
+
+% ── Section headings ──
+% Level 1: "N. ALL CAPS", bold.  Level 2: "N.N Sentence case", bold.  Level 3: italic.
+\titleformat{\section}[block]{\normalfont\bfseries\fontsize{11}{13}\selectfont}{\thesection.}{0.5em}{\MakeUppercase}
+\titleformat{\subsection}[block]{\normalfont\bfseries\fontsize{10}{12}\selectfont}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[block]{\normalfont\itshape\fontsize{9.5}{11.5}\selectfont}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.1ex plus .2ex}{0.6ex}
+\titlespacing*{\subsection}{0pt}{0.9ex plus .2ex}{0.5ex}
+\titlespacing*{\subsubsection}{0pt}{0.8ex plus .2ex}{0.4ex}
+\setcounter{secnumdepth}{3}
+
+% ── Figure / Table captions: "Figure N." below figures, "Table N." above tables ──
+\captionsetup{font=small,labelsep=period,justification=centering,skip=4pt}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=below}
+
+% ── Float spacing ──
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+
+% ── Front-matter data holders (set by \tsSet* in the template) ──
+\newcommand{\ts@title}{Article Title}
+\newcommand{\ts@authors}{Author Name}
+\newcommand{\ts@affil}{Affiliation}
+\newcommand{\ts@email}{author@example.org}
+\newcommand{\ts@doi}{10.18280/ts.XXXXXX}
+\newcommand{\ts@received}{}
+\newcommand{\ts@revised}{}
+\newcommand{\ts@accepted}{}
+\newcommand{\ts@available}{}
+\newcommand{\ts@keywords}{}
+\newcommand{\ts@copyright}{\textcopyright2026 The authors. This article is published by IIETA and is licensed under the CC BY 4.0 license (http://creativecommons.org/licenses/by/4.0/).}
+% journal banner: {vol}{issue}{month}{year}{pagestart}{pageend}
+\newcommand{\ts@vol}{43}\newcommand{\ts@issue}{2}\newcommand{\ts@month}{}\newcommand{\ts@year}{2026}
+\newcommand{\ts@pstart}{1}\newcommand{\ts@pend}{1}
+% IIETA logo image file (top-left of the masthead). Compiles cleanly if absent.
+\newcommand{\ts@logo}{iieta_logo.png}
+\newcommand{\tsSetLogo}[1]{\renewcommand{\ts@logo}{#1}}
+
+\newcommand{\tsSetTitle}[1]{\renewcommand{\ts@title}{#1}}
+\newcommand{\tsSetAuthors}[1]{\renewcommand{\ts@authors}{#1}}
+\newcommand{\tsSetAffil}[1]{\renewcommand{\ts@affil}{#1}}
+\newcommand{\tsSetEmail}[1]{\renewcommand{\ts@email}{#1}}
+\newcommand{\tsSetDOI}[1]{\renewcommand{\ts@doi}{#1}}
+\newcommand{\tsSetDates}[4]{\renewcommand{\ts@received}{#1}\renewcommand{\ts@revised}{#2}\renewcommand{\ts@accepted}{#3}\renewcommand{\ts@available}{#4}}
+\newcommand{\tsSetKeywords}[1]{\renewcommand{\ts@keywords}{#1}}
+\newcommand{\tsSetCopyright}[1]{\renewcommand{\ts@copyright}{#1}}
+\newcommand{\tsSetJournal}[6]{\renewcommand{\ts@vol}{#1}\renewcommand{\ts@issue}{#2}\renewcommand{\ts@month}{#3}\renewcommand{\ts@year}{#4}\renewcommand{\ts@pstart}{#5}\renewcommand{\ts@pend}{#6}}
+
+% ── Running header / footer ──
+% Masthead banner (logo + blue journal band) is drawn in \tsmaketitle (page-1 body),
+% so the first-page header is empty; every page carries a centered page number.
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize\thepage}
+\setlength{\headheight}{12pt}
+
+\fancypagestyle{tsfirst}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+  \fancyfoot[C]{\footnotesize\thepage}%
+}
+
+% ── Masthead banner: IIETA logo (left) + blue journal band (right) + rule ──
+\newcommand{\ts@masthead}{%
+  \noindent
+  \begin{minipage}[c]{0.34\linewidth}%
+    \IfFileExists{\ts@logo}{\includegraphics[width=\linewidth]{\ts@logo}}%
+      {\fontsize{18}{20}\selectfont\bfseries IIETA\\[-1pt]{\fontsize{6}{7}\selectfont International Information and Engineering Technology Association}}%
+  \end{minipage}%
+  \hfill
+  {\setlength{\fboxsep}{6pt}%
+   \colorbox{tsblue}{%
+     \begin{minipage}[c]{0.60\linewidth}%
+       \centering\color{white}%
+       {\sffamily\bfseries\fontsize{15}{17}\selectfont Traitement du Signal}\par\vspace{2pt}
+       {\fontsize{9}{11}\selectfont Vol.~\ts@vol, No.~\ts@issue, \ts@month, \ts@year, pp.~\ts@pstart-\ts@pend}\par\vspace{2pt}
+       {\fontsize{9}{11}\selectfont Journal homepage: http://iieta.org/journals/ts}%
+     \end{minipage}}}%
+  \par\vspace{2pt}
+  \noindent\rule{\linewidth}{1.6pt}%
+  \par
+}
+
+% ── \tsmaketitle{<abstract paragraph>} : full-width title + abstract/keywords block ──
+\newcommand{\ts@datesblock}{%
+  \fontsize{8.5}{11}\selectfont
+  \ifx\ts@received\empty\else Received: \ts@received\par\fi
+  \ifx\ts@revised\empty\else Revised: \ts@revised\par\fi
+  \ifx\ts@accepted\empty\else Accepted: \ts@accepted\par\fi
+  \ifx\ts@available\empty\else Available online: \ts@available\par\fi
+}
+\newcommand{\tsmaketitle}[1]{%
+  \twocolumn[{%
+    \ts@masthead
+    \vspace{0.28cm}%
+    \begin{center}
+      {\fontsize{16}{19}\selectfont\bfseries \ts@title\par}
+      \vspace{0.30cm}
+      {\fontsize{11}{13}\selectfont \ts@authors\par}
+      \vspace{0.12cm}
+      {\fontsize{8.5}{10}\selectfont\itshape \ts@affil\par}
+      \vspace{0.08cm}
+      {\fontsize{8.5}{10}\selectfont Corresponding Author Email: \texttt{\ts@email}\par}
+      \vspace{0.10cm}
+      {\fontsize{8}{9.5}\selectfont \ts@copyright\par}
+      \vspace{0.04cm}
+      {\fontsize{9}{11}\selectfont\href{https://doi.org/\ts@doi}{https://doi.org/\ts@doi}\par}
+    \end{center}
+    \vspace{0.12cm}
+    \hrule height 1pt
+    \vspace{0.18cm}
+    \noindent
+    \begin{minipage}[t]{0.30\linewidth}\ts@datesblock\end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.65\linewidth}%
+      \fontsize{9}{11}\selectfont
+      \textbf{ABSTRACT}\par\vspace{3pt}
+      #1\par\vspace{4pt}
+      \ifx\ts@keywords\empty\else\textbf{Keywords:} \textit{\ts@keywords}\par\fi
+    \end{minipage}\par
+    \vspace{0.16cm}
+    \hrule height 0.5pt
+    \vspace{0.32cm}
+  }]%
+  \thispagestyle{tsfirst}%
+}
+
+% ── Acknowledgment / Nomenclature unnumbered section helpers ──
+\newcommand{\tssectionstar}[1]{\section*{\normalfont\bfseries\MakeUppercase{#1}}}
+
+\endinput

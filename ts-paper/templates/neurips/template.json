@@ -1,0 +1,46 @@
+{
+  "name": "neurips",
+  "display_name": "NeurIPS (single-column, author-year)",
+  "engine": {
+    "documentclass": "{article}",
+    "style_package": "neurips_paper",
+    "is_class": false,
+    "assets": ["neurips_paper.sty"],
+    "main_template": "main.tex.tmpl"
+  },
+  "sections": [
+    {"id": "introduction", "title": "Introduction", "words": [500, 900],
+     "recipe": {"min_cites": 6}},
+    {"id": "related_work", "title": "Related Work", "words": [350, 650],
+     "recipe": {"closing_paragraph": false}},
+    {"id": "approach", "title": "Approach", "words": [1000, 1800],
+     "recipe": {"require_notation_table": false, "min_pseudocode": 1, "design_rationale": true}},
+    {"id": "experiments", "title": "Experiments", "words": [700, 1300],
+     "recipe": {"result_tables": ["main_results", "ablation_results"], "display_math": false}},
+    {"id": "conclusion", "title": "Conclusion", "words": [120, 260],
+     "recipe": {"paragraphs": 1, "lists": false}}
+  ],
+  "writing_order": ["approach", "related_work", "introduction", "experiments", "conclusion", "abstract"],
+  "abstract": {"words": [150, 250], "paragraphs": 1, "cites": false, "math": false, "single_paragraph": true},
+  "contributions": {"count": 0},
+  "title": {"max_words": 18, "max_chars": 160},
+  "keywords": {"min": 0, "max": 0, "cap": 0, "lowercase": false},
+  "citations": {
+    "style": "author_year",
+    "natbib_options": "round",
+    "bibstyle": "plainnat",
+    "floor": 30,
+    "types": ["CORE", "CONTEXT", "BASELINE", "METRIC", "DEFINITION"],
+    "per_section_coverage": {"related_work": [15, 25], "introduction": [6, 10]},
+    "in_abstract": false,
+    "in_headings": false,
+    "merge_adjacent": false
+  },
+  "tables": {"caption_position": "above", "min": 2},
+  "experiment_complexity": "moderate",
+  "figures": {"caption_position": "below", "min": 4, "distribute_across": ["approach", "experiments"]},
+  "headings": {"case": "title", "numbered": true},
+  "masthead": {"journal": "", "homepage": "", "band_rgb": null, "copyright": "",
+               "doi_prefix": "", "default_vol": "", "default_issue": "", "default_month": "", "default_year": ""},
+  "results_mode": "proposal"
+}
