@@ -153,31 +153,26 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    intermediates so no stray `_vN.png` lingers. (DrawAI re-renders+revalidates every attempt; this is
    the lean analogue.)
    **"Accept" here means the PNG is approved and ready to vectorize (step 5b)** — not yet inserted.
-5b. **Vectorize (editable-vector handoff) — image-model figures only.** Pick the vectorization ENGINE:
+5b. **Vectorize (editable-vector handoff) — image-model figures only.** The SOLE vectorization engine is
+   **`ts-figure-optimize`** (the full DrawAI engine: real SAM3+OCR perception + Codex/gpt-5.5 SVG author +
+   DrawAI's native pipeline). **`ts-paper-vector` is DISABLED — do not use it.** Prerequisites: `DRAWAI_REPO`
+   set (or DrawAI on PATH), `DRAWAI_REPO=<…> uv run --frozen drawai doctor local` = `ok`, Codex auth present
+   (if the DrawAI engine is unavailable, do NOT silently fall back — stop and tell the user to configure it).
+   Run it on the approved PNG, then map into the figure contract:
+   ```
+   DRAWAI_REPO=<drawai> python ../ts-figure-optimize/scripts/run_reconstruction.py \
+       --image figures/<label>.png --run-name <label> --device cpu --transcribe-formulas
+   python ../ts-figure-optimize/scripts/export_paper_figure.py \
+       --run-dir runs/<label> --label <label> --figures-dir figures
+   ```
+   `export_paper_figure.py` writes self-contained `figures/<label>.svg` (crops base64-inlined) +
+   `figures/<label>.pdf` and keeps `figures/<label>.png`. **Run this at THIS proposal/first-draft figure
+   stage — the main method-overview schematic is results-independent, so vectorize it ONCE here, never defer
+   to a post-experiment re-run** (later experiment-phase figures are matplotlib born-vector and skip 5b).
 
-   - **PRIMARY → `ts-figure-optimize` (full DrawAI engine)** when available — `DRAWAI_REPO` set (or
-     DrawAI on PATH), `DRAWAI_REPO=<…> uv run --frozen drawai doctor local` = `ok`, Codex auth present.
-     Highest-fidelity redraw (real SAM3+OCR perception + Codex/gpt-5.5 SVG author + DrawAI's native
-     pipeline) — measurably richer than the Claude-only redraw. Run it, then map into the figure contract:
-     ```
-     DRAWAI_REPO=<drawai> python ../ts-figure-optimize/scripts/run_reconstruction.py \
-         --image figures/<label>.png --run-name <label> --device cpu --transcribe-formulas
-     python ../ts-figure-optimize/scripts/export_paper_figure.py \
-         --run-dir runs/<label> --label <label> --figures-dir figures
-     ```
-     `export_paper_figure.py` writes self-contained `figures/<label>.svg` (crops base64-inlined) +
-     `figures/<label>.pdf` and keeps `figures/<label>.png`. **Recommended for the main free-form
-     schematic; run it at THIS proposal/first-draft figure stage — the method-overview figure is
-     results-independent, so vectorize it ONCE here, never defer to a post-experiment re-run** (later
-     experiment-phase figures are matplotlib born-vector and skip 5b).
-   - **FALLBACK → `ts-paper-vector`** when the DrawAI engine is NOT configured (no runtime / no Codex):
-     hand the approved `figures/<label>.png` + its FIGURE-SPEC `type` to **ts-paper-vector** — Claude
-     **redraws** it as a faithful editable SVG (`figures/<label>.svg`) — real `<text>` for every label,
-     `rect/line/path/polygon` for the geometry — renders SVG→PNG with `ts-paper-vector/scripts/svg_tools.py`
-     to diff against the approved PNG, refines ≥2 rounds, then exports `figures/<label>.pdf`.
-
-   Either engine then **lints with the type** (the shared gate tool, kept in ts-paper-vector):
-   `python ../ts-paper-vector/scripts/svg_tools.py lint --svg figures/<label>.svg --type <type> --render-check`.
+   Then **lint with the type** via ts-figure-optimize's own gate (the suite's editable-vector check; this
+   replaces ts-paper-vector's svg_tools as the gate):
+   `python ../ts-figure-optimize/scripts/check_vector_pdf.py lint --svg figures/<label>.svg --type <type> --render-check`.
    **Redraw is mandatory for every vector type** (architecture/pipeline/framework/concept/schematic/
    overview/flow/diagram): you may NOT pass the gate by wrapping the whole PNG in an `<image>` — the lint
    makes a whole-canvas raster a HARD error for these. The data-`<image>` escape hatch is for a genuinely

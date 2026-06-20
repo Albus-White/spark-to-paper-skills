@@ -29,7 +29,7 @@ BLUEPRINT_LINT = SKILLS_ROOT / "ts-paper-plan" / "scripts" / "blueprint_lint.py"
 CITATIONS_LINT = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "citations_lint.py"
 DRAFT_LINT     = SKILLS_ROOT / "ts-paper-write" / "scripts" / "draft_lint.py"
 ASSEMBLE       = SKILLS_ROOT / "ts-paper-latex" / "scripts" / "assemble_paper.py"
-SVG_TOOLS      = SKILLS_ROOT / "ts-paper-vector" / "scripts" / "svg_tools.py"
+SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"  # ts-paper-vector DISABLED; ts-figure-optimize is the sole vector engine + gate
 
 # stage -> ordered list of (gate_script, [required_workdir_inputs])
 # Each required input is a workdir-relative path; if ALL listed inputs for a gate
