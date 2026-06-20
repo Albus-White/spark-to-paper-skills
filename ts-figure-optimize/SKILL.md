@@ -104,9 +104,14 @@ shapes 1:1, then the PPTX is re-exported):
 ```
 1. render the current SVG  (scripts/render_svg.py)
 2. PER-REGION VISION COMPARE (the core — metrics CANNOT see semantic defects):
-   scripts/region_crops.py emits, per small region, a side-by-side [SOURCE | RENDER] PNG
-   (Box-IR panels, --subtile N for finer cells). READ EACH region image and judge it against this
-   SEMANTIC checklist (ignore font/AA/colour-shade):
+   AUTOMATED: scripts/vision_region_diff.py sends each region's [SOURCE | RENDER] pair (upscaled) to a
+   vision model (gpt-5.5; OpenAI-compatible, key from ~/.codex/auth.json) and writes a structured
+   comparisons/vision_defects.json with the defect categories below. Use a GRID (`--grid 3/4`) so cells
+   span ADJACENT elements (inter-element overlaps like matrix-vs-colourbar are only visible across a
+   boundary; tight per-element Box-IR crops miss them). Do NOT pass temperature (gpt-5.5 rejects it).
+   MANUAL fallback: scripts/region_crops.py emits the same pairs for the skill executor (Claude) to READ
+   and emit the same JSON by hand. Either way, judge each region against this SEMANTIC checklist
+   (ignore font/AA/colour-shade):
      - text OVERFLOWING / spilling outside its box or panel
      - any element OVERLAPPING/colliding with another (arrow over a figure; matrix over its colourbar)
      - WRONG ICON semantics (a cycle/loop ↻ drawn as a straight arrow; ↔ drawn as →; garbled icon)
@@ -114,9 +119,16 @@ shapes 1:1, then the PPTX is re-exported):
      - MISSING / DUPLICATED / wrongly-POSITIONED elements vs source
    (scripts/diff_overlay.py heatmap + scripts/compare_regions.py SSIM only say WHERE to look first.)
 3. Build the defect list from the per-region vision pass (NOT from SSIM — SSIM misses all of the above).
-4. FIX: surgically edit ONLY the offending SVG elements (redirect/add/remove an arrow, give a loop icon
-   a real ↻ two-arc shape, move/resize a box so text fits, separate the matrix from its colourbar, align
-   the bars). Do not regenerate the whole figure.
+4. FIX — two strategies per defect:
+   (a) VECTOR surgical edit (preferred, stays editable): redirect/add/remove an arrow, add a marker-end
+       arrowhead, move/resize a box so text fits, shift the colourbar/label off the matrix, align the bars.
+   (b) RASTER-CROP-EMBED fallback (when a shape/icon is too complex to redraw faithfully — e.g. an
+       intricate loop ↻ glyph, a detailed sub-figure): `scripts/crop_region.py --source <orig> --bbox …
+       --out asset.png --nobg` crops that ONE element from the ORIGINAL image and removes its background,
+       then embed it as a coordinated sub-region `<image>` at the right position. It MUST pass
+       `RASTER_BACKGROUND_MATCH` (transparent / panel-matched, no visible rectangle) so it blends. Use for
+       SUB-regions only, never the whole canvas.
+   Do not regenerate the whole figure.
 5. re-render; re-view that region's pair: defect gone AND no new overlap/overflow introduced AND untouched
    regions unchanged. Keep the edit only if its region's defect list shrank with no regression.
 6. repeat per region / per round until the per-region semantic-defect list is EMPTY (or budget).
@@ -143,7 +155,7 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 `render_svg.py` (SVG→PNG), `render_pptx.py` (LibreOffice→PNG or NOT_RUN), `measure_similarity.py`,
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
-(WAVEFORM_STYLE), `diff_overlay.py` (Stage R heatmap/worst-cells), `region_crops.py` (Stage R per-region SOURCE|RENDER vision pairs),
+(WAVEFORM_STYLE), `diff_overlay.py` (Stage R heatmap/worst-cells), `region_crops.py` (Stage R region pairs), `vision_region_diff.py` (Stage R automated gpt-vision per-region defect detector),
 `build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
 figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
 
