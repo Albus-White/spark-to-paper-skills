@@ -162,6 +162,13 @@ runs only FEASIBLE experiments** (real data/code only — see its own non-negoti
 paper **claim–evidence consistent**. If an experiment cannot be run, it writes a *requirements report* — it
 **never invents results**.
 
+**Overleaf is OPTIONAL (off by default).** The experiment phase does NOT require an Overleaf project. In
+`<factory>/paper_config.yaml`, `overleaf.require_overleaf_url: false` (the default) makes `sci-paper-repair`
+**skip the Overleaf URL check and all pushing**, working only on the local `./paper/` repo — so the full
+pipeline runs end-to-end without any Overleaf account. To enable Overleaf sync later, set
+`require_overleaf_url: true` + the `push_*` flags, provide `overleaf.git_url` (or `OVERLEAF_GIT_URL` in
+`<factory>/.env`) and `OVERLEAF_TOKEN` in `<factory>/.env`.
+
 **Why here (timing):** the figure vectorization (Stage 6) and the experiments (Stage 8) are deliberately
 ordered — the main method-overview figure is design-/equation-defined and results-independent, so it is
 finalized + vectorized in the proposal draft; experiments come *after* a complete draft exists and only
