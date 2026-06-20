@@ -92,6 +92,33 @@ edge IoU, OCR F1, color-hist, object-count, layout IoU → normalized combined s
 similarity from Box-IR panels, text/formula verification, PPTX editability, plus the
 `RASTER_BACKGROUND_MATCH` and `WAVEFORM_STYLE` gates.
 
+## Stage R — structural-defect refinement (精修, model-judged, iterate a few rounds)
+After the base reconstruction, run a targeted refinement loop whose goal is **structural/logical
+correctness**, NOT pixel-identity. **Fonts, anti-aliasing, and exact colours MAY differ** (that gap is
+accepted and unfixable for an editable redraw). What MUST be fixed: **wrong/missing/extra arrows or
+reversed data-flow, misalignment, wrong relative positions of panels/icons/pictures, inconsistent /
+wrong / missing / duplicated icons, and any incoherence vs the original.**
+
+Loop (Claude is the judge+editor; the scripts are guides — edits are on the SVG master = the PPTX
+shapes 1:1, then the PPTX is re-exported):
+```
+1. render the current SVG  (scripts/render_svg.py)
+2. GUIDES: scripts/diff_overlay.py (heatmap + worst grid cells + side-by-side) and
+   scripts/compare_regions.py (per-region SSIM, worst regions) — they say WHERE to look.
+3. LOOK: Read source vs render (zoom each panel via a crop); enumerate ONLY structural defects
+   (arrows / alignment / relative position / icons / missing / duplicated / incoherence).
+   Ignore font/AA/colour-shade differences.
+4. FIX: surgically edit ONLY the offending SVG elements (redirect/add/remove an arrow, move an
+   icon/picture, align a box, fix a wrong label). Do not regenerate the whole figure.
+5. re-render; confirm the defect is gone and nothing else regressed (region SSIM of untouched
+   regions must not drop). Keep the edit only if the structural defect list shrank.
+6. repeat for the next defect / next round until the structural-defect list is EMPTY (or budget).
+```
+**Acceptance = the structural-defect checklist is empty** (report any remaining as author-review), NOT a
+pixel-SSIM threshold. Pixel SSIM is only a coarse "where to look" guide — a faithful redraw tops out
+around ~0.8x vs the original raster because of accepted font/AA/colour differences. Re-export the PPTX
+from the refined SVG when done (`drawai --from-stage svg_to_ppt_exported`).
+
 ## Stop conditions (honest — never fake the score)
 - **PASS** — combined ≥ target AND all critical regions ≥ region-threshold AND critical-label OCR
   recall == 1.0 AND PPTX genuinely editable AND a real PPTX render exists AND raster/waveform gates
@@ -108,7 +135,8 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 `render_svg.py` (SVG→PNG), `render_pptx.py` (LibreOffice→PNG or NOT_RUN), `measure_similarity.py`,
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
-(WAVEFORM_STYLE), `build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
+(WAVEFORM_STYLE), `diff_overlay.py` (Stage R: source-vs-render heatmap + worst grid cells + side-by-side),
+`build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
 figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
 
 ## Use inside the ts-paper suite (figure stage 6, step 5b)
