@@ -1,16 +1,25 @@
 # DrawAI adapter
 
-This skill uses DrawAI as the reconstruction engine. DrawAI lives in the **same repository** as this
-skill (`src/drawai/`); the adapter calls it without copying model caches or large runtime files into the
-skill directory.
+This skill uses DrawAI as its reconstruction engine. **DrawAI's source is VENDORED inside this skill at
+`engine/`** (~5 MB: `src/drawai`, `scripts/`, `configs/`, `pyproject.toml`, `uv.lock`, `LICENSE`) — the
+skill is self-contained for code. The heavy runtime (models + venv) is provisioned by
+`scripts/setup_drawai.py`, never vendored. The orchestrator resolves the engine via `--drawai-repo` /
+`$DRAWAI_REPO`, else the vendored `engine/`, else an upward search for `src/drawai`.
 
-## Pinned version
-- **Pinned commit:** `df01f1969bbdb7cf4fef670ba246ad9e8dcc38da` (branch `main`).
-- **Required patch on top of the pin:** a one-line MPS guard in `src/drawai/local_runtime.py`
-  (`_empty_torch_cache`) so the pipeline runs on CPU/Linux (without it, runs crash with
-  `RuntimeError: Cannot execute emptyCache() without MPS backend`). The fix guards the
-  `torch.mps.empty_cache()` call with the existing `_torch_mps_available(torch)` helper. This must be
-  upstreamed; the skill assumes the working tree contains it.
+## Vendored version + the MPS fix (already applied)
+- **Vendored from:** the commit recorded in `engine/ENGINE_VERSION.txt` (base `df01f19` + working-tree
+  edits at vendor time).
+- **MPS guard fix is already IN the vendored source** (`engine/src/drawai/local_runtime.py`,
+  `_empty_torch_cache`): it guards `torch.mps.empty_cache()` with `_torch_mps_available(torch)` so runs
+  don't crash on CPU/Linux with `RuntimeError: Cannot execute emptyCache() without MPS backend`. **No
+  patching needed — it ships in `engine/`.**
+
+## Updating DrawAI (MANUAL, by design)
+To take a newer DrawAI: re-copy `src/ scripts/ configs/ pyproject.toml uv.lock LICENSE` from the upstream
+checkout into `engine/`, re-apply the MPS guard if upstream hasn't merged it, bump
+`engine/ENGINE_VERSION.txt`, then `python scripts/setup_drawai.py --check-only` and run the skill's tests.
+The integration surface is tiny (`run_reconstruction.py:collect()`/`find_case_dir()` + the output paths),
+so upstream refactors rarely need more than this.
 
 Record the exact commit you validated against in the run report. If DrawAI is later moved to its own
 repo, pin it as a git submodule/subtree at this commit and keep this adapter as the only integration

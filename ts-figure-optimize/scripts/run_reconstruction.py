@@ -67,6 +67,10 @@ def _drawai_repo() -> Path:
     env = os.environ.get("DRAWAI_REPO")
     if env and (Path(env) / "src" / "drawai").exists():
         return Path(env)
+    # default: the VENDORED engine shipped inside this skill (ts-figure-optimize/engine)
+    vendored = HERE.parent / "engine"
+    if (vendored / "src" / "drawai").exists():
+        return vendored
     for p in [HERE, *HERE.parents]:
         if (p / "src" / "drawai").exists():
             return p

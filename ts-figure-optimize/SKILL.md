@@ -32,17 +32,31 @@ You have a single raster figure and want an editable PPTX + editable SVG + vecto
 fidelity, with measured quality gates. Input: a PNG/JPG path (optionally a target aspect/slide size).
 For a lightweight, no-external-services pass, prefer `ts-paper-vector` instead.
 
-## Absorbed dependency: DrawAI (pinned + updatable)
-This skill drives DrawAI through a thin, stable surface (its CLI + a base config + on-disk outputs),
-so DrawAI stays an independently-updatable dependency — see `references/drawai_adapter.md` for the
-pinned commit, the required `local_runtime.py` MPS guard patch, and environment workarounds. Tell the
-skill where DrawAI lives with `--drawai-repo <path>` or `DRAWAI_REPO=<path>` (it also searches upward
-for `src/drawai`). Do NOT copy DrawAI's source or model caches into this skill.
+## Absorbed dependency: DrawAI is VENDORED here (manual updates)
+The DrawAI **source (~5 MB, includes the MPS guard fix)** is vendored inside this skill at
+**`engine/`** — so the skill is self-contained for code and needs no separate DrawAI checkout. The
+heavy **runtime is NOT vendored**: ~4 GB model weights (SAM3/PaddleOCR/RMBG) + a runtime venv are
+provisioned on deploy by `scripts/setup_drawai.py` (below). The orchestrator points at `engine/` by
+default (override with `--drawai-repo`/`DRAWAI_REPO`). **Updates are manual** — re-vendor `engine/`
+from upstream DrawAI yourself when you want a newer version (see `references/drawai_adapter.md`; the
+vendored commit is recorded in `engine/ENGINE_VERSION.txt`).
+
+## Deploy the runtime (once per machine): `scripts/setup_drawai.py`
+```
+python scripts/setup_drawai.py --device cpu            # download ~4GB models + build the runtime venv
+python scripts/setup_drawai.py --check-only            # verify the runtime is ready (drawai doctor)
+python scripts/setup_drawai.py --reuse-runtime <path>  # symlink an existing .local/drawai_runtime (skip download)
+```
+It tries DrawAI's official `setup local` first, and falls back to the validated manual install (paddle
+from PyPI, CPU torch, openai-codex via pypi.org/simple, editable engine + runtime deps, sam3, triton)
+when the official bootstrap can't reach its indexes. Still requires Codex auth (`~/.codex/auth.json` or
+`OPENAI_API_KEY`).
 
 ## Prerequisites (verify first)
-1. DrawAI runtime ready: `DRAWAI_REPO=<drawai> uv run --frozen drawai doctor local` → `status: ok`.
-   If not: `uv run --frozen drawai setup local` (downloads SAM3/PaddleOCR/RMBG, ~4 GB). See
-   `references/drawai_adapter.md`.
+1. DrawAI runtime ready: `python scripts/setup_drawai.py --check-only` → `doctor: OK`.
+   If not: `python scripts/setup_drawai.py --device cpu` (provisions the vendored `engine/`:
+   downloads SAM3/PaddleOCR/RMBG ~4 GB + builds the runtime venv). The DrawAI source is already
+   vendored at `engine/` (no separate checkout needed).
 2. Codex/OpenAI auth present (`~/.codex/auth.json` or `OPENAI_API_KEY`) — DrawAI's SVG/run0 agent
    (gpt-5.5) needs it. (Measured comparison showed Codex/gpt-5.5 outperforms a Claude-CLI agent for
    this generation task, so Codex is the engine here.)

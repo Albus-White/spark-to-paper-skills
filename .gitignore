@@ -21,3 +21,9 @@ Thumbs.db
 *.synctex.gz
 # Per-paper run outputs (generated, not source)
 *_run/
+
+# Vendored DrawAI engine: runtime (models/venv) + skill run outputs are GENERATED, not source.
+ts-figure-optimize/engine/.local/
+ts-figure-optimize/engine/.venv/
+ts-figure-optimize/engine/**/__pycache__/
+ts-figure-optimize/runs/

@@ -1,0 +1,3 @@
+src(commit a4bf1a9 + 未提交MPS修复)
+10addda19d111080858a4bfa4d4778bede35ee7a
+vendored 2026-06-20T11:41Z; MPS guard applied in src/drawai/local_runtime.py

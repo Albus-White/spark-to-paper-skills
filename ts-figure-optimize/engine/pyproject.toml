@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "drawai"
+version = "0.1.0"
+description = "Standalone image-to-editable-SVG/PPTX reconstruction pipeline."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+authors = [
+    { name = "DrawAI Maintainers" },
+]
+keywords = ["drawai", "layout-ir", "svg", "pptx", "ocr", "sam", "scientific-figures"]
+dependencies = [
+    "cairosvg>=2.9.0",
+    "fastapi>=0.116.0",
+    "lxml>=6.1.0",
+    "numpy",
+    "openai",
+    "openai-codex",
+    "pillow",
+    "pydantic<2.14",
+    "python-multipart>=0.0.20",
+    "python-pptx>=1.0.2",
+    "pyyaml",
+    "uvicorn>=0.35.0",
+]
+
+[project.optional-dependencies]
+local-runtime = [
+    "paddlepaddle",
+    "safetensors",
+    "torch",
+    "transformers",
+]
+dev = [
+    "httpx",
+    "pytest",
+]
+
+[project.scripts]
+drawai = "drawai.cli:main"
+drawai-explainer = "drawai.explainer_app:main"
+drawai-local-services = "drawai.local_services:main"
+drawai-workbench-api = "drawai.workbench.api:main"
+
+[tool.uv]
+prerelease = "allow"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/drawai"]
