@@ -28,7 +28,7 @@ Then ask Claude to run **`ts-paper`** with your input.
 | `ts-paper-review` | optional adversarial peer-review hardening pass |
 | `ts-paper-figure` | figure routing: matplotlib (precise) / image model (free-form) + vision critique |
 | `ts-paper-data` | data-aware mode: real results → filled tables + plots |
-| `ts-paper-vector` | embedding / vector-recall support |
+| `ts-paper-vector` | **fallback** figure vectorizer (pure-Claude redraw, no services) + shared editable-vector **gate** (`svg_tools.py`); primary engine is `ts-figure-optimize` |
 | `ts-paper-latex` | assemble + compile the final PDF |
 | `ts-figure-optimize` | standalone: raster figure → editable PPTX + SVG + vector PDF via the **full DrawAI engine** (SAM3+OCR+Codex) + measured refinement loop; heavy/high-fidelity sibling of `ts-paper-vector` |
 

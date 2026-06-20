@@ -15,6 +15,13 @@ description: >
 
 # ts-paper-vector — make a figure editable, the DrawAI way, distilled into Claude
 
+> **Role since the figure-engine split:** this is now the **FALLBACK** vectorizer (pure-Claude redraw,
+> no external services), used when the heavy **`ts-figure-optimize`** engine (real DrawAI runtime +
+> Codex) is NOT configured. `ts-paper-figure` step 5b prefers `ts-figure-optimize` for higher fidelity
+> and falls back here. **Keep this skill regardless of the split:** `scripts/svg_tools.py` is also the
+> suite's shared editable-vector **gate** tool (`run_gates.py` → `svg_tools.py check/lint`), so both the
+> primary and fallback paths lint through it.
+
 DrawAI turned a bitmap into an editable SVG with a team of services: **SAM3** segmented the
 layout, **PaddleOCR** read the text, and a **Codex/agent "brain"** authored an SVG, which was
 rendered and **visually compared to the original**, then edited over a few rounds. Every step

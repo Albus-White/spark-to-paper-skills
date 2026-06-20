@@ -94,7 +94,15 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 `render_svg.py` (SVG→PNG), `render_pptx.py` (LibreOffice→PNG or NOT_RUN), `measure_similarity.py`,
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
-(WAVEFORM_STYLE), `build_report.py`.
+(WAVEFORM_STYLE), `build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
+figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
+
+## Use inside the ts-paper suite (figure stage 6, step 5b)
+`ts-paper-figure` calls this as the PRIMARY vectorizer for free-form image-model schematics (fallback:
+`ts-paper-vector`). Run the orchestrator on the approved PNG, then `export_paper_figure.py` to drop the
+result into `figures/`, then lint via the shared gate (`ts-paper-vector/scripts/svg_tools.py lint
+--render-check`). The main method-overview schematic is results-independent → vectorize it ONCE at the
+proposal/first-draft figure stage, never deferred to a post-experiment re-run.
 
 ## References
 `references/workflow.md`, `references/quality_metrics.md`, `references/text_and_formula_rules.md`,
