@@ -30,6 +30,7 @@ Then ask Claude to run **`ts-paper`** with your input.
 | `ts-paper-data` | data-aware mode: real results → filled tables + plots |
 | `ts-paper-vector` | embedding / vector-recall support |
 | `ts-paper-latex` | assemble + compile the final PDF |
+| `ts-figure-optimize` | standalone: raster figure → editable PPTX + SVG + vector PDF via the **full DrawAI engine** (SAM3+OCR+Codex) + measured refinement loop; heavy/high-fidelity sibling of `ts-paper-vector` |
 
 ## Templates
 Bundled venues live under `ts-paper/templates/` (e.g. `ts_iieta`, `neurips`). Add your own by dropping a
