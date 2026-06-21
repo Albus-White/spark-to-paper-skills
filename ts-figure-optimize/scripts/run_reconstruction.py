@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Orchestrate DrawAI-based editable scientific-figure reconstruction with a strict,
+"""[LEGACY — NOT the default flow] Pure-A: full DrawAI Codex vector redraw + measured loop.
+
+⚠️ ISOLATED / OFF BY DEFAULT. The DEFAULT figure-optimize flow is now `run_hybrid.py`
+(Codex-free preprocessing + hybrid export, ~0.91 SSIM, cheaper). This pure-A path was validated as
+WORSE and more expensive (~0.67 SSIM, runs the Codex redraw). Use it ONLY when you explicitly need every
+element — including graphics — as editable vector, and accept the lower fidelity + Codex cost.
+
+Orchestrate DrawAI-based editable scientific-figure reconstruction with a strict,
 measured, multi-round refinement loop.
 
 Pipeline per run:

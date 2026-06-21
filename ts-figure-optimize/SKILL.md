@@ -63,34 +63,36 @@ when the official bootstrap can't reach its indexes. Still requires Codex auth (
 3. A real PPTX renderer (LibreOffice `soffice`) enables the PPTX render gate; if absent the PPTX
    render is `NOT_RUN` and the run cannot auto-PASS (still produces SVG/PPTX/PDF).
 
-## The only orchestration: `scripts/run_reconstruction.py`
-Claude invokes this; it drives DrawAI and the measured loop. One figure:
+## The orchestration (DEFAULT): `scripts/run_hybrid.py` — Codex-free preprocessing + HYBRID export
+This is the production path. It was validated head-to-head against pure-A on the same fresh run:
+**HYBRID ≈ 0.91 SSIM vs pure-A ≈ 0.67**, and it is **much cheaper** because it SKIPS the Codex vector
+redraw entirely. One figure:
 ```bash
-DRAWAI_REPO=/path/to/DrawAI python scripts/run_reconstruction.py \
-  --image <figure.png> \
-  --run-name <name> \
-  --runs-root runs \
-  --max-rounds 10 \
-  --target 0.99 \
-  --region-threshold 0.99 \
-  --device cpu \
-  --transcribe-formulas \
-  --slide-size 16:9
+python scripts/run_hybrid.py --image <figure.png> --run-name <name> [--runs-root runs] [--device cpu] \
+    [--runtime-root .local/drawai_runtime] [--no-text-gpt]
 ```
-Everything lands under `runs/<name>/` (layout in `references/workflow.md`): `source/` (original kept),
-`ir/` (box_ir + ocr), `svg/semantic.svg` + `rendered_svg.png`, `pptx/editable.pptx`,
-`pdf/publication_figure.pdf`, `comparisons/score_history.json`, `reports/*.md`, `final/`.
+Flow:
+1. DrawAI **dry-run** scaffold (config + run dir, no models).
+2. **Codex-FREE IR** stages in the runtime venv (`run_preprocess_ir.py`: prepare → SAM3 → OCR → Box-IR).
+3. **GPT per-region text correction** (`verify_text_gpt.py`) — fixes OCR-dropped subscripts/case.
+4. **HYBRID build** (`build_hybrid_pptx.py`): pixel-exact graphics raster + editable text boxes (real
+   sub/superscripts) → `final/editable_hybrid.{pptx,pdf,svg}`.
+5. Editability verification.
+Output under `runs/<name>/`: `source/source.png`, `ir/` (box_ir + ocr), `final/editable_hybrid.*`,
+`comparisons/` (corrected_texts.json, hybrid_report.json, pptx_hybrid.json).
+- **Honest ceiling:** only TEXT is editable; graphics stay raster. ~0.90 SSIM (re-typed text can't beat
+  font/AA/sub-pixel). For a fully-vector-editable figure instead, use the LEGACY pure-A flow below.
 
-### Each round
-0. DrawAI full reconstruction (normalize → SAM3 → OCR → Box IR → classify → SVG → validate → native PPTX).
-1+. If a gate fails: guided global re-generation via `drawai --from-stage svg_generated`, keeping the
-   best-scoring round (DrawAI generates the whole figure; "local repair" is selection-based — see
-   `references/local_repair_strategy.md`).
-
-After every round: render SVG + PPTX, measure global similarity (SSIM, MS-SSIM, LPIPS if available,
-edge IoU, OCR F1, color-hist, object-count, layout IoU → normalized combined score), per-region
-similarity from Box-IR panels, text/formula verification, PPTX editability, plus the
-`RASTER_BACKGROUND_MATCH` and `WAVEFORM_STYLE` gates.
+## LEGACY (isolated, NOT default): pure-A vector redraw — `scripts/run_reconstruction.py`
+Kept for the rare case where you need **every element (incl. graphics) as editable vector**, accepting the
+lower fidelity (~0.67–0.8) and the Codex cost. It runs the full DrawAI Codex redraw + measured loop. **Do
+NOT use it as the default** — the hybrid flow above is better and cheaper.
+```bash
+python scripts/run_reconstruction.py --image <fig.png> --run-name <name> --device cpu --max-rounds 10 [--no-repair]
+```
+It drives DrawAI's full pipeline (normalize → SAM3 → OCR → Box-IR → classify → **Codex SVG** → validate →
+native PPTX), then a measured best-of-rounds loop (SSIM/region/OCR/formula + RASTER_BACKGROUND_MATCH /
+WAVEFORM_STYLE gates). Output: `svg/semantic.svg`, `pptx/editable.pptx`, `pdf/publication_figure.pdf`.
 
 ## Stage R — structural-defect refinement (精修, model-judged, iterate a few rounds)
 After the base reconstruction, run a targeted refinement loop whose goal is **structural/logical
@@ -186,6 +188,8 @@ Even at PASS, show: source, rendered SVG, rendered PPTX, combined score, lowest-
 formula verification, remaining raster assets. Do not finalize without explicit approval.
 
 ## Helper scripts (Claude calls as needed)
+**Orchestrators:** `run_hybrid.py` (DEFAULT — Codex-free IR + hybrid export) and `run_preprocess_ir.py`
+(its Codex-free IR step, runs in the runtime venv); `run_reconstruction.py` is the LEGACY pure-A entry.
 `render_svg.py` (SVG→PNG), `render_pptx.py` (LibreOffice→PNG or NOT_RUN), `measure_similarity.py`,
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
