@@ -139,6 +139,31 @@ colourbar barely change pixels), which is exactly why the vision pass is mandato
 around ~0.8x vs the original raster because of accepted font/AA/colour differences. Re-export the PPTX
 from the refined SVG when done (`drawai --from-stage svg_to_ppt_exported`).
 
+## High-fidelity HYBRID export (`scripts/build_hybrid_pptx.py`) — when visual fidelity matters most
+An alternative to the LLM redraw that reaches **~0.90 SSIM** (the editable-redraw ceiling) **cheaply and
+deterministically (no Codex)**: keep the source figure's GRAPHICS as a **pixel-exact raster with the text
+removed**, and re-create every OCR'd text run as a **genuinely editable PPTX text box** (and selectable
+PDF/SVG text). For "faithful + editable text" this beats the full vector redraw (~0.67–0.8) at near-zero
+cost and with **zero text doubling/offset**.
+```
+python scripts/build_hybrid_pptx.py --source <run>/source/source.png \
+    --ocr <run>/ir/ocr_boxes.json --box-ir <run>/ir/box_ir.json \
+    --out-pptx <run>/final/editable_hybrid.pptx --out-pdf <run>/final/editable_hybrid.pdf \
+    --out-svg <run>/final/editable_hybrid.svg --report <run>/comparisons/hybrid_report.json
+```
+- **Resolution-adaptive:** OCR/box bboxes are scaled from the box_ir CANVAS space to the actual SOURCE
+  pixel space at runtime (`sx=W_src/canvas.width, sy=H_src/canvas.height`). **This scale is mandatory** —
+  skipping it shifts/oversizes the text and is exactly what causes duplication/offset. Works at any input
+  resolution as long as `ocr_boxes.json` + `box_ir.json` come from the same DrawAI run.
+- **How:** ink-mask erase (`ink = lum<bg_lum-22 OR colour-dist>60`) repaints text pixels with the local
+  bg; text colour is sampled from the box's CENTRAL vertical band (0.22–0.78, darkest 30%) to avoid
+  graphics intruding at box edges; placement/size come from the OCR bbox; text is anchored left-middle.
+- **Trade-off (honest):** only TEXT is editable; graphics stay raster (not vector-editable). **0.95–0.99
+  is NOT reachable with re-typed text** (font/AA/sub-pixel) — that requires keeping the original text
+  pixels (then text is display-faithful but not freely editable). 0.90 clean is the honest ceiling here.
+- **No GPT in this path** — it is fully deterministic. Optionally run `vision_region_diff.py` afterward as
+  a one-shot global/local acceptance check (not a gate; its count is stochastic).
+
 ## Stop conditions (honest — never fake the score)
 - **PASS** — combined ≥ target AND all critical regions ≥ region-threshold AND critical-label OCR
   recall == 1.0 AND PPTX genuinely editable AND a real PPTX render exists AND raster/waveform gates
@@ -156,6 +181,7 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
 (WAVEFORM_STYLE), `diff_overlay.py` (Stage R heatmap/worst-cells), `region_crops.py` (Stage R region pairs), `vision_region_diff.py` (Stage R automated gpt-vision per-region defect detector),
+`build_hybrid_pptx.py` (high-fidelity HYBRID export: exact graphics raster + editable text boxes, ~0.90 SSIM, no Codex — see section above),
 `build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
 figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
 
