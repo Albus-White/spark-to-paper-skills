@@ -156,13 +156,22 @@ python scripts/build_hybrid_pptx.py --source <run>/source/source.png \
   skipping it shifts/oversizes the text and is exactly what causes duplication/offset. Works at any input
   resolution as long as `ocr_boxes.json` + `box_ir.json` come from the same DrawAI run.
 - **How:** ink-mask erase (`ink = lum<bg_lum-22 OR colour-dist>60`) repaints text pixels with the local
-  bg; text colour is sampled from the box's CENTRAL vertical band (0.22–0.78, darkest 30%) to avoid
-  graphics intruding at box edges; placement/size come from the OCR bbox; text is anchored left-middle.
+  bg; text colour from the box's CENTRAL vertical band (0.22–0.78, darkest 30%); horizontal position from
+  the actual ink start, size fitted to the ink WIDTH (capped by box height) so loose OCR boxes don't
+  oversize small labels; sub/superscripts are rendered as real baseline-shifted runs (font-independent,
+  truly editable, no missing-glyph "tofu").
+- **GPT text correction (recommended pre-step):** PaddleOCR drops subscripts and mis-cases math tokens
+  (`onset Ot`, `Za`, `Zsa`). Run `scripts/verify_text_gpt.py` FIRST — it sends each text region's source
+  crop to a vision model and returns the exact text (case + Unicode sub/superscripts), written to
+  `corrected_texts.json`; pass it to `build_hybrid_pptx.py --text-overrides corrected_texts.json`. This is
+  TARGETED per-region transcription (reliable), unlike the stochastic whole-figure defect detector.
+  ```
+  python scripts/verify_text_gpt.py --source <run>/source/source.png --ocr <run>/ir/ocr_boxes.json \
+      --box-ir <run>/ir/box_ir.json --out <run>/comparisons/corrected_texts.json
+  ```
 - **Trade-off (honest):** only TEXT is editable; graphics stay raster (not vector-editable). **0.95–0.99
   is NOT reachable with re-typed text** (font/AA/sub-pixel) — that requires keeping the original text
-  pixels (then text is display-faithful but not freely editable). 0.90 clean is the honest ceiling here.
-- **No GPT in this path** — it is fully deterministic. Optionally run `vision_region_diff.py` afterward as
-  a one-shot global/local acceptance check (not a gate; its count is stochastic).
+  pixels (then text is display-faithful but not freely editable). ~0.90 clean is the honest ceiling here.
 
 ## Stop conditions (honest — never fake the score)
 - **PASS** — combined ≥ target AND all critical regions ≥ region-threshold AND critical-label OCR
@@ -181,7 +190,8 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 `compare_regions.py`, `verify_text_and_formulas.py`, `verify_pptx_editability.py`,
 `fix_raster_backgrounds.py` (RASTER_BACKGROUND_MATCH), `verify_waveforms.py` + `waveform_primitive.py`
 (WAVEFORM_STYLE), `diff_overlay.py` (Stage R heatmap/worst-cells), `region_crops.py` (Stage R region pairs), `vision_region_diff.py` (Stage R automated gpt-vision per-region defect detector),
-`build_hybrid_pptx.py` (high-fidelity HYBRID export: exact graphics raster + editable text boxes, ~0.90 SSIM, no Codex — see section above),
+`build_hybrid_pptx.py` (high-fidelity HYBRID export: exact graphics raster + editable text boxes w/ real sub/superscripts, ~0.90 SSIM, no Codex — see section above),
+`verify_text_gpt.py` (GPT-vision per-region text correction: fixes OCR-dropped subscripts/case → corrected_texts.json for `build_hybrid_pptx.py --text-overrides`),
 `build_report.py`, and `export_paper_figure.py` (map a finished run into the ts-paper
 figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
 
