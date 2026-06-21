@@ -26,6 +26,8 @@ Prints a JSON status line. Exit 0 on a saved PNG, non-zero otherwise — so Clau
 see whether to retry/refine.
 """
 from __future__ import annotations
+
+import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
 import argparse, base64, json, os, sys, time, urllib.request, urllib.error
 from pathlib import Path
 

@@ -16,6 +16,8 @@ Usage:
 """
 from __future__ import annotations
 
+import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
+
 import argparse
 import base64
 import io

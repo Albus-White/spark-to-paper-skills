@@ -23,6 +23,8 @@ Reads <workdir>/{story.json, retrieved_papers.json} and optionally <kg_dir>/patt
 pattern_meta.jsonl + pattern_manifest.json. Writes <workdir>/novelty_report.json. stdlib + numpy.
 """
 from __future__ import annotations
+
+import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
 import argparse, json, os, sys, urllib.request
 from pathlib import Path
 

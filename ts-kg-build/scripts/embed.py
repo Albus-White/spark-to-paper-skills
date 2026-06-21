@@ -18,6 +18,8 @@ Exits non-zero (with a clear message) if the endpoint is not configured — call
 fall back to lexical (Jaccard) mode rather than pretend they have semantic similarity.
 """
 from __future__ import annotations
+
+import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
 import argparse, hashlib, json, os, sys, time, urllib.request, urllib.error
 import numpy as np
 

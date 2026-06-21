@@ -13,6 +13,8 @@ Reads <kg_dir>/{nodes_pattern.json,nodes_paper.json,edges.json} and optionally
 <kg_dir>/pattern_{emb.npy,meta.jsonl,manifest.json}. Embedding config = TS_EMBED_* (see embed.py).
 """
 from __future__ import annotations
+
+import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
 import argparse, json, os, re, sys, urllib.request
 from pathlib import Path
 
