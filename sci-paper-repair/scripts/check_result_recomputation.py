@@ -21,7 +21,7 @@ import sys
 from datetime import datetime, timezone
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
+REPO_ROOT = os.getcwd()  # workspace root (SKILL.md contract: run from the dir holding paper_config.yaml)
 
 SCAN_DIRS = ["workspace/experiments", "outputs"]
 OUTPUT_REL = "outputs/reports/RESULT_RECOMPUTATION_CHECK.md"

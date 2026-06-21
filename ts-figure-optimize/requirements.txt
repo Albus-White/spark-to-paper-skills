@@ -1,0 +1,9 @@
+# Host-python deps for the ts-figure-optimize SKILL SCRIPTS (run_hybrid / build_hybrid_pptx /
+# verify_text_gpt / vision_region_diff). Install into the python that runs the skill:
+#   pip install -r ts-figure-optimize/requirements.txt
+# (The DrawAI engine itself uses its own runtime venv, provisioned by scripts/setup_drawai.py.)
+numpy>=1.24
+Pillow>=10.0
+python-pptx>=1.0.2
+cairosvg>=2.7        # needs system Cairo (libcairo2); apt install libcairo2 / brew install cairo
+openai>=1.40         # GPT text correction + vision diff; or auth via ~/.codex/auth.json

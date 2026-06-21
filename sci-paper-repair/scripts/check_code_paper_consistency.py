@@ -19,7 +19,7 @@ import sys
 from datetime import datetime, timezone
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
+REPO_ROOT = os.getcwd()  # workspace root (SKILL.md contract: run from the dir holding paper_config.yaml)
 
 CODE_DIRS = ["input/code", "code"]
 OUTPUT_REL = "outputs/reports/CODE_PAPER_CONSISTENCY_SCAN.md"

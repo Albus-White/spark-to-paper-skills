@@ -184,7 +184,7 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    `\caption`/`\label`; use `\textwidth` for a wide (`figure*`) float. Extension-less so pdflatex embeds
    the vector `figures/<label>.pdf` (and falls back to the kept `.png` if a `.pdf` is ever missing). Then
    **append this figure to `figures/figures.manifest.json`** — `{"label","type","engine":"image-model"|"matplotlib"}`
-   — so the DoD gate knows each figure's type: `run_gates.py all` calls `svg_tools.py check`, which now
+   — so the DoD gate knows each figure's type: `run_gates.py all` calls `check_vector_pdf.py check`, which now
    asserts both that every figure has its `.pdf` **and** that every vector-type figure's `.svg` is a real
    redraw (not a raster). A figure whose manifest `type` is `photo`/`qualitative` is exempt from the
    redraw requirement.

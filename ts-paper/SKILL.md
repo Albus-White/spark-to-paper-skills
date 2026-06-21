@@ -15,7 +15,7 @@ description: >
 
 You produce a publication-format paper (in whatever **template** the user picks) from a dropped input
 by first **routing it** (Stage 0) and then orchestrating seven focused sub-skills (the figure stage
-delegates its editable-vector output to a helper sub-skill, **ts-paper-vector** — so the suite is 12
+delegates its editable-vector output to **ts-figure-optimize** (absorbs the full DrawAI engine; the older **ts-paper-vector** is DISABLED) — so the suite is 12
 skills across a 7-stage chain, not 8 stages).
 
 ## Priority: QUALITY FIRST, cost second
@@ -34,7 +34,7 @@ This skill is the **story2paper == proposal2paper** spine. Two NEW upstream bloc
                                                   (uses kg/ if present; searches the web)
 [story_proposal.md  OR  a user's own proposal] ─▶ ts-paper (THIS) ─▶ plan→cite→write→refine→review→figure→latex ─▶ main.pdf
                                                                        ( review = adversarial hardening, runs by default; user may opt out for a quick draft )
-                                                                       ( figure ends every figure as an editable VECTOR PDF — matplotlib born-vector; image-model raster → ts-paper-vector reconstruction )
+                                                                       ( figure ends every figure as an editable VECTOR PDF — matplotlib born-vector; image-model raster → ts-figure-optimize reconstruction )
 ```
 - If the user hands you a **raw idea**, run **ts-idea2story** first → it writes `story_proposal.md`
   (feed it here as the proposal) **and** `retrieved_papers.json` (the cite stage reuses it, so its
@@ -60,7 +60,7 @@ refs.bib                    # ← stage 2 (cite): complete, real BibTeX only
 template.json               # ← the active template spec (copied in by the plan stage)
 sections/<id>.tex           # ← stage 3 (write): LaTeX body per section (+ abstract.tex)
 figures/<label>.pdf         # ← stage 6 (figure): EMBEDDED editable vector (matplotlib born-vector;
-                            #   image-model raster → ts-paper-vector); .png (kept original) + source alongside
+                            #   image-model raster → ts-figure-optimize); .png (kept original) + source alongside
 main.tex, main.pdf          # ← stage 7 (assemble): compiled paper
 <template assets>           # the template's .sty/.cls + masthead assets (copied by assemble)
 ```
@@ -130,7 +130,7 @@ route -> results_mode = data_aware
   -> ts-paper-review (adversarial hardening; data-aware = full claims-vs-evidence scrutiny)
   -> ts-paper-figure (ONE owner of all figures): results plots drawn by matplotlib from results.facts.json
                      (figures4papers house style); free-form schematics by the image model; every figure
-                     then vectorized to an embedded editable PDF (matplotlib born-vector; raster -> ts-paper-vector) -> ts-paper-latex
+                     then vectorized to an embedded editable PDF (matplotlib born-vector; raster -> ts-figure-optimize) -> ts-paper-latex
 ```
 ## Pipeline (run in order; each stage is a sub-skill you invoke or follow directly)
 1. **ts-paper-plan** — proposal → `blueprint.json` (title, ≤6 keywords, 3 contributions, notation, terminology, experiment design, per-section plans with word targets). ONE reasoning pass.

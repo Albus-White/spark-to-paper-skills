@@ -27,10 +27,10 @@ HERE = Path(__file__).resolve().parent
 
 
 def _repo_root() -> Path:
-    for p in (HERE.parents[2], HERE.parents[1]):
+    for p in HERE.parents:
         if (p / "sci-paper-repair").is_dir():
             return p
-    return HERE.parents[2]
+    return HERE.parents[1]  # fall back to the suite root (…/<repo>), never the grandparent outside it
 
 
 def main() -> int:
