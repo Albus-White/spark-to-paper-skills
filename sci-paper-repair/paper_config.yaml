@@ -1,0 +1,56 @@
+paper:
+  id: paper_001
+  title: auto
+  field: auto
+  target_level: SCI_Q4
+  target_journal: null
+  language: English
+
+input:
+  draft_dir: input/draft
+  data_dir: input/data
+  code_dir: input/code
+  references_dir: input/references
+
+experiment:
+  allow_running_code: true
+  max_runtime_hours: 6
+  use_gpu: false
+  random_seeds: [1, 2, 3]
+  require_traceable_results: true
+
+automation:
+  level: learning
+  ask_user_before:
+    - changing_main_contribution
+    - deleting_core_method
+    - adding_new_experiment_type
+    - making_strong_claims_from_weak_results
+  auto_apply_rules:
+    - remove_significantly_without_statistical_test
+    - weaken_unsupported_claims
+    - rewrite_abstract_last
+    - align_conclusion_with_results
+    - preserve_traceability_of_results
+
+overleaf:
+  git_url: null
+  paper_dir: paper
+  # Overleaf disabled for now: work entirely on the local ./paper/ repo, no remote, no push.
+  # To re-enable: set require_overleaf_url + the push flags back to true and provide
+  # overleaf.git_url (or OVERLEAF_GIT_URL in ./.env) and OVERLEAF_TOKEN in ./.env.
+  require_overleaf_url: false
+  commit_initial_draft: true
+  push_initial_draft: false
+  push_after_repair: false
+  remote_name: overleaf
+
+# The manuscript source of truth is ./paper/ (an independent Git repo synced to Overleaf).
+# ./outputs/ holds only reports, analysis, logs, and exported figures/tables — never the
+# source-of-truth manuscript.
+output:
+  manuscript_dir: paper
+  reports_dir: outputs/reports
+  save_logs: true
+  save_tables: true
+  save_figures: true
