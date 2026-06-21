@@ -103,11 +103,15 @@ def main() -> int:
         print("FATAL: case output dir not found", file=sys.stderr)
         return 2
 
-    # 2) Codex-FREE IR stages (runtime venv)
+    # 2) Codex-FREE IR stages (runtime venv) — AUTO-DEPLOY the runtime under the skill if missing
     print("[2/5] preprocess IR (SAM3 + OCR + Box-IR, no Codex)")
     rtpy = runtime / ".venv" / "bin" / "python"
     if not rtpy.exists():
-        print(f"FATAL: runtime venv not found at {rtpy} — run setup_drawai.py first (engine={engine})", file=sys.stderr)
+        print(f"[2/5] runtime not provisioned at {runtime} — auto-deploying via setup_drawai.py ...")
+        sh([sys.executable, HERE / "setup_drawai.py", "--engine", str(engine), "--device", a.device])
+    if not rtpy.exists():
+        print(f"FATAL: runtime venv still not found at {rtpy}. Provision it under the skill with:\n"
+              f"  python {HERE/'setup_drawai.py'} --device {a.device}", file=sys.stderr)
         return 2
     r = sh([rtpy, HERE / "run_preprocess_ir.py", "--config", cfg, "--runtime-root", str(runtime),
             "--sam3-device", a.device, "--rmbg-device", a.device, "--paddle-device", a.device], cwd=str(engine))

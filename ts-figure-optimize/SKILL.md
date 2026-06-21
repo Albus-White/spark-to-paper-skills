@@ -42,10 +42,15 @@ from upstream DrawAI yourself when you want a newer version (see `references/dra
 vendored commit is recorded in `engine/ENGINE_VERSION.txt`).
 
 ## Deploy the runtime (once per machine): `scripts/setup_drawai.py`
+The model runtime (SAM3 / PaddleOCR / RMBG weights + venv, ~8 GB) is deployed **inside this skill** at
+`ts-figure-optimize/engine/.local/drawai_runtime/` (gitignored — code is in git, the multi-GB weights are
+provisioned on disk under the skill, never committed). It is **self-contained under spark-to-paper-skills**,
+not borrowed from any outer checkout. **`run_hybrid.py` AUTO-DEPLOYS it before running** if it's missing,
+so you normally don't call setup manually — but you can:
 ```
-python scripts/setup_drawai.py --device cpu            # download ~4GB models + build the runtime venv
+python scripts/setup_drawai.py --device cpu            # download ~4GB models + build the runtime venv (under the skill)
 python scripts/setup_drawai.py --check-only            # verify the runtime is ready (drawai doctor)
-python scripts/setup_drawai.py --reuse-runtime <path>  # symlink an existing .local/drawai_runtime (skip download)
+python scripts/setup_drawai.py --reuse-runtime <path>  # reuse an existing .local/drawai_runtime (skip download)
 ```
 It tries DrawAI's official `setup local` first, and falls back to the validated manual install (paddle
 from PyPI, CPU torch, openai-codex via pypi.org/simple, editable engine + runtime deps, sam3, triton)
