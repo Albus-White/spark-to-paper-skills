@@ -24,6 +24,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import _dotenv  # noqa: F401  -- load unified .env so HF_TOKEN/OPENAI_API_KEY reach the model download
+
 HERE = Path(__file__).resolve().parent
 DEFAULT_ENGINE = HERE.parent / "engine"          # ts-figure-optimize/engine (vendored DrawAI)
 RUNTIME_DEPS = [
