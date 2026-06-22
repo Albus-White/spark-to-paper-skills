@@ -90,15 +90,16 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ## 📦 What You Get
 
-| Deliverable         | Files                                   | Guarantee                                                               |
-| :------------------ | :-------------------------------------- | :---------------------------------------------------------------------- |
-| **Paper package**   | `main.tex` · `main.pdf`                 | Compiled in the selected venue template.                                |
-| **Section drafts**  | `sections/*.tex` · `abstract.tex`       | One LaTeX source file per paper section.                                |
-| **Paper blueprint** | `blueprint.json`                        | Structured title, keywords, contributions, notation, and word targets.  |
-| **Citation system** | `refs.bib` · `claims_map.json`          | Real BibTeX entries; every `\cite{}` is justified and traceable.        |
-| **Figures**         | `figures/<label>.pdf` · `.png` · source | Editable vector figures, with raster figures reconstructed when needed. |
-| **Audit logs**      | `logs/<n>_<stage>.io.md` · `index.md`   | Full INPUT / DECISIONS / OUTPUT trace for every stage.                  |
-| **Gate report**     | `run_gates.py`                          | All deterministic gates pass: citations, draft, vectors, and LaTeX.     |
+| Deliverable   | Files                                   | Guarantee                                                               |
+| :------------ | :-------------------------------------- | :---------------------------------------------------------------------- |
+| **Package**   | `main.tex` · `main.pdf`                 | Compiled paper in the selected venue template.                          |
+| **Drafts**    | `sections/*.tex` · `abstract.tex`       | One LaTeX source file per section.                                      |
+| **Blueprint** | `blueprint.json`                        | Structured title, keywords, contributions, notation, and word targets.  |
+| **Citations** | `refs.bib` · `claims_map.json`          | Real BibTeX entries; every `\cite{}` is justified and traceable.        |
+| **Figures**   | `figures/<label>.pdf` · `.png` · source | Editable vector figures, with raster figures reconstructed when needed. |
+| **Logs**      | `logs/<n>_<stage>.io.md` · `index.md`   | Full INPUT / DECISIONS / OUTPUT trace for every stage.                  |
+| **Gates**     | `run_gates.py`                          | All deterministic gates pass: citations, draft, vectors, and LaTeX.     |
+
 
 
 ---
