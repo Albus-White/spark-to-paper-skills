@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/framework.png" width="92%" alt="spark-to-paper-skills framework">
+  <img src="docs/framework.png" width="100%" alt="spark-to-paper-skills framework">
 </p>
 
 <h1 align="center">✨ spark-to-paper-skills</h1>
