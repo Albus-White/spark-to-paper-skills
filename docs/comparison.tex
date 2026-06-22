@@ -21,21 +21,21 @@
 \definecolor{line}{HTML}{DCE0E3}     % separator
 
 % ---------- marks ----------
-\newcommand{\yes}{\textcolor{good}{\large\ding{52}}}
-\newcommand{\prt}{\textcolor{warn}{\small\ding{108}}}
-\newcommand{\non}{\textcolor{muted}{\rule[0.32ex]{1.5ex}{1.1pt}}}
+\newcommand{\yes}{\textcolor{good}{\LARGE\ding{52}}}
+\newcommand{\prt}{\textcolor{warn}{\large\ding{108}}}
+\newcommand{\non}{\textcolor{muted}{\rule[0.32ex]{1.9ex}{1.3pt}}}
 
 % ---------- 2-line header ----------
-\newcommand{\hd}[2]{\textcolor{white}{\footnotesize\bfseries\shortstack{#1\\[1pt]#2}}}
+\newcommand{\hd}[2]{\textcolor{white}{\small\bfseries\shortstack{#1\\[2pt]#2}}}
 
 \begin{document}
-\renewcommand{\arraystretch}{1.7}
-\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{2.35}
+\setlength{\tabcolsep}{9pt}
 \arrayrulecolor{line}
 
-\begin{tabular}{>{\raggedright\arraybackslash}p{4.9cm} !{\color{line}\vrule} *{8}{>{\centering\arraybackslash}m{1.5cm}}}
+\begin{tabular}{>{\large\raggedright\arraybackslash}p{6.2cm} !{\color{line}\vrule} *{8}{>{\centering\arraybackslash}m{1.75cm}}}
 \rowcolor{header}
-\textcolor{white}{\bfseries\normalsize~Project}
+\textcolor{white}{\bfseries\large~Project}
  & \hd{End-to}{-end}
  & \hd{Pure}{skill}
  & \hd{Real}{cites}
