@@ -12,7 +12,7 @@ Each entry should reference the candidate it came from and the validating decisi
 
 ## Promoted 2026-06-14 (approved by user) — CAND-006…CAND-012
 
-These workflow lessons were validated by the user and promoted into the formal sci-paper-repair
+These workflow lessons were validated by the user and promoted into the formal ts-paper-experiment
 skill. (Moved here from candidate status; recorded in `rule_change_log.md`.)
 
 - **CAND-006 — Rendered PDF layout check.** Compilation success is not enough; visually check the

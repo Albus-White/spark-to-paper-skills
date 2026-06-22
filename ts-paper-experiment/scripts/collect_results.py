@@ -16,7 +16,7 @@ import sys
 from datetime import datetime, timezone
 
 # Repository root = three levels up from this script
-# (.claude/skills/sci-paper-repair/scripts/collect_results.py)
+# (.claude/skills/ts-paper-experiment/scripts/collect_results.py)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.getcwd()  # workspace root (SKILL.md contract: run from the dir holding paper_config.yaml)
 

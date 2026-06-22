@@ -1,6 +1,6 @@
 # Golden Rules
 
-Authoritative, human-approved rules for the `sci-paper-repair` skill. Candidate rules live in
+Authoritative, human-approved rules for the `ts-paper-experiment` skill. Candidate rules live in
 `../memory/lessons_candidate.md` and are promoted here **only with explicit user approval**
 (recorded in `../memory/rule_change_log.md`).
 

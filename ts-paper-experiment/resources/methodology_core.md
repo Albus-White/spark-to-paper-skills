@@ -1,7 +1,7 @@
 # Methodology Core
 
 A concise knowledge base of authoritative scientific-writing methodology used by the
-`sci-paper-repair` skill. It distills several source families into actionable principles. It is
+`ts-paper-experiment` skill. It distills several source families into actionable principles. It is
 guidance, not a substitute for the target journal's own instructions.
 
 ---

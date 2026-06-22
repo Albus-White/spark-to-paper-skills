@@ -1,9 +1,9 @@
 ---
-name: sci-paper-repair
+name: ts-paper-experiment
 description: Repair an AI-generated scientific paper draft by diagnosing research logic, completing feasible experiments, rewriting the experiment section, and updating the full manuscript for claim-evidence consistency.
 ---
 
-# sci-paper-repair
+# ts-paper-experiment
 
 > **Now part of the spark-to-paper-skills suite (Stage 8).** Previously a separate project
 > (AutoPaperFactory); merged in so the whole pipeline lives in one repo. It runs in an **experiment
@@ -75,8 +75,16 @@ Do not put the following inside `./paper/`:
 
 ### Step 0: Entry check and Overleaf setup
 
-- Check for the AI draft (at least one of): `./draft_overleaf.zip`, draft files under
-  `./input/draft/`, or existing LaTeX files under `./paper/`.
+**Embedded (ts-paper Stage 8) mode — the DEFAULT in this suite, and it AUTO-RUNS.** When driven by the
+ts-paper orchestrator, the draft is ALREADY staged under `./input/draft/` as a LaTeX manuscript
+(`main.tex` + `sections/` + `refs.bib` + `figures/` + template `.sty` — **NOT a zip**), real experiment
+inputs (if present) are under `./input/{data,code}`, and `overleaf.require_overleaf_url` is `false`.
+In this mode **auto-proceed without stopping**: ingest `./input/draft/` into `./paper/` and run the full
+workflow end-to-end — do **NOT** ask for a zip or an Overleaf URL. (The "stop and ask" prompts below apply
+ONLY to standalone manual usage, never to embedded Stage-8 runs.)
+
+- Check for the AI draft (at least one of): `./input/draft/` (the staged manuscript — **primary in the
+  embedded workflow**), `./draft_overleaf.zip` (standalone only), or existing LaTeX files under `./paper/`.
 - **Overleaf toggle (check first):** read `overleaf.require_overleaf_url` from `./paper_config.yaml`.
   - If it is **`false`** (Overleaf disabled): **skip the Overleaf Git target check, the URL ask, and all
     pushing entirely.** Work only on the local `./paper/` repo (init + local commits, **no remote, no
@@ -87,7 +95,8 @@ Do not put the following inside `./paper/`:
   `./paper_config.yaml`, or `OVERLEAF_GIT_URL` in `./.env`, or an existing remote named
   `overleaf` inside `./paper/`. (`paper_config.yaml` takes precedence, then the `.env` value.)
 
-If the AI draft is missing, **stop and ask**:
+If the AI draft is missing **(standalone manual usage only — in embedded Stage-8 mode `./input/draft/`
+is always present, so never reached)**, **stop and ask**:
 
 > Please provide the AI draft. Put an Overleaf project zip at ./draft_overleaf.zip, or place the draft files under ./input/draft/.
 
@@ -406,7 +415,7 @@ must answer:
 
 - Create `workspace/lessons/LESSONS_LEARNED.md`: what worked, what failed, repeated AI-draft
   problems, useful user decisions, candidate golden rules.
-- Append candidate rules to `.claude/skills/sci-paper-repair/memory/lessons_candidate.md`.
+- Append candidate rules to `.claude/skills/ts-paper-experiment/memory/lessons_candidate.md`.
 - **Do not** auto-promote candidates into `resources/golden_rules.md`; promotion needs explicit
   user approval and is recorded in `memory/rule_change_log.md`.
 - Run **Active Suggestion Capture** (below) and print the closing message.
@@ -496,7 +505,7 @@ PENDING
 ### Capture rules
 
 - Also append a **compact** candidate rule for each suggestion to
-  `./.claude/skills/sci-paper-repair/memory/lessons_candidate.md` (use the candidate format in
+  `./.claude/skills/ts-paper-experiment/memory/lessons_candidate.md` (use the candidate format in
   that file).
 - **Do not edit** any of the following unless the user explicitly approves:
   - `resources/golden_rules.md`

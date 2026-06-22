@@ -27,3 +27,6 @@ ts-figure-optimize/engine/.local/
 ts-figure-optimize/engine/.venv/
 ts-figure-optimize/engine/**/__pycache__/
 ts-figure-optimize/runs/
+
+# extracted KG working copy (source of truth = kg/kg_ai.rar via LFS)
+kg/kg_ai/

@@ -140,42 +140,38 @@ route -> results_mode = data_aware
 5. **ts-paper-review** *(adversarial hardening — distilled from PaperJury; runs by default)* — argue the OTHER side before finalizing: N isolated reviewers critique the whole draft (verbatim-quote anti-skim) → adversarial-verify each issue → loop-until-dry → triage. Valid issues are fixed **back through `ts-paper-refine`** (each bound to its `close_criterion`) and re-linted; author-required ones are surfaced. Cost-tiered (lean / cheapest / thorough). **Engine-agnostic**: runs by default via the best available execution tier (Workflow → subagents → in-context); the algorithm and output are identical across tiers, so it is **never skipped merely because the Workflow tool is absent**. May be skipped ONLY when the user explicitly requests a quick/no-review draft — record that choice in `logs/0_route.io.md`.
 6. **ts-paper-figure** — fill every figure placeholder via ONE routing: **code-precise** figures (results plots, and math/geometry concept illustrations) are drawn by **matplotlib** (`ts-paper-data`'s `plot_results.py` + the figures4papers house style); **free-form** schematics (architecture/pipeline/qualitative scenes) are drawn by the **image model** (`gen_image.py`) through the Claude **vision-critique loop** (≥2 polish rounds). Results plots need real data (data-aware only); a proposal has none. No placeholder left blank. **Then ALWAYS vectorize** so every figure embeds as an editable vector PDF (matplotlib is born-vector via `finalize`; an image-model raster is reconstructed to a faithful editable SVG→PDF by the SOLE vector engine **`ts-figure-optimize`** (real DrawAI runtime + Codex; **`ts-paper-vector` is DISABLED**); the original PNG is kept). The main free-form schematic is results-independent, so vectorize it ONCE at this proposal/first-draft figure stage — never defer to a post-experiment re-run; later experiment-phase figures are matplotlib born-vector. The editable-vector **gate** is `ts-figure-optimize/scripts/check_vector_pdf.py` (every figure must embed a vectorized PDF + every vector-type SVG must be a real redraw). Vectorization must NEVER reduce quality. Optional — skip the whole stage only if there are no figures or the image model is unconfigured.
 7. **ts-paper-latex** — run the bundled `assemble_paper.py` to build `main.tex`, apply the deterministic **template-driven** post-processes (caption position, merge `\cite` for numeric styles, canonical headings from `template.json`, format keywords), copy the template's `.sty`/`.cls` + assets, and compile with `latexmk`. Fix real compile errors in a bounded loop (≤3 tries; abort if errors increase).
-8. **`sci-paper-repair` (IN-REPO experiment + repair skill)** — *after* the complete first-draft `main.pdf` is produced (all gates green, the proposal-mode paper done — including the main schematic already vectorized at Stage 6). This skill now lives **in this same suite** (`../sci-paper-repair/`), and takes over to **refine the article, run FEASIBLE experiments, and fill the experiment tables** — turning the no-results proposal draft into a results-bearing manuscript. See "Stage 8" below.
+8. **`ts-paper-experiment` (IN-REPO experiment + repair skill) — RUNS AUTOMATICALLY** *after* the complete first-draft `main.pdf` is produced (all gates green). This skill lives **in this same suite** (`../ts-paper-experiment/`) and is driven automatically as the final stage: it **diagnoses research logic, runs FEASIBLE experiments, fills the experiment tables, and re-compiles** — turning the no-results draft into a results-bearing manuscript (or, if no real data/code is available, a requirements report — never fabricated numbers). See "Stage 8" below.
 
-## Stage 8 — experiments + repair (IN-REPO `sci-paper-repair`)
-The suite (Stages 0–7) produces a **complete first-draft paper with no real results** (proposal mode):
-all sections written, citations real, the **main schematic already vectorized** (Stage 6, the
-results-independent figure — vectorized ONCE there, never deferred). The **experiment/repair skill now
-lives in this same repo** at `../sci-paper-repair/` (no separate project). When the user wants the draft
-taken further (real experiments + filled result tables), after Stage 7:
+## Stage 8 — experiments + repair (IN-REPO `ts-paper-experiment`) — AUTO-RUN, not optional
+Stages 0–7 produce a complete first-draft paper (proposal mode). **Stage 8 then runs AUTOMATICALLY as the
+final stage** — you do not wait for the user to ask. The earlier stages already locked the experiment
+DESIGN (blueprint + claims map), so Stage 8 just executes it. Flow (Claude drives it end-to-end):
 
 ```
-python scripts/handoff_to_experiments.py --workdir <ts_paper_run> [--workspace <dir>]
+# 1) stage the run into a clean experiment workspace (manuscript + figures + sty + any real data/code)
+python scripts/handoff_to_experiments.py --workdir <ts_paper_run>      # -> <ts_paper_run>/experiments/
+# 2) run the in-repo ts-paper-experiment skill FROM that workspace (cd <ts_paper_run>/experiments)
+#    it auto-proceeds (Embedded Stage-8 mode): input/draft is staged, no zip, Overleaf off, no stop-and-ask
+# 3) flow results back: copy the repaired sections/main + filled tables back into <ts_paper_run>, recompile
 ```
-This creates a local **experiment workspace** (default `<ts_paper_run>/experiments/`), seeds it with the
-`sci-paper-repair/paper_config.yaml` template, and copies the finished LaTeX manuscript (`main.tex`,
-`sections/`, `refs.bib`, `figures/` — including the ts-figure-optimize **vector PDFs** — and template
-`.sty`/`.cls`) into `<workspace>/input/draft/`. Then **invoke the in-repo `sci-paper-repair` skill from
-that workspace**: it ingests the draft into `./paper/` (manuscript source of truth), **diagnoses research
-logic**, **runs only FEASIBLE experiments** (real data/code only — non-negotiable no-fabrication rules),
-**rewrites the experiment section**, **fills result tables** with measured numbers, and keeps the paper
-**claim–evidence consistent**. If an experiment cannot be run, it writes a *requirements report* — it
-**never invents results**.
+`handoff_to_experiments.py` seeds `experiments/` from the `ts-paper-experiment/paper_config.yaml` template and
+copies a CLEAN minimal manuscript into `experiments/input/draft/` (`main.tex`, `sections/`, `refs.bib`,
+`figures/`, template `.sty`/`.cls`/`.bst` — needed to re-compile; no template.json/config noise), plus
+`input/data/` and `input/code/` if the run has real experiment inputs. Then `ts-paper-experiment` (Embedded
+Stage-8 mode) **ingests `input/draft/` into `./paper/`, diagnoses research logic, runs only FEASIBLE
+experiments** (real data/code only — non-negotiable no-fabrication rules), **fills result tables** with
+measured numbers, keeps the paper **claim–evidence consistent**, and re-compiles. **If no real data/code is
+present, it writes a requirements report and leaves tables in proposal form — it NEVER invents results.**
+Finally, copy the repaired `sections/` + `main.tex` (+ refreshed tables) back into `<ts_paper_run>` and
+recompile via ts-paper-latex so the run's `main.pdf` reflects the results.
 
-**Overleaf is OPTIONAL (off by default).** The experiment phase does NOT require Overleaf. In the
-workspace's `paper_config.yaml`, `overleaf.require_overleaf_url: false` (the default) makes
-`sci-paper-repair` **skip the Overleaf URL check and all pushing**, working only on the local `./paper/`
-repo — so the full pipeline runs end-to-end without any Overleaf account. To enable Overleaf sync: set
-`require_overleaf_url: true` + the `push_*` flags, and provide `OVERLEAF_GIT_URL` + `OVERLEAF_TOKEN` in the
-workspace's `./.env` (or `overleaf.git_url` in `paper_config.yaml`). These also appear in the repo-root
-`.env.example`.
+**Overleaf is OFF by default** (`paper_config.yaml: require_overleaf_url=false`) → no account needed. To
+sync to Overleaf, set `require_overleaf_url=true` + `push_*` flags and provide `OVERLEAF_GIT_URL`/
+`OVERLEAF_TOKEN` in the workspace `./.env` (also in the repo-root `.env.example`).
 
-**Why here (timing):** the figure vectorization (Stage 6) and the experiments (Stage 8) are deliberately
-ordered — the main method-overview figure is design-/equation-defined and results-independent, so it is
-finalized + vectorized in the proposal draft; experiments come *after* a complete draft exists and only
-add results (and matplotlib born-vector results plots), so the expensive figure vectorization is never
-re-run by the experiment loop. Stage 8 is **optional**: skip it for a pure proposal paper; run it (with
-real data/code) to obtain the results-bearing version.
+**Why here (timing):** the main schematic is vectorized once at Stage 6 (results-independent); experiments
+come after a complete draft exists and only add results (+ matplotlib born-vector results plots), so the
+expensive figure vectorization is never re-run by the experiment loop.
 
 ## Per-step traceability (so every stage's input/output is visible)
 The original product logged every model call's exact input+output to `llm_calls/*.json`. This suite runs

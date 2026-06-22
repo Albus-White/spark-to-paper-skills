@@ -35,10 +35,10 @@ Then ask Claude to run **`ts-paper`** with your input.
 ## Downstream handoff — experiments + repair (Stage 8, separate project)
 After the suite produces a complete first-draft paper (proposal mode, no real results), an **optional
 Stage 8** hands the draft to **AutoPaperFactory** (`/mnt/data0/LX_Bench/CS/AutoPaperFactory`, or
-`$AUTOPAPERFACTORY_ROOT`) — its **`sci-paper-repair`** skill refines the article, **runs feasible
+`$AUTOPAPERFACTORY_ROOT`) — its **`ts-paper-experiment`** skill refines the article, **runs feasible
 experiments** (real data/code only, never fabricated), rewrites the experiment section, and fills the
 result tables. Run `python ts-paper/scripts/handoff_to_experiments.py --workdir <ts_paper_run>` after
-Stage 7, then invoke `sci-paper-repair` inside the factory. (The main schematic is vectorized at Stage 6,
+Stage 7, then invoke `ts-paper-experiment` inside the factory. (The main schematic is vectorized at Stage 6,
 before experiments; results plots added in Stage 8 are matplotlib born-vector.)
 
 ## Templates

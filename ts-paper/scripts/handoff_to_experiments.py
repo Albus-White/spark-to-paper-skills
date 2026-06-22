@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """handoff_to_experiments.py — Stage 8 bridge: hand a FINISHED ts-paper draft to the IN-REPO
-experiment/repair skill `sci-paper-repair` (now part of this same suite — no separate project).
+experiment/repair skill `ts-paper-experiment` (now part of this same suite — no separate project).
 
 Runs ONLY after the suite produced a complete first-draft paper (main.pdf exists, gates green).
 It creates a local EXPERIMENT WORKSPACE (default `<workdir>/experiments/`), seeds it with the
-`sci-paper-repair` paper_config.yaml template, and copies the LaTeX manuscript (main.tex + sections +
+`ts-paper-experiment` paper_config.yaml template, and copies the LaTeX manuscript (main.tex + sections +
 refs.bib + figures incl. the ts-figure-optimize vector PDFs + template .sty/.cls) into
-`<workspace>/input/draft/`. Then you invoke the in-repo `sci-paper-repair` skill from that workspace:
+`<workspace>/input/draft/`. Then you invoke the in-repo `ts-paper-experiment` skill from that workspace:
 it ingests input/draft/ into ./paper/, diagnoses logic, runs FEASIBLE experiments (real data/code only —
 never fabricated), rewrites the experiment section, and fills result tables.
 
-Does NOT run experiments itself and does NOT touch `<workspace>/paper/` (sci-paper-repair owns that).
+Does NOT run experiments itself and does NOT touch `<workspace>/paper/` (ts-paper-experiment owns that).
 Idempotent copy.
 
 Usage:
@@ -28,7 +28,7 @@ HERE = Path(__file__).resolve().parent
 
 def _repo_root() -> Path:
     for p in HERE.parents:
-        if (p / "sci-paper-repair").is_dir():
+        if (p / "ts-paper-experiment").is_dir():
             return p
     return HERE.parents[1]  # fall back to the suite root (…/<repo>), never the grandparent outside it
 
@@ -45,7 +45,7 @@ def main() -> int:
         return 2
 
     repo = _repo_root()
-    skill = repo / "sci-paper-repair"
+    skill = repo / "ts-paper-experiment"
     workspace = Path(a.workspace).resolve() if a.workspace else (wd / "experiments")
     workspace.mkdir(parents=True, exist_ok=True)
 
@@ -57,7 +57,9 @@ def main() -> int:
     dst = workspace / "input" / "draft"
     dst.mkdir(parents=True, exist_ok=True)
     copied = []
-    for name in ("main.tex", "refs.bib", "template.json"):
+    # CLEAN minimal manuscript = exactly what's needed to re-compile after filling tables
+    # (no template.json / orchestrator-internal config noise).
+    for name in ("main.tex", "refs.bib"):
         if (wd / name).exists():
             shutil.copy2(wd / name, dst / name); copied.append(name)
     for d in ("sections", "figures"):
@@ -69,14 +71,22 @@ def main() -> int:
     for ext in ("*.sty", "*.cls", "*.bst"):
         for p in wd.glob(ext):
             shutil.copy2(p, dst / p.name); copied.append(p.name)
+    # stage REAL experiment inputs (data/code) into the workspace so experiments can actually run
+    for sub in ("data", "code"):
+        srcd = wd / "input" / sub
+        if srcd.is_dir():
+            tgt = workspace / "input" / sub
+            if tgt.exists():
+                shutil.rmtree(tgt)
+            shutil.copytree(srcd, tgt); copied.append(f"input/{sub}/")
 
     print(f"handoff: workspace = {workspace}")
     print(f"handoff: copied {len(copied)} item(s) -> {dst}")
     for c in copied:
         print(f"  + {c}")
-    print("\nNEXT (Stage 8 — IN-REPO sci-paper-repair skill):")
+    print("\nNEXT (Stage 8 — IN-REPO ts-paper-experiment skill):")
     print(f"  cd {workspace}")
-    print(f"  # invoke the `sci-paper-repair` skill ({skill}); it ingests input/draft/ into ./paper/,")
+    print(f"  # invoke the `ts-paper-experiment` skill ({skill}); it ingests input/draft/ into ./paper/,")
     print(f"  # diagnoses logic, runs FEASIBLE experiments (real data/code only), rewrites the experiment")
     print(f"  # section, fills result tables, keeps claim-evidence consistency. Overleaf is OFF by default")
     print(f"  # (paper_config.yaml: require_overleaf_url=false); enable it there + provide OVERLEAF_* in ./.env.")

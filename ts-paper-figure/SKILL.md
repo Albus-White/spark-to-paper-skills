@@ -6,7 +6,7 @@ description: >
   image model renders it (the only irreducible code — Claude can't draw pixels), Claude then LOOKS at
   the rendered PNG with its own vision and critiques/refines it over a few rounds, then ALWAYS vectorizes
   it to an editable PDF (matplotlib figures are born-vector; image-model rasters are reconstructed to a
-  faithful editable SVG→PDF by the sibling ts-paper-vector — original PNG kept) and inserts it.
+  faithful editable SVG→PDF by the sibling **ts-figure-optimize** (the DrawAI engine; ts-paper-vector DISABLED) — original PNG kept) and inserts it.
   You configure only the image model (model/key/url). Architecture/pipeline/concept figures render;
   quantitative results plots are SKIPPED (a proposal has no real data — drawing one fabricates results).
   Use to turn the empty \fbox placeholders into publication-quality figures.
@@ -58,7 +58,7 @@ Classify each figure by **how it is best drawn**, not just by its `type`, and ro
 - **FREE-FORM → image model** (`gen_image.py` + the vision-critique loop below). Use for box-and-arrow
   architecture / pipeline / framework diagrams, qualitative scenes, icon schematics — what matplotlib
   can't cleanly draw. After the PNG is approved, it is **vectorized** into an editable SVG→PDF by the
-  sibling **ts-paper-vector** skill (step 5b) — Claude redraws it as a faithful SVG (no extra config;
+  sibling **ts-figure-optimize** skill (step 5b; the full DrawAI engine — `ts-paper-vector` is DISABLED) — redrawn as a faithful editable SVG (
   it uses your vision + cairosvg).
 
 This unifies the suite's two figure-craft sources — **figures4papers (matplotlib)** for code-precise,
@@ -67,7 +67,7 @@ This unifies the suite's two figure-craft sources — **figures4papers (matplotl
 every figure ends as `figures/<label>.pdf` (the embedded vector), with the original
 `figures/<label>.png` and its source (`.plot.py` for matplotlib, `.svg` for image-model) kept
 alongside. matplotlib is born-vector; an image-model raster is reconstructed to a faithful editable
-vector via **ts-paper-vector** — vectorization is mandatory and must NEVER reduce quality.
+vector via **ts-figure-optimize** (DrawAI engine; ts-paper-vector DISABLED) — vectorization is mandatory and must NEVER reduce quality.
 
 ## Procedure — the distilled Planner→render→Critic→refine→insert loop
 Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` placeholder in
