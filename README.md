@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/framework.png" width="92%" alt="spark-to-paper-skills framework">
+  <img src="docs/framework.png" width="100%" alt="spark-to-paper-skills framework">
 </p>
 
 <h1 align="center">✨ spark-to-paper-skills</h1>
@@ -36,12 +36,10 @@
 
 <p align="center"><b><i>One spark in. One paper out.</i></b></p>
 
-```text
-You:  Run ts-paper on this.   ⟵ paste an idea, a proposal, or a proposal + real results
+<p align="center">
+  <img src="docs/method.png" width="100%" alt="spark-to-paper-skills framework">
+</p>
 
-✨ ts-paper → route → plan → cite → write → refine → review → figure → latex → 📄 main.pdf
-             real citations · editable vector figures · zero fabricated numbers · machine-checked
-```
 
 ---
 
