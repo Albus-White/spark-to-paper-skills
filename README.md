@@ -34,16 +34,10 @@
 
 ---
 
-<p align="center"><b><i>One spark in. One paper out.</i></b></p>
+<p align="center">
+  <img src="docs/method.png" width="100%" alt="Capability comparison matrix across AI-research tools">
+</p>
 
-```text
-You:  Run ts-paper on this.   ⟵ paste an idea, a proposal, or a proposal + real results
-
-✨ ts-paper → route → plan → cite → write → refine → review → figure → latex → 📄 main.pdf
-             real citations · editable vector figures · zero fabricated numbers · machine-checked
-```
-
----
 
 ## 🧭 How It Compares
 
