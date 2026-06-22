@@ -119,13 +119,16 @@ cp -r */ ~/.claude/skills/
 
 Copy `.env.example` → `.env` (gitignored, auto-loaded) and fill in only what you use:
 
-| Variable | Used by | When you need it |
-|---|---|---|
-| `TS_FIG_API_KEY` / `TS_FIG_BASE_URL` / `TS_FIG_MODEL` | `ts-paper-figure` | To render free-form schematics with an image model |
-| `OPENAI_API_KEY` / `VISION_MODEL` | `ts-figure-optimize` | GPT vision text-correction + per-region defect diff (falls back to `~/.codex/auth.json`) |
-| `TS_EMBED_*` | `ts-kg-build`, `ts-idea2story` | KG-grounded recall (optional — degrades gracefully) |
-| `HF_TOKEN` | `setup_drawai.py` | **One-time** download of the gated SAM3 weights |
-| `OVERLEAF_GIT_URL` / `OVERLEAF_TOKEN` | `ts-paper-experiment` | Only if you turn Overleaf sync on (off by default) |
+ 
+
+| Secret group       | Variables                                           | Used by                        | When needed                                                  |
+| :----------------- | :-------------------------------------------------- | :----------------------------- | :----------------------------------------------------------- |
+| **Figure model**   | `TS_FIG_API_KEY`, `TS_FIG_BASE_URL`, `TS_FIG_MODEL` | `ts-paper-figure`              | Render free-form schematics with an image model.             |
+| **Vision QA**      | `OPENAI_API_KEY`, `VISION_MODEL`                    | `ts-figure-optimize`           | Correct figure text and compare per-region defects.          |
+| **Embeddings**     | `TS_EMBED_*`                                        | `ts-kg-build`, `ts-idea2story` | Enable KG-grounded recall; optional and gracefully degraded. |
+| **DrawAI weights** | `HF_TOKEN`                                          | `setup_drawai.py`              | Download gated SAM3 weights once.                            |
+| **Overleaf sync**  | `OVERLEAF_GIT_URL`, `OVERLEAF_TOKEN`                | `ts-paper-experiment`          | Sync with Overleaf when explicitly enabled.                  |
+
 
 ### 3 · Just ask Claude
 
