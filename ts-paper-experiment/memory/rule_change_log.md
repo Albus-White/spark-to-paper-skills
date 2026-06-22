@@ -47,3 +47,15 @@ Notes:
       CAND-012 post-repair narrative integrity review -> Steps 16–17 + post_repair_narrative_review.md
   - New helper scripts added: check_result_recomputation.py, check_code_paper_consistency.py,
     check_pdf_layout.py.
+
+## 2026-06-22 — user-approved promotion (run: AI-Enhanced Carbon Accounting Quality under EPT Law)
+User instruction: "固化这次的lesson learn" (solidify this run's lessons). Promoted CAND-013..019:
+- GR-022 never label manuscript content as simulated/synthetic/fake.
+- GR-023 be faithful to the paper's own stated datasets & design.
+- GR-024 actually download the named open data before declaring blocked.
+- GR-025 after experiments, fill the paper's existing result tables with the real numbers.
+- GR-026 always commit + push to Overleaf (push ON by default; paper_config flags set true).
+- GR-027 re-run final consistency/review on the final manuscript after any results change.
+- ts-figure-optimize Hard rules: full measured multi-round repair by default (no --no-repair/--max-rounds 1).
+Files changed: resources/golden_rules.md, SKILL.md, paper_config.yaml, ../ts-figure-optimize/SKILL.md,
+memory/lessons_candidate.md.

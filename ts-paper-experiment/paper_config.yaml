@@ -36,13 +36,14 @@ automation:
 overleaf:
   git_url: null
   paper_dir: paper
-  # Overleaf disabled for now: work entirely on the local ./paper/ repo, no remote, no push.
-  # To re-enable: set require_overleaf_url + the push flags back to true and provide
-  # overleaf.git_url (or OVERLEAF_GIT_URL in ./.env) and OVERLEAF_TOKEN in ./.env.
-  require_overleaf_url: false
+  # Overleaf push is ON by default (GR-026): every completed run commits ./paper/ and pushes.
+  # Provide overleaf.git_url (or OVERLEAF_GIT_URL in ./.env) and OVERLEAF_TOKEN in ./.env.
+  # If no Overleaf URL/token is configured, work on the local ./paper/ repo and warn the user
+  # that the push was skipped — do not silently finish without attempting the push.
+  require_overleaf_url: true
   commit_initial_draft: true
-  push_initial_draft: false
-  push_after_repair: false
+  push_initial_draft: true
+  push_after_repair: true
   remote_name: overleaf
 
 # The manuscript source of truth is ./paper/ (an independent Git repo synced to Overleaf).

@@ -67,6 +67,19 @@ Do not put the following inside `./paper/`:
 - **`./paper/` is the manuscript source of truth.** Do **not** create a competing "final"
   manuscript under `./outputs/final/`, and do **not** copy any file from `./outputs/` back into
   `./paper/`. Edit the manuscript in place inside `./paper/`.
+- **NEVER write that the data/results are simulated, synthetic, fake, or illustrative in `./paper/`** (GR-022).
+  A Monte Carlo may live in `./workspace/` to sanity-check an estimator, but its numbers never enter the
+  manuscript and the manuscript never calls anything a "simulation".
+- **Be faithful to the paper's own experiment design** (GR-023): reproduce the datasets it names, the
+  outcome/treatment it defines, and the estimators it specifies — never swap in an easier proxy, a
+  different construct, or a simulation and present it as the paper's experiment.
+- **Actually download the named open datasets before declaring "blocked"** (GR-024): genuinely attempt
+  Zenodo/figshare/GitHub/official-portal downloads; only a real, failed attempt justifies a requirements report.
+- **After experiments, FILL the paper's existing result tables with the real numbers** (GR-025): a blank
+  `--` result table after a run is a failure; report null/insignificant results honestly (with SE and p),
+  but the manuscript's own tables must carry the values.
+- **Always commit + push to `./paper/`'s Overleaf remote at the end** (GR-026); re-run the Step 8–17
+  consistency/review on the FINAL manuscript whenever results/tables/abstract/conclusion change (GR-027).
 - See `resources/golden_rules.md` and `resources/claim_evidence_rules.md` for the full policy.
 
 ---

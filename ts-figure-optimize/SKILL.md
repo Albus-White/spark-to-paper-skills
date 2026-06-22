@@ -216,6 +216,11 @@ proposal/first-draft figure stage, never deferred to a post-experiment re-run.
 `references/local_repair_strategy.md`, `references/drawai_adapter.md`, `references/failure_handling.md`.
 
 ## Hard rules
+- **Run the FULL measured multi-round repair by default** — do **not** reduce quality to save time. Use
+  `run_reconstruction.py` with repair ON and the default `--max-rounds` (the measured best-of-rounds
+  SSIM/region loop + Stage-R structural-defect pass); **never** pass `--no-repair` or `--max-rounds 1`
+  to cut the loop short unless the user has explicitly opted into a fast/degraded pass. A single-pass
+  redraw is acceptable only on explicit user request, and the degradation must be stated.
 - Never rasterize ordinary text or keep AI-malformed text; reconstruct it as editable `<text>`.
 - Raster assets are tight local crops only (no surrounding text/panel background); no visible
   rectangular boundary (RASTER_BACKGROUND_MATCH must not be FAILED).
