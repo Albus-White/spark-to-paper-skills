@@ -75,13 +75,13 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ## 🎯 Design Philosophy
 
-| Principle                  | What it means                                                                                        |
-| :------------------------- | :--------------------------------------------------------------------------------------------------- |
-| **🧠 Model<br>reasons**    | Claude handles judgment-heavy work: writing, research, critique, and review.                         |
-| **🛠 Code<br>backstops**   | Python only handles deterministic tasks: linting, assembly, plotting, embeddings, and vectorization. |
-| **🪶 Zero<br>infra**       | No app, server, database, or Docker required; copy folders into `.claude/skills/` and go.            |
-| **🏆 Quality<br>first**    | Verify citations, self-review outputs, run linters, and polish before delivery.                      |
-| **🔒 Integrity<br>always** | Never invent numbers; trace every value to source data; red linters fail the build.                  |
+| Principle               | What it means                                                                                        |
+| :---------------------- | :--------------------------------------------------------------------------------------------------- |
+| **🧠 Model reasons**    | Claude handles judgment-heavy work: writing, research, critique, and review.                         |
+| **🛠 Code backstops**   | Python only handles deterministic tasks: linting, assembly, plotting, embeddings, and vectorization. |
+| **🪶 Zero infra**       | No app, server, database, or Docker required; copy folders into `.claude/skills/` and go.            |
+| **🏆 Quality first**    | Verify citations, self-review outputs, run linters, and polish before delivery.                      |
+| **🔒 Integrity always** | Never invent numbers; trace every value to source data; red linters fail the build.                  |
 
 ---
 
