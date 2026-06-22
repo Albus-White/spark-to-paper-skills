@@ -90,15 +90,16 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ## 📦 What You Get
 
-| | Artifact | What it is |
-|---|---|---|
-| 📐 | `main.tex` · `main.pdf` | Compiled paper in the chosen venue template |
-| 📝 | `sections/*.tex` + `abstract.tex` | LaTeX body, one file per section |
-| 🗂️ | `blueprint.json` | Structured plan: title, keywords, 3 contributions, notation, per-section word targets |
-| 📚 | `refs.bib` + `claims_map.json` | **Real, fully-specified** BibTeX (≥40 refs) — every `\cite{}` justified |
-| 🖼️ | `figures/<label>.pdf` (+ `.png` + source) | **Editable vector** figures — matplotlib born-vector, or rasters reconstructed by DrawAI |
-| 🔎 | `logs/<n>_<stage>.io.md` + `index.md` | Per-stage INPUT / DECISIONS / OUTPUT trace — fully inspectable |
-| ✅ | green `run_gates.py` | Every deterministic gate passed (citations, draft, vectors, LaTeX) |
+| Deliverable         | Files                                   | Guarantee                                                               |
+| :------------------ | :-------------------------------------- | :---------------------------------------------------------------------- |
+| **Paper package**   | `main.tex` · `main.pdf`                 | Compiled in the selected venue template.                                |
+| **Section drafts**  | `sections/*.tex` · `abstract.tex`       | One LaTeX source file per paper section.                                |
+| **Paper blueprint** | `blueprint.json`                        | Structured title, keywords, contributions, notation, and word targets.  |
+| **Citation system** | `refs.bib` · `claims_map.json`          | Real BibTeX entries; every `\cite{}` is justified and traceable.        |
+| **Figures**         | `figures/<label>.pdf` · `.png` · source | Editable vector figures, with raster figures reconstructed when needed. |
+| **Audit logs**      | `logs/<n>_<stage>.io.md` · `index.md`   | Full INPUT / DECISIONS / OUTPUT trace for every stage.                  |
+| **Gate report**     | `run_gates.py`                          | All deterministic gates pass: citations, draft, vectors, and LaTeX.     |
+
 
 ---
 
