@@ -47,18 +47,13 @@ You:  Run ts-paper on this.   ⟵ paste an idea, a proposal, or a proposal + rea
 
 ## 🧭 How It Compares
 
-The "AI-for-research" landscape has many tools, but they cover **different capabilities**. Here's the honest matrix — what each one actually does (✅ full · 🟡 partial · — none):
+The "AI-for-research" landscape has many tools, but they cover **different capabilities**. Here's the honest matrix — what each one actually does:
 
-| Capability →<br>Project ↓ | End-to-end<br>idea → PDF | Pure CC<br>skill | Literature<br>+ real cites | Runs<br>experiments | Auto-writes<br>paper | Auto-draws<br>figures | Editable<br>vector figs | Anti-fab<br>(checked) |
-|---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-| **✨ spark-to-paper-skills** *(this)* | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [academic-research-skills](https://github.com/Imbad0202/academic-research-skills) (ARS) | 🟡 | ✅ | ✅ | — | 🟡 | — | — | ✅ |
-| [Idea2Paper / Idea2Story](https://github.com/AgentAlphaAGI/Idea2Paper) | — | — | 🟡 | — | 🟡 | — | — | 🟡 |
-| [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) | ✅ | — | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| [AI-Scientist](https://github.com/SakanaAI/AI-Scientist) (Sakana) | ✅ | — | ✅ | ✅ | ✅ | ✅ | — | — |
-| [Kosmos](https://github.com/jimmc414/Kosmos) | 🟡 | — | ✅ | ✅ | 🟡 | ✅ | — | 🟡 |
-| [karpathy/autoresearch](https://github.com/karpathy/autoresearch) | — | — | — | ✅ | — | — | — | — |
-| [auto_research](https://victorchen96.github.io/auto_research/framework.html) | 🟡 | — | 🟡 | ✅ | ✅ | — | — | 🟡 |
+<p align="center">
+  <img src="docs/comparison.png" width="100%" alt="Capability comparison matrix across AI-research tools">
+</p>
+
+<p align="center"><sub><b>✓</b> full&nbsp;&nbsp;·&nbsp;&nbsp;<b>●</b> partial&nbsp;&nbsp;·&nbsp;&nbsp;<b>–</b> none&nbsp;&nbsp;|&nbsp;&nbsp;sources: <a href="https://github.com/Imbad0202/academic-research-skills">ARS</a> · <a href="https://github.com/AgentAlphaAGI/Idea2Paper">Idea2Paper</a> · <a href="https://github.com/aiming-lab/AutoResearchClaw">AutoResearchClaw</a> · <a href="https://github.com/SakanaAI/AI-Scientist">AI-Scientist</a> · <a href="https://github.com/jimmc414/Kosmos">Kosmos</a> · <a href="https://github.com/karpathy/autoresearch">karpathy/autoresearch</a> · <a href="https://victorchen96.github.io/auto_research/framework.html">auto_research</a></sub></p>
 
 > 🌟 **The one row that lights up everywhere.** spark-to-paper-skills is the **only *pure Claude Code skill*** that runs the *whole* arc — and the only tool of any kind that does **experiments + auto-writing + auto-figure-drawing + editable-vector figures** together with machine-checked integrity.
 >
