@@ -48,7 +48,6 @@ You:  Run ts-paper on this.   ⟵ paste an idea, a proposal, or a proposal + rea
 ## 🧭 How It Compares
 
 The "AI-for-research" landscape has many tools, but they cover **different capabilities**. Here's the honest matrix — what each one actually does:
-
 <p align="center">
   <img src="docs/comparison.svg" width="100%" alt="Capability comparison matrix across AI-research tools">
 </p>
