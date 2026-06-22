@@ -75,12 +75,13 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ## 🎯 Design Philosophy
 
-| Principle | What it means |
-|---|---|
-| 🧠 **Model reasons, code backstops** | Claude does the thinking — writing, literature search, vision figure critique, adversarial review. Tiny Python scripts do *only* the deterministic parts: linters, LaTeX assembly, image gen, embeddings, matplotlib, vectorization. |
-| 🪶 **Pure skill, zero infra** | No standalone app, no server, no database, no Docker required for the core. `cp` the folders into `.claude/skills/` and go. |
-| 🏆 **Quality first, cost second** | Verify every citation, self-review, run the linters, polish. Never trade a quality step for a saved turn. |
-| 🔒 **Integrity is absolute** | Proposal mode never invents a number; data-aware mode traces every number to your data. A red linter **fails the build**. |
+| Principle                  | What it means                                                                                        |
+| :------------------------- | :--------------------------------------------------------------------------------------------------- |
+| **🧠 Model<br>reasons**    | Claude handles judgment-heavy work: writing, research, critique, and review.                         |
+| **🛠 Code<br>backstops**   | Python only handles deterministic tasks: linting, assembly, plotting, embeddings, and vectorization. |
+| **🪶 Zero<br>infra**       | No app, server, database, or Docker required; copy folders into `.claude/skills/` and go.            |
+| **🏆 Quality<br>first**    | Verify citations, self-review outputs, run linters, and polish before delivery.                      |
+| **🔒 Integrity<br>always** | Never invent numbers; trace every value to source data; red linters fail the build.                  |
 
 ---
 
