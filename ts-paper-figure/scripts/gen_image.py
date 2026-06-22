@@ -66,12 +66,12 @@ def _extract_image_bytes(j: dict) -> bytes | None:
 
 
 def render(prompt: str, out_path: Path, retries: int = 3) -> dict:
-    model = os.environ.get("TS_FIG_MODEL", "").strip()
+    # MANDATED model: default to gpt-image-2 when unset — NEVER auto-pick another (e.g. gpt-image-1).
+    model = os.environ.get("TS_FIG_MODEL", "gpt-image-2").strip() or "gpt-image-2"
     key = os.environ.get("TS_FIG_API_KEY", "").strip()
     base = os.environ.get("TS_FIG_BASE_URL", "").strip().rstrip("/")
     style = os.environ.get("TS_FIG_API_STYLE", "images").strip().lower()
-    missing = [n for n, v in (("TS_FIG_MODEL", model), ("TS_FIG_API_KEY", key),
-                              ("TS_FIG_BASE_URL", base)) if not v]
+    missing = [n for n, v in (("TS_FIG_API_KEY", key), ("TS_FIG_BASE_URL", base)) if not v]
     if missing:
         return {"ok": False, "error": f"unset env: {', '.join(missing)}"}
 

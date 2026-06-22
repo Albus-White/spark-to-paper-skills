@@ -4,7 +4,7 @@
 # Claude itself (in-session) and need no config.
 
 # --- required: the external image model (Claude cannot draw pixels) ---
-export TS_FIG_MODEL=""        # image model name, e.g. gpt-image-2, gemini-3.1-flash-image-preview
+export TS_FIG_MODEL="gpt-image-2"   # mandated image model — do NOT change to gpt-image-1
 export TS_FIG_API_KEY=""      # image API key
 export TS_FIG_BASE_URL=""     # OpenAI-compatible base URL, e.g. https://sogenport.com/v1
 

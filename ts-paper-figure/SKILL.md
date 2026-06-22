@@ -23,13 +23,19 @@ the Planner/Stylist/Critic/Polish; one tiny script (`gen_image.py`) is the Visua
 ## The only code: `scripts/gen_image.py`
 It does one thing — send a prompt to an external image model, save a PNG. Configure the image model only:
 ```
-export TS_FIG_MODEL="<image model>"        # e.g. gpt-image-2, gemini-3.1-flash-image-preview
+export TS_FIG_MODEL="gpt-image-2"          # ← the image model (default gpt-image-2); from the repo .env
 export TS_FIG_API_KEY="<image api key>"
-export TS_FIG_BASE_URL="<openai-compatible base>"  # e.g. https://sogenport.com/v1
+export TS_FIG_BASE_URL="<openai-compatible base>"  # e.g. https://api.openai.com/v1
 export TS_FIG_API_STYLE="images"           # or "chat" for nano-banana-style gateways
 export TS_FIG_SIZE="1536x1024"             # QUALITY: landscape, mirrors the product's default (not 1024x1024)
 export TS_FIG_QUALITY="high"               # gpt-image-* quality knob (the product used "high")
 ```
+
+> **⛔ MODEL POLICY — do NOT pick a model yourself.** The image model is whatever **`TS_FIG_MODEL`** says
+> (set in the repo-root `.env`; default **`gpt-image-2`**). **Never substitute, downgrade, or guess a model**
+> (e.g. do NOT fall back to `gpt-image-1`), and never improvise the key (use `TS_FIG_API_KEY`, not
+> `OPENAI_API_KEY`). If `TS_FIG_MODEL`/`TS_FIG_API_KEY`/`TS_FIG_BASE_URL` are unset, `gen_image.py` returns
+> `unset env: …` — **STOP and ask the user to set them in `.env`**; do not export a model of your own choice.
 Note: `TS_FIG_SIZE`/`TS_FIG_QUALITY` take effect only in images API style (`TS_FIG_QUALITY` only for
 `gpt-image-*` models); in chat style the gateway controls resolution, so verify the render size in the
 critique loop and re-render if crude.
