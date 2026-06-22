@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/framework.png" width="100%" alt="spark-to-paper-skills framework">
+  <img src="docs/framework.png" width="92%" alt="spark-to-paper-skills framework">
 </p>
 
 <h1 align="center">✨ spark-to-paper-skills</h1>
@@ -34,10 +34,16 @@
 
 ---
 
-<p align="center">
-  <img src="docs/method.png" width="100%" alt="Capability comparison matrix across AI-research tools">
-</p>
+<p align="center"><b><i>One spark in. One paper out.</i></b></p>
 
+```text
+You:  Run ts-paper on this.   ⟵ paste an idea, a proposal, or a proposal + real results
+
+✨ ts-paper → route → plan → cite → write → refine → review → figure → latex → 📄 main.pdf
+             real citations · editable vector figures · zero fabricated numbers · machine-checked
+```
+
+---
 
 ## 🧭 How It Compares
 
@@ -336,6 +342,16 @@ Yes — drop a `templates/<name>/` directory with a `template.json` + LaTeX asse
 ## ✅ Definition of Done
 
 `main.pdf` exists and is non-trivial · **zero LaTeX errors** · `main.bbl` resolved all citations · every `\cite{}` maps to a complete `refs.bib` entry · **no fabricated numbers** anywhere · **every figure embedded as an editable vector PDF** · the adversarial **review stage ran** · and `run_gates.py <workdir> all` **exits zero**.
+
+---
+
+## ⭐ Star History
+
+<p align="center">
+  <a href="https://star-history.com/#Albus-White/spark-to-paper-skills&Date">
+    <img src="https://api.star-history.com/svg?repos=Albus-White/spark-to-paper-skills&type=Date" width="80%" alt="Star History Chart">
+  </a>
+</p>
 
 ---
 
