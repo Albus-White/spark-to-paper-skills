@@ -30,3 +30,7 @@ ts-figure-optimize/runs/
 
 # extracted KG working copy (source of truth = kg/kg_ai.rar via LFS)
 kg/kg_ai/
+
+# Generated outputs & process artifacts (not source) — don't track/push
+outputs/
+docs/superpowers/
