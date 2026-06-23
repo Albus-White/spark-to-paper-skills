@@ -125,6 +125,9 @@ def assert_latex(wd: Path) -> int:
 # never hand-authored as a flat SVG. Only matplotlib (data/concept plots) may be code-drawn.
 _SCHEMATIC_TYPES = {"architecture", "pipeline", "framework", "schematic", "overview",
                     "diagram", "flow", "qualitative"}
+# A free-form schematic MUST be grounded on a real on-topic TOP/MID-venue MAIN figure (WebSearch, step 2b).
+# 'qualitative' (a depicted scene) is the one free-form type that may have no journal main-figure equivalent.
+_GROUNDING_REQUIRED = _SCHEMATIC_TYPES - {"qualitative"}
 _ALLOWED_ENGINES = {"image-model", "matplotlib"}
 
 
@@ -181,6 +184,16 @@ def check_figure_critique(workdir) -> list:
         for key in ("grounding", "reference_used"):
             if not f.get(key):
                 problems.append(f"figure '{label}': manifest missing '{key}'")
+        # NO silent skip: a free-form schematic must be GROUNDED on a real reference, never 'none'.
+        if ftype in _GROUNDING_REQUIRED:
+            g = str(f.get("grounding", "")).strip().lower()
+            r = str(f.get("reference_used", "")).strip().lower()
+            if g in ("", "none") or r in ("", "none"):
+                problems.append(
+                    f"figure '{label}': grounding={f.get('grounding')!r} reference_used={f.get('reference_used')!r} "
+                    f"— a free-form schematic MUST be grounded on a real on-topic TOP/MID-venue MAIN figure "
+                    f"(WebSearch in step 2b). 'none' is NOT allowed (no silent skip); if a reference is genuinely "
+                    f"impossible after a real multi-query search, surface it to the user instead of shipping ungrounded.")
     return problems
 
 

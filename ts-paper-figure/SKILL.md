@@ -3,8 +3,9 @@ name: ts-paper-figure
 description: >
   Stage 6 of the ts-paper suite. Fill a Traitement du Signal paper's figure placeholders with real
   diagrams, distilled from PaperBanana into a Claude-native loop: Claude DESIGNS a concrete, rich figure
-  and GROUNDS it on a real on-topic top/mid-journal MAIN figure (retrieved by `fetch_reference_figures.py`
-  and passed to the image model as an image-condition), an external image model renders it (the only
+  and GROUNDS it on a real on-topic top/mid-journal MAIN figure (Claude **WebSearches** for it, then
+  `fetch_reference_figures.py` pulls that paper's MAIN figure, passed to the image model as an
+  image-condition — grounding is MANDATORY, no silent skip), an external image model renders it (the only
   irreducible code — Claude can't draw pixels), Claude then LOOKS at the rendered PNG with its own vision
   and critiques/refines it over ≥2 ENFORCED rounds, then ALWAYS vectorizes
   it to an editable PDF (matplotlib figures are born-vector; an image-model raster is vectorized by
@@ -25,9 +26,10 @@ the Planner/Stylist/Critic/Polish; one tiny script (`gen_image.py`) is the Visua
 
 **Three things make this a SKILL and not just "Claude drawing a flowchart" — NEVER skip them:**
 **(C1) DESIGN a concrete, rich visual blueprint** (step 2) instead of an abstract box list;
-**(C2) GROUND every free-form figure in a real on-topic MAIN journal figure** (step 2b) — retrieved,
-viewed, and passed to the image model as an image-condition (`/images/edits`) **plus** convention
-guidance; **(C3) ENFORCE a logged multi-round vision critique** (steps 4–5, gated). The default
+**(C2) GROUND every free-form figure in a real on-topic MAIN journal figure** (step 2b) — Claude
+**WebSearches** for a TOP/MID-venue on-topic paper, fetches its MAIN figure, and passes it as an
+image-condition (`/images/edits`) **plus** convention guidance — **mandatory, gate-enforced, no silent
+skip**; **(C3) ENFORCE a logged multi-round vision critique** (steps 4–5, gated). The default
 aesthetic is **rich & concrete** (real imagery, layered tensors, coordinated panels) — **never a flat
 thin-line flowchart**. (Without C1–C3 the figures regress to the sparse boxes-and-arrows this redesign
 fixed.)
@@ -156,22 +158,38 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    - **Keep out of the image:** the figure caption / "Figure N:" title text, and any redundant text legend.
    - **No numbers** that would imply real results.
    Save it to `figures/<label>.prompt.txt` (so the trace shows what was asked).
-2b. **GROUND on a real on-topic MAIN figure (Retrieval) — the richness/authority core.** Fetch
-   candidate references, then pick the best:
-   `python3 scripts/fetch_reference_figures.py --papers <workdir>/retrieved_papers.json --out-dir figures/refs --label <label>`
-   then **`Read` the candidates** (`figures/refs/<label>.candidates.json` + the saved images) and SELECT
-   the single best **MAIN / hero / overall-method-overview figure** that (a) comes from an on-topic
-   top/mid-venue paper and (b) matches THIS figure's TYPE (an architecture figure ↔ a paper's main
-   architecture figure; a concept figure ↔ a clean on-topic concept figure). **Reject scattered minor
-   figures** — results / ablation / qualitative / curves / detail-insets / sample-grids / receptive-field
-   or attention visualisations are NOT references. When you pick one:
-   - **distil its visual conventions** (how the field draws inputs / tensors / modules / outputs) INTO the
-     step-2 prompt, AND
-   - **pass it as the render image-condition** (step 3 `--reference`).
-   The reference guides CONVENTIONS and richness only — **never copy its specific content, text, labels,
-   or results.** If no candidate qualifies (or there is no `retrieved_papers.json` / no network), proceed
-   WITHOUT a reference — richness still comes from the step-2 blueprint. Record the choice (paper id +
-   figure no, or `none`). (Skip this step for matplotlib/results figures.)
+2b. **GROUND on a real on-topic MAIN figure — MANDATORY, via your own search (the richness/authority core).**
+   Every free-form schematic MUST be grounded on the **MAIN / hero / overall-method figure of an on-topic
+   TOP-venue paper** (MID venue only if, after genuinely searching, no top-venue match exists). Use the
+   SAME literature-search capability the cite stage uses — **YOU (Claude) actively `WebSearch`**; do NOT
+   depend on any pre-existing file:
+   1. **Search (`WebSearch`).** Query for the most relevant on-topic paper whose MAIN figure matches THIS
+      figure's TYPE (architecture ↔ a paper's main architecture figure; concept ↔ a clean on-topic concept
+      figure). Build queries from the paper's domain + this figure's subject (+ "architecture"/"framework"/
+      "overview"/"arxiv"). If `<workdir>/retrieved_papers.json` happens to exist (upstream story stage), use
+      it as a SEED — but never as the only source, and never assume it exists.
+   2. **Confirm venue tier + relevance, then fetch the MAIN figure.** For the top hits, confirm the venue is
+      **TOP** (or MID) and the topic genuinely matches. Write your chosen candidate(s) as
+      `[{"title","venue","arxiv_url"}]` to `figures/refs/<label>.papers.json` and run
+      `python3 scripts/fetch_reference_figures.py --papers figures/refs/<label>.papers.json --out-dir figures/refs --label <label>`
+      (or `--arxiv <id> --venue "<venue>"` for a single clear winner). It reports `best_tier` + a **`search_again`** flag.
+   3. **If `search_again` is true** (best candidate is not top/mid venue, or none came back) **OR the fetched
+      figures are off-topic / minor (not a MAIN overview figure) → go back to step 1 and SEARCH AGAIN** with
+      refined queries (different venue, broader/narrower terms). **Do NOT settle** for a low-tier or loosely
+      related paper, and **do NOT skip grounding.**
+   4. **`Read` the fetched candidates** (`figures/refs/<label>.candidates.json` + the images) and SELECT the
+      single best **MAIN / hero / overall-method-overview** figure matching THIS figure's type. **Reject
+      scattered minor figures** (results / ablation / qualitative / curves / insets / sample-grids /
+      receptive-field / attention maps are NOT references).
+   When you pick one: **distil its visual conventions** (how the field draws inputs / tensors / modules /
+   outputs) INTO the step-2 prompt, AND **pass it as the render image-condition** (step 3 `--reference`).
+   The reference guides CONVENTIONS and richness only — **never copy its content / text / labels / results.**
+   Record the chosen paper (arxiv id + venue tier + fig no) in the manifest `reference_used` and set
+   `grounding` to `image-cond` (or `vision-distill`).
+   **🔴 NO graceful skip — grounding is NOT optional.** `check_figure_critique` FAILS a free-form schematic
+   whose `grounding`/`reference_used` is `none`. If, after a GENUINE multi-query search (log the queries you
+   tried), a top/mid-venue on-topic MAIN figure truly cannot be found (rare), **STOP and tell the user** —
+   never silently render flat-and-ungrounded. (Skip 2b only for matplotlib / results figures.)
 3. **Render (Visualizer).** `python3 scripts/gen_image.py --prompt-file figures/<label>.prompt.txt --out figures/<label>.png [--reference figures/refs/<chosen>.png]`
    With a `--reference` on a gpt-image images-style endpoint, `gen_image.py` GROUNDS the render via
    `/images/edits` (image-condition) and reports `"path":"edits"`; with no reference or on any edits
@@ -267,8 +285,9 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    `\caption`/`\label`; use `\textwidth` for a wide (`figure*`) float. Extension-less so pdflatex embeds
    the vector `figures/<label>.pdf` (and falls back to the kept `.png` if a `.pdf` is ever missing). Then
    **append this figure to `figures/figures.manifest.json`** — for an **image-model** figure record
-   `{"label","type","engine":"image-model","reference_used":"<arxiv>#fig<n>"|"none",`
-   `"grounding":"image-cond"|"vision-distill"|"none","critic_rounds":<int ≥ 2>}`; a **matplotlib** figure
+   `{"label","type","engine":"image-model","reference_used":"<arxiv>#fig<n>",`
+   `"grounding":"image-cond"|"vision-distill","critic_rounds":<int ≥ 2>}` — for a SCHEMATIC type the
+   `reference_used`/`grounding` must be REAL (the gate FAILS `"none"`); only a `qualitative` scene may be `"none"`. A **matplotlib** figure
    records `{"label","type","engine":"matplotlib"}`.
    — so the DoD gate knows each figure's type: `run_gates.py all` calls `check_vector_pdf.py check`, which
    asserts every figure has an embedded artifact and that every **converted** figure's `.svg` is a **valid

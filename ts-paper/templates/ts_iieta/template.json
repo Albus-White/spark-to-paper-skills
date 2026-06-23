@@ -1,6 +1,8 @@
 {
   "name": "ts_iieta",
-  "display_name": "Traitement du Signal (IIETA)",
+  "display_name": "Traitement du Signal (IIETA) — UNOFFICIAL approximation",
+  "official": false,
+  "provenance": "Hand-authored approximation of the IIETA/Traitement du Signal look — DEMO ONLY, NOT the official template. Before any real submission, replace ts_iieta.sty with IIETA's official template, or use a user-provided template. Never fabricate/approximate venue styles (see ts-paper-latex HARD RULE).",
   "engine": {
     "documentclass": "[10pt,twocolumn,a4paper]{article}",
     "style_package": "ts_iieta",

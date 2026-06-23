@@ -70,8 +70,11 @@ The suite writes to whatever **template** the user picks; paper *content quality
 A template is a directory `templates/<name>/` (under this skill) holding `template.json` (the
 parametric spec: ordered section list + per-section recipes, word bands, citation style + floor,
 title/keyword rules, caption positions, heading case, masthead) + its LaTeX `.sty`/`.cls` +
-`main.tex.tmpl`. **Two are bundled:** `ts_iieta` (Traitement du Signal, two-column numeric — the
-default) and `neurips` (single-column, author-year — proves de-templatization). To use one, pass
+`main.tex.tmpl`. **🔴 A template's `.sty`/`.cls` must be either USER-PROVIDED or the venue's OFFICIAL files
+fetched verbatim — NEVER hand-authored or approximated; if neither is available, STOP and ask the user**
+(see ts-paper-latex's HARD RULE). Two **unofficial approximations** ship for demo only (`"official": false`):
+`ts_iieta` (Traitement du Signal, two-column numeric — the default) and `neurips` (single-column,
+author-year) — **replace with official/user files before any real submission.** To use a template, pass
 `template=<name>`; the plan stage validates it (`template_lint.py`) and copies it into the workdir,
 and **every downstream script reads `template.json` from the workdir** — no script hardcodes TS.
 A user adds a new venue by dropping a `templates/<name>/` dir; no code changes. Word bands, shape
