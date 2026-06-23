@@ -75,8 +75,8 @@ The toolkit it uses (kept here):
 - `scripts/plot_results.py --script figures/<label>.plot.py --out figures/<label>.png` — runs a
   self-contained matplotlib script and saves PNG + a **vector PDF** (born-vector, even if the script
   self-saves). The figure stage embeds that `.pdf` via an extension-less `\includegraphics{figures/<label>}`,
-  so matplotlib figures are **editable vectors with no extra step** (they skip the ts-paper-vector
-  reconstruction loop, which is only for image-model rasters).
+  so matplotlib figures are **editable vectors with no extra step** (they skip the DrawAI hybrid vectorization in
+  `ts-figure-optimize`, which is only for image-model rasters).
 - `scripts/plot_style.py` — the figures4papers publication house style; `plot_results.py` applies the
   rcParams and **injects `PALETTE`, `SEMANTIC`, `style_axes`, `finalize`** into the plot script's namespace.
 - **`references/plot-style.md`** — colour BY MEANING (`SEMANTIC["ours"]` blue / `["positive"]` green /

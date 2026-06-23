@@ -29,7 +29,7 @@ BLUEPRINT_LINT = SKILLS_ROOT / "ts-paper-plan" / "scripts" / "blueprint_lint.py"
 CITATIONS_LINT = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "citations_lint.py"
 DRAFT_LINT     = SKILLS_ROOT / "ts-paper-write" / "scripts" / "draft_lint.py"
 ASSEMBLE       = SKILLS_ROOT / "ts-paper-latex" / "scripts" / "assemble_paper.py"
-SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"  # ts-paper-vector DISABLED; ts-figure-optimize is the sole vector engine + gate
+SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"  # sole figure gate (DrawAI hybrid is the only vectorizer; ts-paper-vector removed)
 
 # stage -> ordered list of (gate_script, [required_workdir_inputs])
 # Each required input is a workdir-relative path; if ALL listed inputs for a gate
@@ -202,10 +202,10 @@ def run_all(wd: Path) -> int:
         rc = _run(script, [str(wd)])
         if rc != 0:
             return rc
-    # editable-vector gate: every figure must embed a vector .pdf (no silent raster).
-    # Trivially passes when the paper has no figures. svg_tools.py is part of the suite.
+    # figure gate: every figure has an embedded artifact; a converted figure's .svg must be a valid
+    # hybrid (editable text over the render). Trivially passes when the paper has no figures.
     if not SVG_TOOLS.exists():
-        print(f"\n===== gate: svg_tools.py =====")
+        print(f"\n===== gate: check_vector_pdf.py =====")
         print(f"[run_gates] FAIL: vector check script not found: {SVG_TOOLS}")
         return 1
     rc = _run(SVG_TOOLS, ["check", "--workdir", str(wd)])

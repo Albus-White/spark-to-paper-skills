@@ -54,7 +54,7 @@ Figures are referenced **extension-less** — `\includegraphics{figures/<label>}
 ships `figures/<label>.pdf` (editable vector) beside the kept `figures/<label>.png`. Both bundled `.sty`
 already `\RequirePackage{graphicx}`, so under pdflatex/latexmk the `.pdf` is embedded (its extension is
 preferred over `.png`) with **no change to `assemble_paper.py`** (it never parses `\includegraphics` or
-figure extensions). The vector is pre-rendered by cairosvg (`ts-paper-vector`), so there is **no
+figure extensions). The vector is pre-rendered by cairosvg (in `ts-figure-optimize`'s hybrid export), so there is **no
 `\includesvg`/Inkscape/`--shell-escape` dependency**. The `run_gates.py all` vector check confirms every
 figure has its `.pdf` sibling — a raster-only figure is a red gate.
 

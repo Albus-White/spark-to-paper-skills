@@ -193,7 +193,7 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 
 ## 🧩 The Skills
 
-14 skill folders ship; **13 are active** (`ts-paper-vector` is retired, superseded by `ts-figure-optimize`).
+13 skill folders ship; **all active**. (`ts-paper-vector` was removed — `ts-figure-optimize`'s DrawAI **hybrid** is the sole figure vectorizer; if DrawAI is unavailable the approved PNG is kept, never redrawn.)
 
 | Skill | Stage | Role |
 |---|---|---|
@@ -207,10 +207,9 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 | `ts-paper-review` | 5 | Adversarial peer-review hardening (default on, engine-agnostic) |
 | `ts-paper-figure` | 6 | Figure routing: matplotlib (precise) / image model (free-form, **grounded on a real on-topic top-journal MAIN figure**) + vision critique |
 | `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
-| `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via the full DrawAI engine |
+| `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via DrawAI's **key-free hybrid** (render pixel-exact + editable text overlay) |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF (template-driven) |
 | `ts-paper-experiment` | 8 | Diagnose logic, **run feasible experiments**, fill tables, recompile |
-| `ts-paper-vector` | 6 (fallback) | No-DrawAI fallback: Claude redraws PNG→SVG (zero deps/key; best for schematic figures) |
 
 ---
 
@@ -222,24 +221,20 @@ It does **not** just embed a bitmap. It *decomposes and reconstructs* the figure
 
 ```
 raster figure (PNG/JPG)
-   ├─ SAM3            → segment the layout into regions
-   ├─ PaddleOCR       → read every text run
+   ├─ SAM3            → segment the layout into regions   (local, GPU, no account)
+   ├─ PaddleOCR       → read every text run               (local, GPU, no account)
    ├─ Box-IR          → build a structured layout IR
-   ├─ Codex/gpt-5.5   → author editable SVG (text as <text>, shapes as primitives)
-   └─ DrawingML       → export native, editable PowerPoint
+   └─ HYBRID build    → keep the render PIXEL-EXACT + lay an editable <text> overlay on top
    │
-   └─▶ measured, multi-round visual-similarity refinement loop
-        (SSIM + per-region vision diff + raster-background + waveform gates)
-   │
-   └─▶ editable SVG master · vector PDF · native PPTX   (original raster always kept)
+   └─▶ editable SVG · vector PDF · editable PPTX   (original raster always kept; ~0.91 SSIM, ~63 editable text boxes)
 ```
 
 | Path | Command | Fidelity | Editability | Cost |
 |---|---|---|---|---|
-| **HYBRID** *(default)* | `run_hybrid.py` | **~0.91 SSIM** | text editable, graphics pixel-exact raster | cheap (no Codex redraw) |
-| **pure-A** *(legacy)* | `run_reconstruction.py` | ~0.67–0.80 | **everything** editable vector | Codex cost |
+| **HYBRID** | `run_hybrid.py` | **~0.91 SSIM** | text editable, graphics pixel-exact (the render itself) | ✅ **the only mode** — key-free, no account |
+| pure-A *(legacy)* | `run_reconstruction.py` | ~0.67–0.80 | everything redrawn as vector | ❌ **OFF** — needs an LLM account; a redraw loses fidelity on dense figures |
 
-> **Honest ceiling:** re-typed text can't beat the original's font/AA/sub-pixel rendering, so ~0.90 SSIM is the expected, *correct* outcome for a faithful editable redraw — not a failure. The suite **never fakes a similarity score** and always keeps the original.
+> **Why hybrid, not redraw:** the graphics stay **pixel-exact** (they ARE the approved render) and only the re-typed labels differ from the original's sub-pixel AA, so ~0.91 SSIM is the expected, *correct* outcome — the figure keeps 100% of its richness. A full vector redraw was tested and looked **worse** on dense figures, so the rule is **hybrid, or else keep the PNG — never redraw.** The suite **never fakes a similarity score** and always keeps the original.
 
 Provision the runtime once (~4 GB SAM3 / PaddleOCR / RMBG weights + venv, auto-deployed on first run):
 
@@ -276,7 +271,7 @@ LLM-written papers are notorious for two failure modes: **hallucinated citations
 - **Proposal mode never fabricates numbers.** Tables stay blank, prose is forward-looking. `draft_lint` fails on a stray decimal.
 - **Data-aware mode traces every number** to `results.facts.json` (the real-number ground truth) — the number-audit flags any that don't.
 - **Citations are real and complete.** Every `refs.bib` entry exists and was verified; no stubs, no filler, no orphan `\cite{}`. `citations_lint` enforces it.
-- **Every figure is a true editable vector** — an actual *redraw* (editable `<text>` + primitives), not a raster wrapped in SVG. `check_vector_pdf.py` is the gate.
+- **Every figure is editable** — matplotlib plots are born-vector; an image-model schematic becomes a **hybrid** (the exact render + an editable `<text>` overlay, so richness is preserved 1:1). If DrawAI is unavailable the approved PNG is kept (never a lossy redraw). `check_vector_pdf.py` + `check_figure_critique` are the gates.
 
 ---
 

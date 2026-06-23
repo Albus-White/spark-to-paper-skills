@@ -1,36 +1,40 @@
 ---
 name: ts-figure-optimize
 description: >
-  Standalone figure-optimization skill: turn ONE raster scientific figure (a PNG/JPG, e.g. a
-  gpt-image-2 schematic) into an editable native-shape PPTX + an editable SVG master + a
-  publication vector PDF — driving the FULL DrawAI engine (SAM3 region detection + PaddleOCR +
-  Box-IR layout + Codex/gpt-5.5 SVG authoring + native DrawingML export), then a strict, MEASURED,
-  multi-round visual-similarity refinement loop with raster-background and audio-waveform quality
-  gates and mandatory human approval. Simple elements become native vector shapes; only genuinely
-  complex elements (skeletons, dense heatmaps, waveforms, photos, textures) stay as tight local
-  raster crops. The original raster is always kept. This is the heavy, maximum-fidelity sibling of
-  ts-paper-vector (which distills DrawAI into a pure-Claude loop with no external services): use
-  ts-figure-optimize when you want DrawAI's real perception+generation stack and have its runtime
-  + Codex auth available; use ts-paper-vector when you want a lightweight, services-free Claude pass.
-  Independent of the paper pipeline — give it any figure image.
+  The suite's SOLE figure vectorizer: turn ONE raster scientific figure (a PNG/JPG, e.g. a
+  gpt-image-2 schematic) into an editable, publication-ready figure via DrawAI's **key-free HYBRID** —
+  local perception (SAM3 region detection + PaddleOCR + Box-IR layout, no account) then a deterministic
+  hybrid build that keeps the approved render **pixel-exact** (a whole-canvas raster) and lays an
+  **editable <text> overlay** on top (~0.91 SSIM), exported as a self-contained SVG + vector PDF + an
+  editable PPTX. The render's full richness is preserved EXACTLY (it IS the approved image) while every
+  label becomes editable. The original raster is always kept. Hybrid is the ONLY mode used: there is no
+  Codex full-vector redraw (legacy/off — it needs an account, and a redraw of a dense figure loses
+  fidelity) and no Claude-redraw fallback. If this runtime cannot be provisioned, the caller keeps the
+  approved PNG as-is — never a lossy redraw. Independent of the paper pipeline — give it any figure image.
 ---
 
-# ts-figure-optimize — raster figure → editable vector, the full DrawAI engine
+# ts-figure-optimize — raster figure → editable HYBRID, the key-free DrawAI path
 
-ts-paper-vector distills DrawAI into a pure-Claude loop (Claude is SAM3+OCR+author+critic; one
-cairosvg script is the only code). **This skill is the opposite trade-off: it runs the real DrawAI
-pipeline** — SAM3 segments the layout, PaddleOCR reads the text, a Codex/gpt-5.5 brain authors the
-SVG, DrawAI validates it and exports native PowerPoint DrawingML — and wraps it in a measured
-render-and-compare refinement loop. Use it when you want DrawAI-grade fidelity (richer panels,
-badges, icons, formula tspans, native PPTX) and can afford the runtime + Codex API.
+This is the suite's **only** figure vectorizer, and it runs DrawAI's **key-free HYBRID**: SAM3 segments
+the layout and PaddleOCR reads the text **locally** (on a GPU box, no Claude/Codex account), then a
+deterministic build keeps the approved render **pixel-exact** and lays an **editable `<text>` overlay**
+on top — exported as a self-contained SVG + vector PDF + editable PPTX (~0.91 SSIM; ~63 editable text
+boxes on the test figure). The figure's richness is preserved EXACTLY (the graphics ARE the approved
+render) while every label becomes editable.
 
-It does NOT just embed the bitmap into a slide. It decomposes the figure and reconstructs editable
-content; only genuinely complex regions remain as locally-cropped, high-resolution raster assets.
+**Hybrid is the ONLY mode used.** The engine also contains a legacy Codex full-vector redraw
+(`run_reconstruction.py`) — it is **off**: it needs an LLM account, and a full redraw of a dense figure
+measurably loses fidelity vs the exact render (~0.67 vs 0.91 SSIM). So the suite rule is **HYBRID, or
+else keep the approved PNG — never redraw.**
+
+It does NOT just embed the bitmap into a slide: it reads every label and re-lays it as editable text
+over the exact render. The genuinely complex graphics stay as the render raster (that is the point —
+pixel-exact richness), not a lossy trace.
 
 ## When to use
-You have a single raster figure and want an editable PPTX + editable SVG + vector PDF at maximum
-fidelity, with measured quality gates. Input: a PNG/JPG path (optionally a target aspect/slide size).
-For a lightweight, no-external-services pass, prefer `ts-paper-vector` instead.
+You have a single raster figure (e.g. an approved gpt-image schematic) and want it editable without
+losing any richness. Input: a PNG/JPG path. If the DrawAI runtime can't be provisioned, the caller
+keeps the approved PNG as-is — there is no lightweight redraw fallback.
 
 ## Absorbed dependency: DrawAI is VENDORED here (manual updates)
 The DrawAI **source (~5 MB, includes the MPS guard fix)** is vendored inside this skill at
@@ -226,11 +230,13 @@ formula verification, remaining raster assets. Do not finalize without explicit 
 figure contract: self-contained `figures/<label>.svg` + `.pdf` + kept `.png`).
 
 ## Use inside the ts-paper suite (figure stage 6, step 5b)
-`ts-paper-figure` calls this as the PRIMARY vectorizer for free-form image-model schematics (fallback:
-`ts-paper-vector`). Run the orchestrator on the approved PNG, then `export_paper_figure.py` to drop the
-result into `figures/`, then lint via the shared gate (`ts-paper-vector/scripts/svg_tools.py lint
---render-check`). The main method-overview schematic is results-independent → vectorize it ONCE at the
-proposal/first-draft figure stage, never deferred to a post-experiment re-run.
+`ts-paper-figure` calls this as the **sole** vectorizer for free-form image-model schematics: run the
+**hybrid** on the approved PNG (`run_hybrid.py --no-text-gpt`), then `export_paper_figure.py` to drop the
+self-contained `figures/<label>.svg` + `.pdf` (+ kept `.png`) into `figures/`, then lint via the shared
+gate (`scripts/check_vector_pdf.py lint --type <type> --render-check`). If the DrawAI runtime can't be
+provisioned, `ts-paper-figure` keeps the approved PNG as-is — there is **NO redraw fallback**. The main
+method-overview schematic is results-independent → vectorize it ONCE at the proposal/first-draft figure
+stage, never deferred to a post-experiment re-run.
 
 ## References
 `references/workflow.md`, `references/quality_metrics.md`, `references/text_and_formula_rules.md`,
