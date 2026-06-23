@@ -113,8 +113,12 @@ def main() -> int:
         print(f"FATAL: runtime venv still not found at {rtpy}. Provision it under the skill with:\n"
               f"  python {HERE/'setup_drawai.py'} --device {a.device}", file=sys.stderr)
         return 2
+    # The pinned paddlepaddle wheel is CPU-only, so paddle must stay on CPU even on a GPU box; SAM3/RMBG
+    # take a torch device string ("cuda"), while `drawai run --device` (step 1) takes "gpu". Map accordingly.
+    _torch_dev = "cuda" if a.device in ("gpu", "cuda") else a.device
+    _paddle_dev = "cpu" if a.device in ("gpu", "cuda") else a.device
     r = sh([rtpy, HERE / "run_preprocess_ir.py", "--config", cfg, "--runtime-root", str(runtime),
-            "--sam3-device", a.device, "--rmbg-device", a.device, "--paddle-device", a.device], cwd=str(engine))
+            "--sam3-device", _torch_dev, "--rmbg-device", _torch_dev, "--paddle-device", _paddle_dev], cwd=str(engine))
     if r.returncode != 0:
         return 2
 

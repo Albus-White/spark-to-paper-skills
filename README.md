@@ -160,7 +160,7 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
    3. ts-paper-write ─▶ sections/*.tex          (all sections in one holistic pass; no fabricated numbers)
    4. ts-paper-refine ▶ right-size + de-AI + logic self-check
    5. ts-paper-review ▶ adversarial peer-review hardening (runs by default)
-   6. ts-paper-figure ▶ matplotlib (precise) / image-model (free-form) + vision critique
+   6. ts-paper-figure ▶ image-model (free-form, GROUNDED on a top-journal MAIN figure) / matplotlib (precise) + vision critique
                        └▶ ts-figure-optimize: raster ──▶ editable vector SVG/PDF (+PPTX)
    7. ts-paper-latex ─▶ assemble + compile ──▶ main.pdf
                                                 │
@@ -205,12 +205,12 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 | `ts-paper-write` | 3 | Draft all sections as LaTeX in one holistic pass |
 | `ts-paper-refine` | 4 | Right-size to word bands + de-AI scrub + logic self-check |
 | `ts-paper-review` | 5 | Adversarial peer-review hardening (default on, engine-agnostic) |
-| `ts-paper-figure` | 6 | Figure routing: matplotlib (precise) / image model (free-form) + vision critique |
+| `ts-paper-figure` | 6 | Figure routing: matplotlib (precise) / image model (free-form, **grounded on a real on-topic top-journal MAIN figure**) + vision critique |
 | `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
 | `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via the full DrawAI engine |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF (template-driven) |
 | `ts-paper-experiment` | 8 | Diagnose logic, **run feasible experiments**, fill tables, recompile |
-| ~~`ts-paper-vector`~~ | — | ⛔ **DISABLED** (legacy Claude-only vectorizer) |
+| `ts-paper-vector` | 6 (fallback) | No-DrawAI fallback: Claude redraws PNG→SVG (zero deps/key; best for schematic figures) |
 
 ---
 

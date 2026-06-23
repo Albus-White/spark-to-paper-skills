@@ -1,7 +1,9 @@
 ---
 name: ts-paper-vector
 description: >
-  Stage 6's vectorization engine — distilled from DrawAI into a Claude-native loop. Turns an
+  Stage 6's NO-DRAWAI FALLBACK vectorizer (zero external deps / GPU / key) — distilled from DrawAI into a
+  pure-Claude loop; used when `ts-figure-optimize` (the real DrawAI engine) is unavailable or cannot be
+  provisioned (best for SCHEMATIC figures; photo-dense figures keep the high-res PNG instead). Turns an
   APPROVED raster paper figure (the image-model schematic that already passed ts-paper-figure's
   vision-critique) into a faithful, EDITABLE vector: Claude looks at the PNG, authors an SVG
   (every label a real <text>, boxes/arrows/curves as vector primitives), a tiny script renders
@@ -15,12 +17,12 @@ description: >
 
 # ts-paper-vector — make a figure editable, the DrawAI way, distilled into Claude
 
-> **⛔ DISABLED — do not use.** This skill is temporarily retired from the suite. The figure stage
-> (`ts-paper-figure` step 5b) now uses **`ts-figure-optimize`** (the full DrawAI engine) as the SOLE
-> vectorization/redraw path, and the editable-vector **gate** has moved to
-> `ts-figure-optimize/scripts/check_vector_pdf.py` (`run_gates.py` points there). Do **not** invoke
-> `ts-paper-vector` for redraw or as a fallback. Files are kept only for reference/possible later
-> revival; the document below describes its previous behaviour.
+> **✅ ROLE: NO-DRAWAI FALLBACK.** The figure stage (`ts-paper-figure` step 5b) uses **`ts-figure-optimize`**
+> (the real DrawAI engine) as the PRIMARY vectorizer. **This skill is the fallback Claude uses when DrawAI is
+> unavailable or cannot be provisioned** — it needs no external service / GPU / key (cairosvg only). Best for
+> **SCHEMATIC** figures; for **photo-dense** figures (embedded real imagery) keep the high-res PNG instead of
+> forcing a redraw. The editable-vector **gate** is `ts-figure-optimize/scripts/check_vector_pdf.py`; this
+> skill's `svg_tools.py` still renders / exports / lints the SVG.
 
 DrawAI turned a bitmap into an editable SVG with a team of services: **SAM3** segmented the
 layout, **PaddleOCR** read the text, and a **Codex/agent "brain"** authored an SVG, which was

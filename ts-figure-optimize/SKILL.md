@@ -54,8 +54,29 @@ python scripts/setup_drawai.py --reuse-runtime <path>  # reuse an existing .loca
 ```
 It tries DrawAI's official `setup local` first, and falls back to the validated manual install (paddle
 from PyPI, CPU torch, openai-codex via pypi.org/simple, editable engine + runtime deps, sam3, triton)
-when the official bootstrap can't reach its indexes. Still requires Codex auth (`~/.codex/auth.json` or
-`OPENAI_API_KEY`).
+when the official bootstrap can't reach its indexes. (Codex auth is needed ONLY for the legacy pure-A
+redraw — the **HYBRID path below is key-free**.)
+
+**✅ VERIFIED key-free GPU recipe — ModelScope, NO HF token (validated 2026-06-23 on a 6×A40 box).** The
+HYBRID path needs **no LLM key at all**; models come from **ModelScope** (default `--source modelscope`,
+which is NOT gated — this is why no HF_TOKEN is required):
+1. `pip install uv` (any env), then `python scripts/setup_drawai.py --device gpu` → builds the runtime venv
+   (Python 3.12, torch+cu12x, paddlepaddle CPU) and downloads `sam3.pt` (~3.3 GB) / RMBG-2.0 / PP-OCRv5 from
+   ModelScope. **No HF_TOKEN, no Codex login for the hybrid.** (~13 GB on disk under `engine/.local/`.)
+2. **Known fixes (now baked into the scripts; apply by hand only if you re-vendor an older engine):**
+   - **PaddleOCR ModelScope download can be 0-byte** (`PaddlePaddle/PP-OCRv5_*` is empty on ModelScope). If
+     `<runtime>/models/paddlex/official_models/PP-OCRv5_server_{det,rec}/inference.pdiparams` are missing,
+     copy them from PaddleOCR's standard cache (it fetches them on first use):
+     `cp -rn ~/.paddlex/official_models/PP-OCRv5_server_{det,rec} <runtime>/models/paddlex/official_models/`.
+   - **Device:** the pinned paddle wheel is CPU-only — on a GPU box use `--device gpu`; `run_hybrid.py` now
+     maps SAM3/RMBG→`cuda` and paddle→`cpu` automatically.
+   - **Host build deps:** `pip install python-pptx cairosvg numpy Pillow` into the interpreter that runs
+     `build_hybrid_pptx.py` (it uses the HOST python, not the runtime venv).
+   - **`drawai doctor` flags Chrome + Codex auth missing — IGNORE for the hybrid** (those are only for the
+     legacy pure-A redraw; the hybrid uses cairosvg + no LLM).
+3. Run key-free: `python scripts/run_hybrid.py --image fig.png --run-name <n> --device gpu --no-text-gpt`
+   (`--no-text-gpt` skips the only optional LLM step — GPT text-correction; have **Claude** do that
+   per-region text correction instead if you want OCR subscript/case fixes, keeping the whole flow key-free).
 
 ## Prerequisites (verify first)
 1. DrawAI runtime ready: `python scripts/setup_drawai.py --check-only` → `doctor: OK`.
