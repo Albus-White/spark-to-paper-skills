@@ -210,7 +210,6 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 | `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via the full DrawAI engine |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF (template-driven) |
 | `ts-paper-experiment` | 8 | Diagnose logic, **run feasible experiments**, fill tables, recompile |
-| ~~`ts-paper-vector`~~ | — | ⛔ **DISABLED** (legacy Claude-only vectorizer) |
 
 ---
 
@@ -255,17 +254,18 @@ python ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor: OK?
 Quality is not one check — it is **four complementary layers**.  
 Claude handles judgement; code provides the deterministic backstop.
 
-| # | Layer | Owner | Primary checks | Gate |
-|---:|---|---|---|---|
-| **1** | **Deterministic gates** | `code` | Section shape · word bands · no-fabrication · number audit · citation completeness · AI-phrase tells · vector-PDF presence | `error_count == 0` <br> **Red = hard stop** |
-| **2** | **Self-review** | Claude <br> *(in-pass)* | Right-sizing · term consistency · coherence · **de-AI scrub** · logic self-check | Revise until clean |
-| **3** | **Adversarial review** | Claude <br> *(default)* | Argues the other side · N isolated reviewers · verbatim-quote anti-skim · adversarial verification | Loop until dry |
-| **4** | **Vision critique** | Claude <br> *(figures)* | Reads each rendered figure · checks faithfulness · readability · aesthetics · then vectorizes | Accept only if visually sound |
+| # | Layer | Primary checks | Gate |
+|---:|---|---|---|
+| **1** | **Deterministic gates** | Section shape · word bands · no-fabrication · number audit · citation completeness · AI-phrase tells · vector-PDF presence | `error_count == 0` <br> **Red = hard stop** |
+| **2** | **Self-review** | Right-sizing · term consistency · coherence · **de-AI scrub** · logic self-check | Revise until clean |
+| **3** | **Adversarial review** | Argues the other side · N isolated reviewers · verbatim-quote anti-skim · adversarial verification | Loop until dry |
+| **4** | **Vision critique** | Reads each rendered figure · checks faithfulness · readability · aesthetics · then vectorizes | Accept only if visually sound |
 
 All gates flow through one entry point — **do not ship on a red gate**:
 
 ```bash
 python ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
+
 ```
 
 
