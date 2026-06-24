@@ -17,6 +17,7 @@ from __future__ import annotations
 import _dotenv  # noqa: F401  -- auto-load unified .env for API keys
 import argparse, json, os, re, sys, urllib.request
 from pathlib import Path
+from _kg_bootstrap import ensure_kg_extracted  # auto-unpack kg/kg_ai.rar before reading the kg
 
 STOP = set("the a an of for to in on and or with from by is are be this that we our using based via "
            "approach method model framework toward using novel new paper study via into over under".split())
@@ -69,7 +70,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--topk", type=int, default=8)
     a = ap.parse_args()
-    kg = Path(a.kg)
+    kg = ensure_kg_extracted(a.kg)  # unpack kg/kg_ai.rar on first use (no-op if already extracted)
     patterns = json.loads((kg / "nodes_pattern.json").read_text())
     papers = {p["paper_id"]: p for p in json.loads((kg / "nodes_paper.json").read_text())}
     edges = json.loads((kg / "edges.json").read_text()) if (kg / "edges.json").exists() else []
