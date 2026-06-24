@@ -1,6 +1,8 @@
 {
   "name": "neurips",
-  "display_name": "NeurIPS (single-column, author-year)",
+  "display_name": "NeurIPS (single-column, author-year) — UNOFFICIAL approximation",
+  "official": false,
+  "provenance": "Hand-authored approximation of the NeurIPS look — DEMO ONLY, NOT the official template. Before any real submission, replace neurips_paper.sty with the official neurips_<year>.sty from media.neurips.cc, or use a user-provided template. Never fabricate/approximate venue styles (see ts-paper-latex HARD RULE).",
   "engine": {
     "documentclass": "{article}",
     "style_package": "neurips_paper",

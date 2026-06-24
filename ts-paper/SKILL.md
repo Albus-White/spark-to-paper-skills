@@ -15,8 +15,8 @@ description: >
 
 You produce a publication-format paper (in whatever **template** the user picks) from a dropped input
 by first **routing it** (Stage 0) and then orchestrating seven focused sub-skills (the figure stage
-delegates its editable-vector output to **ts-figure-optimize** (absorbs the full DrawAI engine; the older **ts-paper-vector** is DISABLED) — so the suite is 12
-skills across a 7-stage chain, not 8 stages).
+delegates its editable-vector output to **ts-figure-optimize** (DrawAI **HYBRID**: the approved render kept
+pixel-exact + an editable text overlay; if DrawAI is unavailable the approved PNG is kept as-is, never redrawn) — a 7-stage chain, not 8 stages).
 
 ## Priority: QUALITY FIRST, cost second
 The goal is a paper that reads like a real, well-written TS journal article with real, complete,
@@ -70,8 +70,11 @@ The suite writes to whatever **template** the user picks; paper *content quality
 A template is a directory `templates/<name>/` (under this skill) holding `template.json` (the
 parametric spec: ordered section list + per-section recipes, word bands, citation style + floor,
 title/keyword rules, caption positions, heading case, masthead) + its LaTeX `.sty`/`.cls` +
-`main.tex.tmpl`. **Two are bundled:** `ts_iieta` (Traitement du Signal, two-column numeric — the
-default) and `neurips` (single-column, author-year — proves de-templatization). To use one, pass
+`main.tex.tmpl`. **🔴 A template's `.sty`/`.cls` must be either USER-PROVIDED or the venue's OFFICIAL files
+fetched verbatim — NEVER hand-authored or approximated; if neither is available, STOP and ask the user**
+(see ts-paper-latex's HARD RULE). Two **unofficial approximations** ship for demo only (`"official": false`):
+`ts_iieta` (Traitement du Signal, two-column numeric — the default) and `neurips` (single-column,
+author-year) — **replace with official/user files before any real submission.** To use a template, pass
 `template=<name>`; the plan stage validates it (`template_lint.py`) and copies it into the workdir,
 and **every downstream script reads `template.json` from the workdir** — no script hardcodes TS.
 A user adds a new venue by dropping a `templates/<name>/` dir; no code changes. Word bands, shape
@@ -79,6 +82,17 @@ contracts (item/subsection/table counts), citation style/floor, and the preamble
 spec. What stays **invariant across templates** = the content-quality + integrity logic (no
 fabricated results, claims-map gating, no stubs, terminology consistency, Method-First order,
 LaTeX safety, the figure integrity rule).
+
+## Preflight — environment & keys (DO THIS FIRST, before Stage 0)
+Before routing, run ONE environment + credential check and resolve gaps by this policy:
+**credentials / user-data → ASK the user (and explain exactly what to configure); environment / runtime → SELF-CONFIGURE (only ask if you genuinely cannot).** First `source ./input/env.sh` (or the repo `.env`) if present — keys live in `key.txt`.
+
+1. **Embedding + KG (for `ts-idea2story` KG-recall & novelty).** Probe `TS_EMBED_*` (a Qwen3-Embedding-8B endpoint) and whether a KG exists (`kg/`). If EITHER is missing → **ASK the user**: *"Run the KG-grounded recall / novelty part? It needs an embedding API — Qwen3-Embedding-8B (`TS_EMBED_API_KEY` / `TS_EMBED_BASE_URL` / `TS_EMBED_MODEL`) — plus a research-pattern KG (build it with `ts-kg-build`)."* If they decline (or the input skips idea2story) → **degrade gracefully to web-search-only** story (idea2story supports this; label it web/lexical-only). Never fabricate a key.
+2. **Image-gen key (for `ts-paper-figure`).** Probe `gen_image.py` / `TS_FIG_*` (a quick test render). If unavailable (`unset env: …` or a failing render) → **ASK the user**: *"Generate figures? It needs an image-model key — `TS_FIG_API_KEY` / `TS_FIG_BASE_URL` / `TS_FIG_MODEL` (e.g. gpt-image-2)."* If they decline → **skip image-model figure drawing** (every non-results figure; in proposal mode that is ALL figures — only results-section matplotlib data plots need no key); note the skipped placeholders in `logs/0_route.io.md`. Never improvise a key.
+3. **Environment / runtime → SELF-CONFIGURE (do NOT ask first; you have the ability).**
+   - **DrawAI vectorizer** (only needed to turn image-model figures into editable HYBRID vectors): if the `ts-figure-optimize` runtime is not ready (`drawai doctor` ≠ ok / models absent) → **provision it yourself** per `ts-figure-optimize`'s setup — **ModelScope source = NO HF token**, GPU: install `uv`, run `drawai setup local --source modelscope --device gpu`, then apply the documented fixes (see that skill). Only if provisioning is genuinely impossible (no GPU / no network after trying) → tell the user, and **keep the approved high-res PNG as-is** (no conversion — never a redraw or flat fallback).
+   - python deps (numpy / matplotlib / python-pptx / cairosvg) and LaTeX (latexmk / TinyTeX): if missing → install them yourself.
+Record the preflight outcome (what's available, what the user opted out of, what you auto-provisioned) in `logs/0_route.io.md`.
 
 ## Stage 0 — route the dropped input (a Claude reasoning step, not a sub-skill)
 The user drops **one** input and usually does **not** declare a pipeline or a mode. Before anything else,
@@ -129,7 +143,8 @@ route -> results_mode = data_aware
   -> ts-paper-refine (keep real numbers + past tense; cross-section number consistency)
   -> ts-paper-review (adversarial hardening; data-aware = full claims-vs-evidence scrutiny)
   -> ts-paper-figure (ONE owner of all figures): results plots drawn by matplotlib from results.facts.json
-                     (figures4papers house style); free-form schematics by the image model; every figure
+                     (figures4papers house style); free-form schematics by the image model, GROUNDED on an
+                     on-topic top-journal MAIN figure + enforced vision critique; every figure
                      then vectorized to an embedded editable PDF (matplotlib born-vector; raster -> ts-figure-optimize) -> ts-paper-latex
 ```
 ## Pipeline (run in order; each stage is a sub-skill you invoke or follow directly)
@@ -138,7 +153,7 @@ route -> results_mode = data_aware
 3. **ts-paper-write** — draft every section as **LaTeX body** in `sections/<id>.tex` (+ `abstract.tex`), citing the real bibkeys, following the per-section recipes and the no-fabrication rule. Write ALL sections in one pass.
 4. **ts-paper-refine** — one holistic pass: right-size each section to the template's word bands (do NOT over-compress), enforce term consistency, run the **de-AI pass** (scrub AI tells — these drafts are AI-written) + a **logic self-check**, fix the linter's findings.
 5. **ts-paper-review** *(adversarial hardening — distilled from PaperJury; runs by default)* — argue the OTHER side before finalizing: N isolated reviewers critique the whole draft (verbatim-quote anti-skim) → adversarial-verify each issue → loop-until-dry → triage. Valid issues are fixed **back through `ts-paper-refine`** (each bound to its `close_criterion`) and re-linted; author-required ones are surfaced. Cost-tiered (lean / cheapest / thorough). **Engine-agnostic**: runs by default via the best available execution tier (Workflow → subagents → in-context); the algorithm and output are identical across tiers, so it is **never skipped merely because the Workflow tool is absent**. May be skipped ONLY when the user explicitly requests a quick/no-review draft — record that choice in `logs/0_route.io.md`.
-6. **ts-paper-figure** — fill every figure placeholder via ONE routing: **code-precise** figures (results plots, and math/geometry concept illustrations) are drawn by **matplotlib** (`ts-paper-data`'s `plot_results.py` + the figures4papers house style); **free-form** schematics (architecture/pipeline/qualitative scenes) are drawn by the **image model** (`gen_image.py`) through the Claude **vision-critique loop** (≥2 polish rounds). Results plots need real data (data-aware only); a proposal has none. No placeholder left blank. **Then ALWAYS vectorize** so every figure embeds as an editable vector PDF (matplotlib is born-vector via `finalize`; an image-model raster is reconstructed to a faithful editable SVG→PDF by the SOLE vector engine **`ts-figure-optimize`** (real DrawAI runtime + Codex; **`ts-paper-vector` is DISABLED**); the original PNG is kept). The main free-form schematic is results-independent, so vectorize it ONCE at this proposal/first-draft figure stage — never defer to a post-experiment re-run; later experiment-phase figures are matplotlib born-vector. The editable-vector **gate** is `ts-figure-optimize/scripts/check_vector_pdf.py` (every figure must embed a vectorized PDF + every vector-type SVG must be a real redraw). Vectorization must NEVER reduce quality. Optional — skip the whole stage only if there are no figures or the image model is unconfigured.
+6. **ts-paper-figure** — fill every figure placeholder via SECTION-based routing: **only real measured-data results plots in the results/experiments section** (data-aware mode) are drawn by **matplotlib** (`ts-paper-data`'s `plot_results.py` + the figures4papers house style); **every other figure** — architecture/pipeline/framework/flow schematics, qualitative scenes, AND concept/math-geometry illustrations — is drawn by the **image model** (`gen_image.py`), first **GROUNDED** on a real on-topic top/mid-journal **MAIN** figure (`fetch_reference_figures.py` selects it; `gen_image.py --reference` image-conditions the render via `/images/edits`, with a text→image fallback), then driven through the Claude **vision-critique loop** (≥2 polish rounds, **enforced**: `check_figure_critique` fails the build on an empty critique trace or missing grounding fields). Results plots need real data (data-aware only); a proposal has none. No placeholder left blank. **Then vectorize** so every figure embeds as an editable PDF (matplotlib is born-vector via `finalize`; an image-model raster is vectorized by **`ts-figure-optimize`**'s DrawAI **HYBRID** — the approved render kept pixel-exact + an editable text overlay, **key-free** (no Codex); if DrawAI can't be provisioned, **keep the high-res PNG as-is** — HYBRID-or-keep-PNG, never a redraw/flat fallback; the original PNG is always kept). The main free-form schematic is results-independent, so vectorize it ONCE at this proposal/first-draft figure stage — never defer to a post-experiment re-run; later experiment-phase figures are matplotlib born-vector. The figure **gate** is `ts-figure-optimize/scripts/check_vector_pdf.py` (every figure has an embedded artifact + every converted figure's SVG is a valid hybrid — editable text over the render) plus `check_figure_critique` (every free-form figure is engine=image-model, never a hand-drawn flat SVG). Vectorization must NEVER reduce quality. Optional — skip the whole stage only if there are no figures or the image model is unconfigured.
 7. **ts-paper-latex** — run the bundled `assemble_paper.py` to build `main.tex`, apply the deterministic **template-driven** post-processes (caption position, merge `\cite` for numeric styles, canonical headings from `template.json`, format keywords), copy the template's `.sty`/`.cls` + assets, and compile with `latexmk`. Fix real compile errors in a bounded loop (≤3 tries; abort if errors increase).
 8. **`ts-paper-experiment` (IN-REPO experiment + repair skill) — RUNS AUTOMATICALLY** *after* the complete first-draft `main.pdf` is produced (all gates green). This skill lives **in this same suite** (`../ts-paper-experiment/`) and is driven automatically as the final stage: it **diagnoses research logic, runs FEASIBLE experiments, fills the experiment tables, and re-compiles** — turning the no-results draft into a results-bearing manuscript (or, if no real data/code is available, a requirements report — never fabricated numbers). See "Stage 8" below.
 
@@ -203,12 +218,15 @@ judgement, code is the deterministic backstop**:
    valid issues fixed back through refine. Runs by default before finalizing via the best available
    execution tier (Workflow → subagents → in-context — identical algorithm/output, never skipped for a
    missing Workflow tool); skip only when the user explicitly requests a no-review quick draft.
-4. **Vision critique (Claude, figures) — `ts-paper-figure` (+ `ts-figure-optimize`).** Claude `Read`s each
-   rendered image-model figure and critiques it (faithfulness/conciseness/readability/aesthetics) before
-   accepting; code-precise figures bypass this via deterministic matplotlib + the house style. The same
+4. **Vision critique (Claude, figures) — `ts-paper-figure` (+ `ts-figure-optimize`).** Each free-form figure
+   is first **GROUNDED** on a real on-topic top/mid-journal MAIN figure (retrieved + image-conditioned), then
+   Claude `Read`s the render and critiques it (faithfulness/**richness**/readability/aesthetics) over ≥2
+   ENFORCED rounds (the `check_figure_critique` gate); only results-section matplotlib data plots bypass this
+   (deterministic matplotlib + the house style). The same
    layer then **vectorizes** every figure to an editable PDF — matplotlib born-vector; an image-model
-   raster reconstructed by **`ts-figure-optimize`** (full DrawAI engine; `ts-paper-vector` disabled), gated
-   by `check_vector_pdf.py` — so editability is a quality gain, never a loss.
+   raster vectorized by **`ts-figure-optimize`** (DrawAI **HYBRID** — pixel-exact render + editable text; if
+   DrawAI is unavailable the approved PNG is kept as-is), gated by `check_vector_pdf.py` — editability is a
+   quality gain, never a loss.
 
 Layers 1, 2, and 3 run by default; layer 3 (adversarial review) may be skipped only on explicit user request for a quick draft; layer 4 runs when there are free-form figures.
 
@@ -221,6 +239,6 @@ fix turns — **but always add passes when quality needs them** (more citation s
 another refine). Don't pad with busywork; don't cut a quality step to save a turn.
 
 ## Definition of done
-`main.pdf` exists and is non-trivial, the log shows **zero LaTeX errors**, `main.bbl` resolved all citations, every `\cite{}` maps to a complete `refs.bib` entry (no stubs/orphans), and no fabricated numbers appear in any sentence. **Every figure is embedded as an editable vector PDF** (`figures/<label>.pdf`, with the original `.png` kept) — and every vector-type figure (architecture/pipeline/concept/…) is an actual **redraw** (editable `<text>` + primitives), NOT a whole-canvas raster wrapped in an SVG; only an explicit `type=photo|qualitative` figure may be a whole-canvas raster. The adversarial **review stage ran** (`logs/5_review.io.md` exists, recording which execution tier ran) with every surviving `blocker`/`major` issue either closed (re-linted) or surfaced to the user as author-required. Review absence is acceptable **only** via an explicit user opt-out recorded in `logs/0_route.io.md` — **never** because no Workflow/subagent tool was available (in that case the in-context tier runs).
+`main.pdf` exists and is non-trivial, the log shows **zero LaTeX errors**, `main.bbl` resolved all citations, every `\cite{}` maps to a complete `refs.bib` entry (no stubs/orphans), and no fabricated numbers appear in any sentence. **Every figure is editable** (`figures/<label>.pdf` embedded, with the original `.png` kept) — matplotlib plots are born-vector; an image-model schematic is a **hybrid** (the exact approved render as a whole-canvas `<image>` + an editable `<text>` overlay), so richness is preserved 1:1 while labels stay editable; if DrawAI was unavailable the approved PNG is kept as-is (never a lossy redraw or flat hand-draw — `check_figure_critique` blocks any non-`image-model` free-form figure). The adversarial **review stage ran** (`logs/5_review.io.md` exists, recording which execution tier ran) with every surviving `blocker`/`major` issue either closed (re-linted) or surfaced to the user as author-required. Review absence is acceptable **only** via an explicit user opt-out recorded in `logs/0_route.io.md` — **never** because no Workflow/subagent tool was available (in that case the in-context tier runs).
 
-Before reporting done, run **`python scripts/run_gates.py <workdir> all`** (see the quality stack): it re-runs `citations_lint.py` and `draft_lint.py` against the final `sections/*.tex`, asserts **every figure has its embedded vector `.pdf` AND that every vector-type figure's `.svg` is a real redraw (not a whole-canvas raster)** (the `ts-figure-optimize/scripts/check_vector_pdf.py` gate, manifest-driven; `ts-paper-vector` is disabled), and asserts the latex verdict (`error_count == 0` / `main.bbl` resolved). A nonzero exit means **NOT done** — fix and re-run; do not emit the done report on a nonzero exit. Report: page count, section list, reference count (all complete), the review outcome (issues found / closed / author-required, plus the tier used), the figures (all editable vector PDFs), and the rough turn/token cost.
+Before reporting done, run **`python scripts/run_gates.py <workdir> all`** (see the quality stack): it re-runs `citations_lint.py` and `draft_lint.py` against the final `sections/*.tex`, asserts **every figure has an embedded artifact AND that every converted figure's `.svg` is a valid hybrid (editable text over the render)** (the `ts-figure-optimize/scripts/check_vector_pdf.py` gate, manifest-driven), plus `check_figure_critique` (every free-form figure is engine=image-model — blocks the hand-drawn flat-SVG regression), and asserts the latex verdict (`error_count == 0` / `main.bbl` resolved). A nonzero exit means **NOT done** — fix and re-run; do not emit the done report on a nonzero exit. Report: page count, section list, reference count (all complete), the review outcome (issues found / closed / author-required, plus the tier used), the figures (all editable vector PDFs), and the rough turn/token cost.

@@ -22,6 +22,17 @@ The default template is `ts_iieta` (two-column IIETA); `neurips` (single-column 
 bundled and compiles through the *same* script — nothing here is hardcoded to TS. If no `template.json`
 is in the workdir it falls back to bundled `ts_iieta` (backward-compatible).
 
+> **🔴 HARD RULE — NEVER fabricate a venue template.** A template's style files (`.sty`/`.cls`) must come
+> from exactly ONE of: **(a)** a **user-provided** template (the user drops a `templates/<name>/` dir or
+> points at the official files), or **(b)** the venue's **OFFICIAL** style files, fetched **verbatim** from
+> the official source (the conference/journal style-file URL, e.g. NeurIPS `media.neurips.cc/.../neurips_<year>.sty`)
+> and copied UNCHANGED. **Do NOT hand-author, approximate, or "make it look like" a venue** — a self-invented
+> `.sty` gets margins/fonts/notice/line-numbers wrong and is unusable for submission. If a requested venue has
+> neither a user-provided nor an obtainable official template, **STOP and ask the user for the official files —
+> never fabricate one.** ⚠️ The currently-bundled `ts_iieta` and `neurips` styles are **unofficial
+> approximations** (`"official": false` in their `template.json`); treat them as **demo-only** and **replace with
+> the venue's official `.sty`/`.cls` (or a user-provided template) before any real submission.**
+
 ## What's bundled (clean, copyright-safe assets you own)
 - `assets/ts_iieta.sty` — our own two-column IIETA style (masthead with logo + blue band, 10pt Times, ALL-CAPS numbered sections, `Figure N.`/`Table N.` captions, numeric `[n]` cites with `sort&compress`).
 - `assets/iieta_logo.png` — the masthead logo (compiles fine if absent via `\IfFileExists`).
@@ -54,7 +65,7 @@ Figures are referenced **extension-less** — `\includegraphics{figures/<label>}
 ships `figures/<label>.pdf` (editable vector) beside the kept `figures/<label>.png`. Both bundled `.sty`
 already `\RequirePackage{graphicx}`, so under pdflatex/latexmk the `.pdf` is embedded (its extension is
 preferred over `.png`) with **no change to `assemble_paper.py`** (it never parses `\includegraphics` or
-figure extensions). The vector is pre-rendered by cairosvg (`ts-paper-vector`), so there is **no
+figure extensions). The vector is pre-rendered by cairosvg (in `ts-figure-optimize`'s hybrid export), so there is **no
 `\includesvg`/Inkscape/`--shell-escape` dependency**. The `run_gates.py all` vector check confirms every
 figure has its `.pdf` sibling — a raster-only figure is a red gate.
 

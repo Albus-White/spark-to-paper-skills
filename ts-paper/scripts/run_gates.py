@@ -17,7 +17,7 @@ A gate whose REQUIRED input file is genuinely absent is skipped with a printed
 itself a nonzero failure. stdlib-only (json, sys, subprocess, pathlib).
 """
 from __future__ import annotations
-import json, subprocess, sys
+import json, re, subprocess, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -29,7 +29,7 @@ BLUEPRINT_LINT = SKILLS_ROOT / "ts-paper-plan" / "scripts" / "blueprint_lint.py"
 CITATIONS_LINT = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "citations_lint.py"
 DRAFT_LINT     = SKILLS_ROOT / "ts-paper-write" / "scripts" / "draft_lint.py"
 ASSEMBLE       = SKILLS_ROOT / "ts-paper-latex" / "scripts" / "assemble_paper.py"
-SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"  # ts-paper-vector DISABLED; ts-figure-optimize is the sole vector engine + gate
+SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"  # sole figure gate (DrawAI hybrid is the only vectorizer; ts-paper-vector removed)
 
 # stage -> ordered list of (gate_script, [required_workdir_inputs])
 # Each required input is a workdir-relative path; if ALL listed inputs for a gate
@@ -121,6 +121,119 @@ def assert_latex(wd: Path) -> int:
     return 0 if ok else 1
 
 
+# Engine is routed by SECTION, not by figure type. matplotlib is permitted ONLY for a real
+# measured-data results plot in the RESULTS section (the section[s] whose template recipe declares
+# result_tables); EVERY other figure — concept, math-geometry, architecture/pipeline/framework/flow,
+# qualitative — is rendered by the image model (matplotlib renders those poorly). A hand-authored flat
+# SVG ('svg-native') is never allowed (the carbon-paper regression).
+_ALLOWED_ENGINES = {"image-model", "matplotlib"}
+# Grounding on a real on-topic TOP/MID-venue MAIN figure is mandatory for a structural schematic; an
+# illustrative 'concept' plot or a 'qualitative' scene may have no journal MAIN-figure equivalent, so it
+# is grounding-OPTIONAL (NOT in this set).
+_GROUNDING_REQUIRED = {"architecture", "pipeline", "framework", "schematic", "overview", "diagram", "flow"}
+
+
+def _results_sections(workdir: Path) -> set:
+    """Section ids whose template recipe declares result_tables — the results/experiments section(s),
+    the only place a matplotlib real-data plot belongs."""
+    try:
+        spec = json.loads((workdir / "template.json").read_text())
+    except (ValueError, OSError):
+        return set()
+    return {s["id"] for s in (spec.get("sections") or [])
+            if isinstance(s, dict) and (s.get("recipe") or {}).get("result_tables")}
+
+
+def _figure_to_section(workdir: Path) -> dict:
+    """Map figure label -> section id by scanning which sections/<id>.tex \\includegraphics's it
+    (robust: derived from the actual LaTeX, not the self-reported manifest)."""
+    out = {}
+    secdir = workdir / "sections"
+    if not secdir.is_dir():
+        return out
+    for tex in secdir.glob("*.tex"):
+        if tex.name.endswith(".proc.tex"):
+            continue
+        for m in re.finditer(r"\\includegraphics(?:\[[^\]]*\])?\{figures/([^}]+)\}",
+                             tex.read_text(encoding="utf-8", errors="ignore")):
+            out[Path(m.group(1)).stem] = tex.stem
+    return out
+
+
+def check_figure_critique(workdir) -> list:
+    """Guard the figure stage against the 'hand-authored flat SVG' regression and enforce grounded
+    critique. Returns a list of problem strings (empty == ok). No figures.manifest.json yet => no
+    problems (the figure stage hasn't run). Rules:
+      1. engine must be in {image-model, matplotlib} — a free-form figure drawn as a flat 'svg-native'
+         SVG (skipping the image-model GROUND + critique flow) is the regression this blocks;
+      2. engine is routed by SECTION — matplotlib ONLY for a real-data results plot in the results
+         section (recipe.result_tables); every figure elsewhere (concept/math-geometry/schematic) must
+         be engine 'image-model';
+      3. every image-model figure carries a non-empty critique trace + critic_rounds>=2 + grounding fields."""
+    workdir = Path(workdir)
+    figs = workdir / "figures"
+    man = figs / "figures.manifest.json"
+    problems: list = []
+    if not man.is_file():
+        return problems  # no figures stage yet -> nothing to enforce
+    try:
+        data = json.loads(man.read_text())
+    except (ValueError, OSError) as e:
+        return [f"figures.manifest.json unreadable: {e}"]
+    results_secs = _results_sections(workdir)
+    fig_sec = _figure_to_section(workdir)
+    for f in data.get("figures", []):
+        if not isinstance(f, dict):
+            continue
+        label = f.get("label", "?")
+        ftype = str(f.get("type", "")).lower()
+        engine = f.get("engine", "")
+        # (1) no escape-hatch engines: a free-form figure hand-authored as flat SVG bypasses the
+        #     whole rich-generation flow (the carbon-paper regression). Forbid it.
+        if engine not in _ALLOWED_ENGINES:
+            problems.append(f"figure '{label}': engine '{engine}' not allowed — a free-form figure must be "
+                            f"image-model (rendered + GROUNDED on a top-journal MAIN figure + critiqued); only "
+                            f"matplotlib may be code-drawn. Hand-authored flat SVG is the regression this blocks.")
+            continue
+        # (2) SECTION-BASED routing: matplotlib is allowed ONLY for a real-data plot in the results
+        #     section; a concept/math-geometry/schematic figure anywhere else MUST be image-model
+        #     (matplotlib renders those poorly — the quality complaint this fixes).
+        if engine == "matplotlib":
+            sec = fig_sec.get(label)
+            if results_secs and sec not in results_secs:
+                problems.append(f"figure '{label}': engine=matplotlib but it sits in section "
+                                f"'{sec or '(not found/not inserted)'}' — matplotlib is ONLY for a real "
+                                f"measured-data results plot in the results section {sorted(results_secs)}. "
+                                f"A concept / math-geometry / schematic figure must be engine=image-model.")
+            continue   # a matplotlib results plot needs no image-model critique/grounding trace
+        # (3) everything else is image-model: enforce critique trace + grounding below.
+        # (4) image-model figure: enforce critique trace + grounding
+        log = figs / "repair_logs" / f"{label}.log"
+        if not (log.is_file() and log.stat().st_size > 0):
+            problems.append(f"figure '{label}': empty/missing repair_logs/{label}.log "
+                            f"(enforced critique loop did not run)")
+        try:
+            rounds = int(f.get("critic_rounds", 0) or 0)
+        except (TypeError, ValueError):
+            rounds = 0
+        if rounds < 2:
+            problems.append(f"figure '{label}': critic_rounds < 2 (got {f.get('critic_rounds')!r})")
+        for key in ("grounding", "reference_used"):
+            if not f.get(key):
+                problems.append(f"figure '{label}': manifest missing '{key}'")
+        # NO silent skip: a free-form schematic must be GROUNDED on a real reference, never 'none'.
+        if ftype in _GROUNDING_REQUIRED:
+            g = str(f.get("grounding", "")).strip().lower()
+            r = str(f.get("reference_used", "")).strip().lower()
+            if g in ("", "none") or r in ("", "none"):
+                problems.append(
+                    f"figure '{label}': grounding={f.get('grounding')!r} reference_used={f.get('reference_used')!r} "
+                    f"— a free-form schematic MUST be grounded on a real on-topic TOP/MID-venue MAIN figure "
+                    f"(WebSearch in step 2b). 'none' is NOT allowed (no silent skip); if a reference is genuinely "
+                    f"impossible after a real multi-query search, surface it to the user instead of shipping ungrounded.")
+    return problems
+
+
 def run_all(wd: Path) -> int:
     """Definition of Done: re-run citations_lint + draft_lint against the final
     workdir, assert every figure is embedded as a vector PDF, then assert the latex
@@ -139,15 +252,24 @@ def run_all(wd: Path) -> int:
         rc = _run(script, [str(wd)])
         if rc != 0:
             return rc
-    # editable-vector gate: every figure must embed a vector .pdf (no silent raster).
-    # Trivially passes when the paper has no figures. svg_tools.py is part of the suite.
+    # figure gate: every figure has an embedded artifact; a converted figure's .svg must be a valid
+    # hybrid (editable text over the render). Trivially passes when the paper has no figures.
     if not SVG_TOOLS.exists():
-        print(f"\n===== gate: svg_tools.py =====")
+        print(f"\n===== gate: check_vector_pdf.py =====")
         print(f"[run_gates] FAIL: vector check script not found: {SVG_TOOLS}")
         return 1
     rc = _run(SVG_TOOLS, ["check", "--workdir", str(wd)])
     if rc != 0:
         return rc
+    # figure critique-trace gate: image-model figures must have run the enforced vision-critique
+    # loop (non-empty repair_logs, critic_rounds>=2, grounding fields). No-ops when no figures stage.
+    print(f"\n===== gate: figure critique trace =====")
+    crit_problems = check_figure_critique(wd)
+    if crit_problems:
+        for p in crit_problems:
+            print(f"[run_gates] FAIL: {p}")
+        return 1
+    print("[run_gates] ok (image-model figures: non-empty critique trace + grounding fields)")
     return assert_latex(wd)
 
 

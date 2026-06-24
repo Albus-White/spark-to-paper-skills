@@ -41,18 +41,28 @@ and de-duplication are free). The original's purpose was *conference page-compre
 ## De-AI pass (this is AI-written prose — scrub the tells)
 Every section was drafted by an LLM, so it is prone to AI tells. Read each section and **rewrite where
 it improves** (don't churn natural sentences). Scan for and replace:
+- **Prose flow (the #1 fix).** Turn any bare-comma *comma soup* into connected prose: punctuate an
+  appositive/enumeration with a **colon or em-dash**, not a bare comma — "a pipeline: retrieval, planning"
+  or "a pipeline — retrieval, planning — in which …", NOT "a pipeline, retrieval, planning, … in which …"
+  (that comma soup is what reads as fragmented "碎句子"). A legitimate appositive em-dash is GOOD and
+  encouraged; only remove em-dash *abuse* (dramatic-pause dashes). Vary sentence length; each paragraph
+  must read as a flowing whole, not a clause list. Avoid the recipe rhythm of "X does A [cite], Y does B
+  [cite]" in related work — synthesize across papers.
 - **Tell words/phrases:** leverage, delve, utilize, showcase, underscore, intricate, pivotal, seamless,
   holistic, nuanced, realm, tapestry, testament, "it is worth noting", "plays a crucial role", "in order
-  to" (→ "to"), rule-of-three triplets, connective stacks (firstly/moreover/furthermore), em-dash abuse,
-  empty "-ing" wind-ups, vague attribution ("studies show"), "not only … but also" overuse.
+  to" (→ "to"), rule-of-three triplets, connective *stacks* (firstly/moreover/furthermore — a single
+  appropriate transition is fine), empty "-ing" wind-ups, vague attribution ("studies show"),
+  "not only … but also" overuse.
 - **Translationese** (these drafts trend that way): stacked attributive chains ("the … of the … of the
   …"), gratuitous passive voice, hollow rhetoric (paradigm shift, disruptive, profound, in essence).
 Prefer plain, precise words; keep `\cite`/`\ref`/math intact; add no new emphasis.
-`draft_lint` **code-enforces** (hard-fails, `ai_tell`) a curated high-precision subset: `in order to`,
-sentence-initial connective stacks (`firstly/moreover/furthermore/additionally,`), `not only … but also`,
-plus the existing tapestry/testament/"plays a crucial role"/delve-style phrases and em-dash abuse — those
-MUST be gone. The rest (`leverage`, `utilize`, rule-of-three triplets, and the remaining tell words above)
-are **judgment-only** — not gated; you remove them by hand. (Source: PaperJury writing-toolkit `de-ai`.)
+`draft_lint` **code-enforces** (hard-fails, `ai_tell`) ONLY the CONTEXT-FREE canned phrases — tapestry,
+testament, "plays a crucial role", "it is worth noting", "delve into", "realm of", "paradigm shift",
+"navigating the landscape", "ever-evolving", … plus `in order to` — those MUST be gone. The
+CONTEXT-DEPENDENT cohesion tells — **em-dashes, sentence-initial `firstly/moreover/furthermore/additionally,`,
+`not only … but also`, rule-of-three triplets, `leverage`/`utilize`** — are deliberately NOT gated (a regex
+would kill the good appositive em-dash along with the abuse — precisely what produced the comma soup): you
+remove the *abuse* by judgment while keeping legitimate uses. (Source: PaperJury writing-toolkit `de-ai`.)
 
 ## Logic self-check (after each edit, narrow self-gate — not a reviewer)
 After you change a passage, re-read ONLY that passage for a **show-stopper introduced by the edit**: a
@@ -80,7 +90,7 @@ template is a **conference** style (e.g. `neurips`), respect its tighter convent
 template's word bands — not a fixed venue habit — decide length.
 
 ## After refining (enforced)
-Re-run `python ../ts-paper-write/scripts/draft_lint.py <workdir>` — it now **fails the build** on any section outside its `template.json` word band and on any broken shape contract, so "right-sized" is verified in code, not by eye. Drive every `word_band` violation to zero by **expanding thin sections with real substance** (more method detail, more discussion, a deeper failure analysis) — never by padding. Then re-run `python ../ts-paper-cite/scripts/citations_lint.py <workdir>` to confirm citations survived. Re-run both until they exit 0 (`ok:true`); **do not hand off on a nonzero exit.** Then write **`logs/4_refine.io.md`** (INPUT: pre-refine word counts; DECISIONS: per-section deltas + what was added/cut; OUTPUT: post-refine counts, all in band). Hand off to **ts-paper-review** (stage 5, the default next stage): it returns a triaged issue list, and for each fix-now issue the orchestrator re-invokes THIS skill in **Review-fix mode** (below). Only after review is dry/closed does the chain proceed to **ts-paper-figure** then **ts-paper-latex**. If the user explicitly opted out of review, hand directly to **ts-paper-figure**.
+Re-run `python ../ts-paper-write/scripts/draft_lint.py <workdir>` — it now **fails the build** on any section outside its `template.json` word band and on any broken shape contract, so "right-sized" is verified in code, not by eye. Drive every `word_band` violation to zero by **expanding thin sections with real substance** (more method detail, more discussion, a deeper failure analysis) — never by padding. Then re-run `python ../ts-paper-cite/scripts/citations_lint.py <workdir>` to confirm citations survived. Re-run both until they exit 0 (`ok:true`); **do not hand off on a nonzero exit.** Then run **`python ../ts-paper-write/scripts/reflow_tex.py <workdir>`** so every `sections/*.tex` is one logical line per paragraph (your de-AI rewrites may have re-wrapped them; idempotent, PDF-neutral). Then write **`logs/4_refine.io.md`** (INPUT: pre-refine word counts; DECISIONS: per-section deltas + what was added/cut; OUTPUT: post-refine counts, all in band). Hand off to **ts-paper-review** (stage 5, the default next stage): it returns a triaged issue list, and for each fix-now issue the orchestrator re-invokes THIS skill in **Review-fix mode** (below). Only after review is dry/closed does the chain proceed to **ts-paper-figure** then **ts-paper-latex**. If the user explicitly opted out of review, hand directly to **ts-paper-figure**.
 
 ## Review-fix mode (ONLY when invoked with a single review issue — NOT a full pass)
 This mode is triggered **only** when the orchestrator hands you one `ts-paper-review` issue

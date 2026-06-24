@@ -157,7 +157,7 @@ def build(source, ocr, box_ir, font_path, overrides=None):
         while fh > 6:
             f = ImageFont.truetype(font_path, fh)
             gb = f.getbbox(flat)
-            if meas.textlength(flat, font=f) <= iw * 1.04 and (gb[3] - gb[1]) <= th * 1.10:
+            if meas.textlength(flat, font=f) <= iw * 0.98 and (gb[3] - gb[1]) <= th * 1.10:
                 break
             fh -= 1
         runs.append({"x": ix1, "ymid": (iy1 + iy2) / 2, "fh": fh, "col": col, "segs": parse_runs(txt)})
