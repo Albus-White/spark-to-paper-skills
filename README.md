@@ -73,7 +73,7 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ---
 
-## 🎯 Design Philosophy
+ 
 
 ## 🎯 Design Philosophy
 
