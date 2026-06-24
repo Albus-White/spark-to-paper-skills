@@ -30,6 +30,17 @@ HERE = Path(__file__).resolve().parent
 LEGACY_ASSETS = HERE.parent / "assets"                      # ts-paper-latex/assets (legacy fallback)
 TEMPLATES_ROOT = HERE.parent.parent / "ts-paper" / "templates"
 
+# Prose reflow (one logical line per paragraph) lives in the write skill. We import it so the
+# assembled SOURCE the human browses isn't hard-wrapped mid-sentence. A single newline is a space
+# in LaTeX, so reflow is PDF-neutral. Defensive no-op fallback keeps assembly working if it is ever
+# missing (a deployment error, not a silent quality cut — assembly itself never depends on it).
+sys.path.insert(0, str(HERE.parent.parent / "ts-paper-write" / "scripts"))
+try:
+    from reflow_tex import reflow
+except Exception:  # pragma: no cover
+    def reflow(s: str) -> str:
+        return s
+
 # ---------------------------------------------------------------------------
 # Template loading (spec + the dir that holds its main.tex.tmpl + assets)
 # ---------------------------------------------------------------------------
@@ -221,14 +232,28 @@ def assemble(workdir: Path) -> dict:
     order = bp.get("section_order") or [s for s in spec_order
                                         if (workdir / "sections" / f"{s}.tex").exists()]
     sec_dir = workdir / "sections"
+    build_dir = workdir / "build"
+    build_dir.mkdir(exist_ok=True)
+    # SINGLE SOURCE OF TRUTH: the post-processed copies live under build/, never littered next to
+    # the author's source in sections/. Clean up stale sections/*.proc.tex from older runs (they
+    # used to sit beside the source — that is the redundancy this removes).
+    for stale in sec_dir.glob("*.proc.tex"):
+        stale.unlink()
+    # Normalize every source body to one logical line per paragraph (idempotent, PDF-neutral) so the
+    # sections/*.tex a human browses isn't hard-wrapped mid-sentence.
+    for f in sec_dir.glob("*.tex"):
+        txt = f.read_text()
+        norm = reflow(txt)
+        if norm != txt:
+            f.write_text(norm)
     includes = []
     for sid in order:
         f = sec_dir / f"{sid}.tex"
         if not f.exists():
             continue
         out = process_section(sid, f.read_text(), titles, tables_above, merge_cites)
-        (sec_dir / f"{sid}.proc.tex").write_text(out)
-        includes.append(f"\\input{{sections/{sid}.proc}}")
+        (build_dir / f"{sid}.proc.tex").write_text(out)
+        includes.append(f"\\input{{build/{sid}.proc}}")
 
     authors = bp.get("authors") or []
     if authors:

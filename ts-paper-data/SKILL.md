@@ -65,8 +65,8 @@ for evidence-grounded ones:
 **TBD rule:** a `TBD`/missing metric is unavailable evidence — stay silent about it; never guess it.
 
 ## Step 4 — the results-plot TOOLKIT (the figure stage renders; you provide data + toolkit)
-The single owner of drawing figures is **`ts-paper-figure`** (its unified routing: code-precise →
-matplotlib, free-form → image model). In data-aware mode it draws the **results plots** from CODE
+The single owner of drawing figures is **`ts-paper-figure`** (routing is by SECTION: matplotlib ONLY for
+the results-section data plots, image model for every other figure). In data-aware mode it draws the **results plots** from CODE
 (numerically exact, never the image model) using THIS skill's toolkit and the numbers in
 `results.facts.json` / your filled tables. Your job in the data stage is to make sure `results.facts.json`
 and the filled tables exist (Steps 1–2); the figure stage runs the plotter.
@@ -83,9 +83,9 @@ The toolkit it uses (kept here):
   `["contrast"]` red / `["baseline"]` grey) + per-chart encoding rules (bars: black edges, value labels,
   alpha-ablation, hatch for grayscale, tight y-limits; trends: 2–4 curves + `fill_between`; heatmap/radar;
   wide canvas + dedicated legend axis) + `finalize(fig, OUT)` (dpi 300, +PDF; 600 for dense bars).
-A `null`/`TBD` value is a gap in the plot, never a fabricated point. (Math/geometry CONCEPT illustrations
-use the same toolkit via the figure stage's routing, even in proposal mode — synthetic/illustrative
-values, no metric claim.)
+A `null`/`TBD` value is a gap in the plot, never a fabricated point. (This matplotlib toolkit is for the
+**results-section data plots only**. Concept / math-geometry illustrations are NOT drawn here anymore —
+the figure stage routes every non-results figure to the image model, since matplotlib renders concepts poorly.)
 
 ## Step 5 — the number-audit gate (machine-checked honesty)
 Run the write-stage linter; in data-aware mode it flips from "ban all numbers" to "flag untraceable ones":

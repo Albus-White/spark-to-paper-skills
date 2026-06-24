@@ -54,9 +54,15 @@ HYPERPARAM_CUE = re.compile(
 BANNED_LATEX = re.compile(r"\\textbf|\\textit\{|\\documentclass|\\usepackage|\\begin\{document\}")
 HEADING_NUM = re.compile(r"\\(?:sub)*section\*?\{\s*\d")
 
-# --- AI-tell phrases (high-precision; almost never wanted in CS-paper prose). Hard-flag these
-# so AI-generated drafts can't keep them; the softer, judgment-based de-AI list lives in the
-# refine SKILL (Claude rewrites those with taste). Distilled from PaperJury's de-ai prompt. ---
+# --- AI-tell phrases that are CONTEXT-FREE and almost never wanted in CS-paper prose — a regex flags
+# them with ~zero false positives, so they HARD-FAIL the build. Cohesion devices whose acceptability
+# DEPENDS ON CONTEXT are deliberately NOT here: the em-dash, sentence-initial connectives
+# (firstly/moreover/furthermore/additionally), and "not only … but also". A regex cannot tell a
+# legitimate appositive em-dash ("a pipeline — retrieval, planning — in which …") from em-dash abuse,
+# and banning the token outright pushed the model to a bare-comma "comma soup" that reads as fragmented
+# sentences (the very "碎句子" defect this split fixes). Those context-dependent tells are handled by
+# JUDGMENT in the refine de-AI pass (Claude keeps the good uses, removes the abuse). Distilled from
+# PaperJury's de-ai prompt. ---
 AI_TELLS = re.compile(
     r"\bit is worth (noting|mentioning|emphasi[sz]ing)\b"
     r"|\bit should be noted\b"
@@ -69,10 +75,7 @@ AI_TELLS = re.compile(
     r"|\bin today'?s (world|era|landscape)\b"
     r"|\bnavigat(e|es|ing) the (landscape|complexit|intricac)"
     r"|\bparadigm shift\b|\bgame[- ]chang(er|ing)\b"
-    r"|\bin order to\b"                                  # near-always replaceable by "to"
-    r"|(?m:^\s*(?:firstly|moreover|furthermore|additionally),)"  # sentence-initial connective stacks
-    r"|\bnot only\b[^.]{0,80}\bbut also\b"              # bounded so it can't span sentences
-    r"|---",   # LaTeX em-dash in prose (CS house style: use commas/colons/separate sentences)
+    r"|\bin order to\b",                                 # near-always replaceable by "to"
     re.IGNORECASE)
 
 # --- DATA-AWARE number-audit (only when results_mode == "data_aware") ---

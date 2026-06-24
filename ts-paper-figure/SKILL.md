@@ -11,8 +11,10 @@ description: >
   it to an editable PDF (matplotlib figures are born-vector; an image-model raster is vectorized by
   **ts-figure-optimize**'s DrawAI **HYBRID** = the approved render kept pixel-exact + an editable <text>
   overlay; if DrawAI is unavailable the approved PNG is kept as-is — never a lossy redraw, PNG always kept) and inserts it.
-  You configure only the image model (model/key/url). Architecture/pipeline/concept figures render;
-  quantitative results plots are SKIPPED (a proposal has no real data — drawing one fabricates results).
+  You configure only the image model (model/key/url). Engine is routed by SECTION: only real measured-data
+  results plots (data-aware mode, results section) use matplotlib; EVERY other figure — architecture/pipeline/
+  concept/math-geometry/schematic — is image-model rendered (so in proposal mode every figure is image-model).
+  In proposal mode quantitative results plots are SKIPPED (no real data — drawing one fabricates results).
   Use to turn the empty \fbox placeholders into publication-quality figures.
 ---
 
@@ -58,28 +60,30 @@ Text planning and critique need **no** config — they are Claude. **Quality mat
 `1536x1024` `quality=high` (the defaults above), give a detailed prompt, and do a real refine pass —
 a 1024×1024 low-effort render looks crude.
 
-## Two figure engines, ONE routing decision (code-precise vs free-form)
-Classify each figure by **how it is best drawn**, not just by its `type`, and route to one engine:
-- **CODE-PRECISE → matplotlib** (`../ts-paper-data/scripts/plot_results.py --script`, with the
-  figures4papers house style auto-applied — see `ts-paper-data/references/plot-style.md`). Use for
-  anything drawn exactly from values: a results bar/line/heatmap/radar, **and** a math/geometry concept
-  illustration (a distribution, a manifold, a trajectory, a loss curve, a 3D shape). Precise,
-  reproducible, no garbled labels. **Born vector:** the plot script MUST end with `finalize(fig, OUT)`
-  and MUST NOT call `plt.savefig()` itself — `finalize` writes the PNG **and** a vector
-  `figures/<label>.pdf` (editable text via `svg.fonttype=none`), so a matplotlib figure is an
-  editable vector with no extra step.
-  - A **RESULTS** plot (real measured metrics) requires real data → only in `data_aware` mode (numbers
-    from `results.facts.json`). In `proposal` mode a results plot must NOT exist — if one slipped through,
-    remove the float (never leave a blank `\fbox`, never fabricate/stub). Removing such a float does NOT
-    violate the no-blanks rule: a results placeholder is illegitimate in proposal mode and should never
-    have been emitted; the no-blanks rule applies only to legitimate placeholders, so never render a substitute.
-  - A **CONCEPT** plot (a synthetic/illustrative curve or geometry that explains an idea and makes NO
-    real-metric claim) is fine in EITHER mode — captioned as a concept, clearly illustrative.
-- **FREE-FORM → image model** (`gen_image.py` + GROUND + the vision-critique loop below). Use for box-and-arrow
-  architecture / pipeline / framework diagrams, qualitative scenes, icon schematics — what matplotlib
-  can't cleanly draw. After the PNG is approved, it is **vectorized** by the sibling **ts-figure-optimize**
-  skill (step 5b; DrawAI **HYBRID** — the approved render kept pixel-exact + an editable <text> overlay,
-  key-free). If DrawAI is unavailable, the approved PNG is kept as-is — never redrawn.
+## Two figure engines, routed by SECTION (matplotlib only for results-section data plots)
+The engine is decided by **which section the figure lives in**, NOT by its `type` — because matplotlib
+only looks good for real-data plots and renders concept/schematic figures poorly (the "ugly matplotlib
+figure" complaint this routing fixes):
+- **matplotlib — ONLY for a real measured-data results plot in the results/experiments section**
+  (`../ts-paper-data/scripts/plot_results.py --script`, figures4papers house style auto-applied — see
+  `ts-paper-data/references/plot-style.md`). This is the one place exact-from-values plotting is needed:
+  a results bar/line/heatmap/radar built from real numbers in `results.facts.json`, so **only in
+  `data_aware` mode**. **Born vector:** the plot script MUST end with `finalize(fig, OUT)` and MUST NOT
+  call `plt.savefig()` itself — `finalize` writes the PNG **and** a vector `figures/<label>.pdf` (editable
+  text via `svg.fonttype=none`). In `proposal` mode there are no real numbers, so a results plot must NOT
+  exist — if one slipped through, remove the float (never leave a blank `\fbox`, never fabricate/stub).
+  Removing such a float does NOT violate the no-blanks rule: a results placeholder is illegitimate in
+  proposal mode and should never have been emitted, so never render a substitute.
+- **image model — EVERY OTHER figure, in every other section** (`gen_image.py` + GROUND + the
+  vision-critique loop below): architecture / pipeline / framework / flow diagrams, qualitative scenes,
+  icon schematics, **AND every concept / math-geometry illustration** (a distribution, manifold,
+  trajectory, loss-curve shape, 3D geometry). These used to go to matplotlib and came out ugly — they
+  are now DESIGNED + GROUNDED + image-model-rendered + ≥2-round vision-critiqued. (A concept illustration
+  makes no real-metric claim and is grounding-OPTIONAL — ground it on a clean on-topic concept figure if
+  one exists, else treat it like a qualitative scene.) After the PNG is approved, it is **vectorized** by
+  the sibling **ts-figure-optimize** skill (step 5b; DrawAI **HYBRID** — the approved render kept
+  pixel-exact + an editable <text> overlay, key-free). If DrawAI is unavailable, the approved PNG is kept
+  as-is — never redrawn.
   - **🔴 HARD RULE — generation is INDEPENDENT of vectorizer availability.** A free-form figure is ALWAYS
     produced by the image model (steps 2→2b→3→4: rich DESIGN + GROUND on a top-journal MAIN figure +
     render + ≥2 critique rounds). The vectorize tail (5b) is a SEPARATE downstream step: **if
@@ -94,8 +98,10 @@ Classify each figure by **how it is best drawn**, not just by its `type`, and ro
     **skip the free-form figures** (leave their placeholders, note in `logs/6_figure.io.md`); matplotlib
     results/concept plots still run (no key). **Never** substitute a hand-drawn diagram or improvise a key.
 
-This unifies the suite's two figure-craft sources — **figures4papers (matplotlib)** for code-precise,
-**PaperBanana (image model)** for free-form. The figure floor (`figures.min`) is met by both kinds, and
+This unifies the suite's two figure-craft sources — **figures4papers (matplotlib)** for results-section
+data plots, **PaperBanana (image model)** for everything else. **NET: in `data_aware` mode only the
+results-section data plots are matplotlib; every other figure is image-model. In `proposal` mode there
+are no data plots, so EVERY figure is image-model.** The figure floor (`figures.min`) is met by both kinds, and
 **every placeholder ends rendered — no blanks. Both engines then end on an editable VECTOR PDF**:
 every figure ends as `figures/<label>.pdf` (the embedded vector), with the original
 `figures/<label>.png` and its source (`.plot.py` for matplotlib, `.svg` for an image-model hybrid) kept
@@ -107,21 +113,21 @@ kept as-is — HYBRID-only, no lossy redraw fallback; vectorization must NEVER r
 Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` placeholder in
 `sections/*.tex` that still has an `\fbox{\rule…}` (no `\includegraphics` yet):
 
-1. **Classify + route (Critic's first job).** Read `%% FIGURE-SPEC type=…`, `%% DESC:`, the caption, and
-   the section, then pick the engine per the routing above:
-   - **Results plot (real metrics):** `data_aware` → write a self-contained matplotlib script
-     `figures/<label>.plot.py` embedding the real numbers **from `results.facts.json`** (grouped_bar for
-     the main comparison, line for a sweep, bar for ablation deltas), run
-     `python3 ../ts-paper-data/scripts/plot_results.py --script figures/<label>.plot.py --out figures/<label>.png`,
+1. **Classify + route by SECTION (Critic's first job).** Read `%% FIGURE-SPEC type=…`, `%% DESC:`, the
+   caption, and **which section the placeholder is in**, then pick the engine:
+   - **Real-data results plot, in the results/experiments section (`data_aware` only):** write a
+     self-contained matplotlib script `figures/<label>.plot.py` embedding the real numbers **from
+     `results.facts.json`** (grouped_bar for the main comparison, line for a sweep, bar for ablation
+     deltas), run `python3 ../ts-paper-data/scripts/plot_results.py --script figures/<label>.plot.py --out figures/<label>.png`,
      then **`Read` the PNG** to vision-check (labels legible, no clipped bars, right metric), fix the
-     script if needed, then go to **step 6 (Insert)**. `proposal` mode → remove the float (no data).
-   - **Concept plot / math-geometry** (distribution, manifold, trajectory, loss curve, 3D shape — exact to
-     draw, illustrative, no metric claim): the SAME matplotlib path with synthetic/illustrative values
-     (captioned as a concept); `Read`-check, then **step 6**. Allowed in either mode.
-   - **Free-form schematic** (architecture/pipeline/framework/flow/qualitative scene): continue to **step 2**
-     (the `gen_image.py` Planner→render→Critic→refine loop).
-   The matplotlib path always inherits the figures4papers house style; the image-model path always runs
-   the vision-critique loop. Either way, no placeholder is left blank.
+     script if needed, then go to **step 6 (Insert)**. `proposal` mode → remove the float (no data). This
+     is the ONLY matplotlib path.
+   - **EVERY other figure** — architecture/pipeline/framework/flow schematic, qualitative scene, AND any
+     concept / math-geometry illustration (distribution, manifold, trajectory, loss-curve shape, 3D shape):
+     continue to **step 2** (the `gen_image.py` Planner→render→Critic→refine loop). A concept/math-geometry
+     figure is illustrative (no real-metric claim) and grounding-OPTIONAL, but is still IMAGE-MODEL — never
+     matplotlib (`check_figure_critique` FAILS a matplotlib figure outside the results section).
+   The image-model path always runs the vision-critique loop. Either way, no placeholder is left blank.
 2. **DESIGN the figure, then write the prompt (Planner + Stylist).** Adopt the lens of a *Lead Visual
    Designer for a top-tier venue (NeurIPS/CVPR/TGRS)*. FIRST sketch a concrete VISUAL BLUEPRINT (in your
    reasoning): for each position in the figure decide WHAT concrete thing appears — real imagery, a

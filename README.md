@@ -205,7 +205,7 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 | `ts-paper-write` | 3 | Draft all sections as LaTeX in one holistic pass |
 | `ts-paper-refine` | 4 | Right-size to word bands + de-AI scrub + logic self-check |
 | `ts-paper-review` | 5 | Adversarial peer-review hardening (default on, engine-agnostic) |
-| `ts-paper-figure` | 6 | Figure routing: matplotlib (precise) / image model (free-form, **grounded on a real on-topic top-journal MAIN figure**) + vision critique |
+| `ts-paper-figure` | 6 | Figure routing **by section**: matplotlib only for results-section data plots / image model for every other figure (**grounded on a real on-topic top-journal MAIN figure**) + vision critique |
 | `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
 | `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via DrawAI's **key-free hybrid** (render pixel-exact + editable text overlay) |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF (template-driven) |
