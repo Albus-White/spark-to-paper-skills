@@ -214,7 +214,7 @@ One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-st
 
 ---
 
-## 🖼️ The Figure Engine (DrawAI)
+## 🖼️ The Figure Engine (DrawAI）
 
 The capability **no other skill suite has**. AI image models produce **rasters** — but a paper needs **editable vector** figures. `ts-figure-optimize` is the suite's heavy, maximum-fidelity vectorizer, and it **vendors the full DrawAI engine** (~5 MB source, in `engine/`).
 
@@ -252,20 +252,20 @@ python ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor: OK?
 
 ## 🛡️ The Quality Stack
 
-Quality is not one check — it's **four complementary layers**. Claude does the judgement; code is the deterministic backstop.
+Quality is not one check — it is **four complementary layers**.  
+Claude handles judgement; code provides the deterministic backstop.
 
-| Layer | Owner | What it catches |
-|---|---|---|
-| **1 · Deterministic gates** | code | section shape, word bands, no-fabrication / number-audit, citation completeness, AI-phrase tells, vector-PDF presence, `error_count == 0` — **a red gate is a hard stop** |
-| **2 · Self-review** | Claude (in-pass) | right-sizing, term/coherence consistency, **de-AI scrub**, logic self-check |
-| **3 · Adversarial review** | Claude (default) | the one thing self-review can't do — *argue the other side*: N isolated reviewers + verbatim-quote anti-skim + adversarial-verify + loop-until-dry |
-| **4 · Vision critique** | Claude (figures) | `Read`s each rendered figure, critiques faithfulness/readability/aesthetics before accepting, then vectorizes |
+| # | Layer | Owner | Primary checks | Gate |
+|---:|---|---|---|---|
+| **1** | **Deterministic gates** | `code` | Section shape · word bands · no-fabrication · number audit · citation completeness · AI-phrase tells · vector-PDF presence | `error_count == 0` <br> **Red = hard stop** |
+| **2** | **Self-review** | Claude <br> *(in-pass)* | Right-sizing · term consistency · coherence · **de-AI scrub** · logic self-check | Revise until clean |
+| **3** | **Adversarial review** | Claude <br> *(default)* | Argues the other side · N isolated reviewers · verbatim-quote anti-skim · adversarial verification | Loop until dry |
+| **4** | **Vision critique** | Claude <br> *(figures)* | Reads each rendered figure · checks faithfulness · readability · aesthetics · then vectorizes | Accept only if visually sound |
 
-All gates flow through one entry point — don't ship on a red one:
+All gates flow through one entry point — **do not ship on a red gate**:
 
 ```bash
 python ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
-```
 
 ---
 
