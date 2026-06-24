@@ -266,6 +266,8 @@ All gates flow through one entry point — **do not ship on a red gate**:
 
 ```bash
 python ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
+```
+
 
 ---
 
