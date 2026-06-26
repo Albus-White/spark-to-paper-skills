@@ -106,32 +106,38 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ## 🚀 Quick Start
 
-### 1 · Install the skills
+### 1 · Install
 
-**Option A — Clone & copy (recommended)**
+**Option A — Install as a Claude Code plugin (recommended)**
+
+```bash
+# One command — auto-loads on every session, skills namespaced as /spark-to-paper:ts-paper etc.
+git clone https://github.com/Albus-White/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+```
+
+That's it. Claude Code auto-discovers the plugin on next launch. Run `/spark-to-paper:ts-paper` to verify.
+
+**Option B — `--plugin-dir` (try before you install)**
 
 ```bash
 git clone https://github.com/Albus-White/spark-to-paper-skills.git
-cd spark-to-paper-skills
-
-# Global install (available in every project)
-cp -r ts-* ~/.claude/skills/
-
-# …or per-project install
-cp -r ts-* <your-project>/.claude/skills/
+claude --plugin-dir ./spark-to-paper-skills
 ```
 
-**Option B — From a [GitHub release](https://github.com/Albus-White/spark-to-paper-skills/releases)**
-
-Download the latest release, extract, and copy the `ts-*` directories into your `.claude/skills/` folder.
-
-**Option C — Git submodule (keeps skills updatable)**
+**Option C — Copy as standalone skills (no namespacing)**
 
 ```bash
-git submodule add https://github.com/Albus-White/spark-to-paper-skills.git .claude/skills/spark-to-paper
+git clone https://github.com/Albus-White/spark-to-paper-skills.git
+cp -r spark-to-paper-skills/skills/ts-* ~/.claude/skills/
 ```
 
-> 💡 **Update check**: the suite checks GitHub for newer versions on each run and shows a one-line notice when an update is available.
+**Option D — Git submodule (keeps skills updatable)**
+
+```bash
+git submodule add https://github.com/Albus-White/spark-to-paper-skills.git .claude/skills/spark-to-paper-skills
+```
+
+> 💡 **Update check**: the suite checks GitHub for newer versions on each run and shows a one-line notice when an update is available. To update: `git -C ~/.claude/skills/spark-to-paper-skills pull`
 
 ### 2 · (Optional) Configure secrets
 
@@ -256,8 +262,8 @@ raster figure (PNG/JPG)
 Provision the runtime once (~4 GB SAM3 / PaddleOCR / RMBG weights + venv, auto-deployed on first run):
 
 ```bash
-python ts-figure-optimize/scripts/setup_drawai.py --device cpu   # provision
-python ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor: OK?
+python skills/ts-figure-optimize/scripts/setup_drawai.py --device cpu   # provision
+python skills/ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor: OK?
 ```
 
 ---
@@ -277,7 +283,7 @@ Claude handles judgement; code provides the deterministic backstop.
 All gates flow through one entry point — **do not ship on a red gate**:
 
 ```bash
-python ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
+python skills/ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
 
 ```
 
@@ -297,7 +303,7 @@ LLM-written papers are notorious for two failure modes: **hallucinated citations
 
 ## 📐 Template-Agnostic
 
-Write to **whatever venue you pick** — content quality is invariant. A template is a directory under `ts-paper/templates/<name>/` with `template.json` + its LaTeX `.sty`/`.cls` + `main.tex.tmpl`.
+Write to **whatever venue you pick** — content quality is invariant. A template is a directory under `skills/ts-paper/templates/<name>/` with `template.json` + its LaTeX `.sty`/`.cls` + `main.tex.tmpl`.
 
 | Template | Venue | Style |
 |---|---|---|
@@ -313,7 +319,7 @@ Write to **whatever venue you pick** — content quality is invariant. A templat
 After Stages 0–7 produce a complete first-draft paper, **Stage 8 runs automatically** via the in-repo `ts-paper-experiment` skill — turning a no-results draft into a results-bearing manuscript:
 
 ```bash
-python ts-paper/scripts/handoff_to_experiments.py --workdir <ts_paper_run>   # → experiments/
+python skills/ts-paper/scripts/handoff_to_experiments.py --workdir <ts_paper_run>   # → experiments/
 # ts-paper-experiment ingests input/draft/, diagnoses logic, runs only FEASIBLE
 # experiments (real data/code only), fills tables, recompiles → flows back to the run
 ```
@@ -327,7 +333,7 @@ python ts-paper/scripts/handoff_to_experiments.py --workdir <ts_paper_run>   # �
 ## ⚙️ Requirements
 
 - **Claude Code** (the suite is a set of skills)
-- **Python 3.10+** with figure deps: `pip install -r ts-figure-optimize/requirements.txt`
+- **Python 3.10+** with figure deps: `pip install -r skills/ts-figure-optimize/requirements.txt`
 - **LaTeX** (`latexmk` + a TeX distribution) for the compile stage
 - *Optional:* **LibreOffice** (PPTX gate) · **~4 GB + `HF_TOKEN`** (DrawAI) · an **image-model endpoint** (free-form figures) · **Codex/OpenAI auth** (DrawAI vector path + GPT vision)
 

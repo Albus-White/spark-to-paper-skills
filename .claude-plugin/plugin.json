@@ -1,0 +1,14 @@
+{
+  "name": "spark-to-paper",
+  "description": "End-to-end academic paper generation suite for Claude Code. 13 composable skills: idea → literature → writing → experiments → figures → compiled PDF.",
+  "version": "1.1.0",
+  "author": {
+    "name": "Albus White"
+  },
+  "homepage": "https://github.com/Albus-White/spark-to-paper-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Albus-White/spark-to-paper-skills.git"
+  },
+  "license": "MIT"
+}
