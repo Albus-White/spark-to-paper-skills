@@ -1,6 +1,8 @@
 # 🏆 Generated Paper Showcase
 
-All papers below were generated **end-to-end** by `spark-to-paper-skills` — from a research proposal to a compiled, publication-format PDF with real citations, editable vector figures, and machine-checked integrity.
+All papers below were generated **end-to-end** by [`spark-to-paper-skills`](https://github.com/Albus-White/spark-to-paper-skills) — from a research proposal to a compiled, publication-format PDF with real citations, editable vector figures, and machine-checked integrity.
+
+> **4 papers across 4 domains** — environmental monitoring, energy forecasting, environmental AI, computer vision.
 
 ---
 
@@ -13,7 +15,7 @@ All papers below were generated **end-to-end** by `spark-to-paper-skills` — fr
 <b>A Leakage-Free Reappraisal of Decomposition-Ensemble PM2.5 Forecasting</b><br>
 <i>Domain: Environmental Monitoring · 10 pages · Traitement du Signal format</i><br><br>
 Proposes a leakage-free evaluation framework for decomposition-ensemble methods in PM2.5 air quality forecasting, addressing data leakage issues in traditional train-test splits.<br><br>
-<a href="pm25_forecasting.pdf">📄 Download PDF</a>
+<a href="pm25_forecasting.pdf"><img src="https://img.shields.io/badge/📄_Download_PDF-10_pages-2ea44f?style=for-the-badge" alt="Download PDF"></a>
 </td>
 </tr>
 </table>
@@ -29,7 +31,7 @@ Proposes a leakage-free evaluation framework for decomposition-ensemble methods 
 <b>A Leakage-Free Reappraisal of Decomposition-Ensemble Electricity-Load Forecasting</b><br>
 <i>Domain: Energy Forecasting · 12 pages · Traitement du Signal format</i><br><br>
 Extends the leakage-free decomposition-ensemble framework to electricity load prediction, demonstrating methodology transferability across forecasting domains.<br><br>
-<a href="electricity_forecasting.pdf">📄 Download PDF</a>
+<a href="electricity_forecasting.pdf"><img src="https://img.shields.io/badge/📄_Download_PDF-12_pages-2ea44f?style=for-the-badge" alt="Download PDF"></a>
 </td>
 </tr>
 </table>
@@ -45,7 +47,7 @@ Extends the leakage-free decomposition-ensemble framework to electricity load pr
 <b>Interpretable Air and Water Quality Prediction with Feature Selection and Boosted Ensembles</b><br>
 <i>Domain: Environmental AI · 11 pages · Traitement du Signal format</i><br><br>
 Combines feature selection with boosted ensemble methods for interpretable environmental quality prediction across air and water monitoring domains.<br><br>
-<a href="air_water_quality.pdf">📄 Download PDF</a>
+<a href="air_water_quality.pdf"><img src="https://img.shields.io/badge/📄_Download_PDF-11_pages-2ea44f?style=for-the-badge" alt="Download PDF"></a>
 </td>
 </tr>
 </table>
@@ -61,7 +63,7 @@ Combines feature selection with boosted ensemble methods for interpretable envir
 <b>Sparse Evidence Pooling for Compact Convolutional Leaf-Disease Recognition</b><br>
 <i>Domain: Computer Vision / Agriculture · 12 pages · Traitement du Signal format</i><br><br>
 Introduces sparse evidence pooling for lightweight convolutional networks, targeting efficient plant leaf disease classification in agricultural applications.<br><br>
-<a href="leaf_disease.pdf">📄 Download PDF</a>
+<a href="leaf_disease.pdf"><img src="https://img.shields.io/badge/📄_Download_PDF-12_pages-2ea44f?style=for-the-badge" alt="Download PDF"></a>
 </td>
 </tr>
 </table>
@@ -69,6 +71,6 @@ Introduces sparse evidence pooling for lightweight convolutional networks, targe
 ---
 
 <p align="center">
-<i>Every paper was generated with machine-checked integrity: no fabricated numbers, every citation verified, every figure editable.</i><br>
-<sub><a href="https://github.com/Albus-White/spark-to-paper-skills">← Back to spark-to-paper-skills</a></sub>
+<i>Every paper was generated with machine-checked integrity: no fabricated numbers, every citation verified, every figure editable.</i><br><br>
+<a href="https://github.com/Albus-White/spark-to-paper-skills"><img src="https://img.shields.io/badge/←_Back_to_spark--to--paper--skills-d97757?style=for-the-badge" alt="Back"></a>
 </p>

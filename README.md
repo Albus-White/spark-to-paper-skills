@@ -46,7 +46,8 @@
 </td>
 <td valign="middle">
 <b>4 papers across 4 domains</b> — environmental monitoring, energy forecasting, environmental AI, computer vision — generated fully end-to-end with real citations, editable vector figures, and compiled PDF output.<br><br>
-<a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/View_Full_Showcase_%E2%86%92-All_4_Papers-d73a49?style=for-the-badge" alt="View Showcase"></a>
+<a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/View_Full_Showcase_%E2%86%92-555555?style=for-the-badge" alt="View Showcase"></a>&nbsp;
+<a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/All_4_Papers-d73a49?style=for-the-badge" alt="All 4 Papers"></a>
 </td>
 </tr>
 </table>
@@ -373,6 +374,7 @@ Inspired by:
 
 - 🔬 [AI-Scientist](https://github.com/SakanaAI/AI-Scientist) (Sakana AI) — Automated research pioneer
 - 🦞 [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) (AIMING Lab) — 23-stage autonomous research pipeline
+- 📚 [academic-research-skills](https://github.com/imbad0202/academic-research-skills) (Imbad0202) — Claude Code research skill suite
 - 🧠 [autoresearch](https://github.com/karpathy/autoresearch) (Andrej Karpathy) — End-to-end research automation
 - 🎨 [DrawAI](https://github.com/DrawAI) — Figure vectorization engine (vendored)
 
