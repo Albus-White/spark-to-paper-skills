@@ -108,13 +108,30 @@ into a **publication-format paper**: drafted section-by-section as LaTeX, cited 
 
 ### 1 · Install the skills
 
-```bash
-# Per-project
-cp -r */ <your-project>/.claude/skills/
+**Option A — Clone & copy (recommended)**
 
-# …or globally
-cp -r */ ~/.claude/skills/
+```bash
+git clone https://github.com/Albus-White/spark-to-paper-skills.git
+cd spark-to-paper-skills
+
+# Global install (available in every project)
+cp -r ts-* ~/.claude/skills/
+
+# …or per-project install
+cp -r ts-* <your-project>/.claude/skills/
 ```
+
+**Option B — From a [GitHub release](https://github.com/Albus-White/spark-to-paper-skills/releases)**
+
+Download the latest release, extract, and copy the `ts-*` directories into your `.claude/skills/` folder.
+
+**Option C — Git submodule (keeps skills updatable)**
+
+```bash
+git submodule add https://github.com/Albus-White/spark-to-paper-skills.git .claude/skills/spark-to-paper
+```
+
+> 💡 **Update check**: the suite checks GitHub for newer versions on each run and shows a one-line notice when an update is available.
 
 ### 2 · (Optional) Configure secrets
 
