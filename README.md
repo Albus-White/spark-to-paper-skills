@@ -1,379 +1,256 @@
 <p align="center">
-  <img src="docs/framework.png" width="100%" alt="spark-to-paper-skills framework">
+  <img src="docs/framework.png" width="100%" alt="spark-to-paper-skills">
 </p>
 
-<h1 align="center">✨ spark-to-paper-skills</h1>
+<h1 align="center">spark-to-paper-skills</h1>
 
 <h3 align="center"><b><i>Drop a spark. Get a paper.</i></b></h3>
 
 <p align="center">
-  <b>The only <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a> <i>skill suite</i> that goes fully end-to-end —<br>
-  literature → writing → experiments → figure generation → <i>editable vector</i> figures → compiled PDF.<br>
-  No app. No server. No setup. Just drop the skills in and ask.</b>
+  <b>The only <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> plugin that goes fully end-to-end —<br>
+  idea → literature → writing → experiments → editable vector figures → compiled PDF.<br>
+  No app. No server. Just install the plugin and ask.</b>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Claude_Code-Pure_Skill_Suite-d97757?logo=anthropic&logoColor=white" alt="Pure Claude Code skill suite">
-  <img src="https://img.shields.io/badge/Scope-End--to--End-2ea44f" alt="End to end">
-  <img src="https://img.shields.io/badge/Skills-13_active-6f42c1" alt="13 skills">
+  <a href="https://github.com/Albus-White/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Albus-White/spark-to-paper-skills?label=Latest%20Release&color=d97757" alt="Latest Release"></a>
+  <img src="https://img.shields.io/badge/Claude_Code-Plugin-d97757?logo=anthropic&logoColor=white" alt="Claude Code Plugin">
+  <img src="https://img.shields.io/badge/Skills-13-6f42c1" alt="13 skills">
   <img src="https://img.shields.io/badge/Figures-Editable_Vector-ff8c42" alt="Editable vector figures">
-  <img src="https://img.shields.io/badge/Integrity-Machine--checked-b31b1b" alt="Machine-checked integrity">
-  <img src="https://img.shields.io/badge/Templates-Agnostic-0969da" alt="Template agnostic">
+  <img src="https://img.shields.io/badge/Integrity-Machine--Checked-b31b1b" alt="Machine-checked integrity">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
 </p>
 
 <p align="center">
-  <a href="#-how-it-compares">🧭 Compare</a> ·
-  <a href="#-quick-start">🚀 Quick Start</a> ·
-  <a href="#-the-pipeline">🔬 Pipeline</a> ·
-  <a href="#-the-skills">🧩 Skills</a> ·
-  <a href="#%EF%B8%8F-the-figure-engine-drawai">🖼️ Figure Engine</a> ·
-  <a href="#%EF%B8%8F-the-quality-stack">🛡️ Quality</a> ·
-  <a href="#-integrity">🔒 Integrity</a> ·
-  <a href="#-faq">🙋 FAQ</a>
+  <a href="#-generated-paper-showcase">Paper Showcase</a> ·
+  <a href="#-quick-start">Quick Start</a> ·
+  <a href="#-the-pipeline">Pipeline</a> ·
+  <a href="#-the-skills">Skills</a> ·
+  <a href="#-the-figure-engine">Figure Engine</a>
 </p>
 
 ---
 
-<p align="center"><b><i>One spark in. One paper out.</i></b></p>
-
 <p align="center">
-  <img src="docs/method.png" width="100%" alt="spark-to-paper-skills framework">
+  <img src="docs/method.png" width="100%" alt="spark-to-paper-skills method overview">
 </p>
-
 
 ---
 
-## 🧭 How It Compares
+## Generated Paper Showcase
 
-The "AI-for-research" landscape has many tools, but they cover **different capabilities**. Here's the honest matrix — what each one actually does:
-
-<p align="center">
-  <img src="docs/comparison.svg" width="100%" alt="Capability comparison matrix across AI-research tools">
-</p>
-
-<p align="center"><sub><b>✓</b> full&nbsp;&nbsp;·&nbsp;&nbsp;<b>●</b> partial&nbsp;&nbsp;·&nbsp;&nbsp;<b>–</b> none&nbsp;&nbsp;|&nbsp;&nbsp;sources: <a href="https://github.com/Imbad0202/academic-research-skills">ARS</a> · <a href="https://github.com/AgentAlphaAGI/Idea2Paper">Idea2Paper</a> · <a href="https://github.com/aiming-lab/AutoResearchClaw">AutoResearchClaw</a> · <a href="https://github.com/SakanaAI/AI-Scientist">AI-Scientist</a> · <a href="https://github.com/jimmc414/Kosmos">Kosmos</a> · <a href="https://github.com/karpathy/autoresearch">karpathy/autoresearch</a> · <a href="https://victorchen96.github.io/auto_research/framework.html">auto_research</a></sub></p>
-
-> 🌟 **The one row that lights up everywhere.** spark-to-paper-skills is the **only *pure Claude Code skill*** that runs the *whole* arc — and the only tool of any kind that does **experiments + auto-writing + auto-figure-drawing + editable-vector figures** together with machine-checked integrity.
->
-> The heavy autonomous scientists ([AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw), [AI-Scientist](https://github.com/SakanaAI/AI-Scientist), [Kosmos](https://github.com/jimmc414/Kosmos)) match the *breadth* — but ship as **standalone Python products** (Docker, Neo4j, tens of thousands of LOC). The other *skills* ([ARS](https://github.com/Imbad0202/academic-research-skills), [Idea2Story](https://github.com/AgentAlphaAGI/Idea2Paper)) don't run experiments or draw figures. **Nobody else gives you all of it as drop-in skills.**
+<table>
+<tr>
+<td width="18%">
+<a href="docs/showcase/SHOWCASE.md"><img src="docs/showcase/pm25_forecasting-01.png" width="140" alt="Sample Paper"/></a>
+</td>
+<td valign="middle">
+<h3>4 papers across 4 domains</h3>
+Environmental monitoring · Energy forecasting · Environmental AI · Computer vision — generated end-to-end by the skill suite, each with real citations, editable vector figures, and compiled PDF output.<br><br>
+<a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/View_Full_Showcase_%E2%86%92-4_Papers-d73a49?style=for-the-badge" alt="View Showcase"></a>
+</td>
+</tr>
+</table>
 
 ---
 
-## 💡 What Is This?
+## One Command
+
+```bash
+git clone https://github.com/Albus-White/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+```
+
+Then ask Claude:
+
+```
+Run ts-paper on this proposal.
+```
+
+Paste your idea, proposal, or data — the orchestrator auto-routes and runs the full chain.
+
+---
+
+## What Is This?
 
 **You drop a spark. Claude writes the paper. Small scripts do only the irreducible parts.**
 
-`spark-to-paper-skills` (a.k.a. **Auto-Research-PaperGenSkill**) is a suite of **13 composable Claude Code skills** that turn any of three inputs —
+`spark-to-paper-skills` is a suite of **13 composable Claude Code skills** that turn any of three inputs — a one-line research idea, a full proposal, or a proposal with real experimental results — into a **publication-format paper**: drafted section-by-section as LaTeX, cited with real verified references, illustrated with editable vector figures, and compiled to a finished PDF.
 
-- 🧠 a **one-line research idea**,
-- 📋 a **full proposal** (problem / method / evaluation / contributions), or
-- 📊 a **proposal *with real experimental results*** (CSV / JSON / a pasted table / numbers in prose) —
-
-into a **publication-format paper**: drafted section-by-section as LaTeX, cited with **real, verified** references, illustrated with **editable vector figures**, and compiled to a finished `main.pdf` — all without leaving Claude Code.
+Two integrity modes ensure honesty: **proposal mode** never fabricates numbers (result cells stay blank), while **data-aware mode** traces every number to your real data. Both are machine-checked — the build fails on violations.
 
 ---
 
- 
+## The Pipeline
 
-## 🎯 Design Philosophy
+One orchestrator (`ts-paper`) routes the input, then drives a **7-stage chain**:
 
-|     | Principle            | Rule                                                                                            |
-| :-: | :------------------- | :---------------------------------------------------------------------------------------------- |
-|  🧠 | **Model reasons**    | Claude owns judgment-heavy work: writing, research, critique, and review.                       |
-|  🛠 | **Code backstops**   | Python handles deterministic tasks: linting, assembly, plotting, embeddings, and vectorization. |
-|  🪶 | **Zero infra**       | No app, server, database, or Docker required; copy skills into `.claude/skills/` and go.        |
-|  🏆 | **Quality first**    | Verify citations, self-review outputs, run linters, and polish before delivery.                 |
-|  🔒 | **Integrity always** | Never invent numbers; trace every value to source data; red linters fail the build.             |
-
-
----
-
-## 📦 What You Get
-
-| Deliverable   | Files                                   | Guarantee                                                               |
-| :------------ | :-------------------------------------- | :---------------------------------------------------------------------- |
-| **Package**   | `main.tex` · `main.pdf`                 | Compiled paper in the selected venue template.                          |
-| **Drafts**    | `sections/*.tex` · `abstract.tex`       | One LaTeX source file per section.                                      |
-| **Blueprint** | `blueprint.json`                        | Structured title, keywords, contributions, notation, and word targets.  |
-| **Citations** | `refs.bib` · `claims_map.json`          | Real BibTeX entries; every `\cite{}` is justified and traceable.        |
-| **Figures**   | `figures/<label>.pdf` · `.png` · source | Editable vector figures, with raster figures reconstructed when needed. |
-| **Logs**      | `logs/<n>_<stage>.io.md` · `index.md`   | Full INPUT / DECISIONS / OUTPUT trace for every stage.                  |
-| **Gates**     | `run_gates.py`                          | All deterministic gates pass: citations, draft, vectors, and LaTeX.     |
-
-
+```
+                         ┌──────────────── optional upstream ────────────────┐
+ [corpus.jsonl] ─▶ ts-kg-build ─▶ kg/         (research-pattern KG)
+ [raw idea]     ─▶ ts-idea2story ─▶ story + citation seed
+                         └──────────────────────────────────────────────────┘
+                                                │
+ [proposal  OR  proposal + real results]  ─────▶ ts-paper  (Stage 0: ROUTE)
+                                                │
+   1. ts-paper-plan ──▶ blueprint.json          title · keywords · contributions
+   2. ts-paper-cite ──▶ refs.bib                ≥40 REAL refs via WebSearch + Crossref
+   3. ts-paper-write ─▶ sections/*.tex          all sections in one holistic pass
+   4. ts-paper-refine ▶ right-size + de-AI      scrub + logic self-check
+   5. ts-paper-review ▶ adversarial review      multi-reviewer hardening
+   6. ts-paper-figure ▶ figures + vectorize     image-model → DrawAI hybrid → editable PDF
+   7. ts-paper-latex ─▶ main.pdf                assemble + compile
+                                                │
+   8. ts-paper-experiment (AUTO) ─▶ run feasible experiments, fill tables, recompile
+```
 
 ---
 
-## 🚀 Quick Start
+## The Skills
+
+| Skill | Stage | Role |
+|---|---|---|
+| `ts-paper` | orchestrator | Routes input and drives the 7-stage chain |
+| `ts-idea2story` | upstream | Raw idea → structured research story + citation seed |
+| `ts-kg-build` | upstream (opt.) | Corpus → research-pattern knowledge graph for recall |
+| `ts-paper-plan` | 1 | Proposal → `blueprint.json` (one reasoning pass) |
+| `ts-paper-cite` | 2 | Real, complete bibliography (WebSearch + Crossref, floor 40) |
+| `ts-paper-write` | 3 | Draft all sections as LaTeX in one holistic pass |
+| `ts-paper-refine` | 4 | Right-size to word bands + de-AI scrub + logic self-check |
+| `ts-paper-review` | 5 | Adversarial peer-review hardening |
+| `ts-paper-figure` | 6 | Figure routing: matplotlib (data) / image model (schematics) |
+| `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
+| `ts-figure-optimize` | 6 (vector) | Raster → editable SVG/PDF/PPTX via DrawAI hybrid |
+| `ts-paper-latex` | 7 | Assemble + compile the final PDF |
+| `ts-paper-experiment` | 8 | Run feasible experiments, fill tables, recompile |
+
+---
+
+## What Makes It Different
+
+| Capability | How It Works |
+|---|---|
+| **End-to-End** | Idea → literature → writing → experiments → figures → compiled PDF — all inside Claude Code |
+| **Editable Vector Figures** | AI-generated rasters reconstructed as editable SVG/PDF/PPTX via DrawAI hybrid (~0.91 SSIM) |
+| **Machine-Checked Integrity** | No fabricated numbers, every citation verified, deterministic gates fail the build on violations |
+| **Two Integrity Modes** | Proposal mode (forward-looking, no numbers) and data-aware mode (every number traced to real data) |
+| **Template-Agnostic** | NeurIPS and IIETA templates bundled; add any venue by dropping a template directory |
+| **Adversarial Review** | Multi-reviewer hardening with verbatim-quote anti-skim — argues the other side of your claims |
+| **Auto-Experiments** | Stage 8 runs feasible experiments on real data, fills result tables, and recompiles |
+
+---
+
+## The Figure Engine
+
+`ts-figure-optimize` is the suite's heavy vectorizer, vendoring the full **DrawAI engine**. It does not embed a bitmap — it decomposes and reconstructs:
+
+```
+raster figure (PNG/JPG)
+   ├─ SAM3            → segment regions        (local, GPU, no account)
+   ├─ PaddleOCR       → read every text run    (local, GPU, no account)
+   ├─ Box-IR          → structured layout IR
+   └─ HYBRID build    → pixel-exact render + editable <text> overlay
+   │
+   └─▶ editable SVG · vector PDF · editable PPTX
+```
+
+**~0.91 SSIM** — the graphics stay pixel-exact (they ARE the approved render) and only the re-typed labels differ from the original. Key-free, no account needed.
+
+---
+
+## Quick Start
 
 ### 1 · Install
 
 **Option A — Install as a Claude Code plugin (recommended)**
 
 ```bash
-# One command — auto-loads on every session, skills namespaced as /spark-to-paper:ts-paper etc.
 git clone https://github.com/Albus-White/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
 ```
 
-That's it. Claude Code auto-discovers the plugin on next launch. Run `/spark-to-paper:ts-paper` to verify.
+Auto-loads on next session. Skills available as `/spark-to-paper:ts-paper`, etc.
 
-**Option B — `--plugin-dir` (try before you install)**
+**Option B — Try before you install**
 
 ```bash
 git clone https://github.com/Albus-White/spark-to-paper-skills.git
 claude --plugin-dir ./spark-to-paper-skills
 ```
 
-**Option C — Copy as standalone skills (no namespacing)**
+**Option C — Copy as standalone skills**
 
 ```bash
 git clone https://github.com/Albus-White/spark-to-paper-skills.git
 cp -r spark-to-paper-skills/skills/ts-* ~/.claude/skills/
 ```
 
-**Option D — Git submodule (keeps skills updatable)**
+**Option D — Git submodule**
 
 ```bash
 git submodule add https://github.com/Albus-White/spark-to-paper-skills.git .claude/skills/spark-to-paper-skills
 ```
 
-> 💡 **Update check**: the suite checks GitHub for newer versions on each run and shows a one-line notice when an update is available. To update: `git -C ~/.claude/skills/spark-to-paper-skills pull`
+> The suite checks GitHub for newer versions on each run. To update: `git -C ~/.claude/skills/spark-to-paper-skills pull`
 
 ### 2 · (Optional) Configure secrets
 
-Copy `.env.example` → `.env` (gitignored, auto-loaded) and fill in only what you use:
+| Secret | Variables | Used by | When needed |
+|---|---|---|---|
+| **Figure model** | `TS_FIG_API_KEY`, `TS_FIG_BASE_URL`, `TS_FIG_MODEL` | `ts-paper-figure` | Render schematics with an image model |
+| **Vision QA** | `OPENAI_API_KEY`, `VISION_MODEL` | `ts-figure-optimize` | Correct figure text, compare per-region defects |
+| **Embeddings** | `TS_EMBED_*` | `ts-kg-build`, `ts-idea2story` | KG-grounded recall (optional, graceful degradation) |
+| **DrawAI weights** | `HF_TOKEN` | `setup_drawai.py` | Download gated SAM3 weights once |
+| **Overleaf sync** | `OVERLEAF_GIT_URL`, `OVERLEAF_TOKEN` | `ts-paper-experiment` | Sync with Overleaf when enabled |
 
- 
-
-| Secret group       | Variables                                           | Used by                        | When needed                                                  |
-| :----------------- | :-------------------------------------------------- | :----------------------------- | :----------------------------------------------------------- |
-| **Figure model**   | `TS_FIG_API_KEY`, `TS_FIG_BASE_URL`, `TS_FIG_MODEL` | `ts-paper-figure`              | Render free-form schematics with an image model.             |
-| **Vision QA**      | `OPENAI_API_KEY`, `VISION_MODEL`                    | `ts-figure-optimize`           | Correct figure text and compare per-region defects.          |
-| **Embeddings**     | `TS_EMBED_*`                                        | `ts-kg-build`, `ts-idea2story` | Enable KG-grounded recall; optional and gracefully degraded. |
-| **DrawAI weights** | `HF_TOKEN`                                          | `setup_drawai.py`              | Download gated SAM3 weights once.                            |
-| **Overleaf sync**  | `OVERLEAF_GIT_URL`, `OVERLEAF_TOKEN`                | `ts-paper-experiment`          | Sync with Overleaf when explicitly enabled.                  |
-
+Copy `.env.example` → `.env` and fill in only what you use.
 
 ### 3 · Just ask Claude
 
 ```
-Run ts-paper on this proposal.   ⟵ then paste / attach your idea, proposal, or proposal + data
+Run ts-paper on this proposal.
 ```
 
-The orchestrator **auto-routes** your input, picks the right mode, runs the full chain, and reports page count, sections, reference count, the review outcome, and the figures — all editable vector PDFs.
-
-> 💡 **Template choice:** pass `template=neurips` (or any venue you've added) — default is `ts_iieta`.
+Paste your idea, proposal, or proposal + data. The orchestrator auto-routes, runs the chain, and delivers a compiled paper.
 
 ---
 
-## 🔬 The Pipeline
+## Requirements
 
-One orchestrator (**`ts-paper`**) routes the input, then drives a focused **7-stage chain** (plus an auto-run experiments stage):
-
-```
-                         ┌──────────────────── optional upstream ────────────────────┐
- [corpus.jsonl] ─▶ ts-kg-build ─▶ kg/         (research-pattern knowledge graph, best-effort)
- [raw idea]     ─▶ ts-idea2story ─▶ story_proposal.md + retrieved_papers.json
-                         └────────────────────────────────────────────────────────────┘
-                                                │
- [proposal  OR  proposal + real results]  ─────▶  ts-paper  (Stage 0: ROUTE + set results_mode)
-                                                │
-   1. ts-paper-plan ──▶ blueprint.json          (title · keywords · 3 contributions · notation · plan)
-   2. ts-paper-cite ──▶ refs.bib                (≥40 REAL refs via WebSearch + Crossref; read each abstract)
-   3. ts-paper-write ─▶ sections/*.tex          (all sections in one holistic pass; no fabricated numbers)
-   4. ts-paper-refine ▶ right-size + de-AI + logic self-check
-   5. ts-paper-review ▶ adversarial peer-review hardening (runs by default)
-   6. ts-paper-figure ▶ image-model (free-form, GROUNDED on a top-journal MAIN figure) / matplotlib (precise) + vision critique
-                       └▶ ts-figure-optimize: raster ──▶ editable vector SVG/PDF (+PPTX)
-   7. ts-paper-latex ─▶ assemble + compile ──▶ main.pdf
-                                                │
-   8. ts-paper-experiment  (AUTO-RUN) ─▶ run FEASIBLE experiments, fill result tables, recompile
-```
-
-<details>
-<summary><b>Stage 0 — Input routing (a Claude reasoning step, no fixed schema)</b></summary>
-
-<br>
-
-| Class | What was dropped | Route | `results_mode` |
-|---|---|---|---|
-| **(a) bare idea** | one line, no method/eval structure | `ts-idea2story` → then plan | `proposal` |
-| **(b) proposal** | problem + method + eval, **no measured results** | plan (proposal) | `proposal` |
-| **(c) proposal + REAL results** | measured numbers in prose, or any attached data file | plan → **`ts-paper-data`** | `data_aware` |
-| **(d) existing `story.json`** | an 8-field story from a prior run | plan (skip idea2story) | `proposal` |
-
-</details>
-
-### Two modes, opposite integrity rules
-
-| | **Proposal mode** | **Data-aware mode** |
-|---|---|---|
-| Numbers | ⛔ never invent — result cells stay blank (`--`) | ✅ report the real numbers, in past tense |
-| Tense | forward-looking ("we evaluate… we expect…") | retrospective ("we measured…") |
-| Guarantee | no metric ever fabricated | **every number must trace to your data** (machine-audited) |
-
----
-
-## 🧩 The Skills
-
-13 skill folders ship; **all active**. (`ts-paper-vector` was removed — `ts-figure-optimize`'s DrawAI **hybrid** is the sole figure vectorizer; if DrawAI is unavailable the approved PNG is kept, never redrawn.)
-
-| Skill | Stage | Role |
-|---|---|---|
-| **`ts-paper`** | orchestrator | Routes input (idea / proposal / proposal+data) and drives the chain |
-| `ts-idea2story` | upstream | Raw idea → structured 8-field research story + citation seed |
-| `ts-kg-build` | upstream (opt.) | Corpus → research-pattern knowledge graph for recall |
-| `ts-paper-plan` | 1 | Proposal → `blueprint.json` (one reasoning pass) |
-| `ts-paper-cite` | 2 | Build a **real, complete** bibliography (WebSearch + Crossref, floor 40) |
-| `ts-paper-write` | 3 | Draft all sections as LaTeX in one holistic pass |
-| `ts-paper-refine` | 4 | Right-size to word bands + de-AI scrub + logic self-check |
-| `ts-paper-review` | 5 | Adversarial peer-review hardening (default on, engine-agnostic) |
-| `ts-paper-figure` | 6 | Figure routing **by section**: matplotlib only for results-section data plots / image model for every other figure (**grounded on a real on-topic top-journal MAIN figure**) + vision critique |
-| `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
-| `ts-figure-optimize` | 6 (vector) | **Sole figure vectorizer** — raster → editable SVG/PDF/PPTX via DrawAI's **key-free hybrid** (render pixel-exact + editable text overlay) |
-| `ts-paper-latex` | 7 | Assemble + compile the final PDF (template-driven) |
-| `ts-paper-experiment` | 8 | Diagnose logic, **run feasible experiments**, fill tables, recompile |
-
----
-
-## 🖼️ The Figure Engine (DrawAI）
-
-The capability **no other skill suite has**. AI image models produce **rasters** — but a paper needs **editable vector** figures. `ts-figure-optimize` is the suite's heavy, maximum-fidelity vectorizer, and it **vendors the full DrawAI engine** (~5 MB source, in `engine/`).
-
-It does **not** just embed a bitmap. It *decomposes and reconstructs* the figure:
-
-```
-raster figure (PNG/JPG)
-   ├─ SAM3            → segment the layout into regions   (local, GPU, no account)
-   ├─ PaddleOCR       → read every text run               (local, GPU, no account)
-   ├─ Box-IR          → build a structured layout IR
-   └─ HYBRID build    → keep the render PIXEL-EXACT + lay an editable <text> overlay on top
-   │
-   └─▶ editable SVG · vector PDF · editable PPTX   (original raster always kept; ~0.91 SSIM, ~63 editable text boxes)
-```
-
-| Path | Command | Fidelity | Editability | Cost |
-|---|---|---|---|---|
-| **HYBRID** | `run_hybrid.py` | **~0.91 SSIM** | text editable, graphics pixel-exact (the render itself) | ✅ **the only mode** — key-free, no account |
-| pure-A *(legacy)* | `run_reconstruction.py` | ~0.67–0.80 | everything redrawn as vector | ❌ **OFF** — needs an LLM account; a redraw loses fidelity on dense figures |
-
-> **Why hybrid, not redraw:** the graphics stay **pixel-exact** (they ARE the approved render) and only the re-typed labels differ from the original's sub-pixel AA, so ~0.91 SSIM is the expected, *correct* outcome — the figure keeps 100% of its richness. A full vector redraw was tested and looked **worse** on dense figures, so the rule is **hybrid, or else keep the PNG — never redraw.** The suite **never fakes a similarity score** and always keeps the original.
-
-Provision the runtime once (~4 GB SAM3 / PaddleOCR / RMBG weights + venv, auto-deployed on first run):
-
-```bash
-python skills/ts-figure-optimize/scripts/setup_drawai.py --device cpu   # provision
-python skills/ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor: OK?
-```
-
----
-
-## 🛡️ The Quality Stack
-
-Quality is not one check — it is **four complementary layers**.  
-Claude handles judgement; code provides the deterministic backstop.
-
-| # | Layer | Primary checks | Gate |
-|---:|---|---|---|
-| **1** | **Deterministic gates** | Section shape · word bands · no-fabrication · number audit · citation completeness · AI-phrase tells · vector-PDF presence | `error_count == 0` <br> **Red = hard stop** |
-| **2** | **Self-review** | Right-sizing · term consistency · coherence · **de-AI scrub** · logic self-check | Revise until clean |
-| **3** | **Adversarial review** | Argues the other side · N isolated reviewers · verbatim-quote anti-skim · adversarial verification | Loop until dry |
-| **4** | **Vision critique** | Reads each rendered figure · checks faithfulness · readability · aesthetics · then vectorizes | Accept only if visually sound |
-
-All gates flow through one entry point — **do not ship on a red gate**:
-
-```bash
-python skills/ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
-
-```
-
-
----
-
-## 🔒 Integrity
-
-LLM-written papers are notorious for two failure modes: **hallucinated citations** (real-looking references that don't support the claim, or don't exist) and **fabricated numbers** (plausible metrics that were never measured). This suite treats both as **build-breaking errors, not style issues** — every rule below is machine-checked.
-
-- **Proposal mode never fabricates numbers.** Tables stay blank, prose is forward-looking. `draft_lint` fails on a stray decimal.
-- **Data-aware mode traces every number** to `results.facts.json` (the real-number ground truth) — the number-audit flags any that don't.
-- **Citations are real and complete.** Every `refs.bib` entry exists and was verified; no stubs, no filler, no orphan `\cite{}`. `citations_lint` enforces it.
-- **Every figure is editable** — matplotlib plots are born-vector; an image-model schematic becomes a **hybrid** (the exact render + an editable `<text>` overlay, so richness is preserved 1:1). If DrawAI is unavailable the approved PNG is kept (never a lossy redraw). `check_vector_pdf.py` + `check_figure_critique` are the gates.
-
----
-
-## 📐 Template-Agnostic
-
-Write to **whatever venue you pick** — content quality is invariant. A template is a directory under `skills/ts-paper/templates/<name>/` with `template.json` + its LaTeX `.sty`/`.cls` + `main.tex.tmpl`.
-
-| Template | Venue | Style |
-|---|---|---|
-| `ts_iieta` *(default)* | Traitement du Signal | two-column, numeric citations |
-| `neurips` | NeurIPS | single-column, author-year |
-
-**Add a venue by dropping a `templates/<name>/` dir — no code changes.**
-
----
-
-## 🧪 Stage 8 — Experiments + Repair (auto-run)
-
-After Stages 0–7 produce a complete first-draft paper, **Stage 8 runs automatically** via the in-repo `ts-paper-experiment` skill — turning a no-results draft into a results-bearing manuscript:
-
-```bash
-python skills/ts-paper/scripts/handoff_to_experiments.py --workdir <ts_paper_run>   # → experiments/
-# ts-paper-experiment ingests input/draft/, diagnoses logic, runs only FEASIBLE
-# experiments (real data/code only), fills tables, recompiles → flows back to the run
-```
-
-- ✅ Runs **only feasible experiments** on real data/code — and **never invents results**.
-- 📄 No real data/code? It writes a **requirements report** and leaves tables in proposal form.
-- ☁️ **Overleaf is OFF by default**; enable via `paper_config.yaml` + `.env`.
-
----
-
-## ⚙️ Requirements
-
-- **Claude Code** (the suite is a set of skills)
-- **Python 3.10+** with figure deps: `pip install -r skills/ts-figure-optimize/requirements.txt`
+- **Claude Code** (the suite is a plugin)
+- **Python 3.10+** with `pip install -r skills/ts-figure-optimize/requirements.txt`
 - **LaTeX** (`latexmk` + a TeX distribution) for the compile stage
-- *Optional:* **LibreOffice** (PPTX gate) · **~4 GB + `HF_TOKEN`** (DrawAI) · an **image-model endpoint** (free-form figures) · **Codex/OpenAI auth** (DrawAI vector path + GPT vision)
+- *Optional:* DrawAI runtime (~4 GB) · image-model endpoint · LibreOffice
 
 ---
 
-## 🙋 FAQ
+## FAQ
 
 <details>
-<summary><b>Will it invent results to make the paper look complete?</b></summary>
-
-No. In proposal mode it physically cannot — `draft_lint` fails the build on any prose number not backed by data. In data-aware mode every number is audited against your real `results.facts.json`.
+<summary><b>Will it invent results?</b></summary>
+<br>
+No. In proposal mode, <code>draft_lint</code> fails the build on any prose number not backed by data. In data-aware mode, every number is audited against <code>results.facts.json</code>.
 </details>
 
 <details>
-<summary><b>How is this different from AutoResearchClaw / AI-Scientist / Kosmos / ARS?</b></summary>
-
-See <a href="#-how-it-compares">How It Compares</a>. Short version: the heavy autonomous scientists match the breadth but are standalone Python products (Docker/Neo4j/large codebases); the other skills don't run experiments or draw figures. This is the only **pure Claude Code skill** that does the whole arc — and the only tool with an **editable-vector figure engine**.
+<summary><b>How is this different from AutoResearchClaw / AI-Scientist / Kosmos?</b></summary>
+<br>
+The heavy autonomous scientists match the breadth but are standalone Python products (Docker/Neo4j/large codebases). The other skills don't run experiments or draw figures. This is the only <b>pure Claude Code plugin</b> that does the whole arc — and the only tool with an editable-vector figure engine.
 </details>
 
 <details>
-<summary><b>Do I need GPUs or the heavy DrawAI runtime?</b></summary>
-
-Only for free-form raster figures. DrawAI runs on CPU; matplotlib figures are born-vector and skip the engine; a paper with no figures skips Stage 6 entirely.
+<summary><b>Do I need GPUs?</b></summary>
+<br>
+Only for DrawAI vectorization. matplotlib figures are born-vector and skip the engine. A paper with no figures skips Stage 6 entirely. DrawAI also runs on CPU.
 </details>
 
 <details>
 <summary><b>Can I use a venue that isn't bundled?</b></summary>
-
-Yes — drop a `templates/<name>/` directory with a `template.json` + LaTeX assets. No code changes.
+<br>
+Yes — drop a <code>templates/&lt;name&gt;/</code> directory with <code>template.json</code> + LaTeX assets. No code changes.
 </details>
 
 ---
 
-## ✅ Definition of Done
-
-`main.pdf` exists and is non-trivial · **zero LaTeX errors** · `main.bbl` resolved all citations · every `\cite{}` maps to a complete `refs.bib` entry · **no fabricated numbers** anywhere · **every figure embedded as an editable vector PDF** · the adversarial **review stage ran** · and `run_gates.py <workdir> all` **exits zero**.
-
----
-
-## ⭐ Star History
+## Star History
 
 <p align="center">
   <a href="https://star-history.com/#Albus-White/spark-to-paper-skills&Date">
@@ -385,5 +262,5 @@ Yes — drop a `templates/<name>/` directory with a `template.json` + LaTeX asse
 
 <p align="center">
   <i>The model does the reasoning. The code keeps it honest. You get a paper.</i><br>
-  <sub>Built on <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a> · figure engine vendored from DrawAI · template-agnostic by design</sub>
+  <sub>Built on <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> · Figure engine vendored from DrawAI · <a href="LICENSE">MIT License</a></sub>
 </p>
