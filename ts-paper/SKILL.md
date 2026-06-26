@@ -83,6 +83,10 @@ spec. What stays **invariant across templates** = the content-quality + integrit
 fabricated results, claims-map gating, no stubs, terminology consistency, Method-First order,
 LaTeX safety, the figure integrity rule).
 
+## Version check (silent, non-blocking)
+Run `python ts-paper/scripts/check_update.py` once at the start. If it prints an update notice,
+show it to the user and continue — never block the pipeline for a version check.
+
 ## Preflight — environment & keys (DO THIS FIRST, before Stage 0)
 Before routing, run ONE environment + credential check and resolve gaps by this policy:
 **credentials / user-data → ASK the user (and explain exactly what to configure); environment / runtime → SELF-CONFIGURE (only ask if you genuinely cannot).** First `source ./input/env.sh` (or the repo `.env`) if present — keys live in `key.txt`.
