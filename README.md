@@ -53,6 +53,14 @@
 
 ---
 
+## 🔥 What's New
+
+- **`v1.1.0`** — **Claude Code plugin support.** Restructured as a proper plugin with `.claude-plugin/plugin.json`. One-command install, auto-loads on session start.
+- **`v1.0.1`** — **Soft update notification.** `check_update.py` queries GitHub Releases API on each run (24h cache, silent when up-to-date, never blocks).
+- **`v1.0`** — **Initial release.** 13 skills, end-to-end pipeline, DrawAI hybrid figure engine, MIT License.
+
+---
+
 ## ⚡ One Command. One Paper.
 
 ```bash
@@ -313,14 +321,6 @@ Run ts-paper on this proposal.
 ```
 
 Paste your idea, proposal, or proposal + data. The orchestrator auto-routes, runs the chain, and delivers a compiled paper with page count, sections, references, review outcome, and editable vector figures.
-
----
-
-## 🔥 What's New
-
-- **`v1.1.0`** — **Claude Code plugin support.** Restructured as a proper plugin with `.claude-plugin/plugin.json`. One-command install, auto-loads on session start.
-- **`v1.0.1`** — **Soft update notification.** `check_update.py` queries GitHub Releases API on each run (24h cache, silent when up-to-date, never blocks).
-- **`v1.0`** — **Initial release.** 13 skills, end-to-end pipeline, DrawAI hybrid figure engine, MIT License.
 
 ---
 
