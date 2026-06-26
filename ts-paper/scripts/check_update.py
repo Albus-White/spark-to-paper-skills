@@ -13,7 +13,7 @@ one-line notification when a newer version exists.
 import json, os, sys, time, tempfile, urllib.request
 
 REPO = "Albus-White/spark-to-paper-skills"
-FALLBACK_VERSION = "1.0.0"
+FALLBACK_VERSION = "1.0.1"
 CACHE_TTL = 86400  # 24 h
 
 _CACHE_DIR = os.path.join(tempfile.gettempdir(), "spark-to-paper-skills")
