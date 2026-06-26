@@ -28,7 +28,8 @@
 
 <p align="center">
   <a href="#-generated-paper-showcase">🏆 Showcase</a> &middot;
-  <a href="#-what-makes-it-different">✨ Key Features</a> &middot;
+  <a href="#-what-makes-it-different">✨ Features</a> &middot;
+  <a href="#-how-it-compares">🧭 Compare</a> &middot;
   <a href="#-the-figure-engine">🖼️ Figure Engine</a> &middot;
   <a href="#-the-pipeline">🔬 Pipeline</a> &middot;
   <a href="#-quick-start">🚀 Quick Start</a>
@@ -93,6 +94,18 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 | ⚔️ | **Adversarial Review** | N isolated reviewers read the whole paper with verbatim-quote anti-skim, then perspective-diverse skeptics try to refute each issue. Loop until dry. |
 | 🧪 | **Auto-Experiments** | Stage 8 diagnoses logic, runs only feasible experiments on real data/code, fills result tables, and recompiles. Never invents results. |
 | 📐 | **Template-Agnostic** | NeurIPS and IIETA bundled. Add any venue — drop a `templates/<name>/` dir with `template.json` + LaTeX assets. No code changes. |
+
+---
+
+## 🧭 How It Compares
+
+<p align="center">
+  <img src="docs/comparison.svg" width="100%" alt="Capability comparison matrix across AI-research tools">
+</p>
+
+<p align="center"><sub><b>✓</b> full&nbsp;&nbsp;·&nbsp;&nbsp;<b>●</b> partial&nbsp;&nbsp;·&nbsp;&nbsp;<b>–</b> none&nbsp;&nbsp;|&nbsp;&nbsp;sources: <a href="https://github.com/Imbad0202/academic-research-skills">ARS</a> · <a href="https://github.com/AgentAlphaAGI/Idea2Paper">Idea2Paper</a> · <a href="https://github.com/aiming-lab/AutoResearchClaw">AutoResearchClaw</a> · <a href="https://github.com/SakanaAI/AI-Scientist">AI-Scientist</a> · <a href="https://github.com/jimmc414/Kosmos">Kosmos</a> · <a href="https://github.com/karpathy/autoresearch">karpathy/autoresearch</a> · <a href="https://victorchen96.github.io/auto_research/framework.html">auto_research</a></sub></p>
+
+> The heavy autonomous scientists ([AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw), [AI-Scientist](https://github.com/SakanaAI/AI-Scientist)) match the *breadth* — but ship as **standalone Python products** (Docker, Neo4j, tens of thousands of LOC). The lighter *skills* ([ARS](https://github.com/Imbad0202/academic-research-skills), [Idea2Paper](https://github.com/AgentAlphaAGI/Idea2Paper)) don't run experiments or draw figures. **Nobody else gives you all of it as drop-in Claude Code skills with editable vector figures.**
 
 ---
 
@@ -183,6 +196,18 @@ One orchestrator (`ts-paper`) routes the input, then drives a **7-stage chain** 
 
 ---
 
+## 🎯 Design Philosophy
+
+|     | Principle | Rule |
+| :-: | :--- | :--- |
+| 🧠 | **Model reasons** | Claude owns judgment-heavy work: writing, research, critique, review |
+| 🛠 | **Code backstops** | Python handles deterministic tasks: linting, assembly, plotting, vectorization |
+| 🪶 | **Zero infra** | No app, server, database, or Docker — copy skills into `.claude/skills/` and go |
+| 🏆 | **Quality first** | Verify citations, self-review, run linters, polish before delivery |
+| 🔒 | **Integrity always** | Never invent numbers; trace every value to source data; red gates fail the build |
+
+---
+
 ## 🛡️ Quality Stack
 
 Four complementary layers — Claude handles judgment, code provides the deterministic backstop.
@@ -197,6 +222,20 @@ Four complementary layers — Claude handles judgment, code provides the determi
 ```bash
 python skills/ts-paper/scripts/run_gates.py <workdir> all     # nonzero exit = NOT done
 ```
+
+---
+
+## 📐 Template-Agnostic
+
+Write to **whatever venue you pick** — content quality is invariant.
+
+| Template | Venue | Style |
+|---|---|---|
+| `ts_iieta` *(default)* | Traitement du Signal | Two-column, numeric citations |
+| `neurips` | NeurIPS (community) | Single-column, author-year |
+| `neurips_official` | NeurIPS 2025 (official .sty) | Single-column, official formatting |
+
+**Add a venue** by dropping a `templates/<name>/` dir with `template.json` + LaTeX assets — no code changes.
 
 ---
 
@@ -319,6 +358,23 @@ Only for free-form raster figures. DrawAI runs on CPU; matplotlib figures are bo
 <br>
 Yes — drop a <code>templates/&lt;name&gt;/</code> directory with <code>template.json</code> + LaTeX assets. No code changes.
 </details>
+
+---
+
+## ✅ Definition of Done
+
+`main.pdf` exists and is non-trivial · **zero LaTeX errors** · `main.bbl` resolved all citations · every `\cite{}` maps to a complete `refs.bib` entry · **no fabricated numbers** anywhere · **every figure embedded as an editable vector PDF** · the adversarial **review stage ran** · and `run_gates.py <workdir> all` **exits zero**.
+
+---
+
+## 🙏 Acknowledgments
+
+Inspired by:
+
+- 🔬 [AI-Scientist](https://github.com/SakanaAI/AI-Scientist) (Sakana AI) — Automated research pioneer
+- 🦞 [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) (AIMING Lab) — 23-stage autonomous research pipeline
+- 🧠 [autoresearch](https://github.com/karpathy/autoresearch) (Andrej Karpathy) — End-to-end research automation
+- 🎨 [DrawAI](https://github.com/DrawAI) — Figure vectorization engine (vendored)
 
 ---
 

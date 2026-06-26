@@ -1,4 +1,4 @@
-# Generated Paper Showcase
+# 🏆 Generated Paper Showcase
 
 All papers below were generated **end-to-end** by `spark-to-paper-skills` — from a research proposal to a compiled, publication-format PDF with real citations, editable vector figures, and machine-checked integrity.
 
@@ -12,7 +12,8 @@ All papers below were generated **end-to-end** by `spark-to-paper-skills` — fr
 <td valign="top">
 <b>A Leakage-Free Reappraisal of Decomposition-Ensemble PM2.5 Forecasting</b><br>
 <i>Domain: Environmental Monitoring · 10 pages · Traitement du Signal format</i><br><br>
-Proposes a leakage-free evaluation framework for decomposition-ensemble methods in PM2.5 air quality forecasting, addressing data leakage issues in traditional train-test splits.
+Proposes a leakage-free evaluation framework for decomposition-ensemble methods in PM2.5 air quality forecasting, addressing data leakage issues in traditional train-test splits.<br><br>
+<a href="pm25_forecasting.pdf">📄 Download PDF</a>
 </td>
 </tr>
 </table>
@@ -27,7 +28,8 @@ Proposes a leakage-free evaluation framework for decomposition-ensemble methods 
 <td valign="top">
 <b>A Leakage-Free Reappraisal of Decomposition-Ensemble Electricity-Load Forecasting</b><br>
 <i>Domain: Energy Forecasting · 12 pages · Traitement du Signal format</i><br><br>
-Extends the leakage-free decomposition-ensemble framework to electricity load prediction, demonstrating methodology transferability across forecasting domains.
+Extends the leakage-free decomposition-ensemble framework to electricity load prediction, demonstrating methodology transferability across forecasting domains.<br><br>
+<a href="electricity_forecasting.pdf">📄 Download PDF</a>
 </td>
 </tr>
 </table>
@@ -42,7 +44,8 @@ Extends the leakage-free decomposition-ensemble framework to electricity load pr
 <td valign="top">
 <b>Interpretable Air and Water Quality Prediction with Feature Selection and Boosted Ensembles</b><br>
 <i>Domain: Environmental AI · 11 pages · Traitement du Signal format</i><br><br>
-Combines feature selection with boosted ensemble methods for interpretable environmental quality prediction across air and water monitoring domains.
+Combines feature selection with boosted ensemble methods for interpretable environmental quality prediction across air and water monitoring domains.<br><br>
+<a href="air_water_quality.pdf">📄 Download PDF</a>
 </td>
 </tr>
 </table>
@@ -57,7 +60,8 @@ Combines feature selection with boosted ensemble methods for interpretable envir
 <td valign="top">
 <b>Sparse Evidence Pooling for Compact Convolutional Leaf-Disease Recognition</b><br>
 <i>Domain: Computer Vision / Agriculture · 12 pages · Traitement du Signal format</i><br><br>
-Introduces sparse evidence pooling for lightweight convolutional networks, targeting efficient plant leaf disease classification in agricultural applications.
+Introduces sparse evidence pooling for lightweight convolutional networks, targeting efficient plant leaf disease classification in agricultural applications.<br><br>
+<a href="leaf_disease.pdf">📄 Download PDF</a>
 </td>
 </tr>
 </table>
