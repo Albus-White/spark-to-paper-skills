@@ -6,23 +6,23 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/🔬_Pipeline-7_Stages-0969DA?style=for-the-badge&labelColor=1a1a2e" alt="7 Stages">&nbsp;
-  <img src="https://img.shields.io/badge/📄_Papers-4_Completed-2ea043?style=for-the-badge&labelColor=1a1a2e" alt="4 Papers">&nbsp;
-  <img src="https://img.shields.io/badge/📑_Output-45_Pages_Total-f97316?style=for-the-badge&labelColor=1a1a2e" alt="45 pages">&nbsp;
+  <img src="https://img.shields.io/badge/📄_Papers-7_Completed-2ea043?style=for-the-badge&labelColor=1a1a2e" alt="7 Papers">&nbsp;
+  <img src="https://img.shields.io/badge/📑_Output-92_Pages_Total-f97316?style=for-the-badge&labelColor=1a1a2e" alt="92 pages">&nbsp;
   <img src="https://img.shields.io/badge/🖼️_Figures-All_Editable_Vector-a855f7?style=for-the-badge&labelColor=1a1a2e" alt="Editable Vector">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/📚_References-226_Cited_(all_verified)-3b82f6?style=flat-square" alt="226 refs">&nbsp;
-  <img src="https://img.shields.io/badge/📊_Figures-23_Auto--Generated-10b981?style=flat-square" alt="23 figures">&nbsp;
-  <img src="https://img.shields.io/badge/📐_Template-Traitement_du_Signal-ef4444?style=flat-square" alt="TS format">&nbsp;
+  <img src="https://img.shields.io/badge/📚_References-370_Cited_(all_verified)-3b82f6?style=flat-square" alt="370 refs">&nbsp;
+  <img src="https://img.shields.io/badge/📊_Figures-40_Auto--Generated-10b981?style=flat-square" alt="40 figures">&nbsp;
+  <img src="https://img.shields.io/badge/📐_Template-Mixed_Research_Formats-ef4444?style=flat-square" alt="Mixed formats">&nbsp;
   <img src="https://img.shields.io/badge/🔒_Integrity-Machine--Checked-8b5cf6?style=flat-square" alt="Machine-checked">
 </p>
 
 ---
 
-Below are **four papers** generated **end-to-end by spark-to-paper-skills** — each starting from a research proposal. The pipeline autonomously planned the paper, searched and verified real literature, drafted all sections, refined and peer-reviewed the draft, generated editable vector figures, and compiled the final PDF.
+Below are **seven papers** generated **end-to-end by spark-to-paper-skills** — each starting from a research proposal. The pipeline autonomously planned the paper, searched and verified real literature, drafted all sections, refined and peer-reviewed the draft, generated editable vector figures, and compiled the final PDF.
 
-> 📌 **Four domains** — environmental monitoring, energy forecasting, environmental AI, and computer vision / agriculture — demonstrating the pipeline's cross-domain generality.
+> 📌 **Six domains** — environmental monitoring, energy forecasting, environmental AI, computer vision / agriculture, clinical AI, and bearing fault diagnosis — demonstrating the pipeline's cross-domain generality.
 
 ---
 
@@ -223,6 +223,120 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 
 ---
 
+### 📄 Paper V · Chronic Disease Risk Screening &ensp; <img src="https://img.shields.io/badge/domain-clinical_AI-red?style=flat-square" alt="clinical">
+
+> **Interpretable, Calibrated Early Screening of Chronic Disease Risk with Feature Selection and Ensembles**
+
+<table>
+<tr>
+<td width="340">
+<a href="chronic_disease_screening.pdf">
+<img src="chronic_disease_screening-01.png" width="320" alt="Paper V First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+Clinical screening models need calibrated probabilities and defensible explanations, not only high ranking accuracy. This paper evaluates diabetes, heart-disease, and stroke cohorts with leakage-safe preprocessing, feature selection, ensemble baselines, post-hoc calibration, and TreeSHAP audits.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 42 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 5 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 17 pages (compiled PDF) |
+
+#### 🎯 Key Contribution
+Recasts chronic-disease screening as calibrated, interpretable risk estimation — showing where feature selection preserves discrimination, recalibration repairs unreliable rare-event probabilities, and accuracy can hide clinically useless stroke screening behavior.
+
+<a href="chronic_disease_screening.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📄 Paper VI · Bearing Fault Diagnosis &ensp; <img src="https://img.shields.io/badge/domain-industrial_fault_diagnosis-yellow?style=flat-square" alt="fault">
+
+> **Segment-Overlap Leakage in CWRU Bearing Fault Diagnosis with a Compact 1D-CNN**
+
+<table>
+<tr>
+<td width="340">
+<a href="bearing_fault_diagnosis.pdf">
+<img src="bearing_fault_diagnosis-01.png" width="320" alt="Paper VI First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+Bearing-fault diagnosis papers often split heavily overlapping CWRU vibration windows at random, putting near-duplicate segments on both sides of the train-test boundary. This paper holds the model and features fixed while comparing naive random, recording-aware, and cross-load protocols.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 50 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 13 pages (compiled PDF) |
+
+#### 🎯 Key Contribution
+Quantifies segment-overlap leakage under controlled protocols: perfect naive accuracy drops once recordings or loads are held out, and the compact CNN no longer dominates classical baselines under honest evaluation.
+
+<a href="bearing_fault_diagnosis.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📄 Paper VII · Leaf Disease Leakage Audit &ensp; <img src="https://img.shields.io/badge/domain-computer_vision_/_agriculture-purple?style=flat-square" alt="CV">
+
+> **A Compact CNN for Leaf-Disease Classification under Leakage-Aware Evaluation**
+
+<table>
+<tr>
+<td width="340">
+<a href="leaf_disease_leakage.pdf">
+<img src="leaf_disease_leakage-01.png" width="320" alt="Paper VII First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+PlantVillage leaf-disease results are often suspected of near-duplicate leakage and background shortcuts. This paper audits the Tomato subset with group-aware source-leaf splits, near-duplicate threshold sweeps, masked-background probes, and compact CNN, transfer, and classical baselines.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 52 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 17 pages (compiled PDF) |
+
+#### 🎯 Key Contribution
+Separates suspected leakage from measured effects: near-duplicate leakage is negligible on this subset, while the background shortcut is real but modest, yielding a repeatable leakage-aware evaluation protocol for plant-disease recognition.
+
+<a href="leaf_disease_leakage.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
 ## 📊 Aggregate Statistics
 
 <table>
@@ -232,6 +346,9 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <th align="center">II</th>
 <th align="center">III</th>
 <th align="center">IV</th>
+<th align="center">V</th>
+<th align="center">VI</th>
+<th align="center">VII</th>
 <th align="center">🏆 Total</th>
 </tr>
 <tr>
@@ -240,7 +357,10 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <td align="center"><sub>Energy</sub></td>
 <td align="center"><sub>Env. AI</sub></td>
 <td align="center"><sub>CV / Agri</sub></td>
-<td align="center"><b>4 fields</b></td>
+<td align="center"><sub>Clinical AI</sub></td>
+<td align="center"><sub>Fault Dx</sub></td>
+<td align="center"><sub>CV / Agri</sub></td>
+<td align="center"><b>6 fields</b></td>
 </tr>
 <tr>
 <td>📚 <b>References</b></td>
@@ -248,7 +368,10 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <td align="center">62</td>
 <td align="center">51</td>
 <td align="center">68</td>
-<td align="center"><b>226 cited</b></td>
+<td align="center">42</td>
+<td align="center">50</td>
+<td align="center">52</td>
+<td align="center"><b>370 cited</b></td>
 </tr>
 <tr>
 <td>📊 <b>Figures</b></td>
@@ -256,7 +379,10 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <td align="center">6</td>
 <td align="center">6</td>
 <td align="center">5</td>
-<td align="center"><b>23 figs</b></td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center"><b>40 figs</b></td>
 </tr>
 <tr>
 <td>📋 <b>Tables</b></td>
@@ -264,7 +390,10 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <td align="center">4</td>
 <td align="center">4</td>
 <td align="center">4</td>
-<td align="center"><b>16 tables</b></td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center"><b>28 tables</b></td>
 </tr>
 <tr>
 <td>📑 <b>Pages</b></td>
@@ -272,10 +401,16 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 <td align="center">12</td>
 <td align="center">11</td>
 <td align="center">12</td>
-<td align="center"><b>45 pages</b></td>
+<td align="center">17</td>
+<td align="center">13</td>
+<td align="center">17</td>
+<td align="center"><b>92 pages</b></td>
 </tr>
 <tr>
 <td>🖼️ <b>Vector Figures</b></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
 <td align="center">✓</td>
 <td align="center">✓</td>
 <td align="center">✓</td>
@@ -284,6 +419,9 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 </tr>
 <tr>
 <td>🔒 <b>Integrity Check</b></td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
 <td align="center">✓</td>
 <td align="center">✓</td>
 <td align="center">✓</td>
