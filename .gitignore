@@ -23,10 +23,10 @@ Thumbs.db
 *_run/
 
 # Vendored DrawAI engine: runtime (models/venv) + skill run outputs are GENERATED, not source.
-ts-figure-optimize/engine/.local/
-ts-figure-optimize/engine/.venv/
-ts-figure-optimize/engine/**/__pycache__/
-ts-figure-optimize/runs/
+claude/skills/ts-figure-optimize/engine/.local/
+claude/skills/ts-figure-optimize/engine/.venv/
+claude/skills/ts-figure-optimize/engine/**/__pycache__/
+claude/skills/ts-figure-optimize/runs/
 
 # extracted KG working copy (source of truth = kg/kg_ai.rar via LFS)
 kg/kg_ai/
@@ -34,3 +34,9 @@ kg/kg_ai/
 # Generated outputs & process artifacts (not source) — don't track/push
 outputs/
 docs/superpowers/
+
+# Codex-native duplicated skill runtime outputs
+codex/skills/ts-figure-optimize/engine/.local/
+codex/skills/ts-figure-optimize/engine/.venv/
+codex/skills/ts-figure-optimize/engine/**/__pycache__/
+codex/skills/ts-figure-optimize/runs/

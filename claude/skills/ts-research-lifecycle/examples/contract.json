@@ -1,0 +1,27 @@
+{
+  "claim_ids": ["C-001"],
+  "experiments": [{
+    "experiment_id": "E-001",
+    "claim_ids": ["C-001"],
+    "why_it_tests_claim": "Direct matched-budget comparison on the canonical task",
+    "positive_interpretation": "Supports the bounded sparse-regime claim if stable under the replication plan",
+    "negative_interpretation": "Rejects or narrows the claim",
+    "confounders": ["Additional compute", "Different preprocessing"],
+    "out_of_scope_conclusions": ["Universal robustness outside the benchmark regime"]
+  }],
+  "study_inputs": ["Canonical official benchmark"],
+  "protocols": ["Official split and preprocessing"],
+  "outcomes": ["Official MAE"],
+  "comparators": ["Official baseline", "Matched-compute regularization"],
+  "replication_plan": {"type": "random_seeds", "identifiers": [11, 29], "rationale": "pilot variance"},
+  "statistical_plan": {"aggregation": "chosen from the pilot variance and estimand"},
+  "test_set_policy": {"development": "validation only", "max_test_access": 1},
+  "stop_conditions": ["Evidence sufficient", "Hypothesis rejected", "Budget exhausted"],
+  "budget": {"max_runs": 12, "max_branches": 4, "max_branch_depth": 2, "max_gpu_hours": 24},
+  "feasibility": {
+    "status": "MEASURED",
+    "budget_fit": true,
+    "estimated_cost": {"gpu_hours": 8},
+    "evidence": ["reports/design/feasibility.json"]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Plan"
+  short_description: "Plan the manuscript structure that this research needs"
+  default_prompt: "Use $ts-paper-plan to design a manuscript blueprint from the stable claims and venue."

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "environment_lock",
+  "type": "object",
+  "required": [
+    "status",
+    "environment",
+    "lock_hash"
+  ]
+}

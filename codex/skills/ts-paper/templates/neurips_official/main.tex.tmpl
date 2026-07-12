@@ -1,0 +1,47 @@
+\documentclass{article}
+
+% Official NeurIPS 2025 style. "preprint" => non-anonymous author block, no line numbers,
+% suitable for an arXiv/technical-report style release (not a blind submission).
+\usepackage[preprint]{neurips_2025}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+
+\title{@@title@@}
+
+\author{%
+  @@authors@@ \\
+  @@affil@@ \\
+  \texttt{@@email@@} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+@@abstract@@
+\end{abstract}
+
+@@sections@@
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

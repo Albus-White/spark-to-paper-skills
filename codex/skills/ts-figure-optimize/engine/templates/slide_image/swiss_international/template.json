@@ -1,0 +1,66 @@
+{
+  "schema": "drawai.slide_template_asset.v1",
+  "id": "swiss_international",
+  "name": "Swiss International PPT Image Template",
+  "category": "business_technical",
+  "description": "Strict modular grid template for serious reports, technical overviews, and evidence-led PPT images.",
+  "design_tokens": {
+    "palette": {
+      "background": "#ffffff",
+      "text": "#111111",
+      "muted": "#64748b",
+      "grid": "#d9dee8",
+      "accent": "#e00000"
+    },
+    "typography": {
+      "title": "large bold sans-serif or grotesk",
+      "body": "clean sans-serif, high contrast",
+      "numbering": "red two-digit section numbers"
+    },
+    "spacing": {
+      "outer_margin": "wide",
+      "grid": "strict 12-column or rational asymmetric grid"
+    }
+  },
+  "page_types": [
+    {
+      "id": "overview_grid",
+      "name": "Overview Grid",
+      "best_for": ["technical overview", "business report", "source-grounded briefing"],
+      "layout_archetype": "left headline and takeaway, right numbered evidence/workflow grid"
+    },
+    {
+      "id": "timeline_grid",
+      "name": "Timeline Grid",
+      "best_for": ["roadmap", "implementation plan"],
+      "layout_archetype": "numbered horizontal or vertical sequence with evidence notes"
+    }
+  ],
+  "slot_schema": {
+    "title": {"type": "text", "required": true, "max_length": 28},
+    "takeaway": {"type": "text", "required": true, "max_length": 64},
+    "sections": {"type": "array", "required": true, "min_items": 3, "max_items": 5},
+    "diagram": {"type": "workflow_or_evidence_grid", "required": false},
+    "source_note": {"type": "text", "required": false}
+  },
+  "reference_images": [],
+  "sample_outputs": [
+    {
+      "path": "outputs/codex_slide_template_library_experiment/02_swiss_international/swiss_international.png",
+      "role": "sample_output",
+      "source": "codex template library experiment"
+    }
+  ],
+  "thumbnail": {
+    "path": "outputs/codex_slide_template_library_experiment/02_swiss_international/swiss_international.png"
+  },
+  "prompt_recipe": {
+    "style": "Swiss International grid, rational asymmetry, strong typographic hierarchy, red section numbering.",
+    "content_policy": "No invented metrics, citations, dates, logos, or rankings. Keep unsourced data abstract.",
+    "text_policy": "Chinese-first when user request is Chinese; include title, takeaway, section labels, and body copy."
+  },
+  "layout": {
+    "archetype": "grid_report",
+    "regions": ["title_column", "diagram_grid", "numbered_sections", "footer_source_note"]
+  }
+}

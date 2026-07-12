@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Refine"
+  short_description: "Refine manuscript coherence without changing evidence"
+  default_prompt: "Use $ts-paper-refine to improve the whole manuscript while preserving claims and evidence."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Write"
+  short_description: "Draft a coherent paper from stable claims and evidence"
+  default_prompt: "Use $ts-paper-write to draft all manuscript sections from the stable blueprint and evidence."

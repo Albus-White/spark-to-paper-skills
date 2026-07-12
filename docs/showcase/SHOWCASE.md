@@ -42,7 +42,7 @@ Below are **seven papers** generated **end-to-end by spark-to-paper-skills** —
 <td align="center" width="3%">➜</td>
 <td align="center" width="14%">
 
-**📚**<br>**Cite**<br><sub>≥40 real refs</sub>
+**📚**<br>**Cite**<br><sub>claim-covered real refs</sub>
 </td>
 <td align="center" width="3%">➜</td>
 <td align="center" width="14%">

@@ -1,0 +1,14 @@
+{
+  "name": "spark-to-paper",
+  "description": "Model-first, evidence-driven academic research lifecycle for Claude Code. 14 composable skills from falsifiable Idea through profile-appropriate experiments and a reviewed compiled paper.",
+  "version": "3.0.0",
+  "author": {
+    "name": "Albus White"
+  },
+  "homepage": "https://github.com/Albus-White/spark-to-paper-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Albus-White/spark-to-paper-skills.git"
+  },
+  "license": "MIT"
+}

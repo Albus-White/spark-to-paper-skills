@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scientific_branch_registry",
+  "type": "object",
+  "required": ["schema_version", "branches"],
+  "properties": {
+    "branches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "branch_id",
+          "question",
+          "change_class",
+          "hypothesis",
+          "experiment_ids",
+          "expected_observations",
+          "rationale",
+          "estimated_cost",
+          "evidence",
+          "stop_condition",
+          "depth",
+          "idea_id",
+          "contract_id",
+          "signature",
+          "status",
+          "run_ids"
+        ],
+        "properties": {
+          "change_class": {
+            "enum": ["debug_repair", "implementation", "protocol", "idea", "diagnostic"]
+          },
+          "status": {"enum": ["PROPOSED", "EXECUTING", "EVALUATED"]},
+          "depth": {"type": "integer", "minimum": 0, "maximum": 4}
+        }
+      }
+    }
+  }
+}

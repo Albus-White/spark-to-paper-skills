@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "research_state",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "profile",
+    "phase",
+    "active",
+    "gates",
+    "invalidations",
+    "approvals",
+    "blockers",
+    "history",
+    "policy"
+  ],
+  "properties": {
+    "profile": {
+      "enum": [
+        "proposal",
+        "exploratory",
+        "standard_empirical",
+        "high_risk"
+      ]
+    },
+    "phase": {
+      "type": "string"
+    },
+    "active": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "object"
+    },
+    "invalidations": {
+      "type": "array"
+    },
+    "approvals": {
+      "type": "array"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "history": {
+      "type": "array"
+    },
+    "policy": {
+      "type": "object",
+      "required": ["phase_sequence", "required_gates"]
+    }
+  }
+}

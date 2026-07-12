@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "idea",
+  "type": "object",
+  "required": [
+    "problem",
+    "hypothesis",
+    "proposed_mechanism",
+    "scope",
+    "assumptions",
+    "falsifiers",
+    "claims",
+    "alternative_explanations"
+  ],
+  "properties": {
+    "revision_level": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "claim_text": "The objective improves sparse-regime forecasting accuracy",
+  "claim_type": "empirical result claim",
+  "essential": true,
+  "strength": "bounded",
+  "scope": "30-70% observable missingness",
+  "required_evidence": ["Applicable reference behavior and a variance-aware matched comparison"]
+}

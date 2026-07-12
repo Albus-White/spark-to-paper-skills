@@ -1,0 +1,10 @@
+DrawAI upstream commit: 7d72fe760289ebfb8e156eab3971078cf6549fbd
+Vendored into ts-figure-optimize: 2026-07-11
+Profile: configs/drawai/config.yaml (full quality; 2048 normalization, 8 SVG attempts,
+codex_python_sdk_controlled staged generation, visual review, xhigh reasoning,
+3 critic rounds, explicit v2 parser/SAM3/OCR/fusion/Codex refinement/compose stages,
+native PPTX export). The upstream templates directory is vendored because it is required by
+DrawAI's controlled generation prompts and is covered by the upstream regression suite.
+Upstream project: DrawAI (Apache-2.0); the Skill has no external source-tree runtime dependency.
+Integration deltas are intentionally narrow and tested: external-service authentication/custom CA,
+bounded remote queue polls/OCR retries, and orchestration through resolved SAM3/PaddleOCR/RMBG URLs.

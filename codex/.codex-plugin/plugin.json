@@ -1,0 +1,41 @@
+{
+  "name": "spark-to-paper-skills",
+  "version": "3.0.0",
+  "description": "Codex-native evidence-driven research lifecycle from falsifiable ideas through benchmarked experiments, Idea evolution, reviewed manuscripts, figures, and compiled papers.",
+  "author": {
+    "name": "Albus White",
+    "url": "https://github.com/Albus-White"
+  },
+  "homepage": "https://github.com/Albus-White/spark-to-paper-skills",
+  "repository": "https://github.com/Albus-White/spark-to-paper-skills",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "paper-writing",
+    "latex",
+    "literature-review",
+    "scientific-figures",
+    "experiments"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Spark to Paper",
+    "shortDescription": "Research idea to reviewed, compiled paper",
+    "longDescription": "Fourteen composable Codex skills for hypothesis formation, evidence and benchmark grounding, versioned research contracts, repository and environment governance, baseline reproduction, verified experiment iteration, mechanism diagnosis, Idea evolution, scientific writing, adversarial review, publication figures, and LaTeX compilation.",
+    "developerName": "Albus White",
+    "category": "Productivity",
+    "capabilities": [
+      "Research",
+      "Write",
+      "Code",
+      "Vision"
+    ],
+    "websiteURL": "https://github.com/Albus-White/spark-to-paper-skills",
+    "defaultPrompt": [
+      "Use $ts-paper to run the evidence-driven research lifecycle from my idea to a complete paper.",
+      "Use $ts-paper-review to harden this manuscript before submission.",
+      "Use $ts-paper-experiment to repair this draft with real experiments."
+    ],
+    "brandColor": "#D97757"
+  }
+}

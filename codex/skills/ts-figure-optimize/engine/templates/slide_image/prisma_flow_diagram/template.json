@@ -1,0 +1,92 @@
+{
+  "schema": "drawai.slide_template_asset.v1",
+  "id": "prisma_flow_diagram",
+  "name": "PRISMA/Systematic Review Flow PPT Image Template",
+  "category": "academic_flow_diagram",
+  "description": "Reference-image driven flow diagram template for PRISMA-like screening, filtering, evaluation, and audit workflows.",
+  "design_tokens": {
+    "palette": {
+      "background": "#ffffff",
+      "header": "#fbbf24",
+      "stage_label": "#b7d3ee",
+      "box_fill": "#ffffff",
+      "box_stroke": "#111827",
+      "text": "#111827",
+      "arrow": "#111827"
+    },
+    "typography": {
+      "header": "small bold sans-serif inside yellow bars",
+      "box_text": "compact readable Chinese text",
+      "stage_label": "vertical label on pale-blue band"
+    },
+    "shapes": {
+      "header_bar": "rounded yellow rectangle",
+      "content_box": "white rectangle with thin black border",
+      "connector": "black straight arrows"
+    }
+  },
+  "page_types": [
+    {
+      "id": "screening_flow",
+      "name": "Screening Flow",
+      "best_for": ["systematic review", "funnel", "screening", "agent evaluation", "audit process"],
+      "layout_archetype": "two-column PRISMA-like flow with yellow top headers, left vertical stage labels, white boxes, and arrows"
+    }
+  ],
+  "slot_schema": {
+    "left_header": {"type": "text", "required": true},
+    "right_header": {"type": "text", "required": false},
+    "stage_labels": {"type": "array", "required": true, "min_items": 3, "max_items": 5},
+    "flow_boxes": {"type": "array", "required": true, "min_items": 6, "max_items": 14},
+    "excluded_boxes": {"type": "array", "required": false}
+  },
+  "reference_images": [
+    {
+      "path": "templates/slide_image/prisma_flow_diagram/reference_images/prisma_reference.jpg",
+      "role": "layout_reference",
+      "source": "user-provided PRISMA/systematic review screenshot",
+      "allowed_use": "layout, color, box rhythm, arrow structure",
+      "forbidden_copy": ["original study numbers", "original source text", "exact labels unless user asks"]
+    }
+  ],
+  "reference_roles": [
+    {
+      "role": "layout_reference",
+      "description": "Use the PRISMA-like two-column flow, left stage rail, stacked boxes, branches, and arrow topology."
+    },
+    {
+      "role": "style_reference",
+      "description": "Use the clean academic systematic-review flowchart tone with thin black strokes and high whitespace."
+    },
+    {
+      "role": "color_reference",
+      "description": "Use yellow header bars, pale-blue stage labels, white nodes, black text, and black arrows."
+    },
+    {
+      "role": "typography_reference",
+      "description": "Use compact readable sans-serif Chinese labels in boxes and stage tags."
+    },
+    {
+      "role": "content_reference",
+      "description": "Use only the workflow-stage pattern; do not copy source facts, counts, or labels."
+    }
+  ],
+  "style_spec": {
+    "schema": "drawai.reference_style_spec.v1",
+    "path": "outputs/codex_reference_image_generation_test/reference_style_spec.json",
+    "status": "declared_from_verified_user_reference"
+  },
+  "sample_outputs": [],
+  "thumbnail": {
+    "path": "templates/slide_image/prisma_flow_diagram/reference_images/prisma_reference.jpg"
+  },
+  "prompt_recipe": {
+    "style": "PRISMA-like systematic review flow: yellow top headers, white boxes, thin black borders, black arrows, blue vertical stage labels.",
+    "content_policy": "Use user-supplied flow content; do not copy the original reference image's study counts or labels.",
+    "text_policy": "Chinese-first replacement text; keep boxes readable and avoid microtext."
+  },
+  "layout": {
+    "archetype": "prisma_flow",
+    "regions": ["yellow_headers", "left_stage_labels", "database_or_input_column", "screening_column", "excluded_side_boxes", "final_included_box"]
+  }
+}

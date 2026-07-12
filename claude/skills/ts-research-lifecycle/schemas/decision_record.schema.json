@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "decision_record",
+  "type": "object",
+  "required": [
+    "decision",
+    "rationale",
+    "evidence",
+    "approval"
+  ],
+  "properties": {
+    "decision": {
+      "enum": [
+        "KEEP",
+        "NARROW_SCOPE",
+        "REVISE_MECHANISM",
+        "REFRAME_PROBLEM",
+        "BRANCH_NEW_IDEA",
+        "REJECT_AND_STOP",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    }
+  }
+}

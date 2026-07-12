@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Data"
+  short_description: "Bind measured results to runs, claims, and manuscript text"
+  default_prompt: "Use $ts-paper-data to turn verified measurements into provenance-bound paper evidence."

@@ -1,0 +1,48 @@
+{
+  "name": "ts_iieta",
+  "display_name": "Traitement du Signal (IIETA) — UNOFFICIAL approximation",
+  "official": false,
+  "provenance": "Hand-authored approximation of the IIETA/Traitement du Signal look — DEMO ONLY, NOT the official template. Before any real submission, replace ts_iieta.sty with IIETA's official template, or use a user-provided template. Never fabricate/approximate venue styles (see ts-paper-latex HARD RULE).",
+  "engine": {
+    "documentclass": "[10pt,twocolumn,a4paper]{article}",
+    "style_package": "ts_iieta",
+    "is_class": false,
+    "assets": ["ts_iieta.sty", "iieta_logo.png"],
+    "main_template": "main.tex.tmpl"
+  },
+  "sections": [
+    {"id": "introduction", "title": "Introduction", "roles": ["framing"], "words": [500, 1200]},
+    {"id": "related_work", "title": "Related Works", "roles": ["related_work"], "words": [400, 1200]},
+    {"id": "method", "title": "Methodology", "roles": ["methods"], "words": [800, 3000]},
+    {"id": "experiments", "title": "Experimental Results", "roles": ["evaluation", "results"], "words": [600, 1800]},
+    {"id": "analysis", "title": "Discussion and Analysis", "roles": ["discussion", "limitations"], "words": [400, 1400]},
+    {"id": "conclusion", "title": "Conclusion", "roles": ["conclusion"], "words": [120, 400]}
+  ],
+  "writing_order": ["method", "related_work", "introduction", "experiments", "analysis", "conclusion", "abstract"],
+  "abstract": {"words": [150, 220], "paragraphs": 1, "cites": false, "math": false, "single_paragraph": true},
+  "contributions": {"suggested": 3},
+  "title": {"max_words": 14, "max_chars": 120},
+  "keywords": {"min": 4, "max": 6, "cap": 6, "lowercase": false},
+  "citations": {
+    "style": "numeric",
+    "natbib_options": "numbers,square,comma,sort&compress",
+    "bibstyle": "unsrtnat",
+    "types": ["CORE", "CONTEXT", "BASELINE", "METRIC", "DEFINITION"],
+    "in_abstract": false,
+    "in_headings": false,
+    "merge_adjacent": true
+  },
+  "tables": {"caption_position": "above", "suggested": 3},
+  "experiment_complexity": "moderate",
+  "figures": {"caption_position": "below", "suggested": 3},
+  "headings": {"case": "upper", "numbered": true},
+  "masthead": {
+    "journal": "Traitement du Signal",
+    "homepage": "iieta.org/journals/ts",
+    "band_rgb": [66, 177, 234],
+    "copyright": "CC BY 4.0",
+    "doi_prefix": "10.18280/ts.",
+    "default_vol": "43", "default_issue": "2", "default_month": "April", "default_year": "2026"
+  },
+  "results_mode": "proposal"
+}

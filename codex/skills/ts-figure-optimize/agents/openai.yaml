@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figure Optimize"
+  short_description: "Reconstruct an approved raster as editable vector assets"
+  default_prompt: "Use $ts-figure-optimize to reconstruct this approved scientific raster as editable SVG, PDF, and PPTX."

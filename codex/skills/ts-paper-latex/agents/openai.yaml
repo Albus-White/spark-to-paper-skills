@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper LaTeX"
+  short_description: "Assemble and compile the selected venue template exactly"
+  default_prompt: "Use $ts-paper-latex to assemble and compile the current manuscript with exact build checks."

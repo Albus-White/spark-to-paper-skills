@@ -1,0 +1,79 @@
+input:
+  image: ../../input.png
+  output_dir: ../../results/drawai_svg/config
+  normalization:
+    enabled: true
+    target_long_edge: 2048
+    upscale_only: false
+    flatten_transparency_background: '#ffffff'
+sam3:
+  base_url: http://127.0.0.1:18080
+  timeout_seconds: 600
+  return_overlay: true
+  return_masks: false
+  service_merge_threshold: 0.0
+  prompts:
+  - id: arrow
+    text: arrow
+    confidence_threshold: 0.3
+  - id: border
+    text: border
+    confidence_threshold: 0.3
+  - id: content_box
+    text: content box
+    confidence_threshold: 0.15
+  - id: grid
+    text: grid
+    confidence_threshold: 0.3
+  - id: icon
+    text: icon
+    confidence_threshold: 0.3
+  - id: picture
+    text: picture
+    confidence_threshold: 0.3
+ocr:
+  provider: remote_paddleocr
+  remote_paddleocr:
+    base_url: http://127.0.0.1:18080
+    timeout_seconds: 600
+asset_selection:
+  provider: deterministic
+  max_attempts: 3
+  disallow_crop_roles:
+  - arrow
+  - border
+  - grid
+  - text
+  - content_box
+  max_area_ratio: 0.35
+asset_policy:
+  enabled: true
+asset_materialization:
+  rmbg:
+    enabled: true
+    provider: service
+    base_url: http://127.0.0.1:18080
+    timeout_seconds: 600
+    model_path: ''
+svg:
+  max_attempts: 2
+  timeout_seconds: 1500
+  generation_backend: codex_python_sdk_controlled
+  staged_generation: true
+  text_rendering: model_text
+  visual_review_rounds: []
+svg_to_ppt:
+  enabled: true
+  export_pptx: true
+model_runtime:
+  provider: codex-python-sdk
+  connection_id: codex-python-sdk-controlled
+  model_name: "gpt-5.5"
+  reasoning_effort: xhigh
+  image_model_name: ''
+  base_url: ''
+  api_key: ''
+  timeout_seconds: 600
+  concurrency_mode: auto
+  max_concurrent: 20
+  max_critic_rounds: 0

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "run_manifest",
+  "type": "object",
+  "required": [
+    "run_type",
+    "command",
+    "replicate_id",
+    "config",
+    "input_artifact_hashes",
+    "protocol_hash",
+    "status",
+    "failure_class",
+    "test_set_accessed"
+  ],
+  "properties": {
+    "replicate_id": {"type": "string", "minLength": 1},
+    "random_seed": {"type": ["integer", "null"]},
+    "input_artifact_hashes": {"type": "object", "minProperties": 1},
+    "protocol_hash": {"type": "string", "minLength": 1}
+  }
+}

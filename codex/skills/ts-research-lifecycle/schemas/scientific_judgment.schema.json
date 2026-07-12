@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scientific_judgment",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "artifact_type",
+    "gate",
+    "verdict",
+    "conclusion",
+    "checks",
+    "limitations",
+    "reviewer"
+  ],
+  "properties": {
+    "artifact_type": {"const": "scientific_judgment"},
+    "gate": {"pattern": "^G([0-9]|1[0-6])$"},
+    "verdict": {
+      "enum": [
+        "PASS",
+        "PASS_WITH_EXPLAINED_DEVIATION",
+        "NOT_APPLICABLE",
+        "FAIL",
+        "BLOCKED",
+        "AUTHOR_REQUIRED"
+      ]
+    },
+    "conclusion": {"type": "string", "minLength": 1},
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["question", "verdict", "rationale", "evidence"],
+        "properties": {
+          "question": {"type": "string", "minLength": 1},
+          "verdict": {"enum": ["SUPPORTED", "PARTIAL", "UNSUPPORTED", "UNCERTAIN", "NOT_APPLICABLE"]},
+          "rationale": {"type": "string", "minLength": 1},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "limitations": {"type": "array", "minItems": 1},
+    "blocking_issues": {"type": "array"},
+    "reviewer": {
+      "type": "object",
+      "required": ["id", "model_or_human", "independent", "context_artifacts"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "model_or_human": {"type": "string", "minLength": 1},
+        "independent": {"type": "boolean"},
+        "context_artifacts": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    }
+  }
+}

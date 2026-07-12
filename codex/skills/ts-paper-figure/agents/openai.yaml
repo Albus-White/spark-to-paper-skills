@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Figures"
+  short_description: "Create adaptive, evidence-bound publication figures"
+  default_prompt: "Use $ts-paper-figure to create only the evidence-bound figures this paper needs."

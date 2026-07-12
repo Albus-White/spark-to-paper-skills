@@ -1,0 +1,4 @@
+interface:
+  display_name: "Idea to Story"
+  short_description: "Ground a raw Idea as a faithful falsifiable research story"
+  default_prompt: "Use $ts-idea2story to turn this raw Idea into a grounded falsifiable proposal."

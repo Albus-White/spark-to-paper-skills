@@ -1,0 +1,41 @@
+{
+  "name": "neurips",
+  "display_name": "NeurIPS (single-column, author-year) — UNOFFICIAL approximation",
+  "official": false,
+  "provenance": "Hand-authored approximation of the NeurIPS look — DEMO ONLY, NOT the official template. Before any real submission, replace neurips_paper.sty with the official neurips_<year>.sty from media.neurips.cc, or use a user-provided template. Never fabricate/approximate venue styles (see ts-paper-latex HARD RULE).",
+  "engine": {
+    "documentclass": "{article}",
+    "style_package": "neurips_paper",
+    "is_class": false,
+    "assets": ["neurips_paper.sty"],
+    "main_template": "main.tex.tmpl"
+  },
+  "sections": [
+    {"id": "introduction", "title": "Introduction", "roles": ["framing"], "words": [400, 1000]},
+    {"id": "related_work", "title": "Related Work", "roles": ["related_work"], "words": [250, 800]},
+    {"id": "approach", "title": "Approach", "roles": ["methods"], "words": [600, 1800]},
+    {"id": "experiments", "title": "Experiments", "roles": ["evaluation", "results"], "words": [500, 1500]},
+    {"id": "conclusion", "title": "Conclusion", "roles": ["conclusion", "limitations"], "words": [100, 400]}
+  ],
+  "writing_order": ["approach", "related_work", "introduction", "experiments", "conclusion", "abstract"],
+  "abstract": {"words": [150, 250], "paragraphs": 1, "cites": false, "math": false, "single_paragraph": true},
+  "contributions": {"count": 0},
+  "title": {"max_words": 18, "max_chars": 160},
+  "keywords": {"min": 0, "max": 0, "cap": 0, "lowercase": false},
+  "citations": {
+    "style": "author_year",
+    "natbib_options": "round",
+    "bibstyle": "plainnat",
+    "types": ["CORE", "CONTEXT", "BASELINE", "METRIC", "DEFINITION"],
+    "in_abstract": false,
+    "in_headings": false,
+    "merge_adjacent": false
+  },
+  "tables": {"caption_position": "above", "suggested": 2},
+  "experiment_complexity": "moderate",
+  "figures": {"caption_position": "below", "suggested": 2},
+  "headings": {"case": "title", "numbered": true},
+  "masthead": {"journal": "", "homepage": "", "band_rgb": null, "copyright": "",
+               "doi_prefix": "", "default_vol": "", "default_issue": "", "default_month": "", "default_year": ""},
+  "results_mode": "proposal"
+}

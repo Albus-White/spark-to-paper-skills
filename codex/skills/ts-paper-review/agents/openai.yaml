@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Review"
+  short_description: "Run evidence-bound, risk-proportional manuscript review"
+  default_prompt: "Use $ts-paper-review to audit this manuscript and close evidence-backed issues."

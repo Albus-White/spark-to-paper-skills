@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "repos_lock",
+  "type": "object",
+  "required": [
+    "repositories",
+    "lock_hash"
+  ],
+  "properties": {
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "purpose",
+          "url",
+          "commit",
+          "official_status",
+          "license",
+          "local_path"
+        ]
+      }
+    }
+  }
+}

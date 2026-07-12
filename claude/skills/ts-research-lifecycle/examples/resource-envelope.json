@@ -1,0 +1,13 @@
+{
+  "source": "USER_PROVIDED",
+  "deadline": {"max_elapsed_hours": 72, "hard": true},
+  "compute": [
+    {"backend": "remote", "target": "research-gpu.example.org", "hardware": "one available GPU", "availability_hours": 36}
+  ],
+  "financial_limit": {"currency": "USD", "amount": 50},
+  "human_review": {"hours": 2},
+  "priorities": ["scientific validity", "deadline", "venue readiness"],
+  "constraints": ["credentials remain in SSH agent"],
+  "assumptions": [],
+  "confirmed_by_user": true
+}

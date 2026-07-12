@@ -1,0 +1,67 @@
+{
+  "schema": "drawai.slide_template_asset.v1",
+  "id": "aurora_ui",
+  "name": "Aurora UI PPT Image Template",
+  "category": "tech_ai_product",
+  "description": "Polished AI product workflow template with luminous gradients, layered cards, and dashboard-like capability panels.",
+  "design_tokens": {
+    "palette": {
+      "background": "#07111f",
+      "text": "#ffffff",
+      "muted": "#9cc7df",
+      "accent_primary": "#12d7ff",
+      "accent_secondary": "#8b5cf6",
+      "accent_tertiary": "#4ade80"
+    },
+    "typography": {
+      "title": "large Chinese title with technical English proper nouns preserved",
+      "body": "compact high-contrast sans-serif",
+      "labels": "short card labels"
+    },
+    "effects": {
+      "gradient": "soft aurora bands behind content",
+      "depth": "layered glass-like panels with readable foreground"
+    }
+  },
+  "page_types": [
+    {
+      "id": "product_workflow",
+      "name": "Product Workflow",
+      "best_for": ["AI product", "workflow", "agent platform"],
+      "layout_archetype": "hero title, central connected workflow cards, right capability panel, bottom rollout strip"
+    },
+    {
+      "id": "capability_dashboard",
+      "name": "Capability Dashboard",
+      "best_for": ["platform overview", "product launch"],
+      "layout_archetype": "dashboard cards with one prominent capability map"
+    }
+  ],
+  "slot_schema": {
+    "title": {"type": "text", "required": true, "max_length": 32},
+    "subtitle": {"type": "text", "required": false, "max_length": 72},
+    "workflow_steps": {"type": "array", "required": true, "min_items": 4, "max_items": 6},
+    "capabilities": {"type": "array", "required": false, "max_items": 5},
+    "bottom_takeaway": {"type": "text", "required": false}
+  },
+  "reference_images": [],
+  "sample_outputs": [
+    {
+      "path": "outputs/codex_slide_template_library_experiment/03_aurora_ui/aurora_ui.png",
+      "role": "sample_output",
+      "source": "codex template library experiment"
+    }
+  ],
+  "thumbnail": {
+    "path": "outputs/codex_slide_template_library_experiment/03_aurora_ui/aurora_ui.png"
+  },
+  "prompt_recipe": {
+    "style": "Deep navy Aurora UI, cyan/violet/mint luminous gradients, connected workflow cards, abstract product panels.",
+    "content_policy": "Use abstract UI widgets unless real product screenshots are supplied; do not invent logos or app screens.",
+    "text_policy": "Chinese title and labels must remain dominant and legible."
+  },
+  "layout": {
+    "archetype": "product_workflow_dashboard",
+    "regions": ["hero_title", "workflow_cards", "capability_panel", "bottom_takeaway"]
+  }
+}

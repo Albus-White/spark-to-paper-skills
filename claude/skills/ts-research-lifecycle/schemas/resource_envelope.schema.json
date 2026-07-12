@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "user_resource_envelope",
+  "type": "object",
+  "required": [
+    "source",
+    "deadline",
+    "compute",
+    "financial_limit",
+    "human_review",
+    "priorities",
+    "constraints",
+    "assumptions",
+    "confirmed_by_user"
+  ],
+  "properties": {
+    "source": {"enum": ["USER_PROVIDED", "USER_CONFIRMED_ASSUMPTIONS"]},
+    "deadline": {"type": "object"},
+    "compute": {"type": "array"},
+    "financial_limit": {"type": "object"},
+    "human_review": {"type": "object"},
+    "priorities": {"type": "array"},
+    "constraints": {"type": "array"},
+    "assumptions": {"type": "array"},
+    "confirmed_by_user": {"const": true}
+  }
+}

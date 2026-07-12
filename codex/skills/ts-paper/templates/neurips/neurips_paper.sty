@@ -1,0 +1,91 @@
+%% neurips_paper.sty — unofficial single-column, author-year style approximating the
+%% NeurIPS look. Bundled as a SECOND template to prove the ts-paper suite is
+%% template-agnostic (not locked to Traitement du Signal). It mirrors the package set
+%% of ts_iieta.sty so the same drafted section bodies compile under either template,
+%% but is single-column, uses author-year (natbib round) citations, and Title-Case
+%% (not ALL-CAPS) numbered headings.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{neurips_paper}[2026/06/16 v0.1 Unofficial single-column author-year paper style]
+
+% ── Page geometry (US letter, single column) ──
+\RequirePackage[letterpaper,top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+
+% ── Fonts ──
+\RequirePackage[utf8]{inputenc}  % compile-net for stray Unicode
+\RequirePackage[T1]{fontenc}
+\RequirePackage{mathptmx}
+\RequirePackage{microtype}
+
+% ── Core packages (mirror ts_iieta.sty so identical bodies compile) ──
+\RequirePackage{amsmath,amssymb,amsfonts}
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}  % algorithmicx: mixed-case \State/\For/\If/\Require as emitted by the write stage
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{multirow}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+\RequirePackage{adjustbox}
+\RequirePackage{xcolor}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{url}
+\RequirePackage{titlesec}
+\RequirePackage{caption}
+\RequirePackage{natbib}
+
+% Author-year citations (the contrast with TS's numeric [n] style)
+\setcitestyle{authoryear,round,comma,aysep={,}}
+
+% ── Body text size / leading ──
+\renewcommand{\normalsize}{\fontsize{10}{12}\selectfont}
+\normalsize
+
+% ── Section headings: "N Title Case", bold (NOT all-caps; the TS contrast) ──
+\titleformat{\section}[block]{\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thesection}{0.6em}{}
+\titleformat{\subsection}[block]{\normalfont\bfseries\fontsize{10.5}{12.5}\selectfont}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}[block]{\normalfont\itshape\fontsize{10}{12}\selectfont}{\thesubsubsection}{0.6em}{}
+\setcounter{secnumdepth}{3}
+
+% ── Captions: table above, figure below ──
+\captionsetup{font=small,labelsep=period,skip=4pt}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=below}
+
+% ── Front-matter holders + setters ──
+\newcommand{\np@title}{Article Title}
+\newcommand{\np@authors}{Author Name}
+\newcommand{\np@affil}{Affiliation}
+\newcommand{\np@email}{author@example.org}
+\newcommand{\npTitle}[1]{\renewcommand{\np@title}{#1}}
+\newcommand{\npAuthors}[1]{\renewcommand{\np@authors}{#1}}
+\newcommand{\npAffil}[1]{\renewcommand{\np@affil}{#1}}
+\newcommand{\npEmail}[1]{\renewcommand{\np@email}{#1}}
+
+% ── \npmaketitle{<abstract>} : centered single-column title block + centered abstract ──
+\newcommand{\npmaketitle}[1]{%
+  \begin{center}
+    {\fontsize{17}{20}\selectfont\bfseries \np@title\par}
+    \vspace{0.40cm}
+    {\fontsize{11}{13}\selectfont \np@authors\par}
+    \vspace{0.10cm}
+    {\fontsize{9.5}{11}\selectfont\itshape \np@affil\par}
+    \vspace{0.06cm}
+    {\fontsize{9.5}{11}\selectfont\texttt{\np@email}\par}
+  \end{center}
+  \vspace{0.30cm}
+  \begin{center}
+    \begin{minipage}{0.85\linewidth}
+      \begin{center}{\bfseries Abstract}\end{center}
+      \vspace{3pt}
+      \fontsize{10}{12}\selectfont #1\par
+    \end{minipage}
+  \end{center}
+  \vspace{0.40cm}
+}
+
+\newcommand{\npsectionstar}[1]{\section*{\normalfont\bfseries #1}}
+
+\endinput

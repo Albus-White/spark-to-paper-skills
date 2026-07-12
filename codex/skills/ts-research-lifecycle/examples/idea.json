@@ -1,0 +1,11 @@
+{
+  "problem": "Robust multivariate forecasting with sparse observations",
+  "hypothesis": "Masked consistency improves generalization under 30-70% missingness",
+  "proposed_mechanism": "Consistency regularizes latent representations when observations are absent",
+  "scope": "Multivariate forecasting with observable missingness",
+  "assumptions": ["Missingness masks are available"],
+  "falsifiers": ["No gain over matched-compute regularization comparators under the replication plan"],
+  "claims": ["Improves sparse-regime forecasting accuracy"],
+  "alternative_explanations": ["Any gain comes from additional compute"],
+  "minimum_validation_path": "Reproduce the applicable reference behavior, run one discriminative matched comparison, and size replication from observed variance"
+}
