@@ -1,7 +1,7 @@
 {
   "name": "spark-to-paper",
-  "description": "Model-first, evidence-driven academic research lifecycle for Claude Code. 14 composable skills from falsifiable Idea through profile-appropriate experiments and a reviewed compiled paper.",
-  "version": "3.0.0",
+  "description": "Single v5 research lifecycle for Claude Code with field and venue calibration, grounded Idea selection, governed evidence, source-of-truth figures, and actual-PDF release review.",
+  "version": "5.0.0",
   "author": {
     "name": "Albus White"
   },

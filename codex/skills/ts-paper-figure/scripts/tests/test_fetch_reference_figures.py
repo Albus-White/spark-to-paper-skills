@@ -26,7 +26,7 @@ def test_load_papers_preserves_model_selected_order(tmp_path):
     assert [item["title"] for item in frf.load_papers(str(path))] == ["Domain source", "Venue source"]
 
 
-def test_missing_candidate_input_does_not_claim_references_are_mandatory(tmp_path):
+def test_missing_candidate_input_preserves_mandatory_search_but_optional_selection(tmp_path):
     result = subprocess.run([
         sys.executable, str(SCRIPTS / "fetch_reference_figures.py"),
         "--papers", str(tmp_path / "missing.json"), "--out-dir", str(tmp_path / "refs"),
@@ -34,4 +34,5 @@ def test_missing_candidate_input_does_not_claim_references_are_mandatory(tmp_pat
     ], capture_output=True, text=True)
     report = json.loads(result.stdout)
     assert result.returncode == 1
-    assert report["references_optional"] is True
+    assert report["search_required"] is True
+    assert report["selection_optional"] is True

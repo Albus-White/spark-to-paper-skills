@@ -13,7 +13,7 @@
           "question",
           "change_class",
           "hypothesis",
-          "experiment_ids",
+          "evaluation_unit_ids",
           "expected_observations",
           "rationale",
           "estimated_cost",
@@ -21,7 +21,7 @@
           "stop_condition",
           "depth",
           "idea_id",
-          "contract_id",
+          "research_program_id",
           "signature",
           "status",
           "run_ids"

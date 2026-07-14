@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "paper_wiki_snapshot",
+  "type": "object",
+  "required": ["artifact_type", "wiki_root", "snapshot_sha256", "counts", "files"],
+  "properties": {
+    "artifact_type": {"const": "paper_wiki_snapshot"},
+    "snapshot_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "files": {"type": "array", "minItems": 1}
+  }
+}

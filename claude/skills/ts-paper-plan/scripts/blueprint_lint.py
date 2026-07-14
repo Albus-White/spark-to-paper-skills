@@ -37,35 +37,46 @@ def main() -> int:
         return 1
     issues: list[str] = []
     repaired: list[str] = []
-    venue_study_rel = blueprint.get("venue_study")
-    if not venue_study_rel:
-        issues.append("blueprint.venue_study is required")
-    else:
+    publication_contract = {}
+    for key, required_fields in (
+        ("venue_profile", ("papers", "aggregates", "sample_sufficiency")),
+        ("publication_contract", ("targets", "figure_plan", "section_plan", "claim_ids")),
+    ):
+        relative = blueprint.get(key)
+        if not relative:
+            issues.append(f"blueprint.{key} is required")
+            continue
         try:
-            venue_study_path = (workdir / str(venue_study_rel)).resolve()
-            venue_study_path.relative_to(workdir)
-            venue_study = json.loads(venue_study_path.read_text(encoding="utf-8"))
-            for key in ("official_guidance", "representative_papers", "field_conventions", "user_requirements", "design_decisions", "limitations", "reviewer"):
-                if key not in venue_study or venue_study[key] in (None, ""):
-                    issues.append(f"venue study missing {key}")
-            representative_papers = venue_study.get("representative_papers")
-            if not isinstance(representative_papers, list) or not representative_papers:
-                issues.append("venue study requires representative_papers selected by the main model")
-            else:
-                for index, paper in enumerate(representative_papers):
-                    if not isinstance(paper, dict) or not str(paper.get("title") or "").strip():
-                        issues.append(f"venue study representative_papers[{index}] needs a title")
-                        continue
-                    if not any(str(paper.get(key) or "").strip() for key in ("url", "doi", "path")):
-                        issues.append(f"venue study representative_papers[{index}] needs url, doi, or path")
-            for key in ("official_guidance", "field_conventions", "limitations"):
-                if key in venue_study and not isinstance(venue_study[key], list):
-                    issues.append(f"venue study {key} must be a list")
-            for key in ("user_requirements", "design_decisions", "reviewer"):
-                if key in venue_study and not isinstance(venue_study[key], dict):
-                    issues.append(f"venue study {key} must be an object")
+            path = (workdir / str(relative)).resolve()
+            path.relative_to(workdir)
+            value = json.loads(path.read_text(encoding="utf-8"))
+            missing = [field for field in required_fields if field not in value or value[field] in (None, "")]
+            if missing:
+                issues.append(f"blueprint {key} artifact missing {missing}")
+            if key == "venue_profile":
+                papers = value.get("papers")
+                if not isinstance(papers, list) or not papers:
+                    issues.append("venue profile requires accepted papers")
+                else:
+                    for index, paper in enumerate(papers):
+                        source = paper.get("source") if isinstance(paper, dict) else None
+                        if not isinstance(source, dict) or not any(source.get(item) for item in ("url", "doi", "official_path")):
+                            issues.append(f"venue profile papers[{index}] needs url, doi, or official_path")
+                        pdf = paper.get("pdf") if isinstance(paper, dict) else None
+                        if not isinstance(pdf, dict) or not pdf.get("path") or not pdf.get("sha256"):
+                            issues.append(f"venue profile papers[{index}] needs local PDF path and sha256")
+                        metrics = paper.get("metrics") if isinstance(paper, dict) else None
+                        required_metrics = {
+                            "page_count", "unique_cited_references", "total_figures", "table_count",
+                            "evaluation_count", "figure_roles", "evaluation_kinds", "evidence_dimensions",
+                            "evaluation_difficulty",
+                        }
+                        if not isinstance(metrics, dict) or not required_metrics.issubset(metrics):
+                            issues.append(f"venue profile papers[{index}] lacks complete publication/evidence metrics")
+            if key == "publication_contract":
+                publication_contract = value
         except (OSError, ValueError, json.JSONDecodeError) as exc:
-            issues.append(f"blueprint venue_study is invalid: {exc}")
+            issues.append(f"blueprint {key} is invalid: {exc}")
     sections = blueprint.get("sections")
     if not isinstance(sections, dict) or not sections:
         issues.append("blueprint.sections must be a non-empty object chosen for this paper")
@@ -125,7 +136,43 @@ def main() -> int:
             result_sections.add(section_id)
         figures.extend((section_id, item) for item in section.get("figures", []) if isinstance(item, dict))
         tables.extend((section_id, item) for item in section.get("tables", []) if isinstance(item, dict))
-    result_figures = [(section_id, item) for section_id, item in figures if item.get("source_of_truth") == "measured_data"]
+    result_figures = [(section_id, item) for section_id, item in figures if item.get("class") == "measured_evidence"]
+    planned_figures = publication_contract.get("figure_plan", []) if isinstance(publication_contract.get("figure_plan"), list) else []
+    expected_ids = {str(item.get("figure_id")) for item in planned_figures if isinstance(item, dict) and item.get("figure_id")}
+    actual_ids = {str(item.get("figure_id") or item.get("id")) for _, item in figures if item.get("figure_id") or item.get("id")}
+    if actual_ids != expected_ids or len(actual_ids) != len(figures):
+        issues.append(f"blueprint figure IDs must exactly match publication contract: missing={sorted(expected_ids - actual_ids)} extra={sorted(actual_ids - expected_ids)}")
+    planned_by_id = {str(item["figure_id"]): item for item in planned_figures if isinstance(item, dict) and item.get("figure_id")}
+    for _, figure in figures:
+        figure_id = str(figure.get("figure_id") or figure.get("id") or "")
+        planned = planned_by_id.get(figure_id, {})
+        if figure.get("class") != planned.get("class") or figure.get("route") != planned.get("route"):
+            issues.append(f"blueprint figure {figure_id or '?'} class/route differs from publication contract")
+        if figure.get("source_of_truth") != planned.get("source_of_truth"):
+            issues.append(f"blueprint figure {figure_id or '?'} source_of_truth differs from publication contract")
+    planned_sections = {
+        str(item.get("section_id")) for item in publication_contract.get("section_plan", [])
+        if isinstance(item, dict) and item.get("section_id")
+    }
+    if set(sections) != planned_sections:
+        issues.append(
+            f"blueprint sections must exactly match publication contract: "
+            f"missing={sorted(planned_sections - set(sections))} extra={sorted(set(sections) - planned_sections)}"
+        )
+    planned_tables = publication_contract.get("table_plan", []) if isinstance(publication_contract.get("table_plan"), list) else []
+    expected_table_ids = {
+        str(item.get("table_id")) for item in planned_tables
+        if isinstance(item, dict) and item.get("table_id")
+    }
+    actual_table_ids = {
+        str(item.get("table_id") or item.get("id")) for _, item in tables
+        if item.get("table_id") or item.get("id")
+    }
+    if actual_table_ids != expected_table_ids or len(actual_table_ids) != len(tables):
+        issues.append(
+            f"blueprint table IDs must exactly match publication contract: "
+            f"missing={sorted(expected_table_ids - actual_table_ids)} extra={sorted(actual_table_ids - expected_table_ids)}"
+        )
     if results_mode == "proposal" and result_figures:
         issues.append("proposal blueprint cannot plan measured-data result figures")
     if results_mode == "data_aware":
@@ -137,7 +184,10 @@ def main() -> int:
             for key in ("data_source", "fact_ids", "claim_role", "renderer"):
                 if not figure.get(key):
                     issues.append(f"measured-data figure {figure.get('id', '?')} missing {key}")
-        for section_id, table in ((section_id, item) for section_id, item in tables if item.get("source_of_truth") == "measured_data"):
+        for section_id, table in (
+            (section_id, item) for section_id, item in tables
+            if item.get("source_of_truth") == "canonical_result_facts" or item.get("fact_ids")
+        ):
             if section_id not in result_sections:
                 issues.append(f"measured-data table {table.get('id', '?')} is outside a results/evaluation section")
             for key in ("data_source", "fact_ids", "claim_role"):

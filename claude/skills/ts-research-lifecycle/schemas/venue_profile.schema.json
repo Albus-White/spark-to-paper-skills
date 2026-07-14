@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "venue_profile_v5",
+  "type": "object",
+  "required": ["user_policy_id", "user_policy_hash", "venue_corpus_id", "venue_corpus_hash", "venue_basis", "research_scope", "corpus_criteria", "papers", "aggregates", "sample_sufficiency", "evaluation_difficulty_synthesis", "limitations", "reviewer"],
+  "properties": {
+    "papers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "venue", "year", "article_type", "source", "pdf", "relevance", "metrics"],
+        "properties": {
+          "pdf": {"type": "object", "required": ["path", "sha256"]},
+          "metrics": {
+            "type": "object",
+            "required": ["page_count", "unique_cited_references", "total_figures", "table_count", "evaluation_count", "figure_roles", "evaluation_kinds", "evidence_dimensions", "evaluation_difficulty"]
+          }
+        }
+      }
+    },
+    "aggregates": {"type": "object", "required": ["means", "medians", "lower_quartiles", "upper_quartiles", "minima", "maxima", "missingness", "outliers", "evidence_dimension_means", "figure_role_means", "evaluation_kind_means"]},
+    "sample_sufficiency": {"type": "object", "required": ["verdict", "rationale", "coverage", "stopping_reason"]}
+  }
+}

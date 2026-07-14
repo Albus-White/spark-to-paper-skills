@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "publication_contract_v5",
+  "type": "object",
+  "required": ["user_policy_id", "user_policy_hash", "venue_profile_id", "venue_profile_hash", "research_program_id", "research_program_hash", "claim_registry_hash", "idea_id", "claim_ids", "paper_archetype", "calibration_envelope", "targets", "target_rationales", "section_plan", "figure_plan", "table_plan", "citation_coverage_requirements", "deadline_allocation", "deviations", "manuscript_content_policy"],
+  "properties": {
+    "claim_ids": {"type": "array", "minItems": 1, "uniqueItems": true},
+    "targets": {
+      "type": "object",
+      "required": ["page_range", "minimum_unique_cited_references", "figure_count", "table_count"],
+      "properties": {
+        "page_range": {"type": "array", "minItems": 2, "maxItems": 2},
+        "minimum_unique_cited_references": {"type": "integer", "minimum": 0},
+        "figure_count": {"type": "integer", "minimum": 0},
+        "table_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "figure_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["figure_id", "class", "purpose", "route", "source_of_truth", "claim_ids", "section_role"],
+        "properties": {
+          "class": {"enum": ["measured_evidence", "original_observation", "exact_structure", "explanatory_synthesis"]},
+          "route": {"enum": ["DETERMINISTIC_OR_ORIGINAL_EVIDENCE", "ORIGINAL_EVIDENCE", "DOMAIN_NATIVE", "PAPERBANANA_REQUIRED"]},
+          "drawai_policy": {"enum": ["USE_IF_AVAILABLE_AFTER_RASTER_APPROVAL"]}
+        }
+      }
+    },
+    "table_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["table_id", "purpose", "source_of_truth", "claim_ids", "section_role"]
+      }
+    },
+    "deviations": {"type": "array"},
+    "manuscript_content_policy": {"type": "object"}
+  }
+}

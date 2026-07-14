@@ -57,14 +57,48 @@ def validate_benchmarks(data, issues):
 
 
 def validate_contract(data, claims, issues):
-    require(data, ["claim_ids", "experiments", "study_inputs", "protocols", "outcomes", "comparators", "replication_plan", "statistical_plan", "test_set_policy", "stop_conditions", "budget"], "contract", issues)
+    require(data, [
+        "claim_ids", "evaluation_units", "study_inputs", "protocol", "outcomes", "comparators",
+        "analysis_plan", "test_set_policy", "stop_conditions", "resource_plan", "feasibility",
+        "benchmark_policy", "venue_alignment", "revalidation_policy", "idea_iteration_policy",
+    ], "research_program", issues)
     known = {item.get("claim_id") for item in claims.get("claims", [])}
     for claim_id in data.get("claim_ids", []):
         if claim_id not in known:
             issues.append(f"unknown claim: {claim_id}")
-    for index, experiment in enumerate(data.get("experiments", [])):
-        if isinstance(experiment, dict):
-            require(experiment, ["experiment_id", "claim_ids", "why_it_tests_claim", "positive_interpretation", "negative_interpretation", "confounders", "out_of_scope_conclusions"], f"experiments[{index}]", issues)
+    units = data.get("evaluation_units", [])
+    if not isinstance(units, list) or not units:
+        issues.append("research_program.evaluation_units must be a non-empty list")
+        units = []
+    valid_kinds = {
+        "benchmark", "experiment", "simulation", "observational_analysis",
+        "qualitative_study", "proof", "artifact_evaluation",
+    }
+    seen_units = set()
+    covered_claims = set()
+    for index, unit in enumerate(units):
+        if not isinstance(unit, dict):
+            issues.append(f"evaluation_units[{index}] must be an object")
+            continue
+        require(unit, [
+            "unit_id", "kind", "claim_ids", "question", "why_it_tests_claim", "protocol_summary",
+            "positive_interpretation", "negative_interpretation", "confounders",
+            "out_of_scope_conclusions", "difficulty", "stop_condition",
+        ], f"evaluation_units[{index}]", issues)
+        unit_id = unit.get("unit_id")
+        if unit_id in seen_units:
+            issues.append(f"duplicate evaluation unit: {unit_id}")
+        seen_units.add(unit_id)
+        if unit.get("kind") not in valid_kinds:
+            issues.append(f"evaluation_units[{index}].kind invalid")
+        unit_claims = set(unit.get("claim_ids") or [])
+        covered_claims.update(unit_claims)
+        for claim_id in unit_claims:
+            if claim_id not in known:
+                issues.append(f"evaluation_units[{index}] references unknown claim: {claim_id}")
+    uncovered = set(data.get("claim_ids") or []) - covered_claims
+    if uncovered:
+        issues.append(f"research-program claims lack evaluation units: {sorted(uncovered)}")
     feasibility = data.get("feasibility")
     if feasibility is not None and not isinstance(feasibility, dict):
         issues.append("contract.feasibility must be an object when supplied")

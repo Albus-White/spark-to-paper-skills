@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Experiments"
-  short_description: "Run verified, bounded experiments on one lifecycle"
-  default_prompt: "Use $ts-paper-experiment to execute the frozen contract with verified code and evidence."
+  short_description: "Run the benchmark-aware frozen evidence program"
+  default_prompt: "Use $ts-paper-experiment to execute the frozen research program with governed code and claim-linked evidence."

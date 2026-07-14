@@ -4,6 +4,7 @@
   "type": "object",
   "required": [
     "run_type",
+    "evaluation_unit_ids",
     "command",
     "replicate_id",
     "config",
@@ -14,6 +15,9 @@
     "test_set_accessed"
   ],
   "properties": {
+    "run_type": {"enum": ["baseline", "pilot", "full", "revalidation", "diagnostic", "analysis", "user_supplied_import"]},
+    "research_program_id": {"type": "string"},
+    "evaluation_unit_ids": {"type": "array", "items": {"type": "string"}},
     "replicate_id": {"type": "string", "minLength": 1},
     "random_seed": {"type": ["integer", "null"]},
     "input_artifact_hashes": {"type": "object", "minProperties": 1},

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Research Idea Discovery"
+  short_description: "Select grounded, falsifiable research Idea candidates"
+  default_prompt: "Use $ts-idea-discovery to turn this research seed into evidence-grounded Idea candidates and select one faithfully."
+

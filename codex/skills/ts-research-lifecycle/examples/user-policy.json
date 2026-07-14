@@ -1,0 +1,29 @@
+{
+  "source": "COMPILED_FROM_USER_REQUEST",
+  "target_venue": "user-selected venue or null",
+  "venue_selection_policy": "USER_SELECTED",
+  "citation_policy": {"minimum_unique_cited_references": null},
+  "figure_policy": {
+    "measured_evidence_route": "DETERMINISTIC_OR_ORIGINAL_EVIDENCE",
+    "original_observation_route": "ORIGINAL_EVIDENCE",
+    "exact_structure_route": "DOMAIN_NATIVE",
+    "explanatory_synthesis_route": "PAPERBANANA_REQUIRED",
+    "drawai_policy": "USE_IF_AVAILABLE_AFTER_RASTER_APPROVAL"
+  },
+  "requirements": ["User requirements stated in the current run"],
+  "research_preferences": {"field": "active research field", "paper_archetype": "model-selected after grounding"},
+  "deadline": {"status": "UNKNOWN"},
+  "resource_limits": {
+    "compute": {"status": "UNKNOWN"},
+    "financial": {"status": "UNKNOWN"},
+    "api": {"status": "UNKNOWN"},
+    "storage": {"status": "UNKNOWN"}
+  },
+  "human_review": {"status": "UNKNOWN"},
+  "priorities": ["scientific validity"],
+  "degradation_policy": {
+    "acceptable": ["Narrow an Idea or claim transparently"],
+    "unacceptable": ["Fabricate evidence", "Pad citations or pages", "Bypass a frozen figure route"]
+  },
+  "assumptions": {"unknowns": ["deadline", "compute"], "confirmed": []}
+}

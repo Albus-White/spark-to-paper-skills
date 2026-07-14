@@ -1,4 +1,4 @@
 interface:
   display_name: "Evidence-Driven Paper"
-  short_description: "Run one grounded lifecycle from idea to compiled paper"
+  short_description: "Run one venue-calibrated lifecycle through audited release"
   default_prompt: "Use $ts-paper to turn my research input into an evidence-grounded compiled paper."

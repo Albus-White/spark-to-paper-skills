@@ -1,114 +1,119 @@
 ---
 name: ts-research-lifecycle
-description: Manage the single evidence and state lifecycle for grounded research, including profile-specific phases, versioned Ideas and claims, model-authored scientific judgments, scoped approvals, feasibility-tested contracts, repository and environment locks, bounded runs, result provenance, invalidation, Idea evolution, and manuscript release. Use whenever a paper needs grounded design, experiments, result-backed claims, recovery, or auditable scientific decisions.
+description: Manage the v5 single research-to-publication state across user policy, Idea seed and selection, science and venue calibration, versioned Ideas and claims, frozen research programs, governed evidence, publication contracts, manuscripts, semantic judgments, compilation, and release audit.
 ---
 
 # ts-research-lifecycle
 
-Use this skill as the only scientific state for a run. Other skills import artifacts into it; none may
-create parallel Idea, contract, experiment, result, or manuscript truth.
+This skill owns lifecycle state and exact provenance. It does not decide whether an Idea is novel,
+an experiment is scientifically adequate, code implements the intended mathematics, prose is
+coherent, or a figure communicates well. Those are explicit main-model judgments bound to evidence.
 
-## Read first
+Read the references in this skill before the corresponding phase. The lifecycle under
+`<workdir>/research` is the sole source of truth.
 
-- `references/reasoning-and-validation-boundary.md`
-- `references/profiles.md`
-- `references/state-transition-table.md`
-- `references/gate-verdict-spec.md`
-- `references/gate-artifact-contracts.md`
-- `references/artifact-invalidation-rules.md`
-- `references/bounded-execution-contract.md`
-- `references/scientific-sanity-tests.md` before G8
-- `references/scientific-branching-loop.md` before feedback-driven experiment branching
-- `references/remote-experiment-execution.md` before remote execution
-- `references/repository-governance.md` before repository acquisition or conflict resolution
+Always read `references/bounded-execution-contract.md`; every iterative stage must declare finite
+attempt, time, and no-progress stops.
 
-## Start
+## Initialize and register intake
 
 ```bash
 python scripts/lifecycle.py --root <research> init --profile <profile> --run-id <id>
+python scripts/lifecycle.py --root <research> register-resource-envelope --file <resources.json>
+python scripts/lifecycle.py --root <research> register-user-policy --file <policy.json>
+python scripts/lifecycle.py --root <research> register-idea-seed --file <seed.json>
 ```
 
-The profile writes its own legal phase sequence. Proposal does not traverse empirical gates;
-exploratory cannot create confirmatory full runs; standard and high-risk follow the empirical path.
+Empirical profiles require a user-confirmed capability envelope. Store capabilities and target
+identities, never credentials.
 
-For empirical profiles, capture the user's confirmed time, compute, financial, storage, and review
-constraints before sizing the design:
+## Calibrate science and venue independently
+
+Register a full-text-bound science profile after the seed. It records topic literature and
+scientific/writing conventions. Then freeze a comparable accepted-paper venue corpus before
+downloading it, register PDF-bound observations, and add a separate venue judgment.
 
 ```bash
-python scripts/lifecycle.py --root <research> register-resource-envelope \
-  --file <resource-envelope.json>
+python scripts/lifecycle.py --root <research> register-science-profile --file <science.json>
+python scripts/lifecycle.py --root <research> register-venue-corpus --file <corpus.json>
+python scripts/lifecycle.py --root <research> register-venue-profile --file <venue.json>
+python scripts/lifecycle.py --root <research> set-venue-judgment --file <venue-judgment.json>
 ```
 
-The main model allocates this envelope across the evidence needed by the active claims. The lifecycle
-does not supply a default research budget.
+Venue metrics record universal counts plus domain-authored figure roles, evaluation kinds, evidence
+dimensions, and difficulty. Different papers may use different vocabularies. Aggregation treats them
+as observations, never automatic quotas.
 
-## Scientific gates
+## Register optional memory and Idea selection
 
-G1, G2, G3, G6, G7, G8, G9, G12, G13, G14, G15, and G16 require a structured
-`scientific_judgment` written after the main model inspects raw evidence. Pass it with:
+Paper Wiki is optional read-only memory. Snapshot it before discovery; a changed snapshot cannot
+silently mutate an active Idea.
 
 ```bash
-python scripts/lifecycle.py --root <research> set-gate Gx \
-  --verdict PASS \
-  --evidence <artifact> \
-  --judgment <judgment.json> \
-  --summary <short-summary>
+python scripts/lifecycle.py --root <research> register-memory-snapshot --file <snapshot.json>
+python scripts/lifecycle.py --root <research> register-idea-candidates --file <candidates.json>
+python scripts/lifecycle.py --root <research> register-idea-selection --file <selection.json>
+python scripts/lifecycle.py --root <research> register-idea --file <idea.json>
 ```
 
-The CLI validates structure and artifact hashes, not the scientific conclusion. High-risk G3/G7/G12/
-G14/G16 judgments require an independent reviewer. `NOT_APPLICABLE` requires a rationale and the
-counterfactual condition that would make the gate applicable.
+The first active Idea must exactly match the selected candidate on its scientific fields. Later Idea
+versions record revision level and approval. L2-L4 changes require user approval; test-informed
+changes invalidate confirmation until independent evidence exists.
 
-## Contract freeze
+## Freeze one research program
 
-For empirical profiles, run a representative feasibility microprobe before freezing. The contract
-must bind the current resource-envelope hash and record measured cost, deadline fit, budget fit, and
-evidence. The G3 judgment precedes freeze. Record an
-approval with action `FREEZE_CONTRACT`, scope equal to the active `idea_id`, and the G3 judgment as
-evidence; pass the resulting approval ID to `freeze-contract`.
+The research program binds active policy, science profile, venue profile, claims, benchmark decision,
+adaptive feasibility probes, resources, and claim-linked evaluation units. It uses
+`research_program_id` everywhere; there is no second experiment contract.
 
-Pipeline synchronization only imports candidates. It cannot pass G1-G3 or freeze a contract.
-
-## Experiments and Idea evolution
-
-Pin external repositories and lock the selected environment before formal runs. Use
-`run_iteration.py` for finite retries and explicit failure classification. Let the main model design
-the G8 verification suite from implementation-specific scientific risks; the validator checks only
-that every declared applicable risk has passing executable evidence.
-
-Classify failures before acting:
-
-- infrastructure: bounded retry;
-- dependency or implementation: repair, re-review, rerun affected evidence;
-- protocol: revise contract and invalidate dependents;
-- data/resource/license: stop or reduce scope explicitly;
-- hypothesis unsupported: preserve the negative result and decide keep/narrow/revise/branch/reject.
-
-When several decision-relevant alternatives remain, use the branch ledger rather than overwriting the
-current implementation or launching an untracked search. The contract bounds branch count/depth;
-selection prioritizes validity and discriminating evidence over a scalar metric.
+The main model writes a G3 scientific judgment. Record approval with action
+`FREEZE_RESEARCH_PROGRAM`, scope equal to the active Idea, and the judgment in its evidence, then run:
 
 ```bash
-python scripts/lifecycle.py --root <research> propose-branch --file <proposal.json>
-python scripts/lifecycle.py --root <research> evaluate-branch <branch-id> --file <evaluation.json>
+python scripts/lifecycle.py --root <research> freeze-research-program \
+  --file <research-program.json> --approval <AP-id>
 ```
 
-L2-L4 Idea changes require user approval. Test-informed changes require independent confirmation.
+Evaluation units are domain-neutral. Applicable public benchmarks require acquisition and
+reproduction. Empirical programs require at least one measured dominant-cost probe and a deadline-fit
+resource plan; proposal programs may be planned-only.
 
-## Results and manuscript
+## Govern code, runs, branches, and facts
 
-Canonical empirical facts live in `evidence/results/results-manifest.jsonl`. Every fact binds to
-completed run IDs, raw artifact hashes, claim IDs, and aggregation code/hash. Formal runs name frozen
-contract experiment IDs, so G11 can validate the complete claim-to-experiment-to-run-to-fact path
-deterministically.
+Pin repository origin, exact commit, license, cleanliness, and modification mode. Lock the selected
+execution environment. Formal run manifests name `evaluation_unit_ids`, repository/environment locks,
+replicate identity, protocol and input hashes, test access, status, and failure class.
 
-Register only the manuscript allowlist (`main.tex`, `refs.bib`, template assets, `sections/`,
-`figures/`, `assets/`). Research state, code, data, caches, and credentials are excluded.
+Use `run_iteration.py` for bounded execution. Automatic retries are limited to infrastructure
+failures. Implementation/dependency failures require a material state change; protocol failures
+reopen design; unsupported hypotheses remain evidence.
 
-```bash
-python scripts/lifecycle.py --root <research> register-manuscript <paper-workdir>
-python scripts/lifecycle.py --root <research> validate
-```
+Scientific alternatives use `propose-branch` and `evaluate-branch`. Branch count/depth comes from the
+research program, and negative/inconclusive branches stay in the ledger. Canonical result facts bind
+claim IDs to compatible completed runs, evaluation units, raw artifacts, and aggregation code.
 
-Changed evidence, approval, result source, or manuscript hash invalidates its dependent verdict.
-Passing a gate clears its previous blocker. Negative and stopped states remain valid auditable outputs.
+## Freeze publication and manuscript artifacts
+
+After claims stabilize, derive an observed envelope with `derive_publication_envelope.py`. The main
+model selects justified targets and freezes a publication contract after scoped approval. Register
+bibliography coverage and figure routing against that exact contract.
+
+Figure class determines route: measured evidence, original observation, exact structure, or
+explanatory synthesis. Only explanatory synthesis requires PaperBanana. DrawAI is conditional after
+raster approval.
+
+Register only reader-facing manuscript files. The allowlist excludes research state, code, data,
+logs, caches, credentials, and internal audit material. Register the exact LaTeX verdict and compiled
+PDF, then a Publication Judgment that binds and confirms actual-PDF review. The deterministic release
+audit cannot substitute for this semantic judgment.
+
+## Gates and invalidation
+
+Semantic gates require structured model judgments only where scientific reasoning is needed. Exact
+gates reject model self-report for facts code can establish. High-risk G3/G7/G12/G14/G16 require
+independence; high-risk release also requires scoped human confirmation.
+
+Every gate stores evidence hashes. Changed policy, seed, corpus, profile, Idea, protocol, repository,
+environment, result source, manuscript, figure route, or compile verdict invalidates only its
+dependents. Editorial changes do not erase valid empirical evidence. Run `validate` before every
+release transition.

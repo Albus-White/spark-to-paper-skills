@@ -22,8 +22,10 @@ Each fact contains `fact_id`, `claim_ids`, `value`, `unit`, optional `display_va
 Do not promote exploratory, stale, failed, invalidated, or test-contaminated evidence.
 
 For user-supplied results without executable runs, initialize the appropriate lifecycle profile and
-register immutable source artifacts plus a transparent import/recomputation record. Never manufacture
-a run ID.
+freeze a claim-linked import/analysis evaluation unit. Register an immutable
+`user_supplied_import` manifest that describes the import event, source hashes, and any recomputation;
+it is provenance, not a claim that this suite executed the original study. Never label imported data
+as a baseline, pilot, or confirmation run.
 
 ## Main-model interpretation
 

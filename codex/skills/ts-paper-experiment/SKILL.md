@@ -1,98 +1,96 @@
 ---
 name: ts-paper-experiment
-description: Execute the empirical branch of the shared research lifecycle on one existing research root. Use after a grounded Idea, measured feasibility probe, and approved frozen contract. Acquire pinned benchmark or author repositories, govern patches and environments, reproduce applicable baselines, let the main model design scientific verification, run bounded pilot/full experiments, classify failures, diagnose mechanisms, evolve Ideas, and produce canonical result facts.
+description: Execute the empirical branch of one existing v5 research lifecycle. Use after a grounded active Idea, approved frozen research program, and measured feasibility probe to acquire governed code/data, reproduce applicable references, review implementation meaning, run bounded evaluation units, diagnose failures and mechanisms, evolve Ideas, and produce canonical facts.
 ---
 
 # ts-paper-experiment
 
-Operate on the existing `<workdir>/research`. Never create a second lifecycle or wait for a completed
-proposal PDF before experiments.
+Operate only on `<workdir>/research`. Read
+`../ts-research-lifecycle/references/bounded-execution-contract.md` and the lifecycle references for
+repository governance, remote execution, scientific sanity tests, branching, and invalidation.
 
-Read:
+## Acquire the right implementation
 
-- `../ts-research-lifecycle/references/reasoning-and-validation-boundary.md`
-- `../ts-research-lifecycle/references/remote-experiment-execution.md`
-- `../ts-research-lifecycle/references/repository-governance.md`
-- `../ts-research-lifecycle/references/scientific-sanity-tests.md`
-- `../ts-research-lifecycle/references/adaptive-design-budget.md`
-- `../ts-research-lifecycle/references/scientific-branching-loop.md`
-- `../ts-research-lifecycle/references/artifact-invalidation-rules.md`
-- `../ts-research-lifecycle/references/bounded-execution-contract.md`
+Read the benchmark decision and each frozen evaluation unit. Prefer, in order, the applicable official
+benchmark/author repository, a maintained compatible implementation, a documented adaptation, or the
+minimum local implementation needed when no suitable code exists. An applicable benchmark must be
+acquired and reproduced; absence or incompatibility must be evidenced rather than hidden by an
+unrelated benchmark.
 
-## 1. Acquire code and data
+Pin origin, full commit, license, submodules, checkpoints, dataset/evaluator versions, and expected
+behavior. Keep upstream checkouts read-only. Put integrations in `code/integration`, adapters in
+`code/adapters`, and unavoidable upstream changes in a hash-bound patch stack or explicit fork.
 
-Prefer an official benchmark or author repository when it matches the claim. Otherwise use the
-closest maintained implementation and record its status, or implement the missing minimum locally.
-Pin repository URL, commit, license, submodules, checkpoints, dataset versions, and evaluator source.
+Resolve dependency or version conflicts by tracing required behavior: compare APIs, tests, published
+configuration, evaluator semantics, and affected outputs. Record the selected resolution and verify it
+against reference behavior. Never choose a side merely because it is newer or installs cleanly. An
+upstream or environment change creates a new lock and invalidates affected executable evidence.
 
-Keep upstream checkouts read-only. Put adapters in `code/adapters`, integration code in
-`code/integration`, and necessary upstream modifications in an ordered patch stack. Resolve version
-conflicts by behavior and reference tests, never by blindly choosing one side. An upstream upgrade
-creates a new lock and invalidates affected executable evidence.
+## Lock execution and reproduce references
 
-Credentials remain outside the research tree. Store only non-secret target and fingerprint metadata.
+Select local or remote execution before formal runs. Lock backend, target, environment fingerprint,
+OS, language/runtime, framework/toolchain, dependencies, hardware, and relevant drivers. A backend
+switch is an environment change, not an infrastructure retry. Credentials remain outside lifecycle
+artifacts.
 
-## 2. Lock execution
+Reproduce the applicable baseline or reference under its official task, split, preprocessing,
+evaluator, checkpoint, and configuration before evaluating the new method. The main model judges
+comparability; code recomputes exact outputs. When no valid reference is applicable, G6 may be
+`NOT_APPLICABLE` only with search evidence and a counterfactual trigger.
 
-Select local or remote compute before G5, snapshot the actual environment, and lock backend, target,
-Python/framework/CUDA/dependencies/hardware. A mid-run backend switch is a new environment, not a
-retry. Use bounded commands and preserve start, exit, timeout, and outcome-unknown states.
+## Review code for scientific meaning
 
-## 3. Reproduce the applicable reference
+The main model maps the implementation to the intended mathematics, physical process, protocol, data
+flow, and estimand. It explicitly asks how code could execute without errors yet answer the wrong
+question: leakage, wrong units, coordinate frames, boundary conditions, aggregation, masking,
+normalization, evaluator direction, split contamination, hidden defaults, seed/replicate semantics,
+or domain-specific equivalents.
 
-When G2 identifies an applicable benchmark or baseline, reproduce its official metric/config range
-before evaluating the new method. The main model compares task, split, preprocessing, evaluator,
-checkpoint, and expected behavior. Code recomputes the numbers. If no valid benchmark exists, record
-G6 `NOT_APPLICABLE` with evidence and a counterfactual trigger; do not run an unrelated benchmark for
-the appearance of certainty.
+Design the smallest discriminative executable checks for the risks actually present. Code verifies
+their outcomes; the model judges whether they establish alignment. Add an independent reviewer only
+for material uncertainty, disagreement, fragility, or high consequence.
 
-## 4. Verify implementation scientifically
+## Pilot before confirmation
 
-The main model explains the implementation in mathematical and protocol terms, compares it with the
-contract, and enumerates ways it could run without crashing yet answer the wrong question. Design the
-smallest discriminative test suite for those risks. Run it and validate
-`reports/code/verification-suite.json`; do not require irrelevant universal test names.
+Use a bounded pilot to test runtime, resource use, data flow, evaluator behavior, signal visibility,
+variance/heterogeneity, protocol assumptions, and failure modes. Recompute remaining schedule before
+expensive confirmation. Do not tune on sealed confirmation data.
 
-Use an independent code review when risk, uncertainty, or a material disagreement warrants it. Review
-raw code/diff, contract, and test evidence with minimal context.
+Formal manifests name frozen `evaluation_unit_ids`, domain-appropriate replicate identifiers,
+optional random seeds, input and protocol hashes, repository/environment locks, test access, raw logs,
+status, and failure class. Evaluation units may be experiments, simulations, observational or
+qualitative analyses, proofs, benchmarks, or artifact evaluations. Execute only units authorized by
+the frozen program.
 
-## 5. Run pilot and bounded confirmation
+Venue observations inform whether the evidence program looks unusually thin or ambitious, but claim
+validity, field conventions, measured feasibility, and user resources determine the final program.
+Never copy an accepted-paper mean as an experiment quota.
 
-Use pilot data to test feasibility, signal direction, variance, protocol behavior, and failure modes.
-Do not tune on the sealed confirmation set. Before full execution, confirm that projected runtime and
-storage remain within the frozen budget.
+## Iterate without outcome chasing
 
-Run only contract-authorized full experiments. Preserve manifests, configs, domain-appropriate
-replicate IDs, optional random seeds, raw outputs,
-failures, test access, and environment/repository hashes. Every formal run names the structured
-`experiment_id` entries it executes, preserving the claim-to-run path.
+Classify before changing anything:
 
-## 6. Classify before iterating
+- infrastructure failure: bounded retry with unchanged science;
+- dependency or implementation failure: material repair, renewed review/checks, rerun affected units;
+- protocol failure: revise and refreeze the research program, invalidating dependents;
+- data, license, or resource failure: stop or transparently narrow scope;
+- unsupported hypothesis: preserve negative evidence and weaken, reject, or reframe claims;
+- inconclusive evidence: report uncertainty or run only a predeclared discriminating unit.
 
-- infrastructure: bounded retry without scientific change;
-- dependency/implementation: repair, rerun affected review/tests, then retry;
-- protocol: return to contract judgment and invalidate dependents;
-- data/license/resource: stop or explicitly narrow scope;
-- unsupported hypothesis: preserve negative evidence and weaken/reject the claim;
-- inconclusive: report uncertainty; do not keep tuning until positive.
+The same normalized state without material progress stops. Competing alternatives use the lifecycle
+branch ledger with question, hypothesis, expected positive/negative observations, authorized units,
+cost, stop condition, runs, and scientific interpretation. Do not select a branch solely by one
+scalar metric.
 
-The same normalized failure without a material state change stops the loop.
+## Diagnose and evolve the Idea
 
-For genuinely competing scientific alternatives, propose a bounded lifecycle branch. Preserve its
-parent, delta, expected positive/negative observations, cost, runs, and model evaluation. Promote a
-branch only for protocol-valid discriminating evidence; never choose it solely because one averaged
-metric is larger.
+Compare mechanism predictions, alternatives, conditions/subgroups, and failure evidence. Decide
+KEEP, NARROW_SCOPE, REVISE_MECHANISM, REFRAME_PROBLEM, BRANCH_NEW_IDEA, REJECT_AND_STOP, or
+INSUFFICIENT_EVIDENCE. Infrastructure repairs do not change the Idea; protocol and core scientific
+changes do. Evidence used to invent a revised Idea cannot independently confirm it.
 
-## 7. Diagnose and evolve the Idea
+## Emit canonical evidence
 
-Let the main model compare mechanism predictions, alternatives, subgroup/condition behavior, and
-failure evidence. Decide KEEP, NARROW_SCOPE, REVISE_MECHANISM, REFRAME_PROBLEM, BRANCH_NEW_IDEA,
-REJECT_AND_STOP, or INSUFFICIENT_EVIDENCE. Core changes create a new Idea version. Evidence used to
-invent the revision cannot independently confirm it.
-
-## 8. Emit evidence
-
-Write canonical facts to `research/evidence/results/results-manifest.jsonl`, binding each value to
-claim IDs, completed run IDs, raw artifacts/hashes, and aggregation code/hash. Reconcile claim wording
-before handing evidence to `ts-paper-data`, `ts-paper-write`, and review. This skill does not rewrite or
-compile the manuscript.
+Write facts to `research/evidence/results/results-manifest.jsonl`. Every fact binds claim IDs to
+compatible completed runs, claim-linked evaluation units, raw artifacts and hashes, and aggregation
+code/hash. Reconcile claim wording before writing. This skill does not draft or compile the paper.

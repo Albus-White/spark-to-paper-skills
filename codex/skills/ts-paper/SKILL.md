@@ -1,141 +1,142 @@
 ---
 name: ts-paper
-description: Generate a complete, venue-formatted research paper from an idea, proposal, or verified results through one evidence-driven lifecycle. Use for end-to-end paper creation, including grounded design, optional experiments, evidence-bound writing, review, figures, and LaTeX compilation. Routes proposal, exploratory, standard empirical, and high-risk work without fabricating results or duplicating lifecycle state.
+description: >-
+  Run one evidence-bound research-to-publication lifecycle from a raw seed, supplied proposal, or
+  verified results. Use for end-to-end scientific paper work including field and venue calibration,
+  Idea discovery, research design, optional governed execution, citations, planning, writing, review,
+  figures, LaTeX, and release audit.
 ---
 
 # ts-paper
 
-Run one research lifecycle and one manuscript pipeline. Trust the main model with scientific and
-semantic judgment; use code for facts it can establish exactly.
+Run one lifecycle under `<workdir>/research`. Every specialized skill contributes to that state; none
+creates a parallel Idea, research program, result set, manuscript truth, or second paper pipeline.
+Trust the main model with semantic and scientific judgment. Use deterministic code only for exact
+facts such as schemas, hashes, source identities, budgets, process outcomes, metric recomputation,
+citation wiring, artifact sets, and compilation.
 
-## Governing contracts
+Read the governing references in `../ts-research-lifecycle/references/` before acting, especially
+`reasoning-and-validation-boundary.md`, `state-transition-table.md`,
+`artifact-invalidation-rules.md`, and `bounded-execution-contract.md`.
 
-Read these before acting:
+## Choose one profile
 
-- `../ts-research-lifecycle/references/reasoning-and-validation-boundary.md`
-- `../ts-research-lifecycle/references/state-transition-table.md`
-- `../ts-research-lifecycle/references/gate-verdict-spec.md`
-- `../ts-research-lifecycle/references/gate-artifact-contracts.md`
-- `../ts-research-lifecycle/references/adaptive-design-budget.md`
-- `../ts-research-lifecycle/references/bounded-execution-contract.md`
+- `proposal`: design and write without claiming unmeasured outcomes.
+- `exploratory`: run bounded pilots; findings remain exploratory.
+- `standard_empirical`: run claim-supporting acquisition, verification, pilot, confirmation, and
+  reconciliation.
+- `high_risk`: use the empirical path plus proportionate independent and human confirmation.
 
-The lifecycle under `<workdir>/research` is the only research state. Never create an experiment-side
-second lifecycle, and never infer a passing scientific gate from file existence.
+Initialize once with `scripts/init_research_run.py`. Do not upgrade for spectacle or downgrade to
+avoid a validity requirement.
 
-## Route once
+## Unified lifecycle
 
-Choose the lightest profile that can support the user's intended claims:
+### 1. Preserve the request and resources
 
-| Profile | Use when | Empirical execution |
-|---|---|---|
-| `proposal` | No verified measured evidence is available or execution is out of scope | None |
-| `exploratory` | Pilot evidence is useful but cannot support confirmatory claims | Pilot only |
-| `standard_empirical` | Claims require executable confirmation | Baseline, verification, pilot, full run |
-| `high_risk` | Medical, safety, legal, consequential, or unusually fragile claims | Standard path plus independent/human confirmation |
+Register the user policy, literal Idea seed, target venue behavior, submission constraints, deadline,
+compute/storage/API/financial limits, and review availability. Unknown values remain explicit; never
+silently manufacture user confirmation. Credentials stay outside the research tree.
 
-Initialize exactly once:
+### 2. Build two distinct calibrations before design
 
-```bash
-python scripts/init_research_run.py --workdir <workdir> --profile <profile>
-```
+Use a **science profile** to understand the topic. Search fresh primary literature from appropriate
+leading field venues, read the relevant full text, and record closest work, benchmark landscape,
+scientific conventions, evidence conventions, writing conventions, open questions, freshness, and
+limitations. An optional immutable Paper Wiki snapshot may accelerate recall, but decisive claims
+must return to primary sources and a fresh delta search.
 
-Do not silently upgrade a profile because more work looks impressive. Do not downgrade it to avoid a
-real integrity requirement.
+Use a separate **venue profile** to understand the intended publication. Freeze inclusion/exclusion
+criteria first, then acquire a comparable accepted-paper corpus from the target venue or a documented
+leading-venue substitute. Inspect real PDFs for page and citation distributions, figure/table scale,
+domain-specific figure roles, evaluation counts and kinds, evidence dimensions, and evaluation
+difficulty. The sample is an observed calibration envelope, not a manuscript quota. Keep official
+venue rules separate from empirical accepted-paper conventions.
 
-## One canonical flow
+### 3. Discover and select one active Idea
 
-### 1. Normalize and ground the Idea
+Invoke `ts-idea-discovery`. Produce evidence-grounded candidates from the seed, science profile,
+fresh closest-work search, benchmark landscape, resources, and optional read-only memory. Include a
+faithful seed candidate when appropriate. The main model compares falsifiability, scientific value,
+false-novelty risk, feasibility, benchmark fit, and reasons each candidate may fail. Register one
+selection judgment and one active Idea. A supplied proposal uses the same path with a faithful single
+candidate; there is no narrative `story` artifact or automatic novelty score.
 
-Use `ts-idea2story` only for a raw Idea. Normalize a supplied proposal directly. Register the active
-Idea, then search for closest work, relevant domain guidance, datasets, evaluators, repositories, and
-benchmarks. G2 must classify the benchmark situation rather than force a benchmark to exist.
+### 4. Ground claims and freeze a research program
 
-Before G3, keep artifacts deliberately scoped: a research brief, active claims, the closest sources
-needed for open design questions, the benchmark decision, and a minimum falsification path. Do not build the final bibliography,
-complete manuscript blueprint, or figures yet.
+Search applicable benchmarks, evaluators, datasets, repositories, counterexamples, and failure modes.
+An applicable benchmark must be acquired and reproduced; an absent or incompatible benchmark is a
+valid evidenced outcome, not permission to run an unrelated one.
 
-### 2. Check feasibility before contract freeze
+The main model designs claim-linked `evaluation_units`. Units may be benchmarks, experiments,
+simulations, observational analyses, qualitative studies, proofs, or artifact evaluations. Select the
+program from the Idea's validity needs, field conventions, observed venue evidence scale, user
+resources, and a measured dominant-cost feasibility probe. Venue observations calibrate completeness
+but never dictate an irrelevant topology. Review estimands, comparison fairness, evaluator semantics,
+leakage, confounders, positive and negative interpretation, and out-of-scope conclusions. Freeze only
+after a G3 judgment and scoped `FREEZE_RESEARCH_PROGRAM` approval.
 
-For empirical profiles, ask once for the user's deadline, available GPU/server resources, financial
-and storage limits, human-review availability, and priorities. Register the user-confirmed resource
-envelope. Estimate data, runtime, storage, external-service, and review costs with a representative
-microprobe. Let the main model allocate the envelope to the highest-value evidence. If the measured
-projection misses the deadline or budget, reduce scope transparently or stop before freeze.
+### 5. Execute a bounded evidence loop when required
 
-### 3. Let the main model judge the design
+Invoke `ts-paper-experiment` on the same root. Pin repositories and licenses, keep upstream code
+read-only, govern adapters/patches, lock the actual local or remote environment, reproduce applicable
+references, review implementation meaning, and run discriminative scientific tests.
 
-The main model reads raw sources, the Idea, benchmark decision, implementation constraints, and draft
-contract. It must reason about estimand, comparison fairness, evaluator semantics, leakage, plausible
-confounders, negative interpretation, and out-of-scope conclusions. Write a G3
-`scientific_judgment` artifact. Use the smallest independent review set justified by risk or uncertainty;
-review only the frozen artifact bundle, never the parent conversation.
+Use pilot evidence to expose feasibility and protocol problems before confirmation. Classify each
+failure before acting: infrastructure may retry; dependency/implementation requires a material repair
+and renewed review; protocol changes reopen the research program; data/license/resource limits stop
+or narrow scope; unsupported hypotheses remain negative evidence. Competing scientific alternatives
+use bounded branches, never untracked metric chasing.
 
-Fix blockers once, then run a delta closure against the issue, close criterion, changed artifact, and
-supporting evidence. Reopen full review only after a material scientific change. Obtain a scoped
-`FREEZE_CONTRACT` approval ID and freeze the contract.
+Evidence may revise the Idea. Editorial changes preserve evidence; scope, estimand, mechanism, or core
+changes invalidate proportionate dependents. Test-informed Ideas require independent confirmation.
 
-### 4. Follow the profile branch
+### 6. Reconcile claims and select publication targets
 
-**Proposal:** proceed directly to manuscript planning. State planned evaluations honestly, leave
-outcomes unknown, and do not create fake empirical gates.
+After design in proposal mode, or after evidence reconciliation in empirical modes, let the main
+model select a publication contract inside the calibration envelope. It contains a page range,
+relevant unique-citation minimum, total figure/table counts, section projection, per-figure
+source-of-truth class, and explicit rationales. User and official venue constraints are hard; accepted
+paper distributions are evidence. Choices outside the observed range require an explained deviation.
+There is no global citation floor and no arithmetic-mean quota.
 
-**Exploratory/empirical:** invoke `ts-paper-experiment` on the same research root. Acquire pinned
-repositories, lock the environment, reproduce an applicable baseline, let the main model design
-implementation-specific scientific tests, run pilot/full experiments within budget, diagnose
-mechanisms, and decide whether to keep, narrow, revise, branch, or reject the Idea.
+### 7. Build the manuscript once
 
-An Idea may evolve from evidence. Infrastructure and implementation repairs do not change the Idea;
-protocol changes invalidate affected evidence; hypothesis failure is accepted as a scientific result.
-If test evidence helped create a new Idea, confirm it with independent evidence.
+Use `ts-paper-cite`, `ts-paper-plan`, `ts-paper-data` when measured facts exist, and `ts-paper-write`.
+Draft the complete argument from stable claims and real sources, then use one holistic
+`ts-paper-refine` pass. `ts-paper-review` examines the whole manuscript for claim/evidence alignment,
+contradictions, method-result mismatch, alternative explanations, citation support, terminology and
+notation drift, redundancy, filler, limitations, and venue fit. Close focused issues through delta
+review rather than restarting the whole paper.
 
-### 5. Build the paper from stable evidence
+Internal hashes, gate ledgers, command transcripts, and audit inventories belong in the artifact
+package, never in the reader-facing paper. Reproducibility text in the manuscript must be scientifically
+useful to readers, not page filler.
 
-Only after G3 for proposal mode, or after claim reconciliation for empirical modes:
+### 8. Execute figures by source of truth
 
-1. Use `ts-paper-plan` to choose a paper archetype and sections for this work.
-2. Use `ts-paper-cite` to complete only the references needed by actual claims.
-3. Use `ts-paper-data` when verified results exist; every reported fact binds to the lifecycle results manifest.
-4. Use `ts-paper-write` to draft the complete manuscript once.
-5. Use `ts-paper-refine` for one holistic coherence pass.
-6. Use `ts-paper-review` for risk-proportional adversarial review and delta closure.
-7. Use `ts-paper-figure` for only the figures that materially communicate method or evidence.
-8. Use `ts-paper-latex` to assemble and compile with the selected venue assets.
+Use `ts-paper-figure` only after the figure program is frozen:
 
-Scientific changes return to the lifecycle and invalidate dependents. Editorial changes stay in the
-manuscript branch. Never run a second proposal-to-paper cycle after experiments.
+- `measured_evidence`: deterministic or original evidence, bound to canonical fact IDs;
+- `original_observation`: the reviewed original scientific artifact;
+- `exact_structure`: domain-native tools that preserve exact geometry, topology, notation, or apparatus;
+- `explanatory_synthesis`: the real upstream PaperBanana Retriever→Planner→Stylist→Visualizer→Critic
+  workflow, followed by DrawAI only when an approved raster lacks a born-vector source and preflight
+  succeeds.
 
-## Model and code boundary
+PaperBanana is not a label for a direct image-model call. Exact structures must not be distorted by
+generative rendering, and explanatory figures must not bypass the upstream workflow with hand-drawn
+boxes.
 
-The main model owns:
+### 9. Compile, inspect, and release
 
-- literature relevance and novelty comparison;
-- benchmark applicability;
-- experiment design and research-logic review;
-- code meaning and implementation-to-mathematics alignment;
-- failure interpretation, mechanism diagnosis, and Idea evolution;
-- citation support, prose quality, claim strength, and visual semantics.
+Use `ts-paper-latex` for deterministic assembly and compilation. Then the main model must open the
+actual final PDF and write the Publication Judgment, explicitly reviewing claim/argument consistency,
+cross-section consistency, method-result alignment, redundancy and filler, internal-provenance
+separation, limitations/negative results, figure roles, citation relevance, venue-scale substance,
+and visible layout defects. The release audit binds that judgment and all exact verdicts to the current
+artifacts.
 
-Deterministic tools own:
-
-- schema, paths, hashes, commits, licenses, environment locks, budgets, and test access;
-- process timeouts, exit status, raw outputs, metric recomputation, and result provenance;
-- BibTeX structure and citation-key wiring;
-- file completeness, placeholders, LaTeX assembly, and compilation errors;
-- image existence, hashes, rendering artifacts, and actual-image review binding.
-
-Never promote a heuristic score, regex, fixed count, or model self-report into proof of scientific
-correctness. Never ask the model to assert a hash, compile result, or measured value that code can
-verify exactly.
-
-## Completion
-
-Run stage-specific gates as artifacts become ready, then:
-
-```bash
-python scripts/run_gates.py <workdir> all
-python ../ts-research-lifecycle/scripts/lifecycle.py --root <workdir>/research validate
-```
-
-The final route is complete only when the profile-specific lifecycle reaches `MANUSCRIPT_HARDENED`
-or `RELEASED`, the current manuscript is registered, deterministic gates pass, and unresolved
-scientific limitations are visible in the paper rather than hidden by more iteration.
+Completion requires a valid lifecycle, current manuscript, passing exact checks, no unresolved
+semantic blocker, and visible limitations. A negative or stopped research outcome is a valid terminal
+result; it must not be tuned or rewritten into a positive paper.

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "idea_selection",
+  "type": "object",
+  "required": ["idea_candidates_id", "idea_candidates_hash", "selected_candidate_id", "decision", "comparison", "rationale", "evidence", "uncertainty", "rejected_candidates", "reviewer"]
+}

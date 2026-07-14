@@ -19,7 +19,7 @@ Infrastructure retries that do not change state are not scientific branches.
 
 ## Branch contract
 
-Each proposal records a parent branch, question, hypothesis, authorized contract experiment IDs,
+Each proposal records a parent branch, question, hypothesis, authorized evaluation-unit IDs,
 positive and negative expected observations, rationale, evidence, estimated cost, and stop condition.
 The frozen contract sets `max_branches` and `max_branch_depth`. Duplicate branch signatures are
 rejected unless the scientific state changes.

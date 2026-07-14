@@ -1,0 +1,5 @@
+interface:
+  display_name: "Research Memory"
+  short_description: "Use Paper Wiki as cited, read-only research memory"
+  default_prompt: "Use $ts-research-memory to assess this Paper Wiki and create a read-only lifecycle snapshot for Idea discovery."
+

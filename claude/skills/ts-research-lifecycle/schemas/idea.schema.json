@@ -10,7 +10,8 @@
     "assumptions",
     "falsifiers",
     "claims",
-    "alternative_explanations"
+    "alternative_explanations",
+    "minimum_validation_path"
   ],
   "properties": {
     "revision_level": {

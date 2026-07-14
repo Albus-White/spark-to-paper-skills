@@ -8,7 +8,7 @@ class RunGateLifecycleTest(unittest.TestCase):
   with tempfile.TemporaryDirectory() as td:
    wd=Path(td); research=wd/"research"; research.mkdir(); (research/"research_state.json").write_text(json.dumps({"phase":"INTAKE"}))
    # run_all would invoke the validator first; the explicit phase condition is also a hard fail.
-   self.assertNotIn(json.loads((research/"research_state.json").read_text())["phase"],("MANUSCRIPT_HARDENED","RELEASED"))
+   self.assertNotIn(json.loads((research/"research_state.json").read_text())["phase"],("LATEX_COMPILED","RELEASE_AUDITED","RELEASED"))
  def test_requested_stage_fails_when_required_input_is_missing(self):
   with tempfile.TemporaryDirectory() as td:
    self.assertEqual(rg.run_stage("plan",Path(td)),1)

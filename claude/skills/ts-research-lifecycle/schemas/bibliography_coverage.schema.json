@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "bibliography_coverage_v5",
+  "type": "object",
+  "required": ["publication_contract_id", "publication_contract_hash", "planned_citation_keys", "sources", "claim_coverage", "source_quality_review", "reviewer"],
+  "properties": {
+    "planned_citation_keys": {"type": "array", "uniqueItems": true},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["bibkey", "metadata_verification_source", "source_type", "supported_claims", "intended_sections", "evidence_note", "limitations", "inspected_status"],
+        "anyOf": [{"required": ["doi"]}, {"required": ["official_url"]}]
+      }
+    },
+    "claim_coverage": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "object", "required": ["claim_id", "source_keys"]}
+    }
+  }
+}

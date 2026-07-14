@@ -1,34 +1,33 @@
 # Spark to Paper for Claude Code
 
-This directory is the Claude Code distribution of the project. Its plugin manifest is
-`claude/.claude-plugin/plugin.json`, and all 14 Claude-native skills live under `claude/skills/`.
+This is the Claude Code v5 distribution. Its plugin manifest is
+`claude/.claude-plugin/plugin.json`; the fourteen shared skills live under `claude/skills/`.
 
 ## Install
 
-### Local plugin
-
-Load `claude/` as the Claude Code plugin directory:
-
 ```bash
-claude --plugin-dir ./spark-to-paper-skills/claude
+claude --plugin-dir ./claude
 ```
 
-### Standalone skills
+For standalone installation:
 
 ```bash
-for skill in spark-to-paper-skills/claude/skills/ts-*; do
+for skill in claude/skills/ts-*; do
   rsync -a --delete "$skill/" "$HOME/.claude/skills/$(basename "$skill")/"
 done
+rm -rf "$HOME/.claude/skills/ts-idea2story" "$HOME/.claude/skills/ts-kg-build"
 ```
 
-Restart Claude Code or open a new session after installation so the skill metadata is reloaded.
+Open a new Claude Code session after installation.
 
-## Invoke
+The Claude and Codex distributions share byte-identical Skill instructions, scripts, references,
+schemas, examples, and tests. Host-specific plugin and Codex agent metadata remain separate.
 
-Plugin skills remain available through the plugin namespace; standalone copies can be invoked by
-skill name. The Claude and Codex distributions share the same model-first lifecycle contracts,
-scripts, templates, deterministic gates, and tests. Host-specific plugin metadata remains separate.
+Use `ts-research-lifecycle` as the single state core. v5 separates field science calibration from
+target-venue accepted-paper calibration, selects one active Idea from grounded candidates, executes
+domain-neutral claim-linked research programs, routes figures by source of truth, keeps internal
+audit hashes out of the manuscript, and requires an actual-PDF Publication Judgment before release.
 
-## Research lifecycle
-
-Use `$ts-research-lifecycle` as the shared state and evidence core for empirical runs. It versions Ideas and contracts, locks repositories/environments, validates G0-G16 gates, preserves failures, and controls Idea evolution and independent revalidation.
+Only explanatory-synthesis figures execute a pinned external PaperBanana checkout. DrawAI is
+conditional after raster approval. See the root README and PaperBanana notice for runtime and
+licensing details.

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "publication_judgment_v5",
+  "type": "object",
+  "required": ["publication_contract_id", "publication_contract_hash", "manuscript_id", "manuscript_hash", "figure_role_completeness", "citation_relevance", "experiment_claim_coverage", "venue_scale_substance", "claim_argument_consistency", "cross_section_consistency", "method_result_alignment", "redundancy_and_filler_review", "internal_provenance_boundary", "limitations_and_negative_results", "rendered_pdf_review", "page_scale", "deviations", "verdict", "reviewer"],
+  "properties": {
+    "figure_role_completeness": {"type": "string", "minLength": 1},
+    "citation_relevance": {"type": "string", "minLength": 1},
+    "experiment_claim_coverage": {"type": "string", "minLength": 1},
+    "venue_scale_substance": {"type": "string", "minLength": 1},
+    "claim_argument_consistency": {"type": "string", "minLength": 1},
+    "cross_section_consistency": {"type": "string", "minLength": 1},
+    "method_result_alignment": {"type": "string", "minLength": 1},
+    "redundancy_and_filler_review": {"type": "string", "minLength": 1},
+    "internal_provenance_boundary": {"type": "string", "minLength": 1},
+    "limitations_and_negative_results": {"type": "string", "minLength": 1},
+    "rendered_pdf_review": {
+      "type": "object",
+      "required": ["pdf_sha256", "actual_pdf_reviewed", "layout_findings", "blocking_issues"],
+      "properties": {
+        "pdf_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "actual_pdf_reviewed": {"const": true},
+        "layout_findings": {"type": "array"},
+        "blocking_issues": {"type": "array", "maxItems": 0}
+      }
+    },
+    "page_scale": {
+      "type": "object",
+      "required": ["actual_pages", "target_range", "verdict", "rationale"],
+      "properties": {
+        "actual_pages": {"type": "integer", "minimum": 1},
+        "target_range": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "integer", "minimum": 1},
+            {"type": "integer", "minimum": 1}
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "verdict": {"enum": ["WITHIN_TARGET", "EXPLAINED_DEVIATION"]},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "deviations": {"type": "array"},
+    "reviewer": {"type": "object"},
+    "verdict": {"enum": ["PASS", "PASS_WITH_EXPLAINED_DEVIATION", "FAIL"]}
+  }
+}

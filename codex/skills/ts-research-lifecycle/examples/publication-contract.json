@@ -1,0 +1,51 @@
+{
+  "user_policy_id": "user-policy-v-001",
+  "user_policy_hash": "replace-with-current-sha256",
+  "venue_profile_id": "venue-profile-v-001",
+  "venue_profile_hash": "replace-with-current-sha256",
+  "research_program_id": "research-program-v-001",
+  "research_program_hash": "replace-with-current-sha256",
+  "claim_registry_hash": "replace-with-current-sha256",
+  "idea_id": "idea-v-001",
+  "claim_ids": ["C-001"],
+  "paper_archetype": "domain-appropriate empirical method",
+  "calibration_envelope": {
+    "note": "Replace with the exact output of derive_publication_envelope.py; it is evidence, not a quota"
+  },
+  "targets": {
+    "page_range": [8, 10],
+    "minimum_unique_cited_references": 24,
+    "figure_count": 3,
+    "table_count": 2
+  },
+  "target_rationales": {
+    "page_range": "Selected from official constraints, observed comparable papers, and required scientific substance",
+    "minimum_unique_cited_references": "Enough relevant primary coverage for the active claims and topic breadth",
+    "figure_count": "Three distinct scientific communication roles",
+    "table_count": "Primary and robustness evidence are clearer as two tables"
+  },
+  "section_plan": [
+    {"section_id": "introduction", "purpose": "Frame the bounded question and closest-work gap"},
+    {"section_id": "method", "purpose": "Explain the frozen method and protocol"},
+    {"section_id": "results", "purpose": "Report claim-bound evidence and negative conditions"},
+    {"section_id": "discussion", "purpose": "Interpret alternatives, limitations, and scope"}
+  ],
+  "figure_plan": [
+    {"figure_id": "overview", "class": "explanatory_synthesis", "purpose": "Explain the method", "route": "PAPERBANANA_REQUIRED", "source_of_truth": "Frozen method semantics", "claim_ids": ["C-001"], "section_role": "method", "drawai_policy": "USE_IF_AVAILABLE_AFTER_RASTER_APPROVAL"},
+    {"figure_id": "primary-result", "class": "measured_evidence", "purpose": "Show the primary outcome", "route": "DETERMINISTIC_OR_ORIGINAL_EVIDENCE", "source_of_truth": "Canonical result facts", "claim_ids": ["C-001"], "section_role": "results"},
+    {"figure_id": "apparatus", "class": "exact_structure", "purpose": "Show exact study geometry or topology", "route": "DOMAIN_NATIVE", "source_of_truth": "Registered domain-native structure", "claim_ids": ["C-001"], "section_role": "method"}
+  ],
+  "table_plan": [
+    {"table_id": "primary", "purpose": "Primary claim-bound comparison", "source_of_truth": "Canonical result facts", "claim_ids": ["C-001"], "section_role": "results"},
+    {"table_id": "robustness", "purpose": "Boundary conditions and robustness", "source_of_truth": "Canonical result facts", "claim_ids": ["C-001"], "section_role": "results"}
+  ],
+  "citation_coverage_requirements": {"all_active_claims": true, "primary_sources_preferred": true},
+  "deadline_allocation": {"writing_and_review": "Model-selected from the confirmed resource plan"},
+  "deviations": [],
+  "manuscript_content_policy": {
+    "internal_provenance_location": "artifact_package",
+    "reader_relevant_reproducibility_only": true,
+    "forbid_page_filler": true,
+    "allowed_internal_identifiers": []
+  }
+}

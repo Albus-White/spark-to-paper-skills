@@ -1,5 +1,10 @@
 <h1 align="center">🏆 Generated Paper Showcase</h1>
 
+> **Archived showcase.** These papers were produced by an earlier pipeline generation and are kept
+> as historical examples, not as evidence that v5 always produces the same length, citation count,
+> figure count, scientific quality, or editable-vector output. Current guarantees are defined only
+> by the root README and the frozen per-run contracts.
+
 <p align="center">
   <i>From a research proposal to a publication-format PDF — end-to-end, machine-checked integrity throughout.</i>
 </p>

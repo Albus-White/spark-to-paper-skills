@@ -1,7 +1,7 @@
 {
   "name": "spark-to-paper-skills",
-  "version": "3.0.0",
-  "description": "Codex-native evidence-driven research lifecycle from falsifiable ideas through benchmarked experiments, Idea evolution, reviewed manuscripts, figures, and compiled papers.",
+  "version": "5.0.0",
+  "description": "Codex-native single research lifecycle with field and venue calibration, grounded Idea selection, governed evidence, source-of-truth figures, and actual-PDF release review.",
   "author": {
     "name": "Albus White",
     "url": "https://github.com/Albus-White"
@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "Spark to Paper",
     "shortDescription": "Research idea to reviewed, compiled paper",
-    "longDescription": "Fourteen composable Codex skills for hypothesis formation, evidence and benchmark grounding, versioned research contracts, repository and environment governance, baseline reproduction, verified experiment iteration, mechanism diagnosis, Idea evolution, scientific writing, adversarial review, publication figures, and LaTeX compilation.",
+    "longDescription": "Fourteen composable Codex skills for literal-seed capture, field and accepted-paper venue calibration, grounded Idea selection, domain-neutral research programs, governed execution, evidence-bound writing, source-of-truth figures with real PaperBanana only for explanatory synthesis, actual-PDF review, and release audit.",
     "developerName": "Albus White",
     "category": "Productivity",
     "capabilities": [
@@ -34,7 +34,7 @@
     "defaultPrompt": [
       "Use $ts-paper to run the evidence-driven research lifecycle from my idea to a complete paper.",
       "Use $ts-paper-review to harden this manuscript before submission.",
-      "Use $ts-paper-experiment to repair this draft with real experiments."
+      "Use $ts-paper-experiment to execute the frozen claim-linked research program."
     ],
     "brandColor": "#D97757"
   }

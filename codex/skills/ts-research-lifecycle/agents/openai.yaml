@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Lifecycle"
-  short_description: "Manage research state, evidence, gates, and Idea evolution"
+  short_description: "Manage calibrated research and publication contracts"
   default_prompt: "Use $ts-research-lifecycle to manage this research run as one auditable evidence lifecycle."

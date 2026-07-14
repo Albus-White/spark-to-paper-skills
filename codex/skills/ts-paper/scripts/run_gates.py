@@ -31,10 +31,12 @@ BIB_INTEGRITY  = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "bib_integrity_lint
 BENCHMARK_LINT = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "benchmark_lint.py"
 GROUNDING_LINT = SKILLS_ROOT / "ts-paper-cite" / "scripts" / "design_grounding_lint.py"
 DRAFT_LINT     = SKILLS_ROOT / "ts-paper-write" / "scripts" / "draft_lint.py"
+MANUSCRIPT_BOUNDARY = SKILLS_ROOT / "ts-paper-write" / "scripts" / "manuscript_boundary_lint.py"
 RESULT_BINDING = SKILLS_ROOT / "ts-paper-data" / "scripts" / "validate_results_binding.py"
 ASSEMBLE       = SKILLS_ROOT / "ts-paper-latex" / "scripts" / "assemble_paper.py"
 SVG_TOOLS      = SKILLS_ROOT / "ts-figure-optimize" / "scripts" / "check_vector_pdf.py"
 FIGURE_PIPELINE = SKILLS_ROOT / "ts-paper-figure" / "scripts" / "validate_pipeline.py"
+PUBLICATION_AUDIT = HERE / "publication_audit.py"
 LIFECYCLE      = SKILLS_ROOT / "ts-research-lifecycle" / "scripts" / "lifecycle.py"
 
 # stage -> ordered list of (gate_script, [required_workdir_inputs])
@@ -49,9 +51,11 @@ STAGE_GATES = {
     "contract": [(CONTRACT_LINT, ["research_contract.json", "claim_registry.json"]),
                  (BENCHMARK_LINT, ["benchmark_candidates.json"]),
                  (GROUNDING_LINT, ["design_evidence_matrix.json"])],
-    "write":  [(DRAFT_LINT, ["sections"])],
+    "write":  [(DRAFT_LINT, ["sections"]),
+               (MANUSCRIPT_BOUNDARY, ["sections"])],
     "refine": [(DRAFT_LINT, ["sections"]),
-               (CITATIONS_LINT, ["refs.bib"])],
+               (CITATIONS_LINT, ["refs.bib"]),
+               (MANUSCRIPT_BOUNDARY, ["sections"])],
     "data":   [(RESULT_BINDING, ["research/evidence/results/results-manifest.jsonl", "results_bindings.json"]),
                (DRAFT_LINT, ["sections"])],
 }
@@ -156,18 +160,34 @@ def assert_latex(wd: Path) -> int:
 
 
 def _resolve_artifact(workdir: Path, value) -> Path:
+    if isinstance(value, dict):
+        value = value.get("path")
     path = Path(str(value or ""))
     return path if path.is_absolute() else workdir / path
 
 
 def check_figure_critique(workdir) -> list:
-    """Validate adaptive figure provenance, final image review, and published artifact identity."""
+    """Validate each frozen figure route without pretending all figures share one renderer."""
     workdir = Path(workdir)
     figs = workdir / "figures"
     man = figs / "figures.manifest.json"
     problems: list = []
     if not man.is_file():
-        return problems  # no figures stage yet -> nothing to enforce
+        state_path = workdir / "research/research_state.json"
+        if not state_path.is_file():
+            return problems
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            contract_id = state.get("active", {}).get("publication_contract_id")
+            contract = json.loads((workdir / f"research/contracts/{contract_id}.json").read_text(encoding="utf-8"))
+            required_total = int(contract.get("targets", {}).get("figure_count", -1))
+        except (OSError, ValueError, TypeError):
+            return ["cannot determine frozen figure target while figures.manifest.json is missing"]
+        if required_total > 0:
+            return [f"figures.manifest.json is missing but the publication contract requires {required_total} figures"]
+        if required_total < 0:
+            return ["publication contract lacks an explicit total figure target"]
+        return problems
     try:
         data = json.loads(man.read_text())
     except (ValueError, OSError) as e:
@@ -183,65 +203,92 @@ def check_figure_critique(workdir) -> list:
             }
         except (ValueError, KeyError, TypeError) as exc:
             problems.append(f"canonical result manifest is unreadable while validating figures: {exc}")
+    expected_routes = {
+        "measured_evidence": "DETERMINISTIC_OR_ORIGINAL_EVIDENCE",
+        "original_observation": "ORIGINAL_EVIDENCE",
+        "exact_structure": "DOMAIN_NATIVE",
+        "explanatory_synthesis": "PAPERBANANA_REQUIRED",
+    }
     for f in items:
         if not isinstance(f, dict):
             problems.append("figures.manifest.json contains a non-object entry")
             continue
-        label = f.get("label", "?")
-        for key in ("source_of_truth", "renderer", "pipeline_dir"):
+        label = f.get("figure_id") or f.get("label", "?")
+        for key in ("class", "route", "source_of_truth", "renderer"):
             if not f.get(key):
                 problems.append(f"figure '{label}': missing {key}")
-        pipeline = _resolve_artifact(workdir, f.get("pipeline_dir"))
-        if not f.get("pipeline_dir") or not pipeline.is_dir():
-            problems.append(f"figure '{label}': pipeline_dir missing/unresolvable")
+        if expected_routes.get(f.get("class")) != f.get("route"):
+            problems.append(f"figure '{label}': class/route violates source-of-truth routing")
             continue
-        if not FIGURE_PIPELINE.is_file():
-            problems.append(f"figure '{label}': validate_pipeline.py missing")
-            continue
-        try:
-            checked = subprocess.run(
-                [sys.executable, str(FIGURE_PIPELINE), str(pipeline)],
-                capture_output=True, text=True, timeout=300,
-            )
-        except subprocess.TimeoutExpired:
-            problems.append(f"figure '{label}': pipeline validation timed out")
-            continue
-        try:
-            report = json.loads(checked.stdout)
-        except (ValueError, TypeError):
-            report = {}
-        if checked.returncode != 0 or not report.get("ok"):
-            detail = report.get("errors") or checked.stderr.strip() or "pipeline validation failed"
-            problems.append(f"figure '{label}': invalid figure pipeline: {detail}")
-            continue
-        final_image = Path(str(report.get("final_image") or ""))
         published_raster = _resolve_artifact(workdir, f.get("published_raster")) if f.get("published_raster") else None
+        vector = _resolve_artifact(workdir, f.get("published_vector")) if f.get("published_vector") else None
+        if published_raster is None and vector is None:
+            problems.append(f"figure '{label}': no published artifact")
         if published_raster is not None and not published_raster.is_file():
             problems.append(f"figure '{label}': published_raster missing")
-        elif published_raster is not None and final_image.is_file():
-            import hashlib
-            if hashlib.sha256(published_raster.read_bytes()).digest() != hashlib.sha256(final_image.read_bytes()).digest():
-                problems.append(f"figure '{label}': published raster differs from reviewed final image")
-        if f.get("source_of_truth") == "measured_data":
+        if vector is not None and not vector.is_file():
+            problems.append(f"figure '{label}': published_vector missing")
+        if f.get("class") == "measured_evidence":
             fact_ids = f.get("fact_ids")
             if not fact_ids:
-                problems.append(f"figure '{label}': measured-data figure missing fact_ids")
+                problems.append(f"figure '{label}': measured evidence figure missing fact_ids")
             elif not known_fact_ids:
-                problems.append(f"figure '{label}': measured-data figure has no canonical result manifest")
+                problems.append(f"figure '{label}': measured evidence figure has no canonical result manifest")
             else:
                 unknown = sorted(set(fact_ids) - known_fact_ids)
                 if unknown:
                     problems.append(f"figure '{label}': unknown canonical fact_ids {unknown}")
-        vector = _resolve_artifact(workdir, f.get("published_vector")) if f.get("published_vector") else None
-        if vector is not None and not vector.is_file():
-            problems.append(f"figure '{label}': published_vector missing")
+        if f.get("class") == "explanatory_synthesis":
+            pipeline = _resolve_artifact(workdir, f.get("pipeline_dir"))
+            if not f.get("pipeline_dir") or not pipeline.is_dir():
+                problems.append(f"figure '{label}': PaperBanana pipeline_dir missing/unresolvable")
+                continue
+            try:
+                checked = subprocess.run(
+                    [sys.executable, str(FIGURE_PIPELINE), str(pipeline)],
+                    capture_output=True, text=True, timeout=300,
+                )
+            except subprocess.TimeoutExpired:
+                problems.append(f"figure '{label}': PaperBanana validation timed out")
+                continue
+            try:
+                report = json.loads(checked.stdout)
+            except (ValueError, TypeError):
+                report = {}
+            if checked.returncode != 0 or not report.get("ok"):
+                detail = report.get("errors") or checked.stderr.strip() or "pipeline validation failed"
+                problems.append(f"figure '{label}': invalid PaperBanana pipeline: {detail}")
+                continue
+            final_image = Path(str(report.get("final_image") or ""))
+            if published_raster is not None and published_raster.is_file() and final_image.is_file() and hashlib.sha256(published_raster.read_bytes()).digest() != hashlib.sha256(final_image.read_bytes()).digest():
+                problems.append(f"figure '{label}': published raster differs from reviewed PaperBanana image")
+            if report.get("drawai_status") == "AVAILABLE_REQUIRED":
+                drawai_pdf = Path(str((report.get("drawai_outputs") or {}).get("pdf") or ""))
+                if vector is None:
+                    problems.append(f"figure '{label}': available DrawAI route requires published_vector")
+                elif drawai_pdf.is_file() and vector.is_file() and hashlib.sha256(drawai_pdf.read_bytes()).digest() != hashlib.sha256(vector.read_bytes()).digest():
+                    problems.append(f"figure '{label}': published vector differs from reviewed DrawAI PDF")
+        else:
+            review_path = _resolve_artifact(workdir, f.get("visual_review"))
+            if not f.get("visual_review") or not review_path.is_file():
+                problems.append(f"figure '{label}': non-PaperBanana route requires visual_review")
+                continue
+            try:
+                review = json.loads(review_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                problems.append(f"figure '{label}': visual_review is unreadable")
+                continue
+            reviewed = published_raster if published_raster is not None and published_raster.is_file() else vector
+            if reviewed is None or not reviewed.is_file() or review.get("artifact_sha256") != hashlib.sha256(reviewed.read_bytes()).hexdigest():
+                problems.append(f"figure '{label}': visual_review is stale or not bound to the published artifact")
+            reviewer = review.get("reviewer") or {}
+            if reviewer.get("actual_image_review") is not True or review.get("blocking_issues"):
+                problems.append(f"figure '{label}': visual review did not inspect and approve the actual artifact")
     return problems
 
 
 def run_all(wd: Path) -> int:
-    """Definition of Done: re-run citations_lint + draft_lint against the final
-    workdir, assert every figure is embedded as a vector PDF, then assert the latex
-    verdict. Nonzero on the first failure."""
+    """Run final exact gates for citations, manuscript, route-authorized figures, and LaTeX."""
     lifecycle_root = wd / "research"
     if not (lifecycle_root / "research_state.json").exists():
         print("[run_gates] FAIL: final paper requires the single lifecycle at <workdir>/research")
@@ -253,15 +300,16 @@ def run_all(wd: Path) -> int:
     if rc != 0:
         return rc
     state = json.loads((lifecycle_root / "research_state.json").read_text())
-    if state.get("phase") not in ("MANUSCRIPT_HARDENED", "RELEASED"):
+    if state.get("phase") not in ("LATEX_COMPILED", "RELEASE_AUDITED", "RELEASED"):
         print(f"[run_gates] FAIL: lifecycle phase is {state.get('phase')!r}; "
-              "final paper requires MANUSCRIPT_HARDENED or RELEASED")
+              "final paper requires LATEX_COMPILED, RELEASE_AUDITED, or RELEASED")
         return 1
     # citations + draft are REQUIRED at the finish line; a missing artifact here
     # is a failure, not a skip.
     for script, required, label in (
         (CITATIONS_LINT, "refs.bib", "citations"),
         (DRAFT_LINT, "sections", "draft"),
+        (MANUSCRIPT_BOUNDARY, "sections", "manuscript boundary"),
     ):
         if not (wd / required).exists():
             print(f"\n===== gate: {script.name} =====")
@@ -294,6 +342,9 @@ def run_all(wd: Path) -> int:
             print(f"[run_gates] FAIL: {p}")
         return 1
     print("[run_gates] ok (figure provenance + actual-image review + published identity)")
+    rc = _run(PUBLICATION_AUDIT, [str(wd)])
+    if rc != 0:
+        return rc
     return assert_latex(wd)
 
 

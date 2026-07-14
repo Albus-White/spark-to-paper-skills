@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "venue_profile_judgment_v5",
+  "type": "object",
+  "required": ["venue_profile_id", "venue_profile_hash", "verdict", "comparability", "profile_confidence", "mean_distortion_review", "evidence_program_review", "limitations", "reviewer"],
+  "properties": {
+    "verdict": {"enum": ["PASS", "PASS_WITH_EXPLAINED_DEVIATION"]}
+  }
+}

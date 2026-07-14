@@ -7,655 +7,613 @@ import tempfile
 import unittest
 from pathlib import Path
 
+
 MODULE_PATH = Path(__file__).parents[1] / "scripts/lifecycle.py"
-spec = importlib.util.spec_from_file_location("lifecycle", MODULE_PATH)
+spec = importlib.util.spec_from_file_location("lifecycle_v5", MODULE_PATH)
 lifecycle = importlib.util.module_from_spec(spec)
 assert spec.loader
 spec.loader.exec_module(lifecycle)
 
 
-def write(path: Path, value) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value), encoding="utf-8")
-    return path
-
-
 IDEA = {
-    "problem": "Robust forecasting under sparse observations",
-    "hypothesis": "A masked consistency objective improves sparse-regime generalization",
-    "proposed_mechanism": "Consistency regularizes representations when observations are missing",
-    "scope": "multivariate forecasting with 30-70% missingness",
-    "assumptions": ["missingness is observable"],
-    "falsifiers": ["no gain over matched regularization baselines"],
-    "claims": ["improves sparse-regime accuracy"],
-    "alternative_explanations": ["gain comes only from additional compute"],
+    "problem": "Estimate treatment effects under sparse observations",
+    "hypothesis": "A calibrated estimator reduces sparse-regime error",
+    "proposed_mechanism": "Calibration limits missingness-induced bias",
+    "scope": "matched observations with 30-70% missingness",
+    "assumptions": ["missingness indicators are observed"],
+    "falsifiers": ["no gain over a matched calibrated comparator"],
+    "claims": ["reduces sparse-regime estimation error"],
+    "alternative_explanations": ["the gain comes only from extra compute"],
+    "minimum_validation_path": "matched pilot followed by held-out confirmation",
 }
-CLAIM = {
-    "claim_text": "The objective improves sparse-regime accuracy",
-    "claim_type": "empirical result claim", "essential": True, "strength": "bounded",
-    "scope": "30-70% missingness", "required_evidence": ["multi-seed benchmark comparison"],
-}
-CONTRACT = {
-    "claim_ids": ["C-001"], "experiments": [{
-        "experiment_id": "E-001", "claim_ids": ["C-001"],
-        "why_it_tests_claim": "matched comparison measures the claimed sparse-regime effect",
-        "positive_interpretation": "supports the bounded claim", "negative_interpretation": "weakens or rejects the claim",
-        "confounders": ["additional compute"], "out_of_scope_conclusions": ["dense-regime superiority"],
-    }],
-    "study_inputs": ["canonical benchmark"], "protocols": ["official split and preprocessing"],
-    "outcomes": ["MAE"], "comparators": ["official baseline"],
-    "replication_plan": {"type": "random_seeds", "identifiers": [1, 2, 3], "rationale": "pilot variance"},
-    "statistical_plan": {"aggregate": "mean/std"},
-    "test_set_policy": {"max_access": 1, "development": "validation only"},
-    "stop_conditions": ["budget exhausted", "hypothesis rejected"],
-    "budget": {"max_runs": 12, "max_branches": 4, "max_branch_depth": 2},
-    "feasibility": {
-        "status": "MEASURED", "budget_fit": True, "deadline_fit": True,
-        "estimated_cost": {"seconds": 1}, "evidence": ["reports/design/feasibility.json"],
-    },
-    "revalidation": {"required": False, "rationale": "Synthetic fixture"},
-}
-REPO = {"purpose": "official benchmark", "url": "https://example.org/repo.git", "official_status": "official", "license": "MIT", "local_path": "code/upstream/repo", "modification_mode": "read_only"}
-ENV = {"os": "linux", "python": "3.12", "framework": "pytorch-2.4", "dependencies": ["torch==2.4"], "hardware": {"gpu": "test"}}
 
 
-class LifecycleTest(unittest.TestCase):
+class LifecycleV5Test(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.root = Path(self.tmp.name) / "run"
-        lifecycle.init_layout(self.root, "standard_empirical", "test")
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name) / "research"
+        lifecycle.init_layout(self.root, "standard_empirical", "v5-test")
         lifecycle.register_resource_envelope(self.root, {
-            "source": "USER_PROVIDED", "deadline": {"max_elapsed_hours": 24, "hard": True},
-            "compute": [{"backend": "local", "hardware": "test GPU", "count": 1, "availability_hours": 12}],
-            "financial_limit": {"currency": "USD", "amount": 10}, "human_review": {"hours": 1},
-            "priorities": ["scientific validity", "deadline"], "constraints": [], "assumptions": [],
+            "source": "USER_PROVIDED",
+            "deadline": {"status": "KNOWN", "max_elapsed_hours": 24, "hard": True},
+            "compute": [{"backend": "local", "hardware": "fixture", "count": 1, "availability_hours": 12}],
+            "financial_limit": {"currency": "USD", "amount": 10},
+            "human_review": {"hours": 1},
+            "priorities": ["scientific validity", "deadline"],
+            "constraints": [],
+            "assumptions": [],
             "confirmed_by_user": True,
         })
-        repo = self.root / REPO["local_path"]
-        repo.mkdir(parents=True)
-        subprocess.run(["git", "init", "-q", str(repo)], check=True)
-        subprocess.run(["git", "-C", str(repo), "config", "user.email", "fixture@example.org"], check=True)
-        subprocess.run(["git", "-C", str(repo), "config", "user.name", "Fixture"], check=True)
-        (repo / "README.md").write_text("fixture", encoding="utf-8")
-        subprocess.run(["git", "-C", str(repo), "add", "README.md"], check=True)
-        subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", "fixture"], check=True)
-        subprocess.run(["git", "-C", str(repo), "remote", "add", "origin", REPO["url"]], check=True)
-        commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
-        self.repo = {**REPO, "commit": commit}
+        self.policy_id = lifecycle.register_user_policy(self.root, {
+            "source": "COMPILED_FROM_USER_REQUEST",
+            "target_venue": "Fixture Journal",
+            "venue_selection_policy": "USER_SELECTED",
+            "citation_policy": {"minimum_unique_cited_references": 12},
+            "figure_policy": {
+                "measured_evidence_route": "DETERMINISTIC_OR_ORIGINAL_EVIDENCE",
+                "original_observation_route": "ORIGINAL_EVIDENCE",
+                "exact_structure_route": "DOMAIN_NATIVE",
+                "explanatory_synthesis_route": "PAPERBANANA_REQUIRED",
+                "drawai_policy": "USE_IF_AVAILABLE_AFTER_RASTER_APPROVAL",
+            },
+            "requirements": ["scientific validity"],
+            "research_preferences": {"field": "measurement science", "paper_archetype": "empirical method"},
+            "deadline": {"status": "KNOWN", "max_elapsed_hours": 24},
+            "resource_limits": {"compute": "fixture", "financial": "USD 10", "api": "none", "storage": "local"},
+            "human_review": {"hours": 1},
+            "priorities": ["scientific validity", "deadline"],
+            "degradation_policy": {"acceptable": ["narrow claims"], "unacceptable": ["fabricated evidence", "page filler"]},
+            "assumptions": {"unknowns": [], "confirmed": ["fixture resources"]},
+        })
+        self.seed_id = lifecycle.register_idea_seed(self.root, {
+            "seed_text": "Improve treatment-effect estimation with sparse observations.",
+            "source": "USER_PROVIDED",
+            "constraints": ["one local compute worker"],
+            "open_questions": ["which calibration mechanism is defensible"],
+        })
+        source_text = self.root / "calibration/papers/science-source.txt"
+        source_text.parent.mkdir(parents=True, exist_ok=True)
+        source_text.write_text("Primary source full text fixture.", encoding="utf-8")
+        self.science_payload = {
+            "idea_seed_id": self.seed_id,
+            "idea_seed_hash": lifecycle.sha256_file(self.root / f"intake/{self.seed_id}.json"),
+            "research_scope": "sparse-observation treatment-effect estimation",
+            "corpus_protocol": {"queries": ["sparse treatment effect calibration"], "stopping_rule": "closest-work saturation"},
+            "primary_sources": [{
+                "title": "Calibrated Sparse Estimation",
+                "venue": "Leading Field Journal",
+                "year": 2025,
+                "source": {"doi": "10.1000/science-source"},
+                "full_text": {"path": "calibration/papers/science-source.txt", "sha256": lifecycle.sha256_file(source_text)},
+                "relevance": "closest method family",
+                "read_scope": "methods, evaluation, limitations",
+            }],
+            "closest_work": [{"title": "Calibrated Sparse Estimation", "difference": "does not test the proposed mechanism"}],
+            "benchmark_landscape": {"searched": True, "status": "no directly applicable public benchmark"},
+            "scientific_conventions": {"estimand": "matched effect difference"},
+            "evidence_conventions": {"replication": "independent observation groups"},
+            "writing_conventions": {"argument_style": "claim-evidence-limitation"},
+            "open_questions": ["robustness to missingness mechanism"],
+            "freshness": {"searched_at": "2026-07-13", "cutoff": "2026-07-13"},
+            "limitations": ["synthetic fixture corpus"],
+            "reviewer": {"id": "main-model"},
+        }
+        self.science_id = lifecycle.register_science_profile(self.root, self.science_payload)
+        venue_pdf = self.root / "calibration/papers/accepted.pdf"
+        venue_pdf.write_bytes(b"accepted paper fixture")
+        self.corpus_id = lifecycle.register_venue_corpus(self.root, {
+            "user_policy_id": self.policy_id,
+            "user_policy_hash": lifecycle.sha256_file(self.root / f"intake/{self.policy_id}.json"),
+            "science_profile_id": self.science_id,
+            "science_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.science_id}.json"),
+            "venue_basis": {"type": "USER_SELECTED", "venues": ["Fixture Journal"]},
+            "research_scope": "sparse-observation treatment-effect estimation",
+            "paper_archetype": "empirical method",
+            "inclusion_criteria": ["accepted full research article", "comparable archetype"],
+            "exclusion_criteria": ["review", "editorial", "short abstract"],
+            "time_window": "2024-2026",
+            "publication_status": "accepted or published",
+            "stopping_rule": "fixture corpus boundary",
+            "candidate_sources": [{
+                "paper_id": "VP-001", "title": "Accepted Fixture", "venue": "Fixture Journal",
+                "accepted_status": "published", "official_url": "https://example.org/accepted",
+            }],
+            "reviewer": {"id": "main-model"},
+        })
+        metrics = {
+            "page_count": 8,
+            "unique_cited_references": 22,
+            "total_figures": 3,
+            "table_count": 2,
+            "evaluation_count": 2,
+            "figure_roles": {"measured evidence": 2, "method explanation": 1},
+            "evaluation_kinds": {"matched comparison": 1, "robustness analysis": 1},
+            "evidence_dimensions": {"conditions": 2, "comparators": 1},
+            "evaluation_difficulty": {
+                "rating": "moderate", "drivers": ["matched observations"],
+                "rationale": "requires controlled comparisons but no specialized facility",
+            },
+        }
+        papers = [{
+            "title": "Accepted Fixture", "venue": "Fixture Journal", "year": 2026,
+            "article_type": "method", "source": {"url": "https://example.org/accepted"},
+            "pdf": {"path": "calibration/papers/accepted.pdf", "sha256": lifecycle.sha256_file(venue_pdf)},
+            "relevance": "same field and archetype", "metrics": metrics,
+        }]
+        self.venue_payload = {
+            "user_policy_id": self.policy_id,
+            "user_policy_hash": lifecycle.sha256_file(self.root / f"intake/{self.policy_id}.json"),
+            "venue_corpus_id": self.corpus_id,
+            "venue_corpus_hash": lifecycle.sha256_file(self.root / f"calibration/{self.corpus_id}.json"),
+            "venue_basis": {"type": "USER_SELECTED", "venues": ["Fixture Journal"]},
+            "research_scope": "sparse-observation treatment-effect estimation",
+            "corpus_criteria": {"accepted": True, "comparable_archetype": True},
+            "papers": papers,
+            "aggregates": lifecycle.compute_venue_aggregates(papers),
+            "sample_sufficiency": {
+                "verdict": "SUFFICIENT_WITH_LIMITATIONS", "rationale": "fixture coverage",
+                "coverage": "one synthetic comparable paper", "stopping_reason": "test boundary",
+            },
+            "evaluation_difficulty_synthesis": {
+                "typical": "moderate", "drivers": ["matched comparisons"], "uncertainty": "single-paper fixture",
+            },
+            "limitations": ["single synthetic paper"],
+            "reviewer": {"id": "main-model"},
+        }
+        self.venue_id = lifecycle.register_venue_profile(self.root, self.venue_payload)
+        self.venue_judgment_id = lifecycle.set_venue_judgment(self.root, {
+            "venue_profile_id": self.venue_id,
+            "venue_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.venue_id}.json"),
+            "verdict": "PASS_WITH_EXPLAINED_DEVIATION",
+            "comparability": "same field and paper archetype",
+            "profile_confidence": "LOW_FIXTURE_ONLY",
+            "mean_distortion_review": "single item is retained as an observation, not a quota",
+            "evidence_program_review": "evaluation count, kinds, dimensions, and difficulty are explicit",
+            "limitations": ["synthetic one-paper fixture"],
+            "reviewer": {"id": "independent-fixture"},
+        })
+        lifecycle.write_json(self.root / "grounding/benchmark_candidates.json", {
+            "candidates": [],
+            "decision": {
+                "classification": "NO_VALID_PUBLIC_BENCHMARK",
+                "rationale": "no benchmark matches the estimand",
+                "search_scope": "primary papers, official repositories, and benchmark indexes",
+            },
+        })
+        candidates_payload = {
+            "idea_seed_id": self.seed_id,
+            "idea_seed_hash": lifecycle.sha256_file(self.root / f"intake/{self.seed_id}.json"),
+            "science_profile_id": self.science_id,
+            "science_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.science_id}.json"),
+            "venue_profile_id": self.venue_id,
+            "venue_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.venue_id}.json"),
+            "generation_basis": {"seed": "preserved", "closest_work": "compared", "benchmark": "searched"},
+            "fresh_search": {"performed": True, "cutoff": "2026-07-13"},
+            "candidates": [{
+                "candidate_id": "KEEP-SEED", **IDEA,
+                "closest_work": [{"title": "Calibrated Sparse Estimation", "difference": "new mechanism test"}],
+                "evidence": ["calibration/papers/science-source.txt"],
+                "why_might_fail": ["calibration may not transfer under severe missingness"],
+            }],
+            "limitations": ["fixture candidate set"],
+            "reviewer": {"id": "main-model"},
+        }
+        self.candidates_id = lifecycle.register_idea_candidates(self.root, candidates_payload)
+        self.selection_id = lifecycle.register_idea_selection(self.root, {
+            "idea_candidates_id": self.candidates_id,
+            "idea_candidates_hash": lifecycle.sha256_file(self.root / f"discovery/{self.candidates_id}.json"),
+            "selected_candidate_id": "KEEP-SEED",
+            "decision": "SELECT",
+            "comparison": "single faithful candidate retained after closest-work comparison",
+            "rationale": "falsifiable and feasible within the user envelope",
+            "evidence": ["calibration/papers/science-source.txt"],
+            "uncertainty": ["mechanism transfer remains unverified"],
+            "rejected_candidates": [],
+            "reviewer": {"id": "main-model"},
+        })
+        self.idea_id = lifecycle.register_idea(self.root, IDEA, None, "L0", None)
+        self.claim_id = lifecycle.register_claim(self.root, {
+            "claim_text": "The calibrated estimator reduces sparse-regime error",
+            "claim_type": "empirical result claim", "essential": True, "strength": "bounded",
+            "scope": "30-70% missingness", "required_evidence": ["claim-linked held-out evaluation"],
+        })
 
     def tearDown(self):
-        self.tmp.cleanup()
+        self.temp.cleanup()
 
-    def bootstrap(self):
-        idea = lifecycle.register_idea(self.root, IDEA, None, "L0", None)
-        claim = lifecycle.register_claim(self.root, CLAIM)
-        lifecycle.write_json(self.root / "reports/design/feasibility.json", {"seconds": 1})
-        contract_payload = self.bound_contract(CONTRACT)
-        lifecycle.write_json(self.root / "grounding/research_contract.candidate.json", contract_payload)
-        judgment = self.judgment("G3", ["grounding/research_contract.candidate.json", "reports/design/feasibility.json"])
-        approval = lifecycle.record_approval(self.root, "FREEZE_CONTRACT", "APPROVED", idea, [judgment], "main-model")
-        contract = lifecycle.freeze_contract(self.root, contract_payload, approval)
-        lifecycle.register_repo(self.root, self.repo)
-        lifecycle.lock_environment(self.root, ENV)
-        lifecycle.write_json(self.root / "grounding/benchmark_candidates.json", {"candidates": [], "decision": {"classification": "NO_PUBLIC_BENCHMARK", "rationale": "fixture", "search_scope": "official repositories and primary papers"}})
-        return idea, claim, contract
+    def judgment(self, gate: str, evidence: list[str], *, independent: bool = True, suffix: str = "") -> str:
+        relative = f"reports/gates/{gate}{suffix}.judgment.json"
+        lifecycle.write_json(self.root / relative, {
+            "artifact_type": "scientific_judgment", "gate": gate, "verdict": "PASS",
+            "conclusion": "The bounded fixture decision is supported.",
+            "checks": [{
+                "question": "Is the bounded decision supported?", "verdict": "SUPPORTED",
+                "rationale": "The cited fixture evidence is explicit.", "evidence": evidence,
+            }],
+            "limitations": ["synthetic fixture"], "blocking_issues": [],
+            "reviewer": {
+                "id": f"fixture-{gate}{suffix}", "model_or_human": "test-model",
+                "independent": independent, "context_artifacts": evidence,
+            },
+        })
+        return relative
 
-    def register_test_run(self, run_type, test=False):
-        return lifecycle.register_run(self.root, {"run_type": run_type, "experiment_ids": ["E-001"], "command": run_type, "replicate_id": "seed-1", "random_seed": 1, "config": {"type": run_type}, "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed", "failure_class": "NONE", "test_set_accessed": test, "test_access_purpose": "final confirmation" if test else "none"})
-
-    def bound_contract(self, contract):
-        envelope = self.root / "intake/resource-envelope.json"
+    def research_program(self) -> dict:
+        feasibility_evidence = self.root / "reports/design/feasibility.json"
+        feasibility_evidence.write_text("measured one representative unit", encoding="utf-8")
         return {
-            **contract,
-            "budget": {
-                **contract["budget"], "resource_envelope": "intake/resource-envelope.json",
-                "resource_envelope_hash": lifecycle.sha256_file(envelope), "deadline_fit": True,
-                "allocation_rationale": "The measured microprobe fits the user-confirmed deadline and compute envelope.",
+            "user_policy_id": self.policy_id,
+            "user_policy_hash": lifecycle.sha256_file(self.root / f"intake/{self.policy_id}.json"),
+            "science_profile_id": self.science_id,
+            "science_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.science_id}.json"),
+            "venue_profile_id": self.venue_id,
+            "venue_profile_hash": lifecycle.sha256_file(self.root / f"calibration/{self.venue_id}.json"),
+            "claim_ids": [self.claim_id],
+            "evaluation_units": [{
+                "unit_id": "EU-001", "kind": "observational_analysis", "claim_ids": [self.claim_id],
+                "question": "Does calibration reduce held-out sparse-regime error?",
+                "why_it_tests_claim": "directly measures the bounded claim",
+                "protocol_summary": "matched split, fixed preprocessing, held-out confirmation",
+                "positive_interpretation": "supports the bounded claim",
+                "negative_interpretation": "weakens or rejects the claim",
+                "confounders": ["extra compute"], "out_of_scope_conclusions": ["dense-regime superiority"],
+                "difficulty": {"rating": "moderate", "drivers": ["matched split"]},
+                "stop_condition": "predeclared precision or resource limit",
+            }],
+            "study_inputs": ["matched observation set"],
+            "protocol": {"split": "held out", "preprocessing": "fixed before confirmation"},
+            "outcomes": ["absolute estimation error"],
+            "comparators": ["matched calibrated baseline"],
+            "analysis_plan": {"estimand": "paired error difference", "uncertainty": "interval over groups"},
+            "test_set_policy": {"max_test_access": 1, "development": "validation only"},
+            "stop_conditions": ["budget exhausted", "hypothesis rejected", "protocol invalid"],
+            "resource_plan": {
+                "stage_budgets": {"acquisition": "1 hour", "pilot": "2 hours", "confirmation": "4 hours", "publication": "4 hours"},
+                "deadline_fit": True, "reserve": {"hours": 2},
+                "replan_triggers": ["projected completion exceeds deadline"],
+                "allocation_rationale": "the measured dominant-cost unit fits the confirmed envelope",
+                "max_runs": 12, "max_branches": 3, "max_branch_depth": 2,
+                "resource_envelope": "intake/resource-envelope.json",
+                "resource_envelope_hash": lifecycle.sha256_file(self.root / "intake/resource-envelope.json"),
+            },
+            "feasibility": {
+                "status": "MEASURED", "budget_fit": True, "deadline_fit": True,
+                "estimated_cost": {"seconds_per_unit": 1},
+                "probes": [{
+                    "component": "dominant evaluation unit", "status": "MEASURED",
+                    "rationale": "dominates projected runtime", "measurement": "1 second per unit",
+                    "evidence": ["reports/design/feasibility.json"],
+                }],
+                "projection_rationale": "measured unit cost multiplied by the frozen run program plus reserve",
+            },
+            "benchmark_policy": {
+                "artifact": "grounding/benchmark_candidates.json",
+                "artifact_hash": lifecycle.sha256_file(self.root / "grounding/benchmark_candidates.json"),
+                "classification": "NO_VALID_PUBLIC_BENCHMARK", "action": "USE_CONTRACT_ALTERNATIVE",
+                "rationale": "the searched public benchmarks do not match the estimand",
+            },
+            "venue_alignment": {
+                "observed_evidence_dimensions": self.venue_payload["aggregates"]["evidence_dimension_means"],
+                "selected_program_summary": "one primary held-out unit plus mechanism-sensitive checks",
+                "rationale": "claim validity and resources determine the program; venue observations calibrate completeness",
+                "deviations": [],
+            },
+            "revalidation_policy": {
+                "required": False, "rationale": "standard-risk fixture",
+                "independence_axis": "new observation groups", "trigger": "material Idea revision or disputed result",
+            },
+            "idea_iteration_policy": {
+                "allowed_levels": ["L0", "L1", "L2"], "diagnosis_before_revision": True,
+                "negative_result_policy": "preserve and weaken or reject claims",
+                "stop_rule": "bounded branches and no metric-only winner selection",
             },
         }
 
-    def evidence(self, name="evidence.txt"):
-        path = self.root / name
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("verified", encoding="utf-8")
-        return name
+    def freeze_program(self, *, action: str = "FREEZE_RESEARCH_PROGRAM", suffix: str = "") -> str:
+        program = self.research_program()
+        if suffix:
+            program["protocol"] = {**program["protocol"], "revision": suffix}
+        candidate = f"grounding/research-program{suffix}.candidate.json"
+        lifecycle.write_json(self.root / candidate, program)
+        evidence = [candidate, "reports/design/feasibility.json"]
+        judgment = self.judgment("G3", evidence, suffix=suffix)
+        approval = lifecycle.record_approval(self.root, action, "APPROVED", self.idea_id, [judgment], "user")
+        return lifecycle.freeze_research_program(self.root, program, approval)
 
-    def baseline_report(self, run_id):
-        output = self.evidence("experiments/baseline/output.json")
-        path = "reports/experiments/baseline-reproduction.json"
-        lifecycle.write_json(self.root / path, {
-            "baseline": "official baseline", "official_source": "https://example.org/paper",
-            "expected_behavior": "matches the published fixture", "expected_source": "https://example.org/paper#table-1",
-            "run_ids": [run_id], "actual_outputs": [output], "comparison": "matched",
-            "deviations": [], "limitations": ["synthetic fixture"],
+    def lock_repo_and_environment(self) -> None:
+        checkout = self.root / "code/upstream/repo"
+        checkout.mkdir(parents=True)
+        subprocess.run(["git", "init", "-q", str(checkout)], check=True)
+        subprocess.run(["git", "-C", str(checkout), "config", "user.email", "fixture@example.org"], check=True)
+        subprocess.run(["git", "-C", str(checkout), "config", "user.name", "Fixture"], check=True)
+        (checkout / "README.md").write_text("fixture", encoding="utf-8")
+        subprocess.run(["git", "-C", str(checkout), "add", "README.md"], check=True)
+        subprocess.run(["git", "-C", str(checkout), "commit", "-q", "-m", "fixture"], check=True)
+        subprocess.run(["git", "-C", str(checkout), "remote", "add", "origin", "https://example.org/repo.git"], check=True)
+        commit = subprocess.check_output(["git", "-C", str(checkout), "rev-parse", "HEAD"], text=True).strip()
+        lifecycle.register_repo(self.root, {
+            "purpose": "author implementation", "url": "https://example.org/repo.git", "commit": commit,
+            "official_status": "official", "license": "MIT", "local_path": "code/upstream/repo",
+            "modification_mode": "read_only",
         })
-        return path
-
-    def implementation_report(self):
-        code = self.evidence("code/integration/implementation.py")
-        path = "reports/code/implementation-review.json"
-        lifecycle.write_json(self.root / path, {
-            "implementation_summary": "Masked consistency fixture", "contract_alignment": "aligned",
-            "reviewed_artifacts": [{"path": code, "sha256": lifecycle.sha256_file(self.root / code)}],
-            "risks": ["mask leakage"], "findings": [], "limitations": ["fixture"], "reviewer": "main-model",
+        lifecycle.lock_environment(self.root, {
+            "os": "linux", "python": "3.12", "framework": "domain-runtime-1",
+            "dependencies": ["fixture==1"], "hardware": {"cpu": "fixture"},
         })
-        return path
 
-    def verification_report(self):
-        proof = self.evidence("reports/code/mask-leakage-proof.txt")
-        path = "reports/code/verification-suite.json"
-        lifecycle.write_json(self.root / path, {
-            "selection_judgment": {
-                "implementation_summary": "Masked consistency fixture", "reviewer": "main-model",
-                "risks": [{"risk_id": "R1", "failure_mode": "mask leakage", "scientific_consequence": "invalid comparison",
-                           "rationale": "custom mask path", "applicable": True, "covered_by": ["T1"]}],
-            },
-            "tests": [{"test_id": "T1", "purpose": "detect leakage", "command": "fixture-test",
-                       "oracle": "sealed values are inaccessible", "observed": "sealed", "status": "PASS", "evidence": [proof]}],
-        })
-        return path
-
-    def pilot_report(self, run_id):
-        path = "reports/experiments/pilot-assessment.json"
-        lifecycle.write_json(self.root / path, {
-            "run_ids": [run_id], "feasibility": "feasible", "signal_assessment": "measurable",
-            "variance_assessment": "bounded", "protocol_observations": ["split remained sealed"],
-            "failure_modes": [], "budget_projection": {"fits": True}, "decision": "proceed",
-            "limitations": ["small fixture"],
-        })
-        return path
-
-    def full_integrity_report(self, run_id, output):
-        state = lifecycle.load_state(self.root)
-        path = "reports/experiments/full-run-integrity.json"
-        lifecycle.write_json(self.root / path, {
-            "authorized_run_ids": [run_id], "contract_id": state["active"]["contract_id"],
-            "repository_lock_hash": lifecycle.read_json(self.root / "code/repos.lock.json")["lock_hash"],
-            "environment_lock_hash": lifecycle.read_json(self.root / "environment/environment.lock.json")["lock_hash"],
-            "budget_check": {"within_budget": True}, "test_access_summary": {"count": 1},
-            "raw_outputs": [output],
-        })
-        return path
-
-    def mechanism_report(self):
-        path = "reports/mechanism/mechanism-diagnosis.json"
-        lifecycle.write_json(self.root / path, {
-            "mechanism_predictions": ["consistency reduces sparse error"], "observations": ["bounded gain"],
-            "alternative_explanations": ["compute"], "discriminating_evidence": ["matched compute"],
-            "verdict": "MECHANISM_SUPPORTED", "claim_implications": "retain bounded claim",
-            "limitations": ["fixture"],
-        })
-        return path
-
-    def judgment(self, gate, evidence, verdict="PASS", independent=True):
-        path = f"reports/gates/{gate}.judgment.json"
-        lifecycle.write_json(self.root / path, {
-            "artifact_type": "scientific_judgment", "gate": gate, "verdict": verdict,
-            "conclusion": "Evidence supports the bounded fixture decision.",
-            "checks": [{"question": "Is the bounded decision supported?", "verdict": "SUPPORTED", "rationale": "Fixture evidence is explicit.", "evidence": evidence}],
-            "limitations": ["Synthetic test fixture"], "blocking_issues": [],
-            "reviewer": {"id": f"fixture-{gate}", "model_or_human": "test-model", "independent": independent, "context_artifacts": evidence},
-            **({"applicability_rationale": "The benchmark is absent.", "counterfactual_trigger": "A compatible public benchmark would make this applicable."} if verdict == "NOT_APPLICABLE" else {}),
-        })
-        return path
-
-    def set_gate(self, gate, evidence, verdict="PASS"):
-        existing = self.root / f"reports/gates/{gate}.judgment.json"
-        judgment = f"reports/gates/{gate}.judgment.json" if gate in lifecycle.MODEL_JUDGMENT_GATES and existing.is_file() else None
-        if gate in lifecycle.MODEL_JUDGMENT_GATES and not judgment:
-            judgment = self.judgment(gate, evidence, verdict)
-        lifecycle.set_gate(self.root, gate, verdict, evidence, "verified", "fixture", judgment)
-
-    def freeze(self, contract):
-        state = lifecycle.load_state(self.root)
-        contract = self.bound_contract(contract)
-        lifecycle.write_json(self.root / "grounding/research_contract.candidate.json", contract)
-        judgment = self.judgment("G3", ["grounding/research_contract.candidate.json", "reports/design/feasibility.json"])
-        approval = lifecycle.record_approval(self.root, "FREEZE_CONTRACT", "APPROVED", state["active"]["idea_id"], [judgment], "main-model")
-        return lifecycle.freeze_contract(self.root, contract, approval)
-
-    def test_init_layout_and_validate(self):
-        self.assertEqual(lifecycle.load_state(self.root)["phase"], "INTAKE")
-        self.assertEqual(lifecycle.validate_root(self.root), [])
-
-    def test_illegal_phase_jump_is_blocked(self):
-        with self.assertRaisesRegex(ValueError, "sequential"):
-            lifecycle.transition(self.root, "IDEA_GROUNDED")
-
-    def test_gate_requires_real_evidence(self):
-        with self.assertRaisesRegex(ValueError, "does not exist"):
-            lifecycle.set_gate(self.root, "G0", "PASS", ["missing.md"], "ok", "reviewer")
-
-    def test_idea_requires_falsifiability(self):
-        bad = dict(IDEA); bad["falsifiers"] = []
-        with self.assertRaisesRegex(ValueError, "falsifiers"):
-            lifecycle.register_idea(self.root, bad, None, "L0", None)
-
-    def test_major_idea_change_requires_approval(self):
-        lifecycle.register_idea(self.root, IDEA, None, "L0", None)
-        with self.assertRaisesRegex(ValueError, "recorded approved"):
-            lifecycle.register_idea(self.root, IDEA, "idea-v-001", "L3", None)
-        evidence = self.evidence("approval.md")
-        approval = lifecycle.record_approval(self.root, "revise mechanism", "APPROVED", "Idea L3", [evidence], "user")
-        evolved = lifecycle.register_idea(self.root, {**IDEA, "proposed_mechanism": "revised mechanism"}, "idea-v-001", "L3", approval)
-        self.assertEqual(evolved, "idea-v-002")
-
-    def test_formal_run_requires_locks_and_contract(self):
-        lifecycle.register_idea(self.root, IDEA, None, "L0", None)
-        lifecycle.register_claim(self.root, CLAIM)
-        lifecycle.write_json(self.root / "reports/design/feasibility.json", {"seconds": 1})
-        self.freeze(CONTRACT)
-        run = {"run_type": "full", "experiment_ids": ["E-001"], "command": "train", "replicate_id": "seed-1", "config": {}, "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed", "failure_class": "NONE", "test_set_accessed": False}
-        with self.assertRaisesRegex(ValueError, "locks"):
-            lifecycle.register_run(self.root, run)
-
-    def test_repo_must_be_pinned(self):
-        bad = dict(self.repo); bad["commit"] = "main"
-        with self.assertRaisesRegex(ValueError, "full pinned Git object ID"):
-            lifecycle.register_repo(self.root, bad)
-
-    def test_evidence_hash_change_breaks_validation(self):
-        evidence = self.evidence()
-        lifecycle.set_gate(self.root, "G0", "PASS", [evidence], "intake verified", "reviewer")
-        self.assertEqual(lifecycle.validate_root(self.root), [])
-        (self.root / evidence).write_text("tampered", encoding="utf-8")
-        self.assertTrue(any("changed after evaluation" in item for item in lifecycle.validate_root(self.root)))
-
-    def test_protocol_change_invalidates_downstream_gates(self):
-        self.bootstrap()
-        evidence = self.evidence()
-        baseline = self.register_test_run("baseline")
-        artifacts = {"G2": "grounding/benchmark_candidates.json", "G6": self.baseline_report(baseline), "G7": self.implementation_report(), "G8": self.verification_report()}
-        for gate in ("G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"):
-            self.set_gate(gate, [artifacts.get(gate, evidence)])
-        state = lifecycle.load_state(self.root)
-        state["phase"] = "IMPLEMENTATION_VERIFIED"
-        lifecycle.save_state(self.root, state, "test_setup")
-        self.freeze({**CONTRACT, "outcomes": ["MAE", "RMSE"]})
-        state = lifecycle.load_state(self.root)
-        self.assertEqual(state["phase"], "IDEA_GROUNDED")
-        self.assertNotIn("G6", state["gates"])
-        self.assertIn("G2", state["gates"])
-
-    def test_test_access_is_logged(self):
-        self.bootstrap()
-        run = {"run_type": "full", "experiment_ids": ["E-001"], "command": "evaluate", "replicate_id": "seed-1", "config": {"model": "x"}, "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed", "failure_class": "NONE", "test_set_accessed": True, "test_access_purpose": "final confirmation"}
-        run_id = lifecycle.register_run(self.root, run)
-        text = (self.root / "experiments/test_access_log.jsonl").read_text()
-        self.assertIn(run_id, text)
-
-    def test_execution_backend_must_match_environment_lock(self):
-        self.bootstrap()
-        execution = {"backend": "remote", "target": "research@gpu.example.org:22", "fingerprint": "fp"}
-        lifecycle.lock_environment(self.root, {**ENV, "execution": execution})
-        run = {"run_type": "pilot", "experiment_ids": ["E-001"], "command": "train", "replicate_id": "seed-1", "config": {},
-               "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed",
-               "failure_class": "NONE", "test_set_accessed": False}
-        with self.assertRaisesRegex(ValueError, "does not match environment lock"):
-            lifecycle.register_run(self.root, run)
-        run.update({"execution_backend": "remote", "execution_target": execution["target"],
-                    "execution_environment_fingerprint": execution["fingerprint"]})
-        self.assertTrue(lifecycle.register_run(self.root, run).startswith("run-"))
-
-    def test_run_and_test_access_budgets_are_enforced(self):
-        self.bootstrap()
-        contract_path = self.root / "contracts/experiment-contract-v-001.json"
-        contract = lifecycle.read_json(contract_path)
-        contract["budget"]["max_runs"] = 1
-        contract["test_set_policy"]["max_test_access"] = 1
-        lifecycle.write_json(contract_path, contract)
-        run = {"run_type": "full", "experiment_ids": ["E-001"], "command": "evaluate", "replicate_id": "seed-1", "config": {}, "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed", "failure_class": "NONE", "test_set_accessed": True}
-        lifecycle.register_run(self.root, run)
-        with self.assertRaisesRegex(ValueError, "run budget exhausted"):
-            lifecycle.register_run(self.root, run)
-
-    def test_claim_update_requires_evidence(self):
-        self.bootstrap()
-        with self.assertRaisesRegex(ValueError, "requires evidence"):
-            lifecycle.update_claim(self.root, "C-001", "SUPPORTED", "keep", [], "bounded")
-        evidence = self.evidence("claim.txt")
-        lifecycle.update_claim(self.root, "C-001", "PARTIALLY_SUPPORTED", "weaken", [evidence], "only under sparse conditions")
-        claim = lifecycle.read_json(self.root / "claims/claim-registry.json")["claims"][0]
-        self.assertEqual(claim["support_status"], "PARTIALLY_SUPPORTED")
-        self.assertEqual(claim["action"], "weaken")
-
-    def test_hypothesis_rejection_is_a_valid_evidence_backed_stop(self):
-        self.bootstrap()
-        evidence = self.evidence("negative-result.json")
-        lifecycle.stop(self.root, "STOPPED_HYPOTHESIS_REJECTED", "Matched baselines falsified the claim", [evidence])
-        self.assertEqual(lifecycle.load_state(self.root)["phase"], "STOPPED_HYPOTHESIS_REJECTED")
-        stop = lifecycle.read_json(self.root / "experiments/state.json")["stop_reason"]
-        self.assertEqual(stop["evidence"], [evidence])
-
-    def test_idea_evolution_after_test_access_invalidates_confirmation(self):
-        self.bootstrap()
-        self.register_test_run("full", test=True)
-        evidence = self.evidence("approval-evolution.md")
-        approval = lifecycle.record_approval(self.root, "narrow scope", "APPROVED", "Idea L2", [evidence], "user")
-        lifecycle.register_idea(self.root, {**IDEA, "scope": "only 50-70% missingness"}, "idea-v-001", "L2", approval)
-        state = lifecycle.load_state(self.root)
-        changes = [item["change"] for item in state["invalidations"]]
-        self.assertIn("TEST_CONTAMINATED", changes)
-        self.assertIsNone(state["active"]["contract_id"])
-
-    def test_environment_change_invalidates_baseline(self):
-        self.bootstrap()
-        evidence = self.evidence()
-        baseline = self.register_test_run("baseline")
-        baseline_report = self.baseline_report(baseline)
-        for gate in ("G0", "G1", "G2", "G3", "G4", "G5", "G6"):
-            gate_evidence = baseline_report if gate == "G6" else "grounding/benchmark_candidates.json" if gate == "G2" else evidence
-            self.set_gate(gate, [gate_evidence])
-        state = lifecycle.load_state(self.root); state["phase"] = "BASELINE_VERIFIED"; lifecycle.save_state(self.root, state, "fixture")
-        lifecycle.lock_environment(self.root, {**ENV, "framework": "pytorch-2.5"})
-        state = lifecycle.load_state(self.root)
-        self.assertEqual(state["phase"], "CODEBASE_LOCKED")
-        self.assertNotIn("G6", state["gates"])
-
-    def test_legacy_migration_is_unverified(self):
-        legacy = Path(self.tmp.name) / "legacy"; legacy.mkdir()
-        write(legacy / "story.json", {"title": "old"})
-        target = Path(self.tmp.name) / "migrated"
-        lifecycle.migrate_legacy(target, legacy, "proposal")
-        report = lifecycle.read_json(target / "reports/legacy-migration.json")
-        self.assertEqual(report["status"], "IMPORTED_UNVERIFIED")
-        self.assertEqual(lifecycle.load_state(target)["phase"], "INTAKE")
-
-    def test_full_happy_path_gates_and_transitions(self):
-        self.bootstrap()
-        evidence = self.evidence()
-        manuscript = Path(self.tmp.name) / "paper"; manuscript.mkdir(); (manuscript / "main.tex").write_text("verified manuscript")
-        lifecycle.register_manuscript(self.root, manuscript)
-        baseline_run = self.register_test_run("baseline")
-        pilot_run = self.register_test_run("pilot")
-        full_run = self.register_test_run("full", test=True)
-        raw = self.evidence("evidence/results/raw.json")
-        code = self.evidence("code/integration/aggregate.py")
-        baseline_report = self.baseline_report(baseline_run)
-        implementation_report = self.implementation_report()
-        verification_report = self.verification_report()
-        pilot_report = self.pilot_report(pilot_run)
-        full_report = self.full_integrity_report(full_run, raw)
-        mechanism_report = self.mechanism_report()
-        fact = {
-            "fact_id": "F-001", "claim_ids": ["C-001"], "value": 0.5, "unit": "MAE",
-            "run_ids": [full_run], "source_artifacts": [raw],
-            "source_hashes": {raw: lifecycle.sha256_file(self.root / raw)},
-            "aggregation": {"method": "direct", "code_artifact": code, "code_hash": lifecycle.sha256_file(self.root / code)},
-        }
-        manifest = self.root / "evidence/results/results-manifest.jsonl"
-        manifest.write_text(json.dumps(fact) + "\n", encoding="utf-8")
-        decision = {"decision": "KEEP", "rationale": "evidence supports bounded claim", "evidence": [evidence], "approval": "NOT_REQUIRED", "revision_level": "L0"}
-        decision_id = lifecycle.record_decision(self.root, decision)
-        lifecycle.update_claim(self.root, "C-001", "SUPPORTED", "keep", [evidence], "bounded sparse-regime claim")
-        target_sequence = lifecycle.PHASES[1:]
-        for target in target_sequence:
-            for gate in lifecycle.REQUIRED_GATES.get(target, []):
-                if gate not in lifecycle.load_state(self.root)["gates"]:
-                    verdict = "NOT_APPLICABLE" if gate == "G14" else "PASS"
-                    gate_evidence = {
-                        "G2": ["grounding/benchmark_candidates.json"],
-                        "G3": ["grounding/research_contract.candidate.json", "reports/design/feasibility.json"],
-                        "G6": [baseline_report],
-                        "G7": [implementation_report],
-                        "G8": [verification_report],
-                        "G9": [pilot_report],
-                        "G10": [full_report],
-                        "G11": ["evidence/results/results-manifest.jsonl"],
-                        "G12": [mechanism_report],
-                        "G13": [f"decisions/{decision_id}.json"],
-                        "G15": ["claims/claim-registry.json"],
-                    }.get(gate, [evidence])
-                    self.set_gate(gate, gate_evidence, verdict)
-            lifecycle.transition(self.root, target)
-        self.assertEqual(lifecycle.load_state(self.root)["phase"], "RELEASED")
-        self.assertEqual(lifecycle.validate_root(self.root), [])
-
-    def test_manuscript_registration_is_versioned_and_invalidates_review(self):
-        self.bootstrap()
-        manuscript = Path(self.tmp.name) / "paper"; manuscript.mkdir(); (manuscript / "main.tex").write_text("v1")
-        first = lifecycle.register_manuscript(self.root, manuscript)
-        self.assertEqual(first, lifecycle.register_manuscript(self.root, manuscript))
-        evidence = self.evidence()
-        state = lifecycle.load_state(self.root); state["phase"] = "MANUSCRIPT_HARDENED"; lifecycle.save_state(self.root, state, "fixture")
-        self.set_gate("G16", [evidence])
-        (manuscript / "main.tex").write_text("v2")
-        second = lifecycle.register_manuscript(self.root, manuscript)
-        state = lifecycle.load_state(self.root)
-        self.assertNotEqual(first, second)
-        self.assertEqual(state["phase"], "CLAIMS_RECONCILED")
-        self.assertNotIn("G16", state["gates"])
-
-    def test_semantic_gate_cannot_pass_from_file_existence_alone(self):
-        lifecycle.register_idea(self.root, IDEA, None, "L0", None)
-        evidence = self.evidence()
-        with self.assertRaisesRegex(ValueError, "structured main-model scientific judgment"):
-            lifecycle.set_gate(self.root, "G1", "PASS", [evidence], "looks good", "pipeline-sync")
-
-    def test_implementation_gate_rejects_empty_shell_report(self):
-        self.bootstrap()
-        report = "reports/code/implementation-review.json"
-        lifecycle.write_json(self.root / report, {"ok": True})
-        judgment = self.judgment("G7", [report])
-        with self.assertRaisesRegex(ValueError, "missing fields"):
-            lifecycle.set_gate(self.root, "G7", "PASS", [report], "reviewed", "main-model", judgment)
-
-    def test_formal_run_must_link_to_frozen_experiment(self):
-        self.bootstrap()
-        with self.assertRaisesRegex(ValueError, "experiment_ids"):
-            lifecycle.register_run(self.root, {
-                "run_type": "pilot", "command": "train", "replicate_id": "specimen-1", "config": {},
-                "input_artifact_hashes": {"specimens": "d" * 64}, "protocol_hash": "e" * 64, "status": "completed",
-                "failure_class": "NONE", "test_set_accessed": False,
-            })
-
-    def test_scientific_branch_ledger_preserves_negative_branch_without_metric_chasing(self):
-        self.bootstrap()
-        evidence = self.evidence("reports/experiments/branch-question.md")
-        proposal = {
-            "question": "Does the observed gain come only from additional compute?",
-            "change_class": "diagnostic", "hypothesis": "matched compute removes the apparent gain",
-            "experiment_ids": ["E-001"],
-            "expected_observations": {"supports": "gain disappears", "refutes": "gain remains"},
-            "rationale": "distinguishes the main mechanism from the strongest alternative",
-            "estimated_cost": {"runs": 1}, "evidence": [evidence],
-            "stop_condition": "one matched diagnostic run completes",
-        }
-        branch_id = lifecycle.propose_branch(self.root, proposal)
-        with self.assertRaisesRegex(ValueError, "duplicate scientific branch"):
-            lifecycle.propose_branch(self.root, proposal)
-        run_id = lifecycle.register_run(self.root, {
-            "run_type": "baseline", "branch_id": branch_id, "experiment_ids": ["E-001"],
-            "command": "matched-diagnostic", "replicate_id": "case-1", "config": {},
-            "input_artifact_hashes": {"fixture": "d" * 64}, "protocol_hash": "e" * 64,
+    def run_payload(self, unit_id: str = "EU-001", *, branch_id: str | None = None) -> dict:
+        return {
+            "run_type": "pilot", "evaluation_unit_ids": [unit_id], "command": "run-fixture",
+            "replicate_id": "group-1", "random_seed": None, "config": {"mode": "fixture"},
+            "input_artifact_hashes": {"observations": "d" * 64}, "protocol_hash": "e" * 64,
             "status": "completed", "failure_class": "NONE", "test_set_accessed": False,
+            "test_access_purpose": "none", **({"branch_id": branch_id} if branch_id else {}),
+        }
+
+    def test_schema_inventory_is_v5_and_valid_json(self):
+        schema_dir = MODULE_PATH.parents[1] / "schemas"
+        expected = {
+            "idea_seed.schema.json", "idea_candidates.schema.json", "idea_selection.schema.json",
+            "paper_wiki_snapshot.schema.json", "science_profile.schema.json", "venue_profile.schema.json",
+            "research_program_contract.schema.json", "publication_contract.schema.json",
+            "publication_judgment.schema.json", "figure_routing.schema.json", "run_manifest.schema.json",
+        }
+        self.assertTrue(expected.issubset({path.name for path in schema_dir.glob("*.json")}))
+        for name in expected:
+            self.assertIsInstance(json.loads((schema_dir / name).read_text(encoding="utf-8")), dict)
+
+    def test_complete_discovery_chain_is_valid_and_has_one_active_idea(self):
+        self.assertEqual(lifecycle.validate_root(self.root), [])
+        state = lifecycle.load_state(self.root)
+        self.assertEqual(state["active"]["idea_id"], self.idea_id)
+        self.assertNotIn("contract_id", state["active"])
+
+    def test_first_active_idea_cannot_bypass_candidate_selection(self):
+        other = Path(self.temp.name) / "other"
+        lifecycle.init_layout(other, "proposal", "bypass")
+        with self.assertRaisesRegex(ValueError, "candidate set and selection"):
+            lifecycle.register_idea(other, IDEA, None, "L0", None)
+
+    def test_science_profile_is_bound_to_real_full_text(self):
+        source = self.root / "calibration/papers/science-source.txt"
+        source.write_text("tampered", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "hash-mismatched"):
+            lifecycle.register_science_profile(self.root, self.science_payload)
+
+    def test_venue_aggregation_accepts_domain_specific_role_vocabularies(self):
+        first = self.venue_payload["papers"][0]["metrics"]
+        second = {
+            **first, "figure_roles": {"microscopy": 1, "mechanism diagram": 2},
+            "evaluation_kinds": {"specimen study": 2},
+            "evidence_dimensions": {"specimens": 4},
+        }
+        aggregates = lifecycle.compute_venue_aggregates([
+            {"metrics": first}, {"metrics": second},
+        ])
+        self.assertIn("microscopy", aggregates["figure_role_means"])
+        self.assertIn("specimens", aggregates["evidence_dimension_means"])
+
+    def test_venue_profile_cannot_change_the_prefrozen_source_set(self):
+        changed = json.loads(json.dumps(self.venue_payload))
+        changed["papers"][0]["source"] = {"url": "https://example.org/different"}
+        with self.assertRaisesRegex(ValueError, "exactly match"):
+            lifecycle.register_venue_profile(self.root, changed)
+
+    def test_research_program_requires_scoped_freeze_action(self):
+        with self.assertRaisesRegex(ValueError, "FREEZE_RESEARCH_PROGRAM"):
+            self.freeze_program(action="FREEZE_CONTRACT")
+        program_id = self.freeze_program()
+        stored = lifecycle.read_json(self.root / f"contracts/{program_id}.json")
+        self.assertEqual(stored["research_program_id"], program_id)
+        self.assertNotIn("contract_id", stored)
+
+    def test_formal_run_requires_known_evaluation_unit_and_locks(self):
+        self.freeze_program()
+        with self.assertRaisesRegex(ValueError, "unknown evaluation units"):
+            lifecycle.register_run(self.root, self.run_payload("EU-UNKNOWN"))
+        with self.assertRaisesRegex(ValueError, "repository and environment locks"):
+            lifecycle.register_run(self.root, self.run_payload())
+        self.lock_repo_and_environment()
+        run_id = lifecycle.register_run(self.root, self.run_payload())
+        manifest = lifecycle.read_json(self.root / f"experiments/runs/{run_id}/run_manifest.json")
+        self.assertEqual(manifest["evaluation_unit_ids"], ["EU-001"])
+        self.assertEqual(manifest["research_program_id"], lifecycle.load_state(self.root)["active"]["research_program_id"])
+
+    def test_result_fact_must_follow_claim_linked_unit_run_and_raw_hashes(self):
+        self.freeze_program()
+        self.lock_repo_and_environment()
+        run_id = lifecycle.register_run(self.root, self.run_payload())
+        raw = self.root / "evidence/results/raw.json"
+        raw.write_text('{"value": 0.42}', encoding="utf-8")
+        aggregation = self.root / "code/integration/aggregate.py"
+        aggregation.write_text("print(0.42)", encoding="utf-8")
+        fact = {
+            "fact_id": "F-001", "claim_ids": [self.claim_id], "value": 0.42, "unit": "absolute error",
+            "run_ids": [run_id], "source_artifacts": ["evidence/results/raw.json"],
+            "source_hashes": {"evidence/results/raw.json": lifecycle.sha256_file(raw)},
+            "aggregation": {
+                "method": "direct fixture extraction", "code_artifact": "code/integration/aggregate.py",
+                "code_hash": lifecycle.sha256_file(aggregation),
+            },
+        }
+        (self.root / "evidence/results/results-manifest.jsonl").write_text(json.dumps(fact) + "\n", encoding="utf-8")
+        lifecycle.validate_results_manifest(self.root)
+        fact["claim_ids"] = ["C-999"]
+        (self.root / "evidence/results/results-manifest.jsonl").write_text(json.dumps(fact) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "unknown/inactive claims"):
+            lifecycle.validate_results_manifest(self.root)
+
+    def test_major_idea_evolution_requires_approval_and_invalidates_program(self):
+        self.freeze_program()
+        evolved = {**IDEA, "hypothesis": "A stratified calibration mechanism reduces sparse-regime error"}
+        with self.assertRaisesRegex(ValueError, "require a recorded approved"):
+            lifecycle.register_idea(self.root, evolved, self.idea_id, "L2", None)
+        evidence = self.root / "decisions/idea-evolution-review.txt"
+        evidence.write_text("user reviewed the estimand change", encoding="utf-8")
+        approval = lifecycle.record_approval(
+            self.root, "EVOLVE_IDEA", "APPROVED", self.idea_id,
+            ["decisions/idea-evolution-review.txt"], "user",
+        )
+        lifecycle.register_idea(self.root, evolved, self.idea_id, "L2", approval)
+        self.assertIsNone(lifecycle.load_state(self.root)["active"]["research_program_id"])
+
+    def test_research_program_revision_invalidates_old_g3(self):
+        first = self.freeze_program()
+        first_path = f"contracts/{first}.json"
+        judgment = self.judgment("G3", [first_path], suffix="-gate")
+        lifecycle.set_gate(self.root, "G3", "PASS", [first_path], "frozen program reviewed", "fixture", judgment)
+        self.assertIn("G3", lifecycle.load_state(self.root)["gates"])
+        self.freeze_program(suffix="-v2")
+        self.assertNotIn("G3", lifecycle.load_state(self.root)["gates"])
+
+    def test_negative_hypothesis_result_is_a_valid_evidence_backed_stop(self):
+        evidence = self.root / "reports/experiments/negative-result.json"
+        evidence.write_text('{"supported": false}', encoding="utf-8")
+        lifecycle.stop(
+            self.root, "STOPPED_HYPOTHESIS_REJECTED", "held-out evidence rejected the hypothesis",
+            ["reports/experiments/negative-result.json"],
+        )
+        state = lifecycle.load_state(self.root)
+        self.assertEqual(state["phase"], "STOPPED_HYPOTHESIS_REJECTED")
+        stop_record = lifecycle.read_json(self.root / "experiments/state.json")["stop_reason"]
+        self.assertIn("negative-result.json", stop_record["evidence"][0])
+
+    def test_branch_ledger_preserves_an_unsupported_alternative(self):
+        self.freeze_program()
+        self.lock_repo_and_environment()
+        branch_evidence = self.root / "reports/experiments/branch-question.txt"
+        branch_evidence.write_text("alternative calibration question", encoding="utf-8")
+        branch_id = lifecycle.propose_branch(self.root, {
+            "question": "Does stratification explain the signal?", "change_class": "diagnostic",
+            "hypothesis": "stratification isolates the effect", "evaluation_unit_ids": ["EU-001"],
+            "expected_observations": ["error decreases only in one stratum"],
+            "rationale": "discriminates a plausible alternative", "estimated_cost": "one bounded run",
+            "evidence": ["reports/experiments/branch-question.txt"], "stop_condition": "one diagnostic run",
         })
-        result = self.evidence("experiments/branches/matched-result.json")
+        lifecycle.register_run(self.root, self.run_payload(branch_id=branch_id))
+        outcome = self.root / "reports/experiments/branch-outcome.txt"
+        outcome.write_text("alternative unsupported", encoding="utf-8")
         lifecycle.evaluate_branch(self.root, branch_id, {
-            "outcome": "UNSUPPORTED", "scientific_interpretation": "The diagnostic did not support the branch hypothesis.",
-            "decision": "REJECT", "claim_implications": "retain the bounded main claim",
-            "evidence": [result], "reviewer": "main-model", "limitations": ["single diagnostic condition"],
+            "outcome": "UNSUPPORTED", "scientific_interpretation": "stratification does not explain the signal",
+            "decision": "RETAIN_DIAGNOSTIC", "claim_implications": "no claim expansion",
+            "evidence": ["reports/experiments/branch-outcome.txt"], "reviewer": {"id": "main-model"},
+            "limitations": ["single diagnostic run"],
         })
         branch = lifecycle.read_json(self.root / "experiments/branch-registry.json")["branches"][0]
-        self.assertEqual(branch["run_ids"], [run_id])
-        self.assertEqual(branch["evaluation"]["decision"], "REJECT")
-        self.assertEqual(branch["status"], "EVALUATED")
+        self.assertEqual(branch["evaluation"]["outcome"], "UNSUPPORTED")
+        self.assertEqual(branch["evaluation"]["decision"], "RETAIN_DIAGNOSTIC")
 
-    def test_no_valid_public_benchmark_allows_evidence_backed_g6_not_applicable(self):
-        self.bootstrap()
-        benchmark = "grounding/benchmark_candidates.json"
-        judgment = self.judgment("G6", [benchmark], verdict="NOT_APPLICABLE")
-        lifecycle.set_gate(
-            self.root, "G6", "NOT_APPLICABLE", [benchmark],
-            "No compatible public baseline exists; use the contract alternative evaluation.",
-            "main-model", judgment,
-        )
-        self.assertEqual(lifecycle.load_state(self.root)["gates"]["G6"]["verdict"], "NOT_APPLICABLE")
+    def test_manuscript_registration_keeps_only_reader_facing_files(self):
+        source = Path(self.temp.name) / "paper"
+        (source / "sections").mkdir(parents=True)
+        (source / "research").mkdir()
+        (source / "main.tex").write_text("\\input{sections/body}", encoding="utf-8")
+        (source / "sections/body.tex").write_text("reader-facing body", encoding="utf-8")
+        (source / "research/internal.json").write_text('{"sha256": "secret audit data"}', encoding="utf-8")
+        manuscript_id = lifecycle.register_manuscript(self.root, source)
+        record = lifecycle.read_json(self.root / f"manuscript/{manuscript_id}.json")
+        paths = {item["path"] for item in record["files"]}
+        self.assertEqual(paths, {"main.tex", "sections/body.tex"})
 
-    def test_resource_envelope_change_requires_contract_refreeze_but_preserves_grounding(self):
-        self.bootstrap()
-        lifecycle.register_resource_envelope(self.root, {
-            "source": "USER_PROVIDED", "deadline": {"max_elapsed_hours": 8, "hard": True},
-            "compute": [{"backend": "remote", "target": "gpu.example.org", "hardware": "A100", "count": 2}],
-            "financial_limit": {"currency": "USD", "amount": 20}, "human_review": {"hours": 1},
-            "priorities": ["scientific validity", "speed"], "constraints": [], "assumptions": [],
-            "confirmed_by_user": True,
-        })
+    def test_publication_judgment_requires_coherence_filler_and_actual_pdf_review(self):
+        source = Path(self.temp.name) / "publication"
+        source.mkdir()
+        (source / "main.tex").write_text("reader-facing paper", encoding="utf-8")
+        manuscript_id = lifecycle.register_manuscript(self.root, source)
+        publication_id = "publication-contract-v-999"
+        lifecycle.write_json(self.root / f"contracts/{publication_id}.json", {"targets": {"page_range": [7, 9]}})
         state = lifecycle.load_state(self.root)
-        self.assertIsNone(state["active"]["contract_id"])
-        self.assertEqual(state["active"]["idea_id"], "idea-v-001")
-        self.assertTrue(any(item["change"] == "RESOURCE_ENVELOPE_CHANGED" for item in state["invalidations"]))
-
-    def test_identical_resource_envelope_registration_is_idempotent(self):
-        _, _, contract_id = self.bootstrap()
-        envelope_path = self.root / "intake/resource-envelope.json"
-        original_hash = lifecycle.sha256_file(envelope_path)
-        payload = json.loads(envelope_path.read_text(encoding="utf-8"))
-        payload.pop("schema_version", None)
-        payload.pop("captured_at", None)
-        lifecycle.register_resource_envelope(self.root, payload)
-        state = lifecycle.load_state(self.root)
-        self.assertEqual(lifecycle.sha256_file(envelope_path), original_hash)
-        self.assertEqual(state["active"]["contract_id"], contract_id)
-
-    def test_resource_envelope_rejects_unconfirmed_model_assumptions(self):
-        with self.assertRaisesRegex(ValueError, "confirmed"):
-            lifecycle.register_resource_envelope(self.root, {
-                "source": "USER_CONFIRMED_ASSUMPTIONS", "deadline": {"status": "UNKNOWN"},
-                "compute": [], "financial_limit": {"status": "UNKNOWN"}, "human_review": {"status": "UNKNOWN"},
-                "priorities": [], "constraints": [], "assumptions": ["local compute"], "confirmed_by_user": False,
-            })
-
-    def test_manuscript_registration_excludes_research_data_and_credentials(self):
-        paper = Path(self.tmp.name) / "paper"; paper.mkdir()
-        (paper / "main.tex").write_text("paper")
-        (paper / "sections").mkdir(); (paper / "sections/method.tex").write_text("method")
-        (paper / "research/environment").mkdir(parents=True); (paper / "research/environment/private_key").write_text("secret")
-        (paper / "input/data").mkdir(parents=True); (paper / "input/data/raw.csv").write_text("sensitive")
-        manuscript_id = lifecycle.register_manuscript(self.root, paper)
-        files = [item["path"] for item in lifecycle.read_json(self.root / f"manuscript/{manuscript_id}.json")["files"]]
-        self.assertEqual(files, ["main.tex", "sections/method.tex"])
-
-    def test_validate_root_rejects_private_key_material(self):
-        key = self.root / "environment/id_ed25519"
-        key.write_text("-----BEGIN OPENSSH PRIVATE KEY-----\nsecret")
-        self.assertTrue(any("credential-like file" in issue for issue in lifecycle.validate_root(self.root)))
-
-    def test_run_manifest_and_logs_redact_credentials_but_keep_command_hash(self):
-        self.bootstrap()
-        run_id = lifecycle.register_run(self.root, {
-            "run_type": "pilot", "experiment_ids": ["E-001"],
-            "command": "API_TOKEN=super-secret-token-value python train.py",
-            "replicate_id": "seed-1", "config": {}, "input_artifact_hashes": {"dataset": "d" * 64}, "protocol_hash": "e" * 64,
-            "status": "completed", "failure_class": "NONE", "test_set_accessed": False,
-        })
-        manifest = lifecycle.read_json(self.root / f"experiments/runs/{run_id}/run_manifest.json")
-        self.assertIn("[REDACTED]", manifest["command"])
-        self.assertEqual(len(manifest["command_hash"]), 64)
-        self.assertNotIn("super-secret-token-value", json.dumps(manifest))
-
-    def test_l0_revision_preserves_empirical_evidence_and_only_reopens_review(self):
-        idea_id, _, contract_id = self.bootstrap()
-        state = lifecycle.load_state(self.root)
-        state["phase"] = "CLAIMS_RECONCILED"
-        for gate in ("G4", "G5", "G10", "G11", "G15", "G16"):
-            state["gates"][gate] = {"verdict": "PASS", "report": "reports/gates/G0.json"}
-        lifecycle.save_state(self.root, state, "fixture")
-        revised = lifecycle.register_idea(
-            self.root, {**IDEA, "hypothesis": IDEA["hypothesis"] + "."}, idea_id, "L0", None
-        )
-        state = lifecycle.load_state(self.root)
-        self.assertEqual(state["active"]["contract_id"], contract_id)
-        self.assertEqual(state["phase"], "CLAIMS_RECONCILED")
-        self.assertNotIn("G16", state["gates"])
-        self.assertTrue(all(gate in state["gates"] for gate in ("G4", "G5", "G10", "G11", "G15")))
-        self.assertTrue(lifecycle.idea_evidence_compatible(self.root, idea_id, revised))
-
-    def test_high_risk_release_requires_scoped_human_confirmation(self):
-        root = Path(self.tmp.name) / "high-risk"
-        lifecycle.init_layout(root, "high_risk", "high-risk-test")
-        idea_id = lifecycle.register_idea(root, IDEA, None, "L0", None)
-        paper = Path(self.tmp.name) / "high-risk-paper"; paper.mkdir(); (paper / "main.tex").write_text("paper")
-        lifecycle.register_manuscript(root, paper)
-        context = "manuscript/active/main.tex"
-        wrong = lifecycle.record_approval(root, "FREEZE_CONTRACT", "APPROVED", idea_id, [context], "user")
-        judgment = "reports/gates/G16.judgment.json"
+        state["active"]["publication_contract_id"] = publication_id
+        lifecycle.save_state(self.root, state, "publication_fixture")
+        pdf = Path(self.temp.name) / "paper.pdf"
+        pdf.write_bytes(b"fixture pdf")
+        lifecycle.register_latex_verdict(self.root, {
+            "compiled": True, "error_count": 0, "input_hash": "a" * 64, "page_count": 8,
+        }, pdf)
+        latex = lifecycle.read_json(self.root / "reports/manuscript/latex-verdict.json")
+        contract_path = self.root / f"contracts/{publication_id}.json"
+        manuscript_path = self.root / f"manuscript/{manuscript_id}.json"
         payload = {
-            "artifact_type": "scientific_judgment", "gate": "G16", "verdict": "PASS",
-            "conclusion": "The bounded manuscript is release-ready.",
-            "checks": [{"question": "Is release justified?", "verdict": "SUPPORTED", "rationale": "Reviewed artifact is explicit.", "evidence": [context]}],
-            "limitations": ["Synthetic fixture"], "blocking_issues": [],
-            "reviewer": {"id": "independent-reviewer", "model_or_human": "test-model", "independent": True, "context_artifacts": [context]},
-            "human_confirmation_approval_id": wrong,
+            "publication_contract_id": publication_id,
+            "publication_contract_hash": lifecycle.sha256_file(contract_path),
+            "manuscript_id": manuscript_id, "manuscript_hash": lifecycle.sha256_file(manuscript_path),
+            "figure_role_completeness": "all planned roles are present",
+            "citation_relevance": "citations support their local claims",
+            "experiment_claim_coverage": "claims match the available evidence",
+            "venue_scale_substance": "length comes from scientific substance, not padding",
+            "claim_argument_consistency": "abstract, body, and conclusion use the same bounded claims",
+            "cross_section_consistency": "terms, assumptions, and notation are consistent",
+            "method_result_alignment": "reported outcomes correspond to the declared protocol",
+            "redundancy_and_filler_review": "no duplicated argument or audit appendix remains",
+            "internal_provenance_boundary": "hashes and gate ledgers remain in the artifact package",
+            "limitations_and_negative_results": "limitations and negative outcomes are visible",
+            "rendered_pdf_review": {
+                "pdf_sha256": latex["pdf_sha256"], "actual_pdf_reviewed": True,
+                "layout_findings": [], "blocking_issues": [],
+            },
+            "page_scale": {
+                "actual_pages": 8, "target_range": [7, 9], "verdict": "WITHIN_TARGET",
+                "rationale": "the compiled paper is within the selected calibration range",
+            },
+            "deviations": [], "verdict": "PASS", "reviewer": {"id": "main-model"},
         }
-        lifecycle.write_json(root / judgment, payload)
-        with self.assertRaisesRegex(ValueError, "CONFIRM_RELEASE"):
-            lifecycle.set_gate(root, "G16", "PASS", [context], "reviewed", "independent", judgment)
-        approval = lifecycle.record_approval(root, "CONFIRM_RELEASE", "APPROVED", idea_id, [context], "user")
-        payload["human_confirmation_approval_id"] = approval
-        lifecycle.write_json(root / judgment, payload)
-        lifecycle.set_gate(root, "G16", "PASS", [context], "reviewed", "independent", judgment)
-        self.assertEqual(lifecycle.load_state(root)["gates"]["G16"]["verdict"], "PASS")
+        incomplete = dict(payload)
+        incomplete.pop("redundancy_and_filler_review")
+        with self.assertRaisesRegex(ValueError, "redundancy_and_filler_review"):
+            lifecycle.register_publication_judgment(self.root, incomplete)
+        judgment_id = lifecycle.register_publication_judgment(self.root, payload)
+        self.assertTrue((self.root / f"reports/manuscript/{judgment_id}.json").is_file())
 
-    def test_proposal_profile_reaches_release_without_empirical_gates(self):
-        root = Path(self.tmp.name) / "proposal"
-        lifecycle.init_layout(root, "proposal", "proposal-test")
-        idea_id = lifecycle.register_idea(root, IDEA, None, "L0", None)
-        lifecycle.register_claim(root, {
-            "claim_text": "The stated assumptions imply a bounded stability property",
-            "claim_type": "theoretical claim", "essential": True, "strength": "conditional",
-            "scope": "under the registered assumptions", "required_evidence": ["proof obligations and counterexamples"],
-        })
-        intake = "grounding/research_idea.json"; lifecycle.write_json(root / intake, IDEA)
-        lifecycle.set_gate(root, "G0", "PASS", [intake], "intake", "pipeline-sync")
-        lifecycle.transition(root, "IDEA_DRAFTED")
-        benchmark = "grounding/benchmark_candidates.json"
-        lifecycle.write_json(root / benchmark, {"candidates": [], "decision": {"classification": "NO_PUBLIC_BENCHMARK", "rationale": "searched", "search_scope": "official repositories and primary papers"}})
-
-        def judge(gate, evidence):
-            path = f"reports/gates/{gate}.judgment.json"
-            lifecycle.write_json(root / path, {
-                "artifact_type": "scientific_judgment", "gate": gate, "verdict": "PASS",
-                "conclusion": "The proposal statement is evidence-bounded.",
-                "checks": [{"question": "Is this bounded?", "verdict": "SUPPORTED", "rationale": "The evidence is explicit.", "evidence": evidence}],
-                "limitations": ["No empirical results are claimed"], "blocking_issues": [],
-                "reviewer": {"id": f"proposal-{gate}", "model_or_human": "main-model", "independent": False, "context_artifacts": evidence},
-            })
-            return path
-
-        for gate in ("G1", "G2"):
-            evidence = [intake, benchmark]
-            lifecycle.set_gate(root, gate, "PASS", evidence, "grounded", "main-model", judge(gate, evidence))
-        lifecycle.transition(root, "IDEA_GROUNDED")
-        candidate = "grounding/research_contract.candidate.json"
-        proposal_contract = {
-            **CONTRACT,
-            "experiments": [{
-                "experiment_id": "E-001", "claim_ids": ["C-001"],
-                "why_it_tests_claim": "the proof unit checks each stated implication",
-                "positive_interpretation": "supports the conditional theorem",
-                "negative_interpretation": "requires weakening or rejecting the theorem",
-                "confounders": ["hidden assumptions"], "out_of_scope_conclusions": ["unconditional stability"],
+    def test_high_risk_semantic_gate_requires_independent_review(self):
+        other = Path(self.temp.name) / "high-risk"
+        lifecycle.init_layout(other, "high_risk", "risk")
+        context = other / "reports/design/context.txt"
+        context.parent.mkdir(parents=True, exist_ok=True)
+        context.write_text("risk context", encoding="utf-8")
+        judgment = other / "reports/gates/G3.judgment.json"
+        lifecycle.write_json(judgment, {
+            "artifact_type": "scientific_judgment", "gate": "G3", "verdict": "PASS",
+            "conclusion": "fixture", "checks": [{
+                "question": "valid?", "verdict": "SUPPORTED", "rationale": "fixture",
+                "evidence": ["reports/design/context.txt"],
             }],
-            "study_inputs": ["formal assumptions and definitions"], "protocols": ["proof and counterexample analysis"],
-            "outcomes": ["satisfied proof obligations"], "comparators": ["closest prior bound"],
-            "replication_plan": {"type": "deterministic_proof_cases", "identifiers": ["main", "boundary"], "rationale": "cover theorem and boundary"},
-            "feasibility": {"status": "NOT_REQUIRED"},
-        }
-        lifecycle.write_json(root / candidate, proposal_contract)
-        design = judge("G3", [candidate, benchmark])
-        approval = lifecycle.record_approval(root, "FREEZE_CONTRACT", "APPROVED", idea_id, [design], "main-model")
-        lifecycle.freeze_contract(root, proposal_contract, approval)
-        lifecycle.set_gate(root, "G3", "PASS", [candidate, benchmark], "approved", "main-model", design)
-        lifecycle.transition(root, "RESEARCH_CONTRACT_FROZEN")
-        paper = Path(self.tmp.name) / "proposal-paper"; paper.mkdir(); (paper / "main.tex").write_text("proposal")
-        lifecycle.register_manuscript(root, paper)
-        review = judge("G16", ["manuscript/active/main.tex"])
-        lifecycle.set_gate(root, "G16", "PASS", ["manuscript/active/main.tex"], "reviewed", "main-model", review)
-        lifecycle.transition(root, "MANUSCRIPT_HARDENED")
-        lifecycle.transition(root, "RELEASED")
-        self.assertEqual(lifecycle.load_state(root)["phase"], "RELEASED")
-        self.assertFalse(any(gate in lifecycle.load_state(root)["gates"] for gate in ("G4", "G10", "G11", "G14")))
+            "limitations": ["fixture"], "blocking_issues": [],
+            "reviewer": {
+                "id": "same-context-reviewer", "model_or_human": "test-model", "independent": False,
+                "context_artifacts": ["reports/design/context.txt"],
+            },
+        })
+        state = lifecycle.load_state(other)
+        with self.assertRaisesRegex(ValueError, "independent reviewer"):
+            lifecycle.validate_judgment(other, state, "G3", "PASS", "reports/gates/G3.judgment.json")
+
+    def test_resource_envelope_change_invalidates_program_but_preserves_grounding(self):
+        self.freeze_program()
+        lifecycle.register_resource_envelope(self.root, {
+            "source": "USER_PROVIDED", "deadline": {"status": "KNOWN", "max_elapsed_hours": 12, "hard": True},
+            "compute": [{"backend": "local", "hardware": "fixture", "count": 1}],
+            "financial_limit": {"currency": "USD", "amount": 5}, "human_review": {"hours": 1},
+            "priorities": ["scientific validity"], "constraints": ["shorter deadline"],
+            "assumptions": [], "confirmed_by_user": True,
+        })
+        state = lifecycle.load_state(self.root)
+        self.assertIsNone(state["active"]["research_program_id"])
+        self.assertEqual(state["active"]["idea_id"], self.idea_id)
+        self.assertEqual(state["active"]["science_profile_id"], self.science_id)
+
+    def test_secret_redaction_and_private_key_audit(self):
+        self.assertNotIn("secret-value", lifecycle.redact_secrets("API_KEY=secret-value"))
+        private_key = self.root / "id_ed25519"
+        private_key.write_text("-----BEGIN PRIVATE KEY-----\nfixture", encoding="utf-8")
+        errors = lifecycle.validate_root(self.root)
+        self.assertTrue(any("credential-like file" in item or "private key" in item for item in errors))
+
+    def test_g0_and_phase_transitions_use_registered_artifacts(self):
+        policy_path = f"intake/{self.policy_id}.json"
+        lifecycle.set_gate(self.root, "G0", "PASS", [policy_path], "policy is complete", "deterministic")
+        lifecycle.transition(self.root, "USER_POLICY_LOCKED")
+        lifecycle.transition(self.root, "SCIENCE_PROFILED")
+        self.assertEqual(lifecycle.load_state(self.root)["phase"], "SCIENCE_PROFILED")
 
 
 if __name__ == "__main__":

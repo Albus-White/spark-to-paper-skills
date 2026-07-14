@@ -1,4 +1,4 @@
 interface:
   display_name: "Paper Citations"
-  short_description: "Build a real bibliography around active research claims"
+  short_description: "Build relevant claim coverage and meet the cited-source contract"
   default_prompt: "Use $ts-paper-cite to ground these claims in real primary sources and build refs.bib."

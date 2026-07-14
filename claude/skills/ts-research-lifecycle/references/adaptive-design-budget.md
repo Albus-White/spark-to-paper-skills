@@ -1,55 +1,55 @@
 # Evidence-Grounded Design and Resource Budget
 
-The main model sizes the research and manuscript from evidence. Fixed counts are not quality proxies.
-Explicit user counts remain requirements when feasible and scientifically honest.
+Counts and means calibrate decisions; they do not prove quality or become automatic quotas.
 
-## User resource envelope
+## User envelope
 
-Before an empirical contract is frozen, ask the user once for the information they can provide:
+Before empirical freeze, capture the deadline, local/remote compute and availability, financial/API/
+storage limits, human-review availability, non-negotiable deliverables, and ordered priorities.
+Unknowns stay explicit. Store capabilities and targets, never credentials.
 
-- desired delivery deadline or maximum elapsed time;
-- available local/remote compute, hardware count/type, access windows, and server target metadata;
-- financial/API/storage limits;
-- available human review time and non-negotiable deliverables;
-- ordered priorities, such as scientific confidence, breadth, speed, venue readiness, or artifact quality.
+Measure at least one representative dominant-cost unit. Project acquisition, execution, external
+services, synchronization, storage, analysis, figures, writing, review, and compilation with reserve.
+Allocate resources to evidence most likely to change a claim or decision. If the program does not fit,
+narrow the Idea/claim, change venue, extend the deadline, or stop before freeze.
 
-Unknown values remain explicit. The model may propose conservative assumptions, but the user confirms
-the resulting envelope. Never store credentials. Register `intake/resource-envelope.json` and bind its
-hash into the frozen contract budget.
+## Science and venue evidence
 
-Run a representative microprobe, then estimate wall time, compute time, storage, external-service
-cost, and review time. Allocate the user's envelope among essential confirmation, mechanism
-discrimination, robustness/scope, independent revalidation, figures, and manuscript work according to
-which artifacts most improve the final scientific decision. If the deadline does not fit, narrow the
-claim or plan transparently before freeze.
+The science profile uses current primary field literature to establish closest work, benchmark and
+evaluator landscape, scientific/evidence conventions, and topic writing practice. The venue profile
+uses a separately frozen comparable accepted-paper corpus to observe publication scale and evidence
+programs.
 
-## Venue and field evidence
+Universal venue observations include pages, unique cited references, total figures, tables, and
+evaluation count. Domain-authored observations include figure roles, evaluation kinds, evidence
+dimensions, and difficulty. Different papers may use different vocabularies. Store distributions,
+sample limitations, and a separate comparability judgment. Official venue constraints remain hard;
+observed distributions are an envelope.
 
-Before choosing paper structure, figure/table count, or experiment breadth, the main model studies:
+## Research-program sizing
 
-- official guidance for the user-selected venue, when supplied;
-- recent accepted papers at that venue with a similar paper archetype and evidence type;
-- relevant leading venue/journal papers when the target is unspecified or offers little detail;
-- field conventions that change what constitutes adequate comparison, uncertainty, replication,
-  qualitative evidence, or mechanism analysis.
+Every essential claim receives at least one discriminating evaluation or proof unit. Add comparisons,
+replications, conditions, mechanism checks, robustness analyses, qualitative cases, or proofs only
+when they address a named claim, alternative explanation, decision risk, or justified field/venue
+expectation. Evaluation units may be benchmarks, experiments, simulations, observational analyses,
+qualitative studies, proofs, or artifact evaluations.
 
-Record sources, observations, and decisions in `venue-study.json`. Observed counts and ranges are
-context, not requirements. The model explains why this paper needs fewer, similar, or more artifacts.
+The main model selects the program from claim validity, field conventions, benchmark applicability,
+venue observations, measured feasibility, and user priorities. Do not copy accepted-paper averages as
+experiment counts or force irrelevant ML stages.
 
-## Scientific sizing
+## Publication sizing
 
-Every essential claim receives a discriminative evaluation or proof unit. Add comparisons,
-replications, conditions, ablations, robustness checks, or mechanism tests only when they address a
-named claim, alternative explanation, venue expectation, or decision risk. Prefer artifacts that
-answer several compatible questions without hiding units, uncertainty, or failures.
+The main model selects page range, relevant unique-citation minimum, figure count, and table count
+after claims stabilize. It explains each choice against official/user constraints, scientific
+substance, and the accepted-paper distribution. A choice outside the observed range requires an
+evidenced deviation. No global citation floor exists.
 
-Use no figure or table when it adds no understanding. Combine related result views when scientifically
-legible; separate them when combination would obscure semantics. Qualitative evidence includes
-representative failures. Candidate generation expands only for a concrete unresolved visual defect.
+Every planned figure/table must answer a distinct reader question or evidence need. If honest content
+cannot support the selected scale, reopen the publication contract instead of adding citations,
+appendices, diagrams, repeated explanation, hashes, or commands as filler.
 
-Use the smallest review and experiment portfolio that resolves important uncertainty within the user
-envelope. Stop when additional work will not change a claim/decision, the hypothesis is unsupported,
-the resource envelope is reached, or remaining uncertainty must be disclosed.
-
-System hard caps exist only to prevent runaway execution. They are not recommended research sizes and
-must never be treated as targets.
+Use the smallest experiment, review, candidate, and repair portfolio that resolves material
+uncertainty. Stop when additional work cannot change a claim/decision, the hypothesis is unsupported,
+the resource envelope is reached, or residual uncertainty must be disclosed. Hard caps prevent
+runaway execution; they are not recommended targets.

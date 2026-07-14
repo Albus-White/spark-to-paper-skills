@@ -25,6 +25,13 @@ position, citation merging, keyword formatting, table-width safeguards, front ma
 It runs `latexmk` once with a timeout and reports `compiled`, `error_count`, `error_tail`, and an
 `input_hash` over template, blueprint, references, sections, and published figures.
 
+After a passing compile, register the exact verdict and PDF in the lifecycle:
+
+```bash
+python ../ts-research-lifecycle/scripts/lifecycle.py --root <workdir>/research \
+  register-latex-verdict --file <workdir>/assemble.json --pdf <workdir>/main.pdf
+```
+
 Fix only concrete syntax or artifact errors: unbalanced math/environments, escaping, missing files,
 bad labels, unresolved citation keys, or invalid figure assets. Do not alter claims, equations,
 numbers, citations, or scientific wording to make compilation pass.
@@ -37,9 +44,11 @@ the current inputs.
 
 - `main.pdf` exists and LaTeX reports zero errors;
 - citation keys and bibliography compile without unresolved markers;
-- every included figure has the required published vector artifact;
-- the lifecycle validates and is `MANUSCRIPT_HARDENED` or `RELEASED`;
+- every included figure has its route-authorized artifact; DrawAI-unavailable PaperBanana figures may
+  use the reviewed raster with an audited skip record;
+- the lifecycle validates and can enter `LATEX_COMPILED`, `RELEASE_AUDITED`, or `RELEASED`;
 - the registered manuscript is the current allowlisted snapshot.
 
-Compilation is exact evidence of LaTeX/build correctness. It is not evidence that the science is
-correct; G16 supplies that separate main-model judgment.
+Compilation is exact evidence of LaTeX/build correctness. It is not evidence that the science or
+rendered paper is correct. G16 supplies source-level scientific review; the post-compile Publication
+Judgment requires the main model to open and review the actual final PDF.

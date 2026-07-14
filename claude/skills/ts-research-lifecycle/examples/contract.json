@@ -1,27 +1,81 @@
 {
+  "user_policy_id": "user-policy-v-001",
+  "user_policy_hash": "replace-with-current-sha256",
+  "science_profile_id": "science-profile-v-001",
+  "science_profile_hash": "replace-with-current-sha256",
+  "venue_profile_id": "venue-profile-v-001",
+  "venue_profile_hash": "replace-with-current-sha256",
   "claim_ids": ["C-001"],
-  "experiments": [{
-    "experiment_id": "E-001",
+  "evaluation_units": [{
+    "unit_id": "EU-001",
+    "kind": "observational_analysis",
     "claim_ids": ["C-001"],
-    "why_it_tests_claim": "Direct matched-budget comparison on the canonical task",
-    "positive_interpretation": "Supports the bounded sparse-regime claim if stable under the replication plan",
-    "negative_interpretation": "Rejects or narrows the claim",
+    "question": "Does the method improve the claim-relevant outcome under the frozen conditions?",
+    "why_it_tests_claim": "The matched held-out comparison directly measures the bounded claim",
+    "protocol_summary": "Frozen split, preprocessing, comparator, evaluator, and access policy",
+    "positive_interpretation": "Supports only the bounded claim when uncertainty and alternatives are acceptable",
+    "negative_interpretation": "Weakens, rejects, or narrows the claim",
     "confounders": ["Additional compute", "Different preprocessing"],
-    "out_of_scope_conclusions": ["Universal robustness outside the benchmark regime"]
+    "out_of_scope_conclusions": ["Universal performance outside the frozen conditions"],
+    "difficulty": {"rating": "moderate", "drivers": ["matched comparison", "held-out confirmation"]},
+    "stop_condition": "Predeclared precision, invalid protocol, or resource limit"
   }],
-  "study_inputs": ["Canonical official benchmark"],
-  "protocols": ["Official split and preprocessing"],
-  "outcomes": ["Official MAE"],
-  "comparators": ["Official baseline", "Matched-compute regularization"],
-  "replication_plan": {"type": "random_seeds", "identifiers": [11, 29], "rationale": "pilot variance"},
-  "statistical_plan": {"aggregation": "chosen from the pilot variance and estimand"},
+  "study_inputs": ["Versioned claim-relevant input set"],
+  "protocol": {"split": "held out", "preprocessing": "frozen", "evaluator": "authoritative implementation"},
+  "outcomes": ["Claim-relevant primary outcome with uncertainty"],
+  "comparators": ["Applicable reproduced reference", "Matched alternative explanation"],
+  "analysis_plan": {"estimand": "matched difference", "uncertainty": "selected from field conventions"},
   "test_set_policy": {"development": "validation only", "max_test_access": 1},
-  "stop_conditions": ["Evidence sufficient", "Hypothesis rejected", "Budget exhausted"],
-  "budget": {"max_runs": 12, "max_branches": 4, "max_branch_depth": 2, "max_gpu_hours": 24},
+  "stop_conditions": ["Evidence sufficient", "Hypothesis rejected", "Protocol invalid", "Budget exhausted"],
+  "resource_plan": {
+    "stage_budgets": {"acquisition": "day 1", "pilot": "day 2", "confirmation": "days 3-4", "publication": "days 5-7"},
+    "deadline_fit": true,
+    "reserve": {"days": 1},
+    "replan_triggers": ["Projected completion exceeds the user deadline"],
+    "allocation_rationale": "The measured dominant-cost probe fits the confirmed envelope",
+    "max_runs": 12,
+    "max_branches": 4,
+    "max_branch_depth": 2,
+    "resource_envelope": "intake/resource-envelope.json",
+    "resource_envelope_hash": "replace-with-current-sha256"
+  },
   "feasibility": {
     "status": "MEASURED",
     "budget_fit": true,
+    "deadline_fit": true,
     "estimated_cost": {"gpu_hours": 8},
-    "evidence": ["reports/design/feasibility.json"]
+    "probes": [{
+      "component": "dominant evaluation unit",
+      "status": "MEASURED",
+      "rationale": "This unit dominates projected cost",
+      "measurement": "Measured runtime/resource use for one representative unit",
+      "evidence": ["reports/design/feasibility.json"]
+    }],
+    "projection_rationale": "Measured unit cost multiplied by the selected program plus reserve"
+  },
+  "benchmark_policy": {
+    "artifact": "grounding/benchmark_candidates.json",
+    "artifact_hash": "replace-with-current-sha256",
+    "classification": "PUBLIC_BENCHMARK",
+    "action": "ACQUIRE_AND_REPRODUCE",
+    "rationale": "The official benchmark matches the task, split, and evaluator"
+  },
+  "venue_alignment": {
+    "observed_evidence_dimensions": {"conditions": 2.4, "comparators": 3.1},
+    "selected_program_summary": "One primary held-out unit plus mechanism and robustness checks",
+    "rationale": "Claim validity and resources determine the program; venue observations calibrate completeness",
+    "deviations": []
+  },
+  "revalidation_policy": {
+    "required": false,
+    "rationale": "Standard-risk program unless a trigger occurs",
+    "independence_axis": "new data, specimens, cases, seeds, or proof route as appropriate",
+    "trigger": "Material Idea revision, fragile result, or unresolved dispute"
+  },
+  "idea_iteration_policy": {
+    "allowed_levels": ["L0", "L1", "L2"],
+    "diagnosis_before_revision": true,
+    "negative_result_policy": "Preserve and weaken, reject, or reframe claims",
+    "stop_rule": "Bounded branches and no unchanged or metric-only search"
   }
 }

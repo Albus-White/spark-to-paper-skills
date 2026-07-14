@@ -1,58 +1,70 @@
 ---
 name: ts-paper-plan
-description: Plan the manuscript structure after the research question and evidence profile are stable. Use to create blueprint.json for a proposal or evidence-backed paper in the active venue template. The main model chooses the paper archetype, sections, contributions, tables, and figures from the actual work; deterministic checks validate only structure, venue limits, and result provenance declarations.
+description: Create blueprint.json after the active claims and v5 publication contract are stable. The main model chooses a domain-appropriate scientific argument and section organization; deterministic checks enforce the frozen section, figure, table, venue, and provenance sets.
 ---
 
 # ts-paper-plan
 
-Plan the paper the research needs. Do not use a venue template as a scientific outline.
+Plan the paper the evidence needs. A venue template controls submission structure and formatting; it
+does not decide the scientific argument.
 
-Read `../ts-research-lifecycle/references/reasoning-and-validation-boundary.md`,
-`../ts-research-lifecycle/references/adaptive-design-budget.md`, and
-`../ts-research-lifecycle/references/bounded-execution-contract.md`.
+Read `../ts-research-lifecycle/references/bounded-execution-contract.md` and
+`../ts-research-lifecycle/references/reasoning-and-validation-boundary.md`.
 
 ## Preconditions
 
-- Proposal: G3 is frozen and no measured outcomes are claimed.
-- Exploratory/empirical: the active Idea decision and claim reconciliation are stable enough to write.
-- `template.json` is explicitly selected and validated. Never silently fall back to another venue.
+- The active Idea, claims, limitations, and research program are stable enough to write.
+- Proposal mode contains no claimed measured outcomes.
+- Empirical modes have reconciled canonical facts and claim wording.
+- `template.json` selects user-provided or official venue assets without fallback.
+- The publication contract contains model-selected targets and rationales derived from the observed
+  calibration envelope, user requirements, and official rules.
 
 ## Main-model planning
 
-1. Identify the paper archetype from the research: method, empirical finding, dataset/benchmark,
-   systems, application, theoretical, negative result, replication, or another justified form.
-2. Search the user-selected venue's official guidance and recent accepted papers with a similar
-   archetype/evidence type. If no venue is specified, study relevant leading venues/journals before
-   choosing one. Record sources, observed conventions, user-specified counts, and model decisions in
-   `venue-study.json`. Observed counts are context, not quotas.
-3. Read the active claims, evidence, limitations, resource envelope, venue study, and page budget.
-4. Choose section IDs, titles, order, and semantic roles. `experiments` is not a reserved ID; use roles
-   such as `framing`, `related_work`, `methods`, `evaluation`, `results`, `discussion`, and
-   `limitations` so downstream tools remain domain-independent.
-5. State only the contributions the evidence supports. No fixed count applies unless the venue itself
-   has an explicit formal requirement.
-6. Let the model decide figure count, table count, experiment reporting breadth, and visual composition
-   from the venue study and this paper's evidence. Follow explicit user counts when feasible and honest.
-   Plan each artifact only when it materially improves understanding; no internal quota applies.
-7. For measured figures/tables, declare `source_of_truth: measured_data`, `fact_ids`, `data_source`,
-   and an appropriate renderer. Proposal mode must not declare measured results.
-8. Treat target word ranges as editing guidance, not scientific acceptance criteria.
+Read the full science profile, venue profile and judgment, active Idea and claims, research program,
+canonical facts, bibliography coverage, publication contract, and limitations. Choose the actual
+paper archetype: method, empirical finding, negative result, replication, theory, simulation,
+observational study, qualitative study, dataset/benchmark, system, application, or another justified
+form.
 
-Write `blueprint.json` with:
+Build one claim-to-section argument:
 
-- `paper_title`, authors/venue metadata, `venue_study`, and keywords when the venue supports them;
-- `section_order`;
-- `sections.<id>.title`, `roles`, purpose, claims/evidence to cover, optional target words,
-  citation needs, tables, and figures;
-- notation and terminology only when the paper uses them;
-- limitations and disclosure plan.
+- select section IDs, titles, order, purpose, and semantic roles appropriate to the domain;
+- ensure every essential claim has a planned explanation and evidence location;
+- keep terminology, assumptions, notation, protocol, outcomes, and limitations connected across
+  sections;
+- reserve space for alternative explanations, negative evidence, boundary conditions, and genuine
+  reader questions;
+- use target word ranges only as editing guidance.
 
-Run:
+Do not force an `experiments` section, a contribution count, a main table, an ablation, or a fixed
+subsection pattern. Do not add appendices or sections merely to reach a page range.
+
+## Frozen artifact sets
+
+`blueprint.json` must use the publication contract's exact section, figure, and table IDs. A changed
+set requires a new publication contract; it is not a local blueprint repair.
+
+For each figure preserve its frozen class, route, source of truth, claim bindings, purpose, and
+section role:
+
+- `measured_evidence`: canonical result facts and `fact_ids`;
+- `original_observation`: registered original scientific artifacts;
+- `exact_structure`: exact domain-native source artifacts;
+- `explanatory_synthesis`: frozen semantics for PaperBanana.
+
+Measured tables use `source_of_truth: canonical_result_facts`, fact IDs, and a data source. Proposal
+mode cannot plan measured evidence.
+
+Write section-level citation needs, equations/notation only when used, limitations/disclosure plans,
+and the title/keywords permitted by the venue. Then run:
 
 ```bash
 python scripts/template_lint.py <workdir>
 python scripts/blueprint_lint.py <workdir>
 ```
 
-Fix structural errors. Treat word-target warnings and optional venue suggestions as advice for the
-main model. Do not add content, references, tables, or figures merely to satisfy a count.
+Fix exact set, template, and provenance failures. Semantic organization remains main-model judgment.
+If the research cannot honestly support the frozen artifact scale, reopen the publication contract
+instead of inventing content.

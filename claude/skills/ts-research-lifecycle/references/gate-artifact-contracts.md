@@ -1,36 +1,47 @@
 # Gate Artifact Contracts
 
-These artifacts carry evidence into model judgments. Their fields organize traceability; they do not
-predetermine the scientific conclusion.
+Artifacts provide traceability. Semantic conclusions remain model judgments.
 
-Before G3 in every empirical profile, `intake/resource-envelope.json` records only user-provided or
-user-confirmed deadline, compute, financial, storage, review, priority, and constraint information.
-The frozen contract binds its current hash and the feasibility microprobe demonstrates deadline and
-budget fit. There is no system-supplied default experiment volume.
+## Intake, calibration, and design
 
-| Gate | Required artifact | Purpose |
+| Gate | Evidence | Meaning |
 |---|---|---|
-| G2 | `grounding/benchmark_candidates.json` | Search scope, sourced candidates, license/compatibility, and a classified decision including valid no-benchmark outcomes |
-| G6 | `reports/experiments/baseline-reproduction.json` | Official source, expected behavior/source, baseline run IDs, actual outputs, comparison, deviations, limitations |
-| G7 | `reports/code/implementation-review.json` | Mathematical/protocol summary, contract alignment, hash-bound code, risks, findings, limitations, reviewer |
-| G8 | `reports/code/verification-suite.json` | Main-model risk selection and implementation-specific executable tests with oracles and evidence |
-| G9 | `reports/experiments/pilot-assessment.json` | Pilot run IDs, feasibility, signal/variance observations, failure modes, budget projection, decision, limitations |
-| G10 | `reports/experiments/full-run-integrity.json` | Authorized full run IDs, active contract/repository/environment hashes, budget/test-access summary, raw outputs |
-| G11 | `evidence/results/results-manifest.jsonl` | Claim-linked facts bound to contract experiments, completed runs, raw artifacts/hashes, aggregation code/hash |
-| G12 | `reports/mechanism/mechanism-diagnosis.json` | Predictions, observations, alternatives, discriminating evidence, verdict, claim implications, limitations |
-| G13 | `decisions/DR-*.json` | Evidence-backed Idea keep/narrow/revise/reframe/branch/reject decision |
-| G14 | `reports/experiments/independent-revalidation.json` | Revalidation run IDs, independence dimensions, compared facts, conclusion, limitations |
-| G15 | `claims/claim-registry.json` | Support status, action, allowed wording, and hash-bound evidence for every active claim |
-| G16 | active manuscript record plus `scientific_judgment` | Whole-manuscript evidence calibration and release decision |
+| G0 | active user policy and empirical resource envelope when applicable | Request, venue behavior, resources, and non-negotiable constraints are explicit |
+| V1 | frozen venue corpus, PDF-bound profile, and separate venue judgment | Comparable accepted-paper scale, evidence roles/difficulty, sample limitations, and comparability are reviewed |
+| G1 | selected active Idea | Problem, scope, assumptions, falsifiers, alternatives, and minimum validation path are coherent |
+| G2 | science profile and `grounding/benchmark_candidates.json` | Closest work, benchmarks/evaluators/repositories, compatibility/license, and valid no-benchmark outcomes are grounded |
+| G3 | active `research-program-vNNN.json` plus feasibility evidence | Claims have appropriate evaluation/proof units, resource fit, benchmark action, interpretations, confounders, and stop/iteration policy |
 
-For model-judged gates, both the gate evidence list and `scientific_judgment` context cite the required
-artifact. The lifecycle verifies files, IDs, and hashes. The main model still decides whether the
-evidence supports the conclusion.
+V1 uses its specialized venue judgment instead of a duplicate generic gate judgment. The lifecycle
+recomputes exact PDF hashes and declared aggregate statistics; the model judges corpus comparability,
+roles, difficulty, and limitations.
 
-Formal run manifests include `experiment_ids` from the frozen contract. Contract experiments include
-their claim IDs and positive, negative, confounder, and out-of-scope interpretations. This creates the
-traversable path `claim -> contract experiment -> run -> fact -> manuscript binding`.
+## Empirical gates
 
-Before manuscript planning, `venue-study.json` records official venue guidance, representative
-accepted papers, field conventions, explicit user requirements, and the model's evidence-backed
-design decisions. It informs structure and artifact selection but never creates a quota.
+| Gate | Evidence |
+|---|---|
+| G4-G5 | pinned clean repositories/licenses/patch policy and locked execution environment |
+| G6 | applicable baseline reproduction or evidenced `NOT_APPLICABLE` decision |
+| G7-G8 | implementation review and discriminative scientific verification suite |
+| G9 | successful pilot plus feasibility/protocol/variance assessment |
+| G10-G11 | authorized full-run integrity and canonical result facts |
+| G12-G15 | mechanism diagnosis, Idea decision, proportionate independent revalidation, and claim reconciliation |
+
+Formal runs name frozen `evaluation_unit_ids`. Canonical facts preserve
+`claim -> evaluation unit -> run -> raw artifact/aggregation -> manuscript`.
+
+## Publication gates
+
+| Gate | Evidence |
+|---|---|
+| M1 | frozen publication contract | Model-selected/rationalized page, citation, figure, table, section, and reader-boundary program inside the calibration envelope |
+| M2 | bibliography coverage | Every active claim is covered and the selected relevant unique-citation minimum can be met |
+| M3 | registered complete manuscript | All frozen sections exist as one reader-facing draft |
+| M4 | hash-bound refinement report | One holistic evidence-preserving refinement occurred |
+| G16 | current manuscript and scientific judgment | Whole-paper logic, evidence, consistency, source support, redundancy, filler, and limitations were reviewed |
+| M5 | figure routing, route artifacts, actual-image reviews, figure-program report | Every frozen figure uses its source-of-truth route; explanatory synthesis proves real upstream PaperBanana execution and conditional DrawAI |
+| M6 | actual-PDF Publication Judgment and release audit | Final semantics/layout plus exact citation, claim, figure, compile, artifact-set, and hash bindings pass |
+
+The unique citation count is the number of relevant keys actually cited in manuscript TeX. Only
+`explanatory_synthesis` figures use PaperBanana. Measured evidence, original observations, and exact
+structures use their own truthful routes.

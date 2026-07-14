@@ -1,4 +1,0 @@
-interface:
-  display_name: "Research KG Build"
-  short_description: "Build a reusable evidence-grounded research pattern index"
-  default_prompt: "Use $ts-kg-build to build a reusable research-pattern index from this corpus."

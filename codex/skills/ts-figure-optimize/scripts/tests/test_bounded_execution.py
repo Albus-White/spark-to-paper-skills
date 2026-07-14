@@ -51,7 +51,7 @@ def test_repeated_artifact_and_ab_a_cycle_stop(tmp_path):
 
 def test_wall_clock_and_failure_budgets_stop():
     guard = _guard(max_wall_seconds=10)
-    assert guard.before_round(now=guard.started_at + 10) == "wall_clock_budget_exhausted"
+    assert guard.before_round(now=guard.started_at + 10.001) == "wall_clock_budget_exhausted"
     assert guard.observe(score=None, artifact=None, pipeline_ok=False) is None
     assert guard.observe(score=None, artifact=None, pipeline_ok=False) == "consecutive_round_failures"
 

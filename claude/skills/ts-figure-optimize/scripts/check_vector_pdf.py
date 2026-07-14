@@ -126,8 +126,9 @@ def _manifest(workdir: Path) -> dict[str, dict]:
         return {}
     items = payload if isinstance(payload, list) else payload.get("figures", [])
     return {
-        str(item["label"]): item
-        for item in items if isinstance(item, dict) and item.get("label")
+        str(item.get("figure_id") or item.get("label")): item
+        for item in items
+        if isinstance(item, dict) and (item.get("figure_id") or item.get("label"))
     }
 
 

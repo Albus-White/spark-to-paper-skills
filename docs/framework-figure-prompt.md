@@ -1,4 +1,10 @@
-# spark-to-paper-skills — 框架图生成 Prompt 文档
+# Legacy Framework Figure Prompt
+
+> **Archive only.** This prompt describes a pre-v5 seven-stage presentation and must not be used as
+> the current architecture specification. In particular, v5 has one research lifecycle, separate
+> science and venue calibration, optional Paper Wiki memory, claim-linked research programs, four
+> source-of-truth figure routes, and an actual-PDF Publication Judgment. The authoritative current
+> description is `research-closed-loop-architecture.md` and the root README.
 
 > 用途:把 spark-to-paper-skills 的「方法 / 架构」可视化成一张框架图(对标 AutoResearchClaw 的 `framework_v2.png`),
 > 直接复制下面的 prompt 给 GPT 图像模型(gpt-image-1 / DALL·E 等)生成。

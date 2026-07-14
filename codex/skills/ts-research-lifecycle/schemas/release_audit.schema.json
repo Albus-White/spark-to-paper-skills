@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "release_audit_v5",
+  "type": "object",
+  "required": ["publication_contract_id", "publication_contract_hash", "manuscript_id", "manuscript_hash", "publication_judgment_id", "publication_judgment_hash", "citation_verdict", "figure_verdict", "latex_verdict", "claim_verdict", "blocking_issues", "reviewer"],
+  "properties": {
+    "citation_verdict": {"const": "PASS"},
+    "figure_verdict": {"const": "PASS"},
+    "latex_verdict": {"const": "PASS"},
+    "claim_verdict": {"const": "PASS"},
+    "blocking_issues": {"type": "array", "maxItems": 0}
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "venue_metrics_record_v5",
+  "type": "object",
+  "required": ["title", "venue", "year", "article_type", "source", "pdf", "relevance", "metrics"],
+  "properties": {
+    "pdf": {"type": "object", "required": ["path", "sha256"]},
+    "metrics": {
+      "type": "object",
+      "required": ["page_count", "unique_cited_references", "total_figures", "table_count", "evaluation_count", "figure_roles", "evaluation_kinds", "evidence_dimensions", "evaluation_difficulty"]
+    }
+  }
+}

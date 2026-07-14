@@ -1,15 +1,19 @@
 # Execution Profiles
 
-Profiles define different legal phase paths rather than forcing every run through G0-G16.
+All profiles require user policy, field grounding, accepted-paper venue calibration, a frozen
+research program, and the complete publication/release path.
 
-- `proposal`: G0-G3, then manuscript review/release. No executable empirical runs or fake N/A gates.
-- `exploratory`: grounding, code/environment, optional baseline, implementation verification, pilot,
-  mechanism/Idea decision, claim reconciliation, manuscript. Exploratory evidence cannot confirm a
-  final empirical claim.
-- `standard_empirical`: complete empirical lifecycle. Independent revalidation may be N/A only when
-  the frozen contract explicitly says it is not required and the model supplies a scientific rationale.
-- `high_risk`: complete empirical lifecycle; G3, G7, G12, G14, and G16 require an independent reviewer
-  and consequential publication decisions require human confirmation.
+- `proposal`: no executable empirical claims. Evaluations are planned conditionally; no fake result
+  gates are created.
+- `exploratory`: governed code, optional applicable baseline, implementation verification, pilot,
+  mechanism diagnosis, Idea decision, and calibrated exploratory claims. It cannot silently become
+  confirmatory evidence.
+- `standard_empirical`: baseline when applicable, implementation verification, pilot, full run,
+  canonical facts, mechanism diagnosis, Idea decision, and claim reconciliation. Independent
+  revalidation may be N/A only under the frozen research program and a model rationale.
+- `high_risk`: full empirical path; consequential design, implementation, mechanism, revalidation,
+  venue/publication, and release decisions use independent or human confirmation where required.
 
-Choose the lightest profile that supports the intended claims. Profiles may reduce irrelevant work;
-none may weaken licensing, provenance, test protection, or truthfulness.
+Choose the lightest profile that supports the intended claims. Profiles may remove irrelevant work;
+none weakens provenance, benchmark honesty, PaperBanana routing, the frozen citation-coverage
+contract, or release integrity.

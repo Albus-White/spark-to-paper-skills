@@ -75,7 +75,9 @@ def main() -> int:
     if template.get("results_mode") == "proposal":
         for section_id, section in (blueprint.get("sections") or {}).items():
             for table in section.get("tables", []) if isinstance(section, dict) else []:
-                if isinstance(table, dict) and table.get("source_of_truth") == "measured_data":
+                if isinstance(table, dict) and (
+                    table.get("source_of_truth") == "canonical_result_facts" or table.get("fact_ids")
+                ):
                     issues.append({"file": section_id, "rule": "proposal_declares_measured_result_table", "table": table.get("id")})
     report = {"ok": not issues, "issues": issues, "warnings": warnings}
     print(json.dumps(report, indent=2))

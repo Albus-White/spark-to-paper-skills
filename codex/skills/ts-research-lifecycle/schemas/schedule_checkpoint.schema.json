@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "schedule_checkpoint_v5",
+  "type": "object",
+  "required": ["research_program_id", "research_program_hash", "completed_phase", "next_phase", "elapsed", "remaining_schedule", "projected_completion", "deadline_fit", "replan_required", "action", "evidence", "reviewer"],
+  "properties": {
+    "deadline_fit": {"type": "boolean"},
+    "replan_required": {"type": "boolean"},
+    "action": {"enum": ["CONTINUE", "NARROW_IDEA", "WEAKEN_CLAIMS", "CHANGE_VENUE", "EXTEND_DEADLINE", "STOP"]}
+  }
+}

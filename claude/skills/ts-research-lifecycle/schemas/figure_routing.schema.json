@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "figure_routing_v5",
+  "type": "object",
+  "required": ["publication_contract_id", "publication_contract_hash", "figures"],
+  "properties": {
+    "figures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["figure_id", "class", "route", "section_role", "claim_ids", "semantic_type", "caption", "source_of_truth", "required_content", "forbidden_content", "renderer", "renderer_rationale", "final_formats", "accessibility", "typography"],
+        "properties": {
+          "class": {"enum": ["measured_evidence", "original_observation", "exact_structure", "explanatory_synthesis"]},
+          "route": {"enum": ["DETERMINISTIC_OR_ORIGINAL_EVIDENCE", "ORIGINAL_EVIDENCE", "DOMAIN_NATIVE", "PAPERBANANA_REQUIRED"]},
+          "drawai_status": {"enum": ["NOT_APPLICABLE", "AVAILABLE_REQUIRED", "UNAVAILABLE_EVIDENCED_SKIP"]},
+          "drawai_preflight": {"type": "string"}
+        }
+      }
+    }
+  }
+}

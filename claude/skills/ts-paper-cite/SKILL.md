@@ -1,60 +1,67 @@
 ---
 name: ts-paper-cite
-description: Build and maintain a real, complete bibliography for the active research claims. Use for literature grounding, benchmark and evaluator sourcing, BibTeX creation, citation repair, or claim-to-source review. The main model judges relevance and support from primary sources; scripts verify metadata structure and citation-key wiring without citation-count quotas.
+description: Search, inspect, and maintain the real sources required by science calibration, venue calibration, research design, and the frozen publication contract. The main model judges relevance and support; deterministic tools verify metadata, citation keys, artifact wiring, and the selected unique-citation minimum.
 ---
 
 # ts-paper-cite
 
-Use evidence need, not a reference quota, to determine bibliography size.
+Read `../ts-research-lifecycle/references/bounded-execution-contract.md` and the lifecycle reasoning
+reference. Never fabricate metadata, source
+content, acceptance status, or a claim-support relationship.
 
-Read `../ts-research-lifecycle/references/reasoning-and-validation-boundary.md` and
-`../ts-research-lifecycle/references/bounded-execution-contract.md`.
+## Keep three source purposes distinct
 
-## Grounding pass before G3
+1. **Science profile corpus:** current primary papers from appropriate leading field venues. Use it
+   to understand closest work, scientific/evidence conventions, benchmarks, and topic-specific
+   writing practice.
+2. **Venue calibration corpus:** comparable accepted papers from the target venue, frozen before
+   acquisition. Use it to observe publication scale and official/empirical venue conventions.
+3. **Manuscript bibliography:** sources that support actual sentences, comparisons, definitions,
+   protocols, limitations, and claims in this paper.
 
-Build a compact design source set: closest work, canonical task/protocol sources, official evaluator,
-benchmark/dataset sources, strongest relevant baselines, and any domain guideline needed to judge the
-design. Search and classify benchmark availability. This pass supports G1-G3; it is not the final
-bibliography.
+A paper may serve more than one purpose, but the artifacts and selection rationales remain distinct.
+Do not inflate a target-venue sample with merely related papers or treat a field-style corpus as an
+acceptance sample.
 
-## Manuscript pass after claims stabilize
+## Before research-program freeze
 
-For each paper claim or necessary context statement:
+Search closest work, canonical formulations, counterexamples, datasets, evaluators, benchmark and
+author repositories, strongest comparators, and domain guidance needed to judge the design. Read the
+relevant full text when the decision depends on details beyond title or abstract. Record benchmark
+compatibility, license/access status, and valid no-benchmark outcomes. This compact design set
+supports Idea selection and G1-G3; it is not the final bibliography.
 
-1. Decide what kind of source would support or constrain it.
-2. Search primary sources and authoritative metadata.
-3. Read enough of the source to judge actual relevance. Titles, keywords, and embedding similarity are
-   retrieval aids only.
-4. Record full metadata and a short evidence note tied to the specific claim.
-5. Stop when claims are adequately supported. Do not broaden into adjacent work solely to increase a count.
+## After claims stabilize
 
-Prefer user-provided sources when valid, official benchmark/repository pages for protocol facts,
-original papers for methods, and authoritative domain guidance for high-risk design choices. Preserve
-uncertainty when metadata or support cannot be verified.
+For every material manuscript statement:
 
-## Deterministic checks
+1. identify the evidence type required;
+2. prefer the primary or authoritative source;
+3. inspect enough source content to judge local support and limitations;
+4. record verified metadata, inspected scope, supported claim IDs, intended sections, and an evidence
+   note;
+5. cite the source where it actually supports text.
 
-Before sections exist, run:
+The publication contract's minimum is selected by the main model from claim coverage, topic breadth,
+user requirements, official rules, and the observed venue citation distribution. There is no global
+floor. Meeting the number never authorizes padding. If adequate claim support and the selected venue
+scale cannot be reconciled honestly, reopen the publication contract or venue/Idea fit decision.
+
+## Exact checks
+
+Before drafting:
 
 ```bash
 python scripts/bib_integrity_lint.py <workdir>
 ```
 
-This checks parseability, duplicate keys, and required metadata. It does not check whether a paper is
-relevant.
-
-After writing/refinement, run:
+After drafting/refinement:
 
 ```bash
 python scripts/citations_lint.py <workdir>
 ```
 
-This checks that every `\cite{}` key exists and reports uncited entries as warnings. The main-model
-review decides whether claims are properly supported and whether uncited sources should remain in a
-research bibliography.
-
-Never fabricate a paper, DOI, abstract, venue, page range, or claim-support relationship. A niche
-topic with a small but complete evidence set is preferable to a padded bibliography.
-
-If a lifecycle exists, `sync_pipeline.py ... cite` imports benchmark and bibliography artifacts but
-does not pass G1/G2. Write separate scientific judgments from the raw sources.
+The tools verify BibTeX integrity, unique keys, coverage-map equality, in-text key existence, and the
+selected actual-citation minimum. They cannot decide whether a source truly supports a sentence. The
+main model performs that semantic review and preserves uncertainty when support or metadata remains
+limited.

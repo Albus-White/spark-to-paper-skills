@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "idea_seed",
+  "type": "object",
+  "required": ["seed_text", "source", "constraints", "open_questions"],
+  "properties": {
+    "seed_text": {"type": "string", "minLength": 1},
+    "source": {"enum": ["USER_PROVIDED", "SUPPLIED_PROPOSAL", "IMPORTED_UNVERIFIED"]},
+    "constraints": {"type": "array"},
+    "open_questions": {"type": "array"}
+  }
+}

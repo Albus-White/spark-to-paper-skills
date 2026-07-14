@@ -1,4 +1,4 @@
 interface:
   display_name: "Paper Figures"
-  short_description: "Create adaptive, evidence-bound publication figures"
-  default_prompt: "Use $ts-paper-figure to create only the evidence-bound figures this paper needs."
+  short_description: "Render each scientific figure from its true source"
+  default_prompt: "Use $ts-paper-figure to execute the frozen source-of-truth figure routes, including real PaperBanana only for explanatory synthesis."

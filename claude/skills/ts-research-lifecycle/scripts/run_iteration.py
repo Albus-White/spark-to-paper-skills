@@ -55,8 +55,8 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True)
     parser.add_argument("--run-type", choices=["baseline", "pilot", "full", "revalidation"], required=True)
-    parser.add_argument("--experiment-id", action="append", required=True,
-                        help="frozen contract experiment ID; repeat when one run covers multiple units")
+    parser.add_argument("--evaluation-unit-id", action="append", required=True,
+                        help="frozen research-program evaluation unit ID; repeat when one run covers multiple units")
     parser.add_argument("--command", required=True)
     parser.add_argument("--config", required=True)
     parser.add_argument("--replicate-id", required=True,
@@ -187,7 +187,7 @@ def main() -> int:
         execution_meta = current_environment.get("execution") or {}
         manifest = {
             "run_type": args.run_type,
-            "experiment_ids": args.experiment_id,
+            "evaluation_unit_ids": args.evaluation_unit_id,
             "command": args.command,
             "replicate_id": args.replicate_id,
             "random_seed": args.random_seed,

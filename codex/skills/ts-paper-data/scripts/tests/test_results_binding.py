@@ -24,27 +24,29 @@ def digest(path: Path) -> str:
 def test_manuscript_value_is_hash_bound_to_canonical_fact(tmp_path):
     research = tmp_path / "research"
     lifecycle.init_layout(research, "standard_empirical", "binding-test")
-    idea_id = lifecycle.register_idea(research, {
-        "problem": "Estimate conductivity", "hypothesis": "Treatment changes conductivity",
-        "proposed_mechanism": "Ion mobility changes", "scope": "fixed temperature",
-        "assumptions": ["calibrated sensor"], "falsifiers": ["no matched difference"],
-        "claims": ["conductivity changes"], "alternative_explanations": ["sensor drift"],
-    }, None, "L0", None)
+    idea_id = "idea-v-001"
+    program_id = "research-program-v-001"
+    lifecycle.write_json(research / f"ideas/{idea_id}.json", {
+        "idea_id": idea_id, "parent_idea_id": None, "revision_level": "L0", "status": "ACTIVE",
+    })
+    state = lifecycle.load_state(research)
+    state["active"]["idea_id"] = idea_id
+    lifecycle.save_state(research, state, "binding_fixture_idea")
     lifecycle.register_claim(research, {
         "claim_text": "Conductivity changes", "claim_type": "empirical result claim",
         "essential": True, "strength": "bounded", "scope": "fixed temperature",
         "required_evidence": ["registered run"],
     })
-    state = lifecycle.load_state(research)
-    state["active"]["contract_id"] = "contract-v-001"
-    lifecycle.write_json(research / "contracts/contract-v-001.json", {
-        "contract_id": "contract-v-001",
-        "experiments": [{"experiment_id": "E-001", "claim_ids": ["C-001"]}],
+    lifecycle.write_json(research / f"contracts/{program_id}.json", {
+        "research_program_id": program_id,
+        "evaluation_units": [{"unit_id": "EU-001", "claim_ids": ["C-001"]}],
     })
+    state = lifecycle.load_state(research)
+    state["active"]["research_program_id"] = program_id
     lifecycle.save_state(research, state, "fixture")
     lifecycle.write_json(research / "experiments/runs/run-0001/run_manifest.json", {
-        "run_id": "run-0001", "idea_id": idea_id, "contract_id": "contract-v-001",
-        "experiment_ids": ["E-001"], "status": "completed",
+        "run_id": "run-0001", "idea_id": idea_id, "research_program_id": program_id,
+        "evaluation_unit_ids": ["EU-001"], "status": "completed",
     })
     raw = research / "evidence/results/raw.json"; raw.parent.mkdir(parents=True, exist_ok=True); raw.write_text("{\"value\": 0.42}")
     code = research / "code/integration/aggregate.py"; code.parent.mkdir(parents=True, exist_ok=True); code.write_text("print(0.42)")

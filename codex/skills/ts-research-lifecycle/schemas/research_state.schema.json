@@ -28,7 +28,8 @@
       "type": "string"
     },
     "active": {
-      "type": "object"
+      "type": "object",
+      "required": ["user_policy_id", "idea_seed_id", "memory_snapshot_id", "science_profile_id", "venue_corpus_id", "venue_profile_id", "venue_profile_judgment_id", "idea_candidates_id", "idea_selection_id", "idea_id", "research_program_id", "publication_contract_id", "bibliography_coverage", "figure_routing", "manuscript_id", "publication_judgment_id", "schedule_checkpoint", "release_audit_id"]
     },
     "gates": {
       "type": "object"
