@@ -26,7 +26,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 SVG_NS = "http://www.w3.org/2000/svg"
-FORBIDDEN = {"script", "style", "filter", "mask", "clipPath", "foreignObject", "textPath", "pattern"}
+# NB: <style> is NOT forbidden — a native ts-figure-svg redraw carries its font stack and type scale in a
+# <style> block, and that stays fully editable. The rest hide or bake content.
+FORBIDDEN = {"script", "filter", "mask", "clipPath", "foreignObject", "textPath", "pattern"}
 RASTER_OK_TYPES = {"photo", "qualitative"}        # only these may be a whole-canvas raster
 WHOLE_CANVAS_COVER = 0.85
 

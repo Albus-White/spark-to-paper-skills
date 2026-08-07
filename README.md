@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  13 composable <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
+  14 composable <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
   real references, editable vector figures, and machine-checked integrity included.<br>
   No app. No server. No setup.
 </p>
@@ -20,7 +20,7 @@
   <a href="https://github.com/Albus-White/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Albus-White/spark-to-paper-skills?label=Release&color=d97757" alt="Latest Release"></a>
   <a href="https://github.com/Albus-White/spark-to-paper-skills"><img src="https://img.shields.io/github/stars/Albus-White/spark-to-paper-skills?style=flat&color=f5c542" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-d97757?logo=anthropic&logoColor=white" alt="Claude Code Plugin">
-  <img src="https://img.shields.io/badge/Skills-13_Active-6f42c1" alt="13 skills">
+  <img src="https://img.shields.io/badge/Skills-14_Active-6f42c1" alt="14 skills">
   <img src="https://img.shields.io/badge/Figures-Editable_Vector-ff8c42" alt="Editable vector figures">
   <img src="https://img.shields.io/badge/Integrity-Machine--Checked-b31b1b" alt="Machine-checked integrity">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
@@ -56,6 +56,7 @@
 
 ## 🔥 What's New
 
+- **`v1.2.0`** — **PaperBanana+ figure engine.** The official [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates; the new `ts-figure-svg` skill learns the render's design language and redraws the figure natively from the paper's facts, repaired over ≥4 rounds against a stdlib-only geometry audit (`audit_svg.py`).
 - **`v1.1.0`** — **Claude Code plugin support.** Restructured as a proper plugin with `.claude-plugin/plugin.json`. One-command install, auto-loads on session start.
 - **`v1.0.1`** — **Soft update notification.** `check_update.py` queries GitHub Releases API on each run (24h cache, silent when up-to-date, never blocks).
 - **`v1.0`** — **Initial release.** 13 skills, end-to-end pipeline, DrawAI hybrid figure engine, MIT License.
@@ -96,7 +97,7 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 
 | | Capability | Description |
 |:---:|---|---|
-| 🖼️ | **Editable Vector Figures** | The feature no other tool has. AI-generated rasters are decomposed and reconstructed as editable SVG/PDF/PPTX via DrawAI hybrid (~0.91 SSIM). Not embedded bitmaps — real editable text overlays on pixel-exact renders. |
+| 🖼️ | **Editable Vector Figures** | The feature no other tool has. The official PaperBanana renders candidates; the figure is then **redrawn natively** — the render's design language learned, its content re-derived from the paper — and repaired over ≥4 rounds against a measuring audit. Live `<text>`, not a traced bitmap. DrawAI hybrid (~0.91 SSIM) as fallback. |
 | 🔗 | **End-to-End** | Idea → literature → writing → experiments → figures → compiled PDF. The only pure Claude Code plugin that runs the entire arc. |
 | 🔒 | **Machine-Checked Integrity** | No fabricated numbers — ever. Every citation verified. Deterministic gates fail the build on violations. Not a style suggestion — a hard stop. |
 | 🔀 | **Two Integrity Modes** | *Proposal mode*: forward-looking, result cells stay blank. *Data-aware mode*: every number traced to your real data, in past tense. Machine-audited. |
@@ -120,33 +121,43 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 
 ## 🖼️ The Figure Engine
 
-**The capability no other skill suite has.** AI image models produce rasters — but a paper needs editable vector figures.
+**The capability no other skill suite has.** AI image models produce rasters — but a paper needs editable vector figures whose labels are *text* and whose logic is *the paper's*.
 
-`ts-figure-optimize` vendors the full **DrawAI engine** and does not just embed a bitmap. It *decomposes and reconstructs* the figure:
+`ts-figure-svg` is **PaperBanana+**: the [official PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates, then the figure is **redrawn natively** — its design language learned from the render, its content re-derived from the paper, repaired against a measuring audit.
 
 ```
-raster figure (PNG/JPG)
-   ├─ SAM3            → segment the layout into regions    (local, no account)
-   ├─ PaddleOCR       → read every text run                (local, no account)
-   ├─ Box-IR          → build a structured layout IR
-   └─ HYBRID build    → pixel-exact render + editable <text> overlay
+figure brief (from the paper's own method text)
+   ├─ PaperBanana      → Retriever→Planner→Stylist→Visualizer→Critic   (official, pulled)
+   ├─ pick a candidate → scientific correctness first, beauty last
+   ├─ learn the STYLE  → palette · type scale · spacing · idiom  →  <label>.style.json
+   ├─ redraw NATIVE    → real <rect>/<path>/<text>, content from the PAPER, never a pixel trace
+   └─ audit & repair   → ≥4 rounds, no upper bound while defects remain
    │
-   └─▶ editable SVG · vector PDF · editable PPTX   (~0.91 SSIM, ~63 editable text boxes)
+   └─▶ editable SVG · vector PDF   (live text, verified at real column width)
 ```
 
-| What | How | Result |
-|---|---|---|
-| **Graphics** | Kept pixel-exact — the render IS the approved image | 100% fidelity |
-| **Text labels** | Re-typed as editable `<text>` overlays | Fully editable |
-| **Cost** | Key-free, no account, runs on CPU or GPU | Zero API cost |
-| **Fallback** | If DrawAI unavailable → keep the approved PNG as-is | Never a lossy redraw |
+`audit_svg.py` measures what eyes miss — and it is **stdlib-only** (Adobe core-14 Times metrics, no renderer, no key, no models):
+
+| Catches | Because |
+|---|---|
+| Canvas/card overflow, text-on-text, "just barely inside" | *Not* overflowing is not a pass |
+| A shape painted over a label | z-order cuts labels in half |
+| `markerUnits="strokeWidth"` | a 6-unit arrowhead renders at ~18px |
+| Connectors docking on nothing, floating labels | endpoints typed by hand, no alignment grid |
+| Sub-legible type, `✓`-class glyphs | shrinking text is the forbidden fix; odd glyphs silently swap font family in the PDF |
+| Embedded rasters, data URIs, traced pixel paths | a bitmap in an XML costume is still blurry at 2× |
+
+**Fallbacks, in order:** native redraw → `ts-figure-optimize`'s key-free **DrawAI HYBRID** (SAM3 + PaddleOCR + Box-IR; the approved render kept pixel-exact under an editable `<text>` overlay, ~0.91 SSIM) → keep the approved PNG. Never a lossy redraw, never a flat boxes-and-arrows regression.
 
 <details>
-<summary>Provision the runtime (~4 GB, one-time)</summary>
+<summary>Provision</summary>
 
 ```bash
-python skills/ts-figure-optimize/scripts/setup_drawai.py --device cpu   # provision
-python skills/ts-figure-optimize/scripts/setup_drawai.py --check-only   # doctor
+python skills/ts-figure-svg/scripts/setup_paperbanana.py            # pull official PaperBanana + deps
+export OPENROUTER_API_KEY="sk-or-v1-..."                            # VLM agents + image generation
+python skills/ts-figure-svg/scripts/audit_svg.py --selftest         # the audit needs nothing else
+
+python skills/ts-figure-optimize/scripts/setup_drawai.py --device cpu   # optional HYBRID fallback (~4 GB)
 ```
 </details>
 
@@ -177,7 +188,7 @@ One orchestrator (`ts-paper`) routes the input, then drives a **7-stage chain** 
    3. ts-paper-write ─▶ sections/*.tex          all sections in one holistic pass
    4. ts-paper-refine ▶ right-size + de-AI      scrub + logic self-check
    5. ts-paper-review ▶ adversarial review      multi-reviewer hardening
-   6. ts-paper-figure ▶ figures + vectorize     image-model → DrawAI hybrid → editable PDF
+   6. ts-paper-figure ▶ figures + native SVG    PaperBanana → learn style → redraw + audit
    7. ts-paper-latex ─▶ main.pdf                assemble + compile
                                                 │
    8. ts-paper-experiment (AUTO) ─▶ run feasible experiments, fill tables, recompile
@@ -262,9 +273,10 @@ Write to **whatever venue you pick** — content quality is invariant.
 | `ts-paper-write` | 3 | Draft all sections as LaTeX in one holistic pass |
 | `ts-paper-refine` | 4 | Right-size + de-AI scrub + logic self-check |
 | `ts-paper-review` | 5 | Adversarial peer-review hardening |
-| `ts-paper-figure` | 6 | Figure routing: matplotlib (data) / image model (schematics) |
+| `ts-paper-figure` | 6 | Figure routing: matplotlib (data) / PaperBanana (schematics) |
 | `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
-| `ts-figure-optimize` | 6 (vector) | Raster → editable SVG/PDF/PPTX via DrawAI hybrid |
+| `ts-figure-svg` | 6 (vector) | PaperBanana+ : learn the render's style → native audited SVG |
+| `ts-figure-optimize` | 6 (fallback) | Raster → editable SVG/PDF/PPTX via DrawAI hybrid |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF |
 | `ts-paper-experiment` | 8 | Run feasible experiments, fill tables, recompile |
 

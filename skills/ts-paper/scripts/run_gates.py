@@ -125,8 +125,9 @@ def assert_latex(wd: Path) -> int:
 # measured-data results plot in the RESULTS section (the section[s] whose template recipe declares
 # result_tables); EVERY other figure — concept, math-geometry, architecture/pipeline/framework/flow,
 # qualitative — is rendered by the image model (matplotlib renders those poorly). A hand-authored flat
-# SVG ('svg-native') is never allowed (the carbon-paper regression).
-_ALLOWED_ENGINES = {"image-model", "matplotlib"}
+# SVG ('svg-native') is never allowed (the carbon-paper regression). 'paperbanana' is the official
+# PaperBanana pipeline — an image-model engine by another name, held to the same rules.
+_ALLOWED_ENGINES = {"image-model", "paperbanana", "matplotlib"}
 # Grounding on a real on-topic TOP/MID-venue MAIN figure is mandatory for a structural schematic; an
 # illustrative 'concept' plot or a 'qualitative' scene may have no journal MAIN-figure equivalent, so it
 # is grounding-OPTIONAL (NOT in this set).
@@ -231,7 +232,43 @@ def check_figure_critique(workdir) -> list:
                     f"— a free-form schematic MUST be grounded on a real on-topic TOP/MID-venue MAIN figure "
                     f"(WebSearch in step 2b). 'none' is NOT allowed (no silent skip); if a reference is genuinely "
                     f"impossible after a real multi-query search, surface it to the user instead of shipping ungrounded.")
+        # (5) ts-figure-svg redraw: the render is only the style reference, so the native SVG carries its
+        #     own contract — >=4 measured rounds and a PASSING audit. Figures that kept their PNG skip this.
+        if f.get("svg_redraw"):
+            problems += _check_svg_redraw(workdir, figs, label, f)
     return problems
+
+
+def _check_svg_redraw(workdir: Path, figs: Path, label: str, f: dict) -> list:
+    """A 'paperbanana+' figure: the PNG's design language redrawn as a native SVG. Four rounds is the
+    floor (the user contract these sessions settled on), and the audit must actually pass."""
+    out = []
+    try:
+        rounds = int(f.get("svg_rounds", 0) or 0)
+    except (TypeError, ValueError):
+        rounds = 0
+    if rounds < 4:
+        out.append(f"figure '{label}': svg_rounds={f.get('svg_rounds')!r} < 4 — the redraw loop's floor is "
+                   f"four measured rounds (and there is no upper bound while defects remain)")
+    svg = figs / f"{label}.svg"
+    if not svg.is_file():
+        out.append(f"figure '{label}': svg_redraw set but figures/{label}.svg is missing")
+    audit = f.get("svg_audit")
+    p = (workdir / audit) if audit else (figs / "audit_logs" / f"{label}.audit.json")
+    if not p.is_file():
+        out.append(f"figure '{label}': no audit report at {p} — run "
+                   f"ts-figure-svg/scripts/audit_svg.py --json on the final SVG")
+        return out
+    try:
+        rep = json.loads(p.read_text(encoding="utf-8"))
+    except (ValueError, OSError) as e:
+        out.append(f"figure '{label}': audit report unreadable: {e}")
+        return out
+    if not rep.get("ok"):
+        codes = sorted({e.get("code", "?") for e in rep.get("errors", [])})
+        out.append(f"figure '{label}': SVG audit FAILED ({', '.join(codes) or 'unknown'}) — fix and re-run "
+                   f"the round; a failing audit is not a shippable figure")
+    return out
 
 
 def run_all(wd: Path) -> int:

@@ -2,29 +2,36 @@
 name: ts-paper-figure
 description: >
   Stage 6 of the ts-paper suite. Fill a Traitement du Signal paper's figure placeholders with real
-  diagrams, distilled from PaperBanana into a Claude-native loop: Claude DESIGNS a concrete, rich figure
-  and GROUNDS it on a real on-topic top/mid-journal MAIN figure (Claude **WebSearches** for it, then
-  `fetch_reference_figures.py` pulls that paper's MAIN figure, passed to the image model as an
-  image-condition — grounding is MANDATORY, no silent skip), an external image model renders it (the only
-  irreducible code — Claude can't draw pixels), Claude then LOOKS at the rendered PNG with its own vision
-  and critiques/refines it over ≥2 ENFORCED rounds, then ALWAYS vectorizes
-  it to an editable PDF (matplotlib figures are born-vector; an image-model raster is vectorized by
-  **ts-figure-optimize**'s DrawAI **HYBRID** = the approved render kept pixel-exact + an editable <text>
-  overlay; if DrawAI is unavailable the approved PNG is kept as-is — never a lossy redraw, PNG always kept) and inserts it.
-  You configure only the image model (model/key/url). Engine is routed by SECTION: only real measured-data
-  results plots (data-aware mode, results section) use matplotlib; EVERY other figure — architecture/pipeline/
-  concept/math-geometry/schematic — is image-model rendered (so in proposal mode every figure is image-model).
-  In proposal mode quantitative results plots are SKIPPED (no real data — drawing one fabricates results).
+  diagrams. Claude DESIGNS a concrete, rich figure and GROUNDS it on a real on-topic top/mid-journal MAIN
+  figure (Claude **WebSearches** for it, then `fetch_reference_figures.py` pulls that paper's MAIN figure,
+  passed to the image model as an image-condition — grounding is MANDATORY, no silent skip); the render
+  comes from the **official PaperBanana** pipeline (`ts-figure-svg/scripts/setup_paperbanana.py`, its own
+  Retriever→Planner→Stylist→Visualizer→Critic) or, unconfigured, the built-in `gen_image.py`; Claude then
+  LOOKS at the PNG with its own vision and critiques/refines it over ≥2 ENFORCED rounds. The approved PNG
+  is then **redrawn as a native editable SVG by ts-figure-svg** — its design language learned, its content
+  re-derived from the paper, audited and repaired over ≥4 measured rounds (never a pixel trace); if that is
+  impossible the ts-figure-optimize DrawAI HYBRID or the approved PNG is kept — never a lossy redraw, PNG
+  always kept. Engine is routed by SECTION: only real measured-data results plots (data-aware mode, results
+  section) use matplotlib; EVERY other figure — architecture/pipeline/concept/math-geometry/schematic — is
+  image-model rendered (so in proposal mode every figure is image-model). In proposal mode quantitative
+  results plots are SKIPPED (no real data — drawing one fabricates results).
   Use to turn the empty \fbox placeholders into publication-quality figures.
 ---
 
-# ts-paper-figure — figures, the PaperBanana way, distilled into Claude
+# ts-paper-figure — figures: PaperBanana renders it, ts-figure-svg makes it a real figure
 
-PaperBanana made good academic figures with a team of LLM agents (Planner → Stylist → Visualizer →
-**Critic** → Polish) running a **critique-and-refine loop** (it rendered an image, *looked at it*,
-scored it, refined the description, re-rendered, up to 3 rounds). Every step except drawing pixels is
-LLM reasoning + **vision** — which Claude does natively. So the whole system distills to: **Claude is
-the Planner/Stylist/Critic/Polish; one tiny script (`gen_image.py`) is the Visualizer.**
+PaperBanana makes good academic figures with a team of LLM agents (Retriever → Planner → Stylist →
+Visualizer → **Critic**) running a **critique-and-refine loop**. Two ways to drive it here:
+
+- **Preferred — the official pipeline.** `python3 ../ts-figure-svg/scripts/setup_paperbanana.py` pulls
+  **dwzhu-pku/PaperBanana** and you call its own `skill/run.py` (step 3). Upstream code, upstream agents.
+- **Fallback — the distilled loop.** With no PaperBanana key configured, every step except drawing pixels
+  is LLM reasoning + **vision**, which Claude does natively: Claude is the Planner/Stylist/Critic and one
+  tiny script (`gen_image.py`) is the Visualizer.
+
+Either way the PNG is **not the deliverable** — it is the design target. Step 5b redraws it as a native,
+editable, audited SVG (**ts-figure-svg**), because a render's labels are pixels and a paper figure's must
+not be.
 
 **Three things make this a SKILL and not just "Claude drawing a flowchart" — NEVER skip them:**
 **(C1) DESIGN a concrete, rich visual blueprint** (step 2) instead of an abstract box list;
@@ -80,18 +87,17 @@ figure" complaint this routing fixes):
   trajectory, loss-curve shape, 3D geometry). These used to go to matplotlib and came out ugly — they
   are now DESIGNED + GROUNDED + image-model-rendered + ≥2-round vision-critiqued. (A concept illustration
   makes no real-metric claim and is grounding-OPTIONAL — ground it on a clean on-topic concept figure if
-  one exists, else treat it like a qualitative scene.) After the PNG is approved, it is **vectorized** by
-  the sibling **ts-figure-optimize** skill (step 5b; DrawAI **HYBRID** — the approved render kept
-  pixel-exact + an editable <text> overlay, key-free). If DrawAI is unavailable, the approved PNG is kept
-  as-is — never redrawn.
-  - **🔴 HARD RULE — generation is INDEPENDENT of vectorizer availability.** A free-form figure is ALWAYS
-    produced by the image model (steps 2→2b→3→4: rich DESIGN + GROUND on a top-journal MAIN figure +
-    render + ≥2 critique rounds). The vectorize tail (5b) is a SEPARATE downstream step: **if
-    `ts-figure-optimize`/DrawAI is unavailable, that affects ONLY 5b — it does NOT permit skipping the
-    image-model render, and you must NEVER hand-author a from-scratch SVG as the figure.** Hand-authoring a
-    flat SVG yields exactly the boxes-and-arrows regression this redesign removes — a HARD violation. The
-    manifest `engine` of a free-form figure is **always `image-model`** (never `svg-native`/hand-authored);
-    `check_figure_critique` FAILS the build on any non-`image-model` free-form figure.
+  one exists, else treat it like a qualitative scene.) After the PNG is approved, it is **redrawn as a
+  native editable SVG** by the sibling **ts-figure-svg** skill (step 5b — design language learned from the
+  render, content re-derived from the paper, ≥4 audited repair rounds, no key needed). Fall back to
+  ts-figure-optimize's DrawAI HYBRID, then to keeping the PNG.
+  - **🔴 HARD RULE — the redraw is DOWNSTREAM of generation, never instead of it.** A free-form figure is
+    ALWAYS produced by the image model first (steps 2→2b→3→4: rich DESIGN + GROUND on a top-journal MAIN
+    figure + render + ≥2 critique rounds). **You must NEVER hand-author an SVG straight from the text with
+    no render** — that yields exactly the flat boxes-and-arrows regression this design removes, a HARD
+    violation. The manifest `engine` of a free-form figure is always `image-model` or `paperbanana` (never
+    `svg-native`); `check_figure_critique` FAILS the build otherwise. Step 5b's SVG is a *redraw of an
+    approved render*, recorded as `svg_redraw` alongside that engine — a different thing entirely.
   - **If the image MODEL itself is unconfigured** (`gen_image.py` returns `unset env: TS_FIG_*`): this is a
     CREDENTIAL gap, handled at the orchestrator **Preflight** — **ASK the user whether to generate figures**
     (it needs `TS_FIG_API_KEY` / `TS_FIG_BASE_URL` / `TS_FIG_MODEL`, e.g. gpt-image-2). If they decline →
@@ -104,10 +110,10 @@ results-section data plots are matplotlib; every other figure is image-model. In
 are no data plots, so EVERY figure is image-model.** The figure floor (`figures.min`) is met by both kinds, and
 **every placeholder ends rendered — no blanks. Both engines then end on an editable VECTOR PDF**:
 every figure ends as `figures/<label>.pdf` (the embedded vector), with the original
-`figures/<label>.png` and its source (`.plot.py` for matplotlib, `.svg` for an image-model hybrid) kept
-alongside. matplotlib is born-vector; an image-model raster is vectorized via **ts-figure-optimize**
-(DrawAI **HYBRID**: pixel-exact render + editable text). If DrawAI is unavailable the approved PNG is
-kept as-is — HYBRID-only, no lossy redraw fallback; vectorization must NEVER reduce quality.
+`figures/<label>.png` and its source (`.plot.py` for matplotlib, `.svg` for a redrawn figure) kept
+alongside. matplotlib is born-vector; an image-model raster becomes a **native SVG via ts-figure-svg**
+(design language learned, content redrawn from the paper, audited) — falling back to ts-figure-optimize's
+DrawAI HYBRID, then to keeping the approved PNG. No path may reduce the figure's quality.
 
 ## Procedure — the distilled Planner→render→Critic→refine→insert loop
 Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` placeholder in
@@ -196,7 +202,26 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    whose `grounding`/`reference_used` is `none`. If, after a GENUINE multi-query search (log the queries you
    tried), a top/mid-venue on-topic MAIN figure truly cannot be found (rare), **STOP and tell the user** —
    never silently render flat-and-ungrounded. (Skip 2b only for matplotlib / results figures.)
-3. **Render (Visualizer).** `python3 scripts/gen_image.py --prompt-file figures/<label>.prompt.txt --out figures/<label>.png [--reference figures/refs/<chosen>.png]`
+3. **Render (Visualizer).** **Prefer the official PaperBanana** when it is provisioned
+   (`python3 ../ts-figure-svg/scripts/setup_paperbanana.py --check-only` says `ready`):
+   ```
+   python3 ../ts-figure-svg/engine/PaperBanana/skill/run.py \
+     --content-file figures/<label>.prompt.txt --caption "<caption intent>" \
+     --task diagram --aspect-ratio 3:2 --num-candidates 3 --max-critic-rounds 3 \
+     --retrieval-setting random --exp-mode demo_full --output figures/<label>.png
+   ```
+   `--retrieval-setting random`, **never `none`** — PaperBanana is reference-driven, and with `none` it
+   skips the reference set entirely and every figure comes back as the same pale box-and-arrow pipeline
+   (this flag alone ruined a whole batch). With N>1 it writes `<label>_0.png`, `_1.png`, … — `Read` all of
+   them and pick on **scientific correctness → hierarchy → column-width readability → tidiness → beauty**,
+   recording why the losers lost. Budget ~40 min per figure at 3 candidates × 3 critic rounds.
+   A run whose critic round errored is **incomplete, not passed** — and it fails *silently*: an exhausted
+   retry chain prints `All 5 attempts failed…` and then `[Critic Round 1] No changes needed`, exits 0, and
+   writes a plausible PNG. Grep the log for that pair. PNGs on disk prove nothing.
+   On repeated 504s, retry with **identical** parameters ≤3× then mark the figure blocked — never raise
+   concurrency, swap models, or cut candidates to force a pass.
+   Otherwise use the built-in Visualizer:
+   `python3 scripts/gen_image.py --prompt-file figures/<label>.prompt.txt --out figures/<label>.png [--reference figures/refs/<chosen>.png]`
    With a `--reference` on a gpt-image images-style endpoint, `gen_image.py` GROUNDS the render via
    `/images/edits` (image-condition) and reports `"path":"edits"`; with no reference or on any edits
    failure it automatically falls back to text→image (`"path":"generations"`). Either way the rich
@@ -252,47 +277,48 @@ Run after review (stage 5), before latex (stage 7). For EACH `\begin{figure}` pl
    `critic_rounds < 2`, or missing grounding manifest fields. This is the fix for the historical
    "critique loop never ran / empty repair_logs" regression.
    **"Accept" here means the PNG is approved and ready to vectorize (step 5b)** — not yet inserted.
-5b. **Vectorize via DrawAI HYBRID — the ONLY vectorizer, image-model figures only.** Vectorization is
-   **`ts-figure-optimize`**'s DrawAI **HYBRID** and nothing else: SAM3 + PaddleOCR + Box-IR, then a
-   deterministic **hybrid build** = the **approved render kept pixel-exact** (a whole-canvas raster) with an
-   **editable `<text>` overlay** (~0.91 SSIM; 63 editable text boxes on the test figure). It is **key-free**
-   (no Codex; the optional GPT text-correction is skipped with `--no-text-gpt`). This keeps the figure's
-   richness EXACTLY — it IS the approved render — while making every label editable.
-   **There is NO full-vector redraw and NO Claude-redraw fallback.** A redraw of a dense figure measurably
-   loses fidelity vs the exact render (we tested it), so the rule is: **HYBRID, or else keep the PNG — never redraw.**
-   **If the DrawAI runtime is not ready** (`drawai doctor` ≠ ok / models absent): ENVIRONMENT gap —
-   **SELF-CONFIGURE it (do NOT ask first):** `python ../ts-figure-optimize/scripts/setup_drawai.py --device gpu`
-   provisions it from **ModelScope (NO HF token)** — downloads SAM3/RMBG/PaddleOCR + builds the runtime venv
-   (see `ts-figure-optimize` for the exact recipe + known fixes; perception runs on a GPU box and needs **no
-   Claude/Codex account**). Then run + map in:
+5b. **Redraw as a native SVG — hand off to `ts-figure-svg` (image-model figures only).** The approved PNG
+   is the **design target**, not the figure. Invoke the sibling skill **`ts-figure-svg`** (read its SKILL.md
+   and `references/svg-craft.md`): it extracts the render's **design language** into `<label>.style.json`,
+   redraws the figure **from the paper's own facts** as real `<rect>/<path>/<text>` objects, and runs a
+   measured repair loop until clean:
    ```
-   python ../ts-figure-optimize/scripts/run_hybrid.py \
-       --image figures/<label>.png --run-name <label> --device gpu --no-text-gpt
-   python ../ts-figure-optimize/scripts/export_paper_figure.py \
-       --run-dir runs/<label> --label <label> --figures-dir figures
+   python3 ../ts-figure-svg/scripts/audit_svg.py <work>/round_0N.svg --json <work>/round_0N.audit.json
+   python3 ../ts-figure-optimize/scripts/render_svg.py <work>/round_0N.svg <work>/round_0N.png --width 1440
+   python3 ../ts-figure-optimize/scripts/render_svg.py <work>/round_0N.svg <work>/round_0N_col.png --width 480
+   # clean -> figures/<label>.svg
+   python3 ../ts-figure-svg/scripts/svg_to_pdf.py figures/<label>.svg figures/<label>.pdf
    ```
-   `export_paper_figure.py` writes self-contained `figures/<label>.svg` (render + editable text, base64-inlined)
-   + `figures/<label>.pdf` and keeps the `.png`. Vectorize ONCE at this proposal/first-draft stage (the main
-   schematic is results-independent; later experiment-phase figures are matplotlib born-vector and skip 5b).
-   **Only if provisioning is genuinely impossible** (no GPU / no network after trying) → **KEEP the approved
-   `figures/<label>.png` as-is** (insert the PNG; editability deferred, full richness preserved) and log it.
-   Do NOT redraw, do NOT hand-author an SVG, do NOT degrade to a flat diagram — `check_figure_critique` blocks
-   any non-`image-model` free-form figure (the carbon-paper regression).
+   **≥4 rounds is the floor, with no upper bound while defects remain**, and the audit must PASS — that is
+   the contract `run_gates.check_figure_critique` enforces via `svg_rounds` + the audit JSON. `audit_svg.py`
+   is stdlib-only (Times core-14 metrics, no renderer needed), so this path has no provisioning step.
+   - **NEVER trace the pixels.** Auto-vectorising the PNG yields tens of thousands of paths that are still
+     blurry when zoomed and editable by nobody. "No `<image>` element" ≠ vector.
+   - **NEVER take the render's logic.** Generated figures invent sequential links, fabricate numbers and
+     garble labels. Style from the PNG, content from the paper — re-verify every edge and symbol.
+   - **Simplify freely, but only texture and ornament** — never a branch, constraint, symbol or evidence
+     boundary.
+   **If the redraw genuinely cannot converge** (or you want the render kept pixel-exact instead), fall back
+   to `ts-figure-optimize`'s DrawAI **HYBRID** — the approved render kept exact with an editable `<text>`
+   overlay (`setup_drawai.py --device gpu`, then `run_hybrid.py --no-text-gpt` + `export_paper_figure.py`);
+   and if that is unprovisionable too, **KEEP the approved `figures/<label>.png` as-is** and log it. Do NOT
+   degrade to a flat boxes-and-arrows diagram — `check_figure_critique` blocks any free-form figure that
+   isn't a real `image-model`/`paperbanana` render (the carbon-paper regression).
 
    Then **lint** via ts-figure-optimize's gate (the suite's figure check):
    `python ../ts-figure-optimize/scripts/check_vector_pdf.py lint --svg figures/<label>.svg --type <type> --render-check`.
-   A **hybrid passes** when its labels stayed **editable `<text>`** over the render — the whole-canvas render
-   raster is **expected and fine** (that is what a hybrid is). The gate fails only a **textless raster** (a
-   bare screenshot) or an editability-breaking element. (A kept PNG has no `.svg` to lint — that path is
-   allowed by the DoD check as "unconverted, PNG kept".) **The hybrid is visually = the approved render (it
-   IS the render); never a worse figure, never a deleted PNG.** (matplotlib figures skip 5b — born-vector from `finalize`.)
+   A native redraw passes on its live `<text>`; a **hybrid** passes when its labels stayed editable `<text>`
+   over the render (the whole-canvas raster is expected there). The gate fails only a **textless raster** (a
+   bare screenshot) or an editability-breaking element. (A kept PNG has no `.svg` to lint — allowed by the
+   DoD check as "unconverted, PNG kept".) (matplotlib figures skip 5b — born-vector from `finalize`.)
 6. **Insert + record.** Replace the placeholder `\fbox{\rule…}` (only that token) with the
    **extension-less** `\includegraphics[width=\columnwidth]{figures/<label>}` — keep the existing
    `\caption`/`\label`; use `\textwidth` for a wide (`figure*`) float. Extension-less so pdflatex embeds
    the vector `figures/<label>.pdf` (and falls back to the kept `.png` if a `.pdf` is ever missing). Then
    **append this figure to `figures/figures.manifest.json`** — for an **image-model** figure record
-   `{"label","type","engine":"image-model","reference_used":"<arxiv>#fig<n>",`
-   `"grounding":"image-cond"|"vision-distill","critic_rounds":<int ≥ 2>}` — for a SCHEMATIC type the
+   `{"label","type","engine":"image-model"|"paperbanana","reference_used":"<arxiv>#fig<n>",`
+   `"grounding":"image-cond"|"vision-distill","critic_rounds":<int ≥ 2>}`, plus — when step 5b redrew it —
+   `"svg_redraw":true,"svg_rounds":<int ≥ 4>,"svg_audit":"figures/audit_logs/<label>.audit.json"` — for a SCHEMATIC type the
    `reference_used`/`grounding` must be REAL (the gate FAILS `"none"`); only a `qualitative` scene may be `"none"`. A **matplotlib** figure
    records `{"label","type","engine":"matplotlib"}`.
    — so the DoD gate knows each figure's type: `run_gates.py all` calls `check_vector_pdf.py check`, which
@@ -330,8 +356,9 @@ SKIP+why, or **the GROUND reference chosen** (paper id + figure no + venue, or `
 count (also mirrored line-by-line in `figures/repair_logs/<label>.log`) + **the OBSERVED diff each render
 round made** (not the requested edit — and never claim a round that produced a byte-identical render); for
 method/architecture figures the **symbol→defining-module edge list** and the per-symbol semantic-
-faithfulness verdict; **and the vectorize outcome** — branch = matplotlib born-vector vs image-model
-HYBRID (editable text over the render) vs PNG-kept (DrawAI unavailable), with a one-line note), OUTPUT
+faithfulness verdict; **and the vectorize outcome** — branch = matplotlib born-vector vs **native SVG
+redraw** (ts-figure-svg: round count + the final audit's error/warning counts) vs HYBRID (editable text
+over the render) vs PNG-kept, with a one-line note), OUTPUT
 (per figure the artifact set — `figures/<label>.pdf` (embedded vector) +
 `.png` (kept) + source (`.plot.py` / `.svg`) — which `.tex` was edited, and the `figures.manifest.json`
 entry). The kept `figures/<label>.prompt.txt` files are part of the trace.
