@@ -119,8 +119,8 @@
     },
     "idea.statement.title": { en: "Machine-checked integrity: not a style suggestion &mdash; a hard stop.", zh: "机器校验的诚实性：不是风格建议，是一道硬闸门。" },
     "idea.statement.body": {
-      en: "One command, <code>run_gates.py &lt;workdir&gt; all</code>, consumes every linter in the suite and exits nonzero on the first red gate: citation completeness, no-fabrication, word bands, editable-vector presence, figure-critique traces, and a zero-error LaTeX log. A nonzero exit means the paper is <em>not done</em> &mdash; no matter how good it looks.",
-      zh: "一条命令 <code>run_gates.py &lt;workdir&gt; all</code> 汇总套件里的全部 linter，遇到第一个红色闸门就以非零码退出：引用完整性、不编造、字数区间、矢量图在位、图批评留痕、LaTeX 零报错。非零退出就意味着论文<em>没有完成</em>——看起来再好也不算。"
+      en: "One command, <code>run_gates.py &lt;workdir&gt; all</code>, chains the suite&rsquo;s finish-line gates and exits nonzero on the first red one: citation completeness, no-fabrication, word bands, editable-vector presence, figure-critique traces, and a zero-error LaTeX log. A nonzero exit means the paper is <em>not done</em> &mdash; no matter how good it looks.",
+      zh: "一条命令 <code>run_gates.py &lt;workdir&gt; all</code> 串起套件的完工闸门，遇到第一个红色闸门就以非零码退出：引用完整性、不编造、字数区间、矢量图在位、图批评留痕、LaTeX 零报错。非零退出就意味着论文<em>没有完成</em>——看起来再好也不算。"
     },
     "idea.fig.caption": {
       en: "<b>From spark to paper.</b> The project&rsquo;s README banner &mdash; the workflow at a glance: one spark goes in; Claude Code drives the literature search, the experiments and the writing; a finished paper comes out.",
@@ -229,8 +229,8 @@
     "pipe.mode.p.tag": { en: "results_mode &middot; proposal", zh: "results_mode · proposal" },
     "pipe.mode.p.title": { en: "No numbers, ever", zh: "一个数字都不许有" },
     "pipe.mode.p.body": {
-      en: "Forward-looking prose only. Any concrete metric in a sentence &mdash; &ldquo;18.3%&rdquo;, &ldquo;0.72 F1&rdquo;, &ldquo;2.5&times;&rdquo;, even &ldquo;doubles&rdquo; &mdash; hard-fails the lint. Result tables exist with every cell literally <code>--</code>; the only place a dash may appear. No results figure is drawn at all, because drawing one would fabricate data.",
-      zh: "只允许面向未来的行文。句子里出现任何具体指标——「18.3%」「0.72 F1」「2.5&times;」甚至「翻倍」——lint 直接判负。结果表照常存在，但每个单元格都是 <code>--</code>，这也是横线唯一允许出现的地方。结果图一张也不画：画了就等于捏造数据。"
+      en: "Forward-looking prose only. A concrete metric in a sentence &mdash; &ldquo;18.3%&rdquo;, &ldquo;0.72 F1&rdquo;, &ldquo;2.5&times;&rdquo;, even &ldquo;doubles&rdquo; &mdash; hard-fails the lint; bare-integer results are caught in self-review. Result tables exist with every cell literally <code>--</code>; the only place a dash may appear. No results figure is drawn at all, because drawing one would fabricate data.",
+      zh: "只允许面向未来的行文。句子里出现具体指标——「18.3%」「0.72 F1」「2.5&times;」甚至「翻倍」——lint 直接判负；裸整数结果由自查兜住。结果表照常存在，但每个单元格都是 <code>--</code>，这也是横线唯一允许出现的地方。结果图一张也不画：画了就等于捏造数据。"
     },
     "pipe.mode.d.tag": { en: "results_mode &middot; data_aware", zh: "results_mode · data_aware" },
     "pipe.mode.d.title": { en: "Every number traced", zh: "每个数字可溯源" },
@@ -430,8 +430,8 @@
     },
     "wr.rev.title": { en: "&ldquo;Can&rsquo;t quote = didn&rsquo;t read.&rdquo;", zh: "「引不出原文 = 没读。」" },
     "wr.rev.body": {
-      en: "The review panel runs N isolated reviewers &mdash; theory, empirical, applied lenses &mdash; each seeing nothing but the paper. Every issue must carry an exact verbatim quote and a closeable criterion. Each finding then faces three perspective-diverse skeptics &mdash; misreading? already addressed? overblown? &mdash; and survives unless a majority refute it. Fresh panels run until a full pass finds nothing new. Fixes are minimal, targeted, and re-gated: the linters are re-run after the edits land, because the suite derives &ldquo;green&rdquo; &mdash; it never forecasts it.",
-      zh: "评审团由 N 位隔离评审组成——理论、实证、应用三种视角——每人眼里只有论文本身。每条意见必须带精确的原文引用和一条可关闭的验收标准。随后每条意见面对三位视角各异的质疑者——是不是读岔了？是不是早已处理？是不是言过其实？——多数反驳才能否决它。评审团一轮轮重开，直到整轮再无新发现。修复最小化、有的放矢，改完重新过闸：linter 在修改落盘后重跑，因为这套系统只「推导」绿灯，从不「预告」绿灯。"
+      en: "The review panel runs N isolated reviewers &mdash; theory, empirical, applied lenses &mdash; each seeing nothing but the paper. Every issue must carry an exact verbatim quote and a closeable criterion. Each finding then faces three perspective-diverse skeptics &mdash; misreading? already addressed? overblown? &mdash; and survives unless a majority refute it. Fresh panels re-run until a full pass finds nothing new &mdash; within a budget-capped number of rounds. Fixes are minimal, targeted, and re-gated: the linters are re-run after the edits land, because the suite derives &ldquo;green&rdquo; &mdash; it never forecasts it.",
+      zh: "评审团由 N 位隔离评审组成——理论、实证、应用三种视角——每人眼里只有论文本身。每条意见必须带精确的原文引用和一条可关闭的验收标准。随后每条意见面对三位视角各异的质疑者——是不是读岔了？是不是早已处理？是不是言过其实？——多数反驳才能否决它。评审团一轮轮重开，直到整轮再无新发现——轮数有预算上限。修复最小化、有的放矢，改完重新过闸：linter 在修改落盘后重跑，因为这套系统只「推导」绿灯，从不「预告」绿灯。"
     },
     "wr.tpl.title": { en: "Templates &middot; pick a venue, keep the quality.", zh: "模板 · 换 venue，不换质量。" },
     "wr.tpl.th1": { en: "Template", zh: "模板" },
@@ -530,8 +530,8 @@
 
     /* --- footer --- */
     "footer.copy": {
-      en: "&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Built on Claude Code &middot; Figure engine vendored from DrawAI &middot; Site design after <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>.",
-      zh: "&copy; 2026 spark-to-paper-skills · MIT License · 基于 Claude Code 构建 · 画图引擎内置自 DrawAI · 网站设计参考 <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>。"
+      en: "&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Built on Claude Code &middot; Figures: PaperBanana+ native SVG, DrawAI hybrid as fallback &middot; Site design after <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>.",
+      zh: "&copy; 2026 spark-to-paper-skills · MIT License · 基于 Claude Code 构建 · 画图：PaperBanana+ 原生 SVG，DrawAI hybrid 兜底 · 网站设计参考 <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>。"
     }
   };
 
@@ -789,8 +789,8 @@
     ];
     const ROLES = [
       { role: "m", name: "backends.role.up", words: ["idea2story", "kg-build"] },
-      { role: "e", name: "backends.role.chain", words: ["plan", "cite", "write", "refine", "review", "figure", "figure-svg", "vectorize", "latex"] },
-      { role: "a", name: "backends.role.auto", words: ["data", "experiment"] },
+      { role: "e", name: "backends.role.chain", words: ["plan", "cite", "write", "refine", "review", "data", "figure", "figure-svg", "figure-optimize", "latex"] },
+      { role: "a", name: "backends.role.auto", words: ["experiment"] },
     ];
 
     const chip = (c) => `<span class="bk-chip" style="--h:${c.h}"><b>${c.label()}</b></span>`;
