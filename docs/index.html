@@ -107,7 +107,7 @@
           <svg class="button-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="1.8" y="2.6" width="12.4" height="10.8" rx="1.4"/><path d="M1.8 10.2 5.6 7l3 2.6 2.4-2 3.2 2.8"/><circle cx="5.4" cy="5.4" r="1"/>
           </svg>
-          <span data-i18n="hero.btn.figures">The figure engine</span>
+          <span data-i18n="hero.btn.figures">Figure engine</span>
         </a>
         <a class="button ghost" href="#pipeline">
           <svg class="button-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -355,12 +355,12 @@
 
     <div class="finding-grid">
       <div class="finding-card">
-        <span class="finding-value" data-i18n="idea.f1.value">Claude</span>
+        <span class="finding-value is-word" data-i18n="idea.f1.value">Claude</span>
         <span class="finding-title" data-i18n="idea.f1.title">Model reasons</span>
         <p data-i18n="idea.f1.body">Judgment-heavy work stays with the model: framing the story, planning the blueprint, reading candidate references, writing and refining prose, critiquing figures with its own vision, arguing against the draft in review.</p>
       </div>
       <div class="finding-card">
-        <span class="finding-value" data-i18n="idea.f2.value">Python</span>
+        <span class="finding-value is-word" data-i18n="idea.f2.value">Python</span>
         <span class="finding-title" data-i18n="idea.f2.title">Code backstops</span>
         <p data-i18n="idea.f2.body">Deterministic tasks go to code: linting drafts, checking citation completeness, plotting from data, vectorizing figures, assembling LaTeX, compiling, and gating. Code never authors content; it only verifies it.</p>
       </div>
@@ -653,7 +653,7 @@
       <li class="kpi">
         <span class="kpi-bench" data-i18n="fig.k1.name">Repair loop</span>
         <span class="kpi-metric" data-i18n="fig.k1.metric">audit rounds per figure</span>
-        <span class="kpi-num"><b class="kpi-to">&ge;4</b></span>
+        <span class="kpi-num"><b class="kpi-to"><span class="geq">&ge;</span>4</b></span>
         <span class="kpi-delta" data-i18n="fig.k1.delta">gate-enforced</span>
       </li>
       <li class="kpi">
@@ -683,8 +683,8 @@
       </figcaption>
       <div class="plot-demo">
         <img src="figs/plot-pm25.png" alt="Bar chart from the PM2.5 paper: honest decomposition is worse than plain GRU; only the leaky bar looks good." loading="lazy" />
-        <img src="figs/plot-leaf.png" alt="Grouped bar chart from the leaf-disease audit: the near-duplicate leakage gap is negligible for every model." loading="lazy" />
-        <img src="figs/plot-bearing.png" alt="Two bar panels from the bearing-fault paper comparing naive, recording-aware and cross-load protocols." loading="lazy" />
+        <img src="figs/plot-bearing.png" alt="Bar chart from the bearing-fault paper: three protocols compared — the naive split saturates, honest splits expose the gap." loading="lazy" />
+        <img src="figs/plot-chronic.png" alt="Bar chart from the chronic-disease paper: discrimination AUC by model family per cohort under the leakage-safe protocol." loading="lazy" />
       </div>
     </figure>
 
@@ -819,7 +819,7 @@
     </div>
 
     <article class="idea-statement">
-      <h3 data-i18n="wr.rev.title">&ldquo;Can&rsquo;t quote = didn&rsquo;t read.&rdquo;</h3>
+      <h3 class="hang-quote" data-i18n="wr.rev.title">&ldquo;Can&rsquo;t quote = didn&rsquo;t read.&rdquo;</h3>
       <p data-i18n="wr.rev.body">
         The review panel runs N isolated reviewers &mdash; theory, empirical, applied
         lenses &mdash; each seeing nothing but the paper. Every issue must carry an

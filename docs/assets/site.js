@@ -31,7 +31,7 @@
       zh: "14 个可组合的 Claude Code skill，把一句话想法变成<strong>编译完成的论文 PDF</strong>——真实且经核验的参考文献、可编辑的矢量图、<strong>机器校验的诚实性</strong>，一样不少。判断交给 Claude，事实交给确定性的 Python 闸门。<em>不装应用，不起服务，零配置。</em>"
     },
     "hero.btn.papers": { en: "See the papers", zh: "看论文成品" },
-    "hero.btn.figures": { en: "The figure engine", zh: "画图引擎" },
+    "hero.btn.figures": { en: "Figure engine", zh: "画图引擎" },
     "hero.btn.pipeline": { en: "How it works", zh: "工作原理" },
     "hero.btn.code": { en: "Code Repo", zh: "代码仓库" },
     "hero.btn.sample": { en: "Sample paper", zh: "论文样例" },
@@ -68,7 +68,7 @@
     "theme.dark": { en: "dark", zh: "深色" },
     "qs.hint.install": {
       en: "Auto-loads on the next Claude Code session. Needs Python&nbsp;3.10+ and LaTeX (<code>latexmk</code>) to compile.",
-      zh: "下次 Claude Code 会话自动加载。编译需要 Python&nbsp;3.10+ 和 LaTeX（<code>latexmk</code>）。"
+      zh: "下次 Claude Code 会话自动加载。编译需要 Python&nbsp;3.10+ 和 <span style=\"white-space:nowrap\">LaTeX（<code>latexmk</code>）</span>。"
     },
     "qs.hint.run": {
       en: "Paste an idea, a proposal, or a proposal + real results. Stage&nbsp;0 routes it, the chain runs, and every stage leaves its trace under <code>logs/</code>.",
@@ -179,7 +179,7 @@
     "pipe.route.d2": { en: "Skips idea2story, straight to planning", zh: "跳过 idea2story，直接进入规划" },
     "pipe.route.caption": {
       en: "Any real measured number in the input &mdash; a filled table, &ldquo;achieved 0.62 HOTA&rdquo; &mdash; forces the data-aware route; it is never sent down the no-numbers proposal path. Optional upstream: <code>ts-kg-build</code> turns a <code>corpus.jsonl</code> into a research-pattern knowledge graph for story recall, degrading gracefully when no embedding endpoint is configured.",
-      zh: "输入里只要出现真实测量值——一张填好的表、一句「achieved 0.62 HOTA」——就强制走 data-aware 路线，绝不会被送进无数字的 proposal 路径。可选上游：<code>ts-kg-build</code> 把 <code>corpus.jsonl</code> 建成研究模式知识图谱供故事召回，没配 embedding 端点时平滑降级。"
+      zh: "输入里只要出现真实测量值——填好的一张表、一句「achieved 0.62 HOTA」——就强制走 data-aware 路线，绝不会被送进无数字的 proposal 路径。可选上游：<code>ts-kg-build</code> 把 <code>corpus.jsonl</code> 建成研究模式知识图谱供故事召回，没配 embedding 端点时平滑降级。"
     },
     "pipe.fig.title": { en: "The chain and its artifacts", zh: "链条与它的产物" },
     "pipe.fig.note": {
@@ -745,11 +745,12 @@
 
   /* ============================ reveal on scroll ============================ */
   const REVEAL_SEL = ".section-header,.step,.table-wrap,.bibtex,.finding-card,.figure-block,.problem-card,.idea-statement,.idea-panel,.paper-card,.takeaway,.kpi-strip,.loop-cycle";
-  const revealTargets = $$(REVEAL_SEL).filter((el) => {
+  const staticMode = qp.get("static") === "1";
+  const revealTargets = staticMode ? [] : $$(REVEAL_SEL).filter((el) => {
     const p = el.parentElement;
     return !(p && p.closest(REVEAL_SEL));
   });
-  if ("IntersectionObserver" in window) {
+  if (!staticMode && "IntersectionObserver" in window) {
     revealTargets.forEach((el) => el.classList.add("reveal"));
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {

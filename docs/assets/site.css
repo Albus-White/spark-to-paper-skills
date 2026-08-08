@@ -30,7 +30,7 @@
 .paper-link{margin-top:2px;font-size:13.5px;font-weight:600;color:var(--blue-on-tint);text-decoration:none}
 .paper-link:hover{text-decoration:underline}
 
-.plot-demo{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:var(--s4);align-items:start}
+.plot-demo{display:grid;grid-template-columns:1.02fr 1.25fr 1.58fr;gap:var(--s4);align-items:stretch}
 .plot-demo img{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:8px}
 @media (max-width:860px){.plot-demo{grid-template-columns:1fr}}
 
@@ -47,3 +47,38 @@
 #qs-pane-install>.qs-hint{grid-area:3/1}
 #qs-pane-install .qs-code{word-break:normal;overflow-wrap:anywhere}
 .sb-kicker{white-space:normal}
+
+/* ===================== visual polish round ===================== */
+/* word-swap: keep the chip shell solid, crossfade only the word */
+.bk-pair-half.is-in{animation:none}
+.bk-pair-half.is-in .bk-slot-word{animation:bk-word .35s cubic-bezier(.2,.7,.3,1) both}
+@keyframes bk-word{0%{opacity:.25;transform:translateY(4px)}100%{opacity:1;transform:none}}
+.hero-actions,.hero-artifacts{max-width:36rem}
+.hero-inner{align-items:center}
+.sb-stat{padding:16px 20px}
+.sb-stat b{font-size:clamp(30px,3.6vw,48px)}
+.figure-block img{border-radius:var(--r-sm)}
+.paperstrip img{height:248px;width:auto}
+.kpi-num{white-space:nowrap}
+.paper-thumb img[height="828"]{object-position:center 24%}
+.finding-value.is-word{font-size:clamp(24px,2.4vw,34px)}
+.bk-track{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.video-kicker:before{clip-path:polygon(50% 0%,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0% 50%,39% 39%)}
+.bibtex pre{padding-right:84px}
+.kpi-num .geq{font-family:var(--font-sans);font-size:.6em;vertical-align:.16em;margin-right:2px;font-weight:700}
+/* zh typography: no synthetic CJK italics/serif-bold, roomier small text */
+:root[data-lang=zh] em{font-style:normal}
+:root[data-lang=zh] .hero-subtitle em{font-weight:650}
+:root[data-lang=zh] .section h2,:root[data-lang=zh] .video-title,:root[data-lang=zh] .idea-statement h3,:root[data-lang=zh] .takeaway-lead,:root[data-lang=zh] .finding-value{font-family:Fraunces,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;letter-spacing:0}
+:root[data-lang=zh] .section h2,:root[data-lang=zh] .video-title{line-height:1.3}
+:root[data-lang=zh] .paper-note{line-height:1.7}
+:root[data-lang=zh] .sb-stat span{line-height:1.5}
+:root[data-lang=zh] .qs-hint{line-height:1.7}
+:root[data-lang=zh] .hang-quote{text-indent:-.55em}
+@media (max-width:640px){
+  .sb-stats .sb-stat:last-child{grid-column:1/-1}
+  .table-scroll{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent)}
+  .kpi-bench{white-space:nowrap}
+  .loop-cycle .loop-ring{margin-top:24px}
+}
+@media (min-width:1100px){.gallery>.paper-card:last-child{grid-column:2}}
