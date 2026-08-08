@@ -27,8 +27,8 @@
 
     /* --- hero --- */
     "hero.subtitle": {
-      en: "13 composable Claude Code skills turn a one-line idea into a <strong>compiled paper PDF</strong> — real verified references, editable vector figures, and <strong>machine-checked integrity</strong> included. Claude owns the judgment; deterministic Python gates own the facts. <em>No app. No server. No setup.</em>",
-      zh: "13 个可组合的 Claude Code skill，把一句话想法变成<strong>编译完成的论文 PDF</strong>——真实且经核验的参考文献、可编辑的矢量图、<strong>机器校验的诚实性</strong>，一样不少。判断交给 Claude，事实交给确定性的 Python 闸门。<em>不装应用，不起服务，零配置。</em>"
+      en: "14 composable Claude Code skills turn a one-line idea into a <strong>compiled paper PDF</strong> — real verified references, editable vector figures, and <strong>machine-checked integrity</strong> included. Claude owns the judgment; deterministic Python gates own the facts. <em>No app. No server. No setup.</em>",
+      zh: "14 个可组合的 Claude Code skill，把一句话想法变成<strong>编译完成的论文 PDF</strong>——真实且经核验的参考文献、可编辑的矢量图、<strong>机器校验的诚实性</strong>，一样不少。判断交给 Claude，事实交给确定性的 Python 闸门。<em>不装应用，不起服务，零配置。</em>"
     },
     "hero.btn.papers": { en: "See the papers", zh: "看论文成品" },
     "hero.btn.figures": { en: "The figure engine", zh: "画图引擎" },
@@ -36,15 +36,15 @@
     "hero.btn.code": { en: "Code Repo", zh: "代码仓库" },
     "hero.btn.sample": { en: "Sample paper", zh: "论文样例" },
     "hero.btn.sample.aria": { en: "Open a sample generated paper (PDF)", zh: "打开一篇生成的论文样例（PDF）" },
-    "hero.btn.release": { en: "v1.1.0", zh: "v1.1.0" },
-    "hero.related.tag": { en: "13 skills &middot; one orchestrator", zh: "13 个 skill · 一个调度者" },
+    "hero.btn.release": { en: "v1.2.0", zh: "v1.2.0" },
+    "hero.related.tag": { en: "14 skills &middot; one orchestrator", zh: "14 个 skill · 一个调度者" },
     "backends.sub": { en: "ts-paper routes any input shape and drives the chain end to end", zh: "ts-paper 识别任意输入形态，驱动整条链走到底" },
     "backends.in": { en: "You drop", zh: "你丢进来" },
     "backends.out": { en: "You get", zh: "你拿到" },
     "backends.orch": { en: "Stage 0 &middot; route", zh: "Stage 0 · 路由" },
     "backends.a11y": {
-      en: "A one-line idea, a proposal, a proposal with real results, or a corpus file all route through ts-paper and the 13-skill suite, and come out as a compiled PDF with sources, figures and logs on disk.",
-      zh: "一句话想法、proposal、带真实结果的 proposal、语料文件，都交给 ts-paper 调度、由这套 13 个 skill 协作处理，最终产出编译好的 PDF，以及落在磁盘上的源文件、图和日志。"
+      en: "A one-line idea, a proposal, a proposal with real results, or a corpus file all route through ts-paper and the 14-skill suite, and come out as a compiled PDF with sources, figures and logs on disk.",
+      zh: "一句话想法、proposal、带真实结果的 proposal、语料文件，都交给 ts-paper 调度、由这套 14 个 skill 协作处理，最终产出编译好的 PDF，以及落在磁盘上的源文件、图和日志。"
     },
     "backends.role.up": { en: "UPSTREAM", zh: "上游" },
     "backends.role.chain": { en: "THE CHAIN", zh: "主链" },
@@ -155,8 +155,8 @@
     },
     "idea.p4.title": { en: "Layer 4 &middot; Vision critique", zh: "第四层 · 视觉批评" },
     "idea.p4.body": {
-      en: "Claude looks at every rendered figure with its own eyes: faithfulness to the method, semantic agreement with the equations, readability, density, aesthetics &mdash; at least two enforced rounds per figure.",
-      zh: "Claude 亲眼看每张渲染出的图：是否忠实于方法、语义是否与公式一致、可读性、信息密度、美观度——每张图至少强制两轮。"
+      en: "Claude looks at every rendered figure with its own eyes &mdash; faithfulness to the method, semantic agreement with the equations, readability, aesthetics &mdash; and a measured geometry audit drives at least four repair rounds on every redrawn SVG.",
+      zh: "Claude 亲眼看每张渲染出的图——是否忠实于方法、语义是否与公式一致、可读性、美观度——重绘出的每张 SVG 还要再过几何审计，至少驱动四轮修复。"
     },
 
     /* --- 02 pipeline --- */
@@ -213,8 +213,8 @@
     },
     "pipe.s6.title": { en: "6 &middot; Figures", zh: "6 · 画图" },
     "pipe.s6.body": {
-      en: "Data plots are born-vector matplotlib; schematics are image-model renders grounded on real venue figures, critiqued, then rebuilt as editable vectors.",
-      zh: "数据图由 matplotlib 生成、天生矢量；示意图由图像模型渲染，以真实顶会图为参照，批评打磨后重建为可编辑矢量。"
+      en: "Data plots are born-vector matplotlib; schematics are PaperBanana renders whose design language is learned, then redrawn as native, audited SVG.",
+      zh: "数据图由 matplotlib 生成、天生矢量；示意图先由 PaperBanana 渲染，学其设计语言后重绘为原生 SVG，并经几何审计。"
     },
     "pipe.s7.title": { en: "7 &middot; Compile", zh: "7 · 编译" },
     "pipe.s7.body": {
@@ -246,96 +246,96 @@
       zh: "AI 图像模型画的是位图，论文要的是可编辑矢量图——这台引擎两头都给你。"
     },
     "fig.lede": {
-      en: "The engine is decided by <strong>which section a figure lives in</strong>. Results plots draw from real data with matplotlib &mdash; numerically exact, born vector, never from an image model. Everything else &mdash; architectures, pipelines, concept illustrations &mdash; is rendered by an image model, <strong>grounded on a real top-venue reference figure</strong>, critiqued by Claude&rsquo;s own vision, then decomposed and rebuilt as an editable vector by the vendored <strong>DrawAI</strong> engine. Hand-authoring a flat SVG is a hard violation: that is exactly the boxes-and-arrows regression this design removes.",
-      zh: "用哪台引擎，取决于<strong>图长在哪个章节</strong>。结果图用 matplotlib 从真实数据画——数值精确、天生矢量，绝不出自图像模型。其余一切——架构图、流程图、概念示意——由图像模型渲染，<strong>以真实顶会论文的主图为参照</strong>，经 Claude 自己的视觉批评打磨，再交给内置的 <strong>DrawAI</strong> 引擎分解重建为可编辑矢量。手搓一张干瘪的 SVG 属于硬违规：这正是这套设计要根除的「方框加箭头」倒退。"
+      en: "The engine is decided by <strong>which section a figure lives in</strong>. Results plots draw from real data with matplotlib &mdash; numerically exact, born vector, never from an image model. Every other figure runs a three-act pipeline: the official <strong>PaperBanana</strong> agent team renders candidate images; <code>ts-figure-svg</code> learns the winner&rsquo;s design language and <strong>redraws the figure natively</strong> &mdash; real <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, its content taken from the paper&rsquo;s own facts, never traced from pixels; then a stdlib geometry audit drives a repair loop of at least four rounds. If native redraw is impossible, the DrawAI hybrid &mdash; then the approved PNG &mdash; steps in. <strong>Never a lossy trace.</strong>",
+      zh: "用哪台引擎，取决于<strong>图长在哪个章节</strong>。结果图用 matplotlib 从真实数据画——数值精确、天生矢量，绝不出自图像模型。其余每张图走三幕流水线：官方 <strong>PaperBanana</strong> 智能体团队先渲染候选图；<code>ts-figure-svg</code> 学会胜出那张的设计语言，<strong>按论文自己的事实原生重绘</strong>——真正的 <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code> 对象，绝不描摹像素；随后 stdlib 几何审计驱动至少四轮修复。原生重绘实在不可行时，才轮到 DrawAI hybrid、再到定稿 PNG。<strong>绝不做有损描摹。</strong>"
     },
-    "fig.s1.title": { en: "Design", zh: "设计" },
+    "fig.s1.title": { en: "Render candidates", zh: "渲染候选" },
     "fig.s1.body": {
-      en: "Claude writes a concrete visual blueprint, wiring the diagram&rsquo;s arrows from the paper&rsquo;s own equations: every symbol&rsquo;s incoming edge leaves the module whose equation defines it.",
-      zh: "Claude 先写一份具体的视觉蓝图，箭头按论文自己的公式接线：每个符号的入边，必须从定义它的那条公式所在的模块出发。"
+      en: "The official PaperBanana pipeline &mdash; Retriever &rarr; Planner &rarr; Stylist &rarr; Visualizer &rarr; Critic &mdash; produces candidate images; a distilled image-model loop stands in when no key is configured.",
+      zh: "官方 PaperBanana 管线——Retriever &rarr; Planner &rarr; Stylist &rarr; Visualizer &rarr; Critic——产出候选图；没配 key 时由蒸馏版图像模型循环顶上。"
     },
-    "fig.s2.title": { en: "Ground", zh: "对标" },
+    "fig.s2.title": { en: "Learn the look", zh: "学习设计语言" },
     "fig.s2.body": {
-      en: "Mandatory: WebSearch finds the hero figure of an on-topic top-venue paper as a style reference. There is no &ldquo;proceed without a reference&rdquo; path &mdash; the gate checks it.",
-      zh: "强制环节：WebSearch 找到同主题顶会论文的主图作风格参照。没有「不带参照继续」这条路——闸门会查。"
+      en: "Claude looks at the chosen render and extracts its design language &mdash; palette, type scale, spacing, idiom &mdash; into a style sheet. The PNG is a <em>style reference only</em>.",
+      zh: "Claude 端详选中的渲染图，把它的设计语言——配色、字号层级、留白、视觉习惯——提炼成一份样式表。PNG <em>只当风格参照</em>。"
     },
-    "fig.s3.title": { en: "Render", zh: "渲染" },
+    "fig.s3.title": { en: "Redraw from the facts", zh: "按事实重绘" },
     "fig.s3.body": {
-      en: "One tiny script calls the image model (default <code>gpt-image-2</code>, 1536&times;1024, reference-conditioned when supported). &ldquo;The only irreducible code &mdash; Claude can&rsquo;t draw pixels.&rdquo;",
-      zh: "一个小脚本调用图像模型（默认 <code>gpt-image-2</code>，1536&times;1024，支持时带参照图条件生成）。「唯一省不掉的代码——Claude 画不了像素。」"
+      en: "The figure is redrawn as a native SVG from the paper&rsquo;s own text: every label live <code>&lt;text&gt;</code>, every edge traceable to the method. Never traced, never embedded &mdash; take the PNG&rsquo;s look, take the paper&rsquo;s content.",
+      zh: "整张图按论文自己的文本重绘成原生 SVG：每条标签都是活的 <code>&lt;text&gt;</code>，每条边都能追溯到方法本身。不描摹、不内嵌——要 PNG 的<em>样子</em>，要论文的<em>内容</em>。"
     },
-    "fig.s4.title": { en: "Critique", zh: "批评" },
+    "fig.s4.title": { en: "Audit &amp; repair", zh: "审计与修复" },
     "fig.s4.body": {
-      en: "Claude inspects each render with its own vision across seven dimensions &mdash; faithfulness, equation-level semantics, conciseness, readability, aesthetics, density, integrity &mdash; for at least two enforced rounds, each producing a provably different file.",
-      zh: "Claude 用自己的视觉从七个维度审每张渲染图——忠实性、公式级语义、简洁、可读、美观、密度、诚实——至少强制两轮，每轮都必须产出一张可证明不同的新图。"
+      en: "A stdlib-only geometry audit measures the drawing &mdash; overflow, text-on-text, clipped arrowheads, sub-legible type &mdash; and drives repairs for at least four rounds, with no upper bound while defects remain.",
+      zh: "纯 stdlib 的几何审计逐项测量这张图——溢出、文字叠文字、被裁掉的箭头、小到看不清的字号——驱动至少四轮修复；只要还有缺陷，就没有轮数上限。"
     },
-    "fig.lane.decompose": { en: "Decompose", zh: "分解" },
-    "fig.lane.decompose.note": { en: "local models, no account, no API key", zh: "本地模型，不注册，不要 key" },
-    "fig.l1.title": { en: "SAM3 segments the layout", zh: "SAM3 分割版面" },
+    "fig.lane.decompose": { en: "Redraw", zh: "重绘" },
+    "fig.lane.decompose.note": { en: "native objects &mdash; no pixels, no tracing", zh: "原生对象——不贴像素，不描摹" },
+    "fig.l1.title": { en: "Style sheet from the render", zh: "从渲染图提炼样式表" },
     "fig.l1.body": {
-      en: "The approved raster is split into structural regions &mdash; boxes, arrows, icons &mdash; on CPU or GPU, with weights pulled key-free from ModelScope.",
-      zh: "把定稿的位图切成结构区域——方框、箭头、图标——CPU、GPU 都能跑，权重从 ModelScope 免 key 拉取。"
+      en: "Palette, type scale, spacing and visual idiom are read off the chosen PaperBanana candidate by eye and written down as a style sheet.",
+      zh: "配色、字号层级、留白、视觉习惯，从选中的 PaperBanana 候选图上逐项读出来，写成一份样式表。"
     },
-    "fig.l2.title": { en: "PaddleOCR reads every text run", zh: "PaddleOCR 逐条读文字" },
+    "fig.l2.title": { en: "Content from the paper", zh: "内容来自论文" },
     "fig.l2.body": {
-      en: "Every label is located and read; Claude then corrects each region&rsquo;s text per crop &mdash; case, math symbols, sub/superscripts &mdash; keeping the whole flow key-free.",
-      zh: "每条标签定位并识别；随后 Claude 按区域裁片逐条校正——大小写、数学符号、上下标——全流程保持免 key。"
+      en: "Modules, edges and labels come from the figure spec and the paper&rsquo;s equations &mdash; generated renders invent links and garble labels, so their logic is never trusted.",
+      zh: "模块、连线、标签全部来自图规格和论文公式——生成的渲染图会瞎编连线、写错标签，它的逻辑一概不信。"
     },
-    "fig.l3.title": { en: "Box-IR structures the figure", zh: "Box-IR 结构化整图" },
+    "fig.l3.title": { en: "Real vector objects", zh: "真正的矢量对象" },
     "fig.l3.body": {
-      en: "Regions and text runs assemble into a structured layout IR &mdash; the machine-readable description the rebuild consumes.",
-      zh: "区域与文字合成结构化的版面 IR——重建环节消费的就是这份机器可读的描述。"
+      en: "The figure is drawn as genuine <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code> elements &mdash; every label live, editable text, with glyphs kept Times-safe so the PDF embeds fonts cleanly.",
+      zh: "整张图由真正的 <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code> 元素画成——每条标签都是活的可编辑文本，字形限定在 Times 安全集内，PDF 里字体干干净净地内嵌。"
     },
-    "fig.ring.seg": { en: "Segment", zh: "分割" },
-    "fig.ring.read": { en: "Read", zh: "识别" },
-    "fig.ring.build": { en: "Rebuild", zh: "重建" },
-    "fig.ring.core": { en: "<em>DrawAI</em><i>HYBRID</i>", zh: "<em>DrawAI</em><i>HYBRID</i>" },
-    "fig.lane.rebuild": { en: "Rebuild", zh: "重建" },
-    "fig.lane.rebuild.note": { en: "deterministic &mdash; no LLM in the build", zh: "确定性构建——不经过 LLM" },
-    "fig.l4.title": { en: "Erase the text, keep the pixels", zh: "抹掉文字，留住像素" },
+    "fig.ring.seg": { en: "Draw", zh: "绘制" },
+    "fig.ring.read": { en: "Measure", zh: "测量" },
+    "fig.ring.build": { en: "Repair", zh: "修复" },
+    "fig.ring.core": { en: "<em>PaperBanana+</em><i>&ge;4 rounds</i>", zh: "<em>PaperBanana+</em><i>&ge;4 轮</i>" },
+    "fig.lane.rebuild": { en: "Measure", zh: "测量" },
+    "fig.lane.rebuild.note": { en: "stdlib-only &mdash; no renderer, no models, no key", zh: "纯 stdlib——不用渲染器、模型和 key" },
+    "fig.l4.title": { en: "The audit measures the drawing", zh: "审计逐项测量" },
     "fig.l4.body": {
-      en: "An ink-mask repaints the text pixels with the local background. The graphics stay pixel-exact &mdash; the render <em>is</em> the approved image. Every label is re-typed as genuinely editable text, sub/superscripts as real baseline-shifted runs.",
-      zh: "墨迹掩膜用局部背景色抹掉文字像素。图形保持像素级不变——渲染图<em>就是</em>定稿图。每条标签重新排成真正可编辑的文本，上下标是真的基线偏移，不是贴图。"
+      en: "<code>audit_svg.py</code> computes text boxes from Times core-14 metrics and fails a round on canvas or card overflow, a clipped arrowhead, text over text, shapes painted over text, sub-legible type, font-fallback glyphs, CSS-cascade colour traps &mdash; and path soup, the signature of a traced raster.",
+      zh: "<code>audit_svg.py</code> 用 Times core-14 字体度量算出每个文本框，凡是画布或卡片溢出、箭头被裁、文字叠文字、图形压住文字、字号小到读不清、字形触发字体回退、CSS 级联吃掉颜色——以及描摹位图特有的 path soup——当轮一律判负。"
     },
     "fig.lane.verify": { en: "Verify", zh: "核验" },
-    "fig.lane.verify.note": { en: "the gate reads the artifact, not the report", zh: "闸门看产物，不看汇报" },
-    "fig.l5.title": { en: "Export and check editability", zh: "导出并核验可编辑性" },
+    "fig.lane.verify.note": { en: "the gate reads the audit trail, not the report", zh: "闸门看审计记录，不看汇报" },
+    "fig.l5.title": { en: "Verified on the compiled page", zh: "在编译成品页上验证" },
     "fig.l5.body": {
-      en: "The figure lands as editable SVG + vector PDF + PPTX. The lint passes only if the labels stayed editable <code>&lt;text&gt;</code> over the render &mdash; a bare screenshot fails.",
-      zh: "成品落盘为可编辑 SVG + 矢量 PDF + PPTX。lint 只认渲染图上仍是可编辑 <code>&lt;text&gt;</code> 的标签——一张裸截图过不去。"
+      en: "The SVG exports to a vector PDF that must genuinely embed its fonts &mdash; an exporter that outlines every glyph is caught &mdash; and the figure is checked on the real compiled page. The build gate requires at least four audit rounds.",
+      zh: "SVG 导出的矢量 PDF 必须真的内嵌字体——把所有字形转成轮廓线蒙混过关的导出器会被识破——最后在真实编译出的页面上检查整张图。构建闸门要求至少四轮审计。"
     },
-    "fig.l6.title": { en: "HYBRID, or else keep the approved PNG &mdash; never redraw.", zh: "要么 HYBRID，要么保留定稿 PNG——绝不重画。" },
+    "fig.l6.title": { en: "No upper bound while defects remain.", zh: "缺陷不清零，轮数无上限。" },
     "fig.l6.body": {
-      en: "If the runtime cannot be provisioned, the approved raster is inserted as-is: editability deferred, full richness preserved. There is no redraw fallback &mdash; a full redraw of a dense figure measurably loses fidelity (~0.67 vs ~0.91 SSIM on the project&rsquo;s validation run).",
-      zh: "运行时装不起来，就原样插入定稿位图：可编辑性推迟，画面细节一点不丢。没有「重画」这个兜底——重画一张信息密集的图会实打实地损失保真度（项目验证运行中 SSIM 约 0.67，对比 HYBRID 的约 0.91）。"
+      en: "Four rounds is the floor, not the ceiling &mdash; the draw&ndash;measure&ndash;repair loop keeps going until the audit comes back clean. And if native redraw is genuinely impossible, the ladder holds: DrawAI hybrid, then the approved PNG. Never a lossy trace.",
+      zh: "四轮只是下限——绘制、测量、修复的循环一直跑到审计全绿为止。原生重绘实在不可行时，梯子照样接得住：先 DrawAI hybrid，再定稿 PNG。绝不做有损描摹。"
     },
-    "fig.k1.name": { en: "Hybrid fidelity", zh: "HYBRID 保真度" },
-    "fig.k1.metric": { en: "SSIM vs full redraw", zh: "SSIM，对比整图重画" },
-    "fig.k1.delta": { en: "reported", zh: "项目实测" },
-    "fig.k2.name": { en: "Editable text", zh: "可编辑文字" },
-    "fig.k2.metric": { en: "text boxes on the test figure", zh: "测试图上的文本框数" },
-    "fig.k2.delta": { en: "all editable", zh: "全部可编辑" },
-    "fig.k3.name": { en: "Vectorizer cost", zh: "矢量化成本" },
-    "fig.k3.metric": { en: "API keys &middot; accounts", zh: "API key · 账号" },
-    "fig.k3.delta": { en: "ModelScope weights", zh: "ModelScope 权重" },
-    "fig.k4.name": { en: "Vision critique", zh: "视觉批评" },
-    "fig.k4.metric": { en: "rounds per figure", zh: "每张图轮数" },
-    "fig.k4.delta": { en: "gate-enforced", zh: "闸门强制" },
+    "fig.k1.name": { en: "Repair loop", zh: "修复循环" },
+    "fig.k1.metric": { en: "audit rounds per figure", zh: "每张图审计轮数" },
+    "fig.k1.delta": { en: "gate-enforced", zh: "闸门强制" },
+    "fig.k2.name": { en: "Audit cost", zh: "审计成本" },
+    "fig.k2.metric": { en: "renderer &middot; models &middot; keys", zh: "渲染器 · 模型 · key" },
+    "fig.k2.delta": { en: "stdlib-only", zh: "纯 stdlib" },
+    "fig.k3.name": { en: "Fallback hybrid", zh: "兜底 HYBRID" },
+    "fig.k3.metric": { en: "SSIM vs full redraw", zh: "SSIM，对比整图重画" },
+    "fig.k3.delta": { en: "reported", zh: "项目实测" },
+    "fig.k4.name": { en: "Pixel tracing", zh: "像素描摹" },
+    "fig.k4.metric": { en: "paths in one auto-trace", zh: "一次自动描摹的 path 数" },
+    "fig.k4.delta": { en: "banned", zh: "已禁用" },
     "fig.demo.title": { en: "Born-vector data figures, straight from the showcase papers", zh: "天生矢量的数据图，直接取自 showcase 论文" },
     "fig.demo.note": {
       en: "Results plots are drawn from code with the suite&rsquo;s publication house style &mdash; semantic colors, exact numbers from <code>results.facts.json</code>, and a vector PDF written alongside every PNG with the text kept editable.",
       zh: "结果图由代码按套件的出版级样式绘制——语义化配色、数字精确来自 <code>results.facts.json</code>，每张 PNG 旁边都同时写出一份文字可编辑的矢量 PDF。"
     },
-    "fig.f1.value": { en: "0 keys", zh: "0 个 key" },
-    "fig.f1.title": { en: "The vectorizer runs key-free", zh: "矢量化全程免 key" },
+    "fig.f1.title": { en: "Why not just trace the PNG?", zh: "为什么不直接描摹 PNG？" },
     "fig.f1.body": {
-      en: "SAM3, PaddleOCR and the hybrid build run locally &mdash; weights from ModelScope, no account, CPU or GPU. Claude does the per-region text correction itself, so no vision API is needed either. Only the optional image-model render needs a key.",
-      zh: "SAM3、PaddleOCR 和 HYBRID 构建全部本地运行——权重来自 ModelScope，不注册账号，CPU、GPU 皆可。逐区域的文字校正由 Claude 亲自做，连视觉 API 都省了。只有可选的图像模型渲染这一步需要 key。"
+      en: "Auto-tracing one figure produced 59,430 paths, 10&nbsp;MB, and not one editable label &mdash; and it was still blurry when zoomed. &ldquo;No <code>&lt;image&gt;</code> element&rdquo; does not mean vector. So the redraw takes the PNG&rsquo;s <em>look</em> and the paper&rsquo;s <em>content</em>, and draws real objects.",
+      zh: "自动描摹一张图，得到 59,430 条 path、10&nbsp;MB 体积、零条可编辑标签——放大了照样糊。「没有 <code>&lt;image&gt;</code> 元素」不等于矢量。所以重绘只取 PNG 的<em>样子</em>、只取论文的<em>内容</em>，画的是真对象。"
     },
-    "fig.f2.title": { en: "The honest ceiling", zh: "诚实的上限" },
+    "fig.f2.value": { en: "3<em>rungs</em>", zh: "三<em>级</em>" },
+    "fig.f2.title": { en: "The fallback ladder", zh: "兜底阶梯" },
     "fig.f2.body": {
-      en: "Only the text becomes editable; the graphics stay raster. Re-typed text cannot beat font antialiasing, so 0.95+ SSIM is not reachable &mdash; and the skill says so itself. What you get is exact: the render is the approved image, and every label on it is yours to edit.",
-      zh: "可编辑的只有文字，图形仍是位图。重排的文字赢不了字体抗锯齿，所以 SSIM 到不了 0.95+——skill 文档自己就这么写。你拿到的东西是精确的：渲染图就是定稿图，上面每条标签都归你改。"
+      en: "Native SVG first. If the redraw is impossible, the vendored DrawAI hybrid keeps the approved render pixel-exact under an editable text overlay (~0.91 SSIM, key-free via ModelScope). Failing that, the approved PNG goes in as-is &mdash; full richness preserved, editability deferred. Never a lossy trace.",
+      zh: "首选原生 SVG。重绘不可行时，内置的 DrawAI hybrid 把定稿渲染图保持像素级不变，叠上可编辑文字层（SSIM 约 0.91，经 ModelScope 免 key）。再不行，定稿 PNG 原样插入——细节一点不丢，可编辑性推迟。绝不做有损描摹。"
     },
 
     /* --- 04 experiments --- */
@@ -789,7 +789,7 @@
     ];
     const ROLES = [
       { role: "m", name: "backends.role.up", words: ["idea2story", "kg-build"] },
-      { role: "e", name: "backends.role.chain", words: ["plan", "cite", "write", "refine", "review", "figure", "vectorize", "latex"] },
+      { role: "e", name: "backends.role.chain", words: ["plan", "cite", "write", "refine", "review", "figure", "figure-svg", "vectorize", "latex"] },
       { role: "a", name: "backends.role.auto", words: ["data", "experiment"] },
     ];
 
