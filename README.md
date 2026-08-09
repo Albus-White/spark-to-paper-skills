@@ -17,8 +17,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Albus-White/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Albus-White/spark-to-paper-skills?label=Release&color=d97757" alt="Latest Release"></a>
-  <a href="https://github.com/Albus-White/spark-to-paper-skills"><img src="https://img.shields.io/github/stars/Albus-White/spark-to-paper-skills?style=flat&color=f5c542" alt="Stars"></a>
+  <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Spark-To-Paper-Skills/spark-to-paper-skills?label=Release&color=d97757" alt="Latest Release"></a>
+  <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills"><img src="https://img.shields.io/github/stars/Spark-To-Paper-Skills/spark-to-paper-skills?style=flat&color=f5c542" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-d97757?logo=anthropic&logoColor=white" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/Skills-14_Active-6f42c1" alt="14 skills">
   <img src="https://img.shields.io/badge/Figures-Editable_Vector-ff8c42" alt="Editable vector figures">
@@ -68,7 +68,7 @@
 
 ```bash
 # Install — auto-loads on next Claude Code session
-git clone https://github.com/Albus-White/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
 ```
 
 ```
@@ -290,7 +290,7 @@ Write to **whatever venue you pick** — content quality is invariant.
 **Option A — Claude Code plugin (recommended)**
 
 ```bash
-git clone https://github.com/Albus-White/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
 ```
 
 Auto-loads on next session. Skills available as `/spark-to-paper:ts-paper`, etc.
@@ -298,7 +298,7 @@ Auto-loads on next session. Skills available as `/spark-to-paper:ts-paper`, etc.
 **Option B — Try before you install**
 
 ```bash
-git clone https://github.com/Albus-White/spark-to-paper-skills.git
+git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git
 claude --plugin-dir ./spark-to-paper-skills
 ```
 
@@ -311,7 +311,7 @@ cp -r spark-to-paper-skills/skills/ts-* ~/.claude/skills/
 **Option D — Git submodule (auto-updatable)**
 
 ```bash
-git submodule add https://github.com/Albus-White/spark-to-paper-skills.git .claude/skills/spark-to-paper-skills
+git submodule add https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git .claude/skills/spark-to-paper-skills
 ```
 
 > 💡 The suite checks GitHub for newer versions on each run. Update: `git -C ~/.claude/skills/spark-to-paper-skills pull`
@@ -396,10 +396,12 @@ Inspired by:
 ## ⭐ Star History
 
 <p align="center">
-  <a href="https://star-history.com/#Albus-White/spark-to-paper-skills&Date">
-    <img src="https://api.star-history.com/svg?repos=Albus-White/spark-to-paper-skills&type=Date" width="80%" alt="Star History Chart">
+  <a href="https://star-history.com/#Spark-To-Paper-Skills/spark-to-paper-skills&Date">
+    <img src="https://img.shields.io/github/stars/Spark-To-Paper-Skills/spark-to-paper-skills?style=for-the-badge&logo=github&color=f5c542&label=GitHub%20Stars" alt="GitHub stars">
   </a>
 </p>
+
+<p align="center"><sub>Live star chart paused — GitHub restricted third-party access to stargazer data. It returns once the <a href="https://star-history.com/blog/github-stargazer-api-restriction">star-history GitHub App</a> is installed on this repo.</sub></p>
 
 ---
 
