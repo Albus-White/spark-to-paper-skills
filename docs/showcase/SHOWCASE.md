@@ -96,7 +96,7 @@ Bearing-fault diagnosis papers often split heavily overlapping CWRU vibration wi
 | 📚 **References** | 50 cited (all verified via WebSearch + Crossref) |
 | 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
 | 📋 **Tables** | 4 result tables |
-| 📑 **Pages** | 13 pages (two-column conference format) |
+| 📑 **Pages** | 13 pages (official ICML 2025 style) |
 
 #### 🎯 Key Contribution
 Quantifies segment-overlap leakage under controlled protocols: perfect naive accuracy drops once recordings or loads are held out, and the compact CNN no longer dominates classical baselines under honest evaluation.

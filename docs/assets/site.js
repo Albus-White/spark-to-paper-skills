@@ -463,7 +463,7 @@
     "sc.p3.fmt": { en: "Traitement du Signal format", zh: "Traitement du Signal 版式" },
     "sc.p4.fmt": { en: "Traitement du Signal format", zh: "Traitement du Signal 版式" },
     "sc.p5.fmt": { en: "NeurIPS 2025 official style (preprint)", zh: "NeurIPS 2025 官方版式（preprint）" },
-    "sc.p6.fmt": { en: "two-column conference format", zh: "双栏会议版式" },
+    "sc.p6.fmt": { en: "ICML 2025 official style", zh: "ICML 2025 官方版式" },
     "sc.p7.fmt": { en: "NeurIPS 2025 official style (preprint)", zh: "NeurIPS 2025 官方版式（preprint）" },
     "sc.p1.domain": { en: "environmental monitoring", zh: "环境监测" },
     "sc.p1.note": {
@@ -501,8 +501,8 @@
       zh: "在 PlantVillage Tomato 上把疑似泄漏与实测效应分开验证：近重复带来的泄漏可以忽略，背景捷径确实存在，但幅度不大。"
     },
     "sc.caption": {
-      en: "Conference-format samples lead the set: one two-column conference layout and two in the official NeurIPS 2025 style (preprint option); the remaining four use the Traitement du Signal journal format. References verified via WebSearch + Crossref on every paper; all figures delivered as editable vector PDFs; integrity gates passed on all seven.",
-      zh: "会议版式的样例排在前面：一篇双栏会议版式，两篇采用 NeurIPS 2025 官方样式（preprint 选项）；其余四篇为 Traitement du Signal 期刊版式。七篇的参考文献均经 WebSearch + Crossref 核验，插图全部以可编辑的矢量 PDF 交付，诚实性闸门也全部通过。"
+      en: "Conference-format samples lead the set: one in the official ICML 2025 style and two in the official NeurIPS 2025 style (preprint option); the remaining four use the Traitement du Signal journal format. References verified via WebSearch + Crossref on every paper; all figures delivered as editable vector PDFs; integrity gates passed on all seven.",
+      zh: "会议版式的样例排在前面：一篇采用 ICML 2025 官方样式，两篇采用 NeurIPS 2025 官方样式（preprint 选项）；其余四篇为 Traitement du Signal 期刊版式。七篇的参考文献均经 WebSearch + Crossref 核验，插图全部以可编辑的矢量 PDF 交付，诚实性闸门也全部通过。"
     },
 
     /* --- 07 compare --- */
