@@ -43,10 +43,10 @@
 <table>
 <tr>
 <td width="18%">
-<a href="docs/showcase/SHOWCASE.md"><img src="docs/showcase/pm25_forecasting-01.png" width="140" alt="Sample Paper"/></a>
+<a href="docs/showcase/SHOWCASE.md"><img src="docs/showcase/bearing_fault_diagnosis-01.png" width="140" alt="Sample Paper"/></a>
 </td>
 <td valign="middle">
-<b>7 papers across 6 domains</b> — environmental monitoring, energy forecasting, environmental AI, computer vision, clinical AI, and bearing fault diagnosis — generated fully end-to-end with real citations, editable vector figures, and compiled PDF output.<br><br>
+<b>7 papers across 6 domains</b> — environmental monitoring, energy forecasting, environmental AI, computer vision, clinical AI, and bearing fault diagnosis — generated fully end-to-end with real citations, editable vector figures, and compiled PDF output. Conference-format samples lead the set: a two-column conference layout plus two papers in the official NeurIPS 2025 style.<br><br>
 <a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/View_Full_Showcase_%E2%86%92-555555?style=for-the-badge" alt="View Showcase"></a>&nbsp;
 <a href="docs/showcase/SHOWCASE.md"><img src="https://img.shields.io/badge/All_7_Papers-d73a49?style=for-the-badge" alt="All 7 Papers"></a>
 </td>

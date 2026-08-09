@@ -71,7 +71,121 @@ Below are **seven papers** generated **end-to-end by spark-to-paper-skills** —
 
 ---
 
-### 📄 Paper I · PM2.5 Forecasting &ensp; <img src="https://img.shields.io/badge/domain-environmental_monitoring-blue?style=flat-square" alt="env">
+### 📄 Paper I · Bearing Fault Diagnosis &ensp; <img src="https://img.shields.io/badge/domain-industrial_fault_diagnosis-yellow?style=flat-square" alt="fault">
+
+> **Segment-Overlap Leakage in CWRU Bearing Fault Diagnosis with a Compact 1D-CNN**
+
+<table>
+<tr>
+<td width="340">
+<a href="bearing_fault_diagnosis.pdf">
+<img src="bearing_fault_diagnosis-01.png" width="320" alt="Paper I First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+Bearing-fault diagnosis papers often split heavily overlapping CWRU vibration windows at random, putting near-duplicate segments on both sides of the train-test boundary. This paper holds the model and features fixed while comparing naive random, recording-aware, and cross-load protocols.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 50 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 13 pages (two-column conference format) |
+
+#### 🎯 Key Contribution
+Quantifies segment-overlap leakage under controlled protocols: perfect naive accuracy drops once recordings or loads are held out, and the compact CNN no longer dominates classical baselines under honest evaluation.
+
+<a href="bearing_fault_diagnosis.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📄 Paper II · Chronic Disease Risk Screening &ensp; <img src="https://img.shields.io/badge/domain-clinical_AI-red?style=flat-square" alt="clinical">
+
+> **Interpretable, Calibrated Early Screening of Chronic Disease Risk with Feature Selection and Ensembles**
+
+<table>
+<tr>
+<td width="340">
+<a href="chronic_disease_screening.pdf">
+<img src="chronic_disease_screening-01.png" width="320" alt="Paper II First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+Clinical screening models need calibrated probabilities and defensible explanations, not only high ranking accuracy. This paper evaluates diabetes, heart-disease, and stroke cohorts with leakage-safe preprocessing, feature selection, ensemble baselines, post-hoc calibration, and TreeSHAP audits.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 42 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 5 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 17 pages (official NeurIPS 2025 style, preprint) |
+
+#### 🎯 Key Contribution
+Recasts chronic-disease screening as calibrated, interpretable risk estimation — showing where feature selection preserves discrimination, recalibration repairs unreliable rare-event probabilities, and accuracy can hide clinically useless stroke screening behavior.
+
+<a href="chronic_disease_screening.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📄 Paper III · Leaf Disease Leakage Audit &ensp; <img src="https://img.shields.io/badge/domain-computer_vision_/_agriculture-purple?style=flat-square" alt="CV">
+
+> **A Compact CNN for Leaf-Disease Classification under Leakage-Aware Evaluation**
+
+<table>
+<tr>
+<td width="340">
+<a href="leaf_disease_leakage.pdf">
+<img src="leaf_disease_leakage-01.png" width="320" alt="Paper III First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+</a>
+<p align="center"><sub>👆 Click to read the full paper</sub></p>
+</td>
+<td>
+
+#### 💡 Idea
+PlantVillage leaf-disease results are often suspected of near-duplicate leakage and background shortcuts. This paper audits the Tomato subset with group-aware source-leaf splits, near-duplicate threshold sweeps, masked-background probes, and compact CNN, transfer, and classical baselines.
+
+#### ⚙️ Pipeline Journey
+
+| | |
+|:---|:---|
+| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
+| 📚 **References** | 52 cited (all verified via WebSearch + Crossref) |
+| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
+| 📋 **Tables** | 4 result tables |
+| 📑 **Pages** | 17 pages (official NeurIPS 2025 style, preprint) |
+
+#### 🎯 Key Contribution
+Separates suspected leakage from measured effects: near-duplicate leakage is negligible on this subset, while the background shortcut is real but modest, yielding a repeatable leakage-aware evaluation protocol for plant-disease recognition.
+
+<a href="leaf_disease_leakage.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📄 Paper IV · PM2.5 Forecasting &ensp; <img src="https://img.shields.io/badge/domain-environmental_monitoring-blue?style=flat-square" alt="env">
 
 > **A Leakage-Free Reappraisal of Decomposition-Ensemble PM2.5 Forecasting**
 
@@ -79,7 +193,7 @@ Below are **seven papers** generated **end-to-end by spark-to-paper-skills** —
 <tr>
 <td width="340">
 <a href="pm25_forecasting.pdf">
-<img src="pm25_forecasting-01.png" width="320" alt="Paper I First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+<img src="pm25_forecasting-01.png" width="320" alt="Paper IV First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
 </a>
 <p align="center"><sub>👆 Click to read the full paper</sub></p>
 </td>
@@ -109,7 +223,7 @@ A leakage-free evaluation framework demonstrating that the reported superiority 
 
 ---
 
-### 📄 Paper II · Electricity-Load Forecasting &ensp; <img src="https://img.shields.io/badge/domain-energy_forecasting-green?style=flat-square" alt="energy">
+### 📄 Paper V · Electricity-Load Forecasting &ensp; <img src="https://img.shields.io/badge/domain-energy_forecasting-green?style=flat-square" alt="energy">
 
 > **A Leakage-Free Reappraisal of Decomposition-Ensemble Electricity-Load Forecasting**
 
@@ -117,7 +231,7 @@ A leakage-free evaluation framework demonstrating that the reported superiority 
 <tr>
 <td width="340">
 <a href="electricity_forecasting.pdf">
-<img src="electricity_forecasting-01.png" width="320" alt="Paper II First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+<img src="electricity_forecasting-01.png" width="320" alt="Paper V First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
 </a>
 <p align="center"><sub>👆 Click to read the full paper</sub></p>
 </td>
@@ -147,7 +261,7 @@ Demonstrates methodology transferability across forecasting domains — the leak
 
 ---
 
-### 📄 Paper III · Air and Water Quality Prediction &ensp; <img src="https://img.shields.io/badge/domain-environmental_AI-orange?style=flat-square" alt="envAI">
+### 📄 Paper VI · Air and Water Quality Prediction &ensp; <img src="https://img.shields.io/badge/domain-environmental_AI-orange?style=flat-square" alt="envAI">
 
 > **Interpretable Air and Water Quality Prediction with Feature Selection and Boosted Ensembles**
 
@@ -155,7 +269,7 @@ Demonstrates methodology transferability across forecasting domains — the leak
 <tr>
 <td width="340">
 <a href="air_water_quality.pdf">
-<img src="air_water_quality-01.png" width="320" alt="Paper III First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+<img src="air_water_quality-01.png" width="320" alt="Paper VI First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
 </a>
 <p align="center"><sub>👆 Click to read the full paper</sub></p>
 </td>
@@ -185,7 +299,7 @@ A dual-domain interpretable framework achieving competitive accuracy while expos
 
 ---
 
-### 📄 Paper IV · Leaf Disease Recognition &ensp; <img src="https://img.shields.io/badge/domain-computer_vision_/_agriculture-purple?style=flat-square" alt="CV">
+### 📄 Paper VII · Leaf Disease Recognition &ensp; <img src="https://img.shields.io/badge/domain-computer_vision_/_agriculture-purple?style=flat-square" alt="CV">
 
 > **Sparse Evidence Pooling for Compact Convolutional Leaf-Disease Recognition**
 
@@ -193,7 +307,7 @@ A dual-domain interpretable framework achieving competitive accuracy while expos
 <tr>
 <td width="340">
 <a href="leaf_disease.pdf">
-<img src="leaf_disease-01.png" width="320" alt="Paper IV First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
+<img src="leaf_disease-01.png" width="320" alt="Paper VII First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
 </a>
 <p align="center"><sub>👆 Click to read the full paper</sub></p>
 </td>
@@ -223,120 +337,6 @@ Sparse evidence pooling replaces global average pooling with a learnable, sparse
 
 ---
 
-### 📄 Paper V · Chronic Disease Risk Screening &ensp; <img src="https://img.shields.io/badge/domain-clinical_AI-red?style=flat-square" alt="clinical">
-
-> **Interpretable, Calibrated Early Screening of Chronic Disease Risk with Feature Selection and Ensembles**
-
-<table>
-<tr>
-<td width="340">
-<a href="chronic_disease_screening.pdf">
-<img src="chronic_disease_screening-01.png" width="320" alt="Paper V First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
-</a>
-<p align="center"><sub>👆 Click to read the full paper</sub></p>
-</td>
-<td>
-
-#### 💡 Idea
-Clinical screening models need calibrated probabilities and defensible explanations, not only high ranking accuracy. This paper evaluates diabetes, heart-disease, and stroke cohorts with leakage-safe preprocessing, feature selection, ensemble baselines, post-hoc calibration, and TreeSHAP audits.
-
-#### ⚙️ Pipeline Journey
-
-| | |
-|:---|:---|
-| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
-| 📚 **References** | 42 cited (all verified via WebSearch + Crossref) |
-| 📊 **Figures** | 5 auto-generated (editable vector PDFs) |
-| 📋 **Tables** | 4 result tables |
-| 📑 **Pages** | 17 pages (compiled PDF) |
-
-#### 🎯 Key Contribution
-Recasts chronic-disease screening as calibrated, interpretable risk estimation — showing where feature selection preserves discrimination, recalibration repairs unreliable rare-event probabilities, and accuracy can hide clinically useless stroke screening behavior.
-
-<a href="chronic_disease_screening.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
-
-</td>
-</tr>
-</table>
-
----
-
-### 📄 Paper VI · Bearing Fault Diagnosis &ensp; <img src="https://img.shields.io/badge/domain-industrial_fault_diagnosis-yellow?style=flat-square" alt="fault">
-
-> **Segment-Overlap Leakage in CWRU Bearing Fault Diagnosis with a Compact 1D-CNN**
-
-<table>
-<tr>
-<td width="340">
-<a href="bearing_fault_diagnosis.pdf">
-<img src="bearing_fault_diagnosis-01.png" width="320" alt="Paper VI First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
-</a>
-<p align="center"><sub>👆 Click to read the full paper</sub></p>
-</td>
-<td>
-
-#### 💡 Idea
-Bearing-fault diagnosis papers often split heavily overlapping CWRU vibration windows at random, putting near-duplicate segments on both sides of the train-test boundary. This paper holds the model and features fixed while comparing naive random, recording-aware, and cross-load protocols.
-
-#### ⚙️ Pipeline Journey
-
-| | |
-|:---|:---|
-| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
-| 📚 **References** | 50 cited (all verified via WebSearch + Crossref) |
-| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
-| 📋 **Tables** | 4 result tables |
-| 📑 **Pages** | 13 pages (compiled PDF) |
-
-#### 🎯 Key Contribution
-Quantifies segment-overlap leakage under controlled protocols: perfect naive accuracy drops once recordings or loads are held out, and the compact CNN no longer dominates classical baselines under honest evaluation.
-
-<a href="bearing_fault_diagnosis.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
-
-</td>
-</tr>
-</table>
-
----
-
-### 📄 Paper VII · Leaf Disease Leakage Audit &ensp; <img src="https://img.shields.io/badge/domain-computer_vision_/_agriculture-purple?style=flat-square" alt="CV">
-
-> **A Compact CNN for Leaf-Disease Classification under Leakage-Aware Evaluation**
-
-<table>
-<tr>
-<td width="340">
-<a href="leaf_disease_leakage.pdf">
-<img src="leaf_disease_leakage-01.png" width="320" alt="Paper VII First Page" style="border: 1px solid #e1e4e8; border-radius: 6px;">
-</a>
-<p align="center"><sub>👆 Click to read the full paper</sub></p>
-</td>
-<td>
-
-#### 💡 Idea
-PlantVillage leaf-disease results are often suspected of near-duplicate leakage and background shortcuts. This paper audits the Tomato subset with group-aware source-leaf splits, near-duplicate threshold sweeps, masked-background probes, and compact CNN, transfer, and classical baselines.
-
-#### ⚙️ Pipeline Journey
-
-| | |
-|:---|:---|
-| 🔗 **Stages** | 7 stages (plan → cite → write → refine → review → figure → compile) |
-| 📚 **References** | 52 cited (all verified via WebSearch + Crossref) |
-| 📊 **Figures** | 6 auto-generated (editable vector PDFs) |
-| 📋 **Tables** | 4 result tables |
-| 📑 **Pages** | 17 pages (compiled PDF) |
-
-#### 🎯 Key Contribution
-Separates suspected leakage from measured effects: near-duplicate leakage is negligible on this subset, while the background shortcut is real but modest, yielding a repeatable leakage-aware evaluation protocol for plant-disease recognition.
-
-<a href="leaf_disease_leakage.pdf"><img src="https://img.shields.io/badge/📄_Read_Full_Paper-PDF-d73a49?style=for-the-badge" alt="Read PDF"></a>
-
-</td>
-</tr>
-</table>
-
----
-
 ## 📊 Aggregate Statistics
 
 <table>
@@ -353,35 +353,35 @@ Separates suspected leakage from measured effects: near-duplicate leakage is neg
 </tr>
 <tr>
 <td>🏷️ <b>Domain</b></td>
+<td align="center"><sub>Fault Dx</sub></td>
+<td align="center"><sub>Clinical AI</sub></td>
+<td align="center"><sub>CV / Agri</sub></td>
 <td align="center"><sub>Env. Mon.</sub></td>
 <td align="center"><sub>Energy</sub></td>
 <td align="center"><sub>Env. AI</sub></td>
-<td align="center"><sub>CV / Agri</sub></td>
-<td align="center"><sub>Clinical AI</sub></td>
-<td align="center"><sub>Fault Dx</sub></td>
 <td align="center"><sub>CV / Agri</sub></td>
 <td align="center"><b>6 fields</b></td>
 </tr>
 <tr>
 <td>📚 <b>References</b></td>
+<td align="center">50</td>
+<td align="center">42</td>
+<td align="center">52</td>
 <td align="center">45</td>
 <td align="center">62</td>
 <td align="center">51</td>
 <td align="center">68</td>
-<td align="center">42</td>
-<td align="center">50</td>
-<td align="center">52</td>
 <td align="center"><b>370 cited</b></td>
 </tr>
 <tr>
 <td>📊 <b>Figures</b></td>
 <td align="center">6</td>
-<td align="center">6</td>
-<td align="center">6</td>
-<td align="center">5</td>
 <td align="center">5</td>
 <td align="center">6</td>
 <td align="center">6</td>
+<td align="center">6</td>
+<td align="center">6</td>
+<td align="center">5</td>
 <td align="center"><b>40 figs</b></td>
 </tr>
 <tr>
@@ -397,13 +397,13 @@ Separates suspected leakage from measured effects: near-duplicate leakage is neg
 </tr>
 <tr>
 <td>📑 <b>Pages</b></td>
+<td align="center">13</td>
+<td align="center">17</td>
+<td align="center">17</td>
 <td align="center">10</td>
 <td align="center">12</td>
 <td align="center">11</td>
 <td align="center">12</td>
-<td align="center">17</td>
-<td align="center">13</td>
-<td align="center">17</td>
 <td align="center"><b>92 pages</b></td>
 </tr>
 <tr>
