@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <a href="https://albus-white.github.io/spark-to-paper-skills/">🌐 Website</a> &middot;
+  <a href="https://spark-to-paper-skills.github.io/spark-to-paper-skills/">🌐 Website</a> &middot;
   <a href="#-generated-paper-showcase">🏆 Showcase</a> &middot;
   <a href="#-what-makes-it-different">✨ Features</a> &middot;
   <a href="#-how-it-compares">🧭 Compare</a> &middot;
