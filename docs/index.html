@@ -4,21 +4,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>spark-to-paper-skills | Drop a spark. Get a paper.</title>
-  <meta name="description" content="spark-to-paper-skills: 14 composable Claude Code skills that turn a one-line idea into a compiled paper PDF — real verified references, editable vector figures, machine-checked integrity. 7 showcase papers across 6 domains, 370 verified references, 40 editable vector figures." />
-  <meta name="keywords" content="spark-to-paper-skills, Claude Code skills, automated paper writing, AI paper generation, editable vector figures, DrawAI, machine-checked integrity, adversarial review, LaTeX pipeline" />
+  <meta name="description" content="spark-to-paper-skills: 13 composable Claude Code skills that turn a one-line idea into a compiled paper PDF — real verified references, editable vector figures, machine-checked integrity. Paper: arXiv 2608.11924, featured on Hugging Face Daily Papers. 7 showcase papers across 6 domains." />
+  <meta name="keywords" content="spark-to-paper-skills, Spark-to-Paper, arXiv 2608.11924, Claude Code skills, automated paper writing, AI paper generation, editable vector figures, DrawAI, machine-checked integrity, adversarial review, LaTeX pipeline" />
   <meta property="og:title" content="spark-to-paper-skills: Drop a spark. Get a paper." />
-  <meta property="og:description" content="14 composable Claude Code skills turn a one-line idea into a compiled PDF — real references, editable vector figures, machine-checked integrity. No app. No server. No setup." />
+  <meta property="og:description" content="13 composable Claude Code skills turn a one-line idea into a compiled PDF — real references, editable vector figures, machine-checked integrity. No app. No server. No setup." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://spark-to-paper-skills.github.io/spark-to-paper-skills/" />
+  <link rel="canonical" href="https://spark-to-paper-skills.github.io/spark-to-paper-skills/" />
   <meta property="og:image" content="https://spark-to-paper-skills.github.io/spark-to-paper-skills/framework.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="spark-to-paper-skills" />
-  <meta name="twitter:description" content="Drop a spark. Get a paper. 14 Claude Code skills, end to end." />
+  <meta name="twitter:description" content="Drop a spark. Get a paper. 13 Claude Code skills, end to end." />
   <meta name="twitter:image" content="https://spark-to-paper-skills.github.io/spark-to-paper-skills/framework.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill",
+    "author": [
+      {"@type": "Person", "name": "Zhuoyang Qian"},
+      {"@type": "Person", "name": "Biao Wu"},
+      {"@type": "Person", "name": "Yiran Wang"},
+      {"@type": "Person", "name": "Chris D Yan"},
+      {"@type": "Person", "name": "Desan Dai"},
+      {"@type": "Person", "name": "Liangwei Zheng"},
+      {"@type": "Person", "name": "Jin Jiang"},
+      {"@type": "Person", "name": "Junsheng Zhang"},
+      {"@type": "Person", "name": "Wenhao Wang"}
+    ],
+    "datePublished": "2026-08-12",
+    "identifier": "arXiv:2608.11924",
+    "sameAs": "https://arxiv.org/abs/2608.11924",
+    "url": "https://arxiv.org/abs/2608.11924",
+    "mainEntityOfPage": "https://spark-to-paper-skills.github.io/spark-to-paper-skills/",
+    "subjectOf": {
+      "@type": "SoftwareSourceCode",
+      "name": "spark-to-paper-skills",
+      "codeRepository": "https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills",
+      "license": "https://opensource.org/licenses/MIT",
+      "version": "1.2.0",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "Claude Code"
+    }
+  }
+  </script>
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23D97757' d='M12 1.6c.7 4.5 2 7.3 3.6 8.9 1.6 1.6 4.4 2.9 8.9 3.6-4.5.7-7.3 2-8.9 3.6-1.6 1.6-2.9 4.4-3.6 8.9-.7-4.5-2-7.3-3.6-8.9C6.8 16.5 4 15.2-.5 14.5c4.5-.7 7.3-2 8.9-3.6 1.6-1.6 2.9-4.4 3.6-8.9Z'/%3E%3Ccircle cx='19.6' cy='4.6' r='1.7' fill='%233A8E8C'/%3E%3C/svg%3E" />
 
   <link rel="preload" href="fonts/inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/jetbrains-mono-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <script>
     // Resolve the stored theme choice (system | light | dark) before paint.
@@ -51,24 +86,25 @@
   <nav class="nav" aria-label="Sections">
     <a href="#top" data-i18n="nav.home">Home</a>
     <div class="navmenu">
-      <button class="navmenu-btn" id="toc-btn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="toc-menu">
+      <button class="navmenu-btn" id="toc-btn" type="button" aria-expanded="false" aria-controls="toc-menu">
         <span class="navmenu-num" id="toc-num" aria-hidden="true">01</span>
         <span class="navmenu-label" id="toc-label" data-i18n="nav.contents">Contents</span>
         <svg class="navmenu-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="navmenu-pop" id="toc-menu" role="menu" hidden>
-        <a role="menuitem" href="#overview"><span class="tocnum" aria-hidden="true">&#10022;</span><span data-i18n="nav.overview">Overview</span></a>
-        <a role="menuitem" href="#idea"><span class="tocnum" aria-hidden="true">01</span><span data-i18n="nav.idea">Core Idea</span></a>
-        <a role="menuitem" href="#pipeline"><span class="tocnum" aria-hidden="true">02</span><span data-i18n="nav.pipeline">Pipeline</span></a>
-        <a role="menuitem" href="#figures"><span class="tocnum" aria-hidden="true">03</span><span data-i18n="nav.figures">Figure Engine</span></a>
-        <a role="menuitem" href="#experiments"><span class="tocnum" aria-hidden="true">04</span><span data-i18n="nav.experiments">Experiments</span></a>
-        <a role="menuitem" href="#writing"><span class="tocnum" aria-hidden="true">05</span><span data-i18n="nav.writing">Writing &amp; Review</span></a>
-        <a role="menuitem" href="#showcase"><span class="tocnum" aria-hidden="true">06</span><span data-i18n="nav.showcase">Showcase</span></a>
-        <a role="menuitem" href="#compare"><span class="tocnum" aria-hidden="true">07</span><span data-i18n="nav.compare">Compare</span></a>
-        <a role="menuitem" href="#cite"><span class="tocnum" aria-hidden="true">08</span><span data-i18n="nav.cite">BibTeX</span></a>
+      <div class="navmenu-pop" id="toc-menu" hidden>
+        <a href="#overview"><span class="tocnum" aria-hidden="true">&#10022;</span><span data-i18n="nav.overview">Overview</span></a>
+        <a href="#idea"><span class="tocnum" aria-hidden="true">01</span><span data-i18n="nav.idea">Core Idea</span></a>
+        <a href="#pipeline"><span class="tocnum" aria-hidden="true">02</span><span data-i18n="nav.pipeline">Pipeline</span></a>
+        <a href="#figures"><span class="tocnum" aria-hidden="true">03</span><span data-i18n="nav.figures">Figure Engine</span></a>
+        <a href="#experiments"><span class="tocnum" aria-hidden="true">04</span><span data-i18n="nav.experiments">Experiments</span></a>
+        <a href="#writing"><span class="tocnum" aria-hidden="true">05</span><span data-i18n="nav.writing">Writing &amp; Review</span></a>
+        <a href="#showcase"><span class="tocnum" aria-hidden="true">06</span><span data-i18n="nav.showcase">Showcase</span></a>
+        <a href="#compare"><span class="tocnum" aria-hidden="true">07</span><span data-i18n="nav.compare">Compare</span></a>
+        <a href="#cite"><span class="tocnum" aria-hidden="true">08</span><span data-i18n="nav.cite">BibTeX</span></a>
       </div>
     </div>
     <a href="#showcase" data-i18n="nav.papers">Papers</a>
+    <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener" data-i18n="nav.paper">Paper</a>
     <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills" target="_blank" rel="noopener" data-i18n="nav.code">Code</a>
     <button class="lang-toggle" id="lang-toggle" type="button" title="切换语言 / Switch language" aria-label="Switch language">
       <span class="lang-label">中文</span>
@@ -85,12 +121,20 @@
   <div class="hero-inner">
     <div class="hero-lead">
       <div class="hero-head">
+        <div class="hero-flags" aria-label="Paper status">
+          <a class="hero-flag" href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">
+            <b>arXiv</b><span>2608.11924</span>
+          </a>
+          <a class="hero-flag is-hf" href="https://huggingface.co/papers/2608.11924" target="_blank" rel="noopener">
+            <span aria-hidden="true">&#129303;</span><b>#2</b><span data-i18n="hero.flag.hf">Daily Papers &middot; Aug 13, 2026</span>
+          </a>
+        </div>
         <h1>spark-to-paper-skills</h1>
         <p class="hero-paper-title">Drop a spark. Get a paper.</p>
       </div>
 
       <p class="hero-subtitle" data-i18n="hero.subtitle">
-        14 composable Claude Code skills turn a one-line idea into a
+        13 composable Claude Code skills turn a one-line idea into a
         <strong>compiled paper PDF</strong> — real verified references, editable
         vector figures, and <strong>machine-checked integrity</strong> included.
         Claude owns the judgment; deterministic Python gates own the facts.
@@ -125,7 +169,7 @@
           <svg class="button-icon button-icon-solid" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M8 0C3.58 0 0 3.67 0 8.2c0 3.62 2.29 6.69 5.47 7.78.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.38-2.53-.5-2.69-.95-.09-.23-.48-.95-.82-1.14-.28-.15-.68-.52-.01-.53.63-.01 1.08.59 1.23.83.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.09-1.78-.21-3.64-.91-3.64-4.03 0-.89.31-1.62.82-2.19-.08-.21-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.42 7.42 0 0 1 8 4.01c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.16.51.57.82 1.3.82 2.19 0 3.13-1.87 3.82-3.65 4.03.29.26.54.75.54 1.51 0 1.09-.01 1.97-.01 2.24 0 .22.15.48.55.4A8.1 8.1 0 0 0 16 8.2C16 3.67 12.42 0 8 0Z" />
           </svg>
-          <span data-i18n="hero.btn.code">Code Repo</span>
+          <span data-i18n="hero.btn.code">Code &middot; 500+ stars</span>
         </a>
         <a class="button ghost brand" style="--brand: #b31b1b;" href="showcase/pm25_forecasting.pdf"
            target="_blank" rel="noopener"
@@ -148,7 +192,7 @@
     <div class="hero-side">
       <figure class="backends" id="backends">
         <figcaption class="backends-cap">
-          <span class="backends-tag" data-i18n="hero.related.tag">14 skills &middot; one orchestrator</span>
+          <span class="backends-tag" data-i18n="hero.related.tag">13 skills &middot; one orchestrator</span>
           <span class="backends-sub" data-i18n="backends.sub">ts-paper routes any input shape and drives the chain end to end</span>
         </figcaption>
 
@@ -169,9 +213,9 @@
         </div>
 
         <p class="sr-only" data-i18n="backends.a11y">
-          A one-line idea, a proposal, a proposal with real results, or a corpus file
-          all route through ts-paper and the 14-skill suite, and come out
-          as a compiled PDF with sources, figures and logs on disk.
+          A one-line idea, a proposal, a proposal with real results, or a story
+          from a previous run all route through ts-paper and the 13-skill suite,
+          and come out as a compiled PDF with sources, figures and logs on disk.
         </p>
       </figure>
 
@@ -255,6 +299,48 @@
       WebSearch + Crossref; figures delivered as editable vector PDFs; integrity
       gates passed on all seven.
     </p>
+
+    <div class="sb-paper">
+      <div class="sb-paper-head">
+        <span class="sb-kicker" data-i18n="sbp.kicker">Measured in the paper</span>
+        <p class="sb-paper-sub" data-i18n="sbp.sub">
+          Across eight controlled research topics, from instrumented runs and a
+          controlled ablation &mdash;
+          <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">arXiv:2608.11924</a>.
+        </p>
+      </div>
+      <ul class="kpi-strip kpi-5" aria-label="Headline numbers from the paper">
+        <li class="kpi">
+          <span class="kpi-bench" data-i18n="sbp.k1.name">Citation validity</span>
+          <span class="kpi-metric" data-i18n="sbp.k1.metric">resolved references / total</span>
+          <span class="kpi-num"><b class="kpi-to">99.5%</b></span>
+          <span class="kpi-delta" data-i18n="sbp.k1.delta">384 refs</span>
+        </li>
+        <li class="kpi">
+          <span class="kpi-bench" data-i18n="sbp.k2.name">Figure editability</span>
+          <span class="kpi-metric" data-i18n="sbp.k2.metric">editable elements / total</span>
+          <span class="kpi-num"><b class="kpi-to">96.4%</b></span>
+          <span class="kpi-delta" data-i18n="sbp.k2.delta">~1,900 elems</span>
+        </li>
+        <li class="kpi">
+          <span class="kpi-bench" data-i18n="sbp.k3.name">Fabrication detection</span>
+          <span class="kpi-metric" data-i18n="sbp.k3.metric">single pass &rarr; full stack</span>
+          <span class="kpi-num"><i class="kpi-from">14%</i><b class="kpi-to">92%</b></span>
+          <span class="kpi-delta" data-i18n="sbp.k3.delta">36 probes</span>
+        </li>
+        <li class="kpi">
+          <span class="kpi-bench" data-i18n="sbp.k4.name">Review precision</span>
+          <span class="kpi-metric" data-i18n="sbp.k4.metric">verified / raised issues</span>
+          <span class="kpi-num"><b class="kpi-to">74%</b></span>
+          <span class="kpi-delta" data-i18n="sbp.k4.delta">42/57</span>
+        </li>
+        <li class="kpi">
+          <span class="kpi-bench" data-i18n="sbp.k5.name">Per manuscript</span>
+          <span class="kpi-metric" data-i18n="sbp.k5.metric">avg &middot; 11.9M tokens</span>
+          <span class="kpi-num"><b class="kpi-to">$8.1 &middot; 3.2h</b></span>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -274,13 +360,13 @@
         <a href="#showcase" tabindex="-1"><img src="assets/thumbs/electricity_forecasting.png" alt="First page of the electricity-load forecasting paper" loading="lazy" width="640" height="905"></a>
         <a href="#showcase" tabindex="-1"><img src="assets/thumbs/air_water_quality.png" alt="First page of the air and water quality paper" loading="lazy" width="640" height="905"></a>
         <a href="#showcase" tabindex="-1"><img src="assets/thumbs/leaf_disease.png" alt="First page of the leaf-disease recognition paper" loading="lazy" width="640" height="905"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/bearing_fault_diagnosis.png" alt="" loading="lazy" width="640" height="828"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/chronic_disease_screening.png" alt="" loading="lazy" width="640" height="828"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/leaf_disease_leakage.png" alt="" loading="lazy" width="640" height="828"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/pm25_forecasting.png" alt="" loading="lazy" width="640" height="905"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/electricity_forecasting.png" alt="" loading="lazy" width="640" height="905"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/air_water_quality.png" alt="" loading="lazy" width="640" height="905"></a>
-        <a href="#showcase" tabindex="-1"><img src="assets/thumbs/leaf_disease.png" alt="" loading="lazy" width="640" height="905"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/bearing_fault_diagnosis.png" alt="" loading="lazy" width="640" height="828"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/chronic_disease_screening.png" alt="" loading="lazy" width="640" height="828"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/leaf_disease_leakage.png" alt="" loading="lazy" width="640" height="828"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/pm25_forecasting.png" alt="" loading="lazy" width="640" height="905"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/electricity_forecasting.png" alt="" loading="lazy" width="640" height="905"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/air_water_quality.png" alt="" loading="lazy" width="640" height="905"></a>
+        <a href="#showcase" tabindex="-1" aria-hidden="true"><img src="assets/thumbs/leaf_disease.png" alt="" loading="lazy" width="640" height="905"></a>
       </div>
     </div>
   </section>
@@ -295,7 +381,7 @@
       <p class="section-lede" data-i18n="idea.lede">
         Autonomous paper generators fail in three familiar ways: they invent
         numbers, they cite papers that do not exist, and they ship figures nobody
-        can edit. spark-to-paper splits every stage between two actors &mdash;
+        can edit. Spark-to-Paper splits every stage between two actors &mdash;
         <strong>Claude owns the judgment</strong> (writing, research, critique,
         review) and <strong>deterministic Python gates own the facts</strong>.
         A red gate does not warn; it fails the build.
@@ -384,6 +470,13 @@
         <p data-i18n="idea.p4.body">Claude looks at every rendered figure with its own eyes &mdash; faithfulness to the method, semantic agreement with the equations, readability, aesthetics &mdash; and a measured geometry audit drives at least four repair rounds on every redrawn SVG.</p>
       </div>
     </div>
+
+    <p class="table-caption" data-i18n="idea.ablation">
+      Measured in the paper&rsquo;s controlled ablation: with 36 unsupported claims
+      injected, detection climbs from 14% for a single-pass draft to 69% with the
+      gates, 81% adding self-review, and <strong>92%</strong> with the full stack
+      (<a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">arXiv:2608.11924</a>, Table&nbsp;4).
+    </p>
   </section>
 
   <div class="band">
@@ -442,9 +535,7 @@
       <p class="table-caption" data-i18n="pipe.route.caption">
         Any real measured number in the input &mdash; a filled table, &ldquo;achieved
         0.62 HOTA&rdquo; &mdash; forces the data-aware route; it is never sent down the
-        no-numbers proposal path. Optional upstream: <code>ts-kg-build</code> turns a
-        <code>corpus.jsonl</code> into a research-pattern knowledge graph for story
-        recall, degrading gracefully when no embedding endpoint is configured.
+        no-numbers proposal path.
       </p>
     </div>
 
@@ -481,7 +572,7 @@
       </div>
       <div class="step">
         <strong data-i18n="pipe.s6.title">6 &middot; Figures</strong>
-        <p data-i18n="pipe.s6.body">Data plots are born-vector matplotlib; schematics are PaperBanana renders whose design language is learned, then redrawn as native, audited SVG.</p>
+        <p data-i18n="pipe.s6.body">Data plots are born-vector matplotlib; schematics are PaperBanana renders reconstructed in code as native, audited vector graphics.</p>
       </div>
       <div class="step">
         <strong data-i18n="pipe.s7.title">7 &middot; Compile</strong>
@@ -495,12 +586,12 @@
 
     <div class="idea-panels">
       <article class="idea-panel" data-side="before">
-        <span class="idea-panel-tag" data-i18n="pipe.mode.p.tag">results_mode &middot; proposal</span>
+        <span class="idea-panel-tag" data-i18n="pipe.mode.p.tag">Proposal Mode &middot; results_mode: proposal</span>
         <h3 data-i18n="pipe.mode.p.title">No numbers, ever</h3>
         <p data-i18n="pipe.mode.p.body">Forward-looking prose only. A concrete metric in a sentence &mdash; &ldquo;18.3%&rdquo;, &ldquo;0.72 F1&rdquo;, &ldquo;2.5&times;&rdquo;, even &ldquo;doubles&rdquo; &mdash; hard-fails the lint; bare-integer results are caught in self-review. Result tables exist with every cell literally <code>--</code>; the only place a dash may appear. No results figure is drawn at all, because drawing one would fabricate data.</p>
       </article>
       <article class="idea-panel" data-side="after">
-        <span class="idea-panel-tag" data-i18n="pipe.mode.d.tag">results_mode &middot; data_aware</span>
+        <span class="idea-panel-tag" data-i18n="pipe.mode.d.tag">Data-Aware Mode &middot; results_mode: data_aware</span>
         <h3 data-i18n="pipe.mode.d.title">Every number traced</h3>
         <p data-i18n="pipe.mode.d.body">Your real results are distilled into <code>results.facts.json</code> &mdash; the audit ground truth. Result sections switch to definitive past tense; any decimal or percent in prose that is not in the facts file fails the build. A measured-but-missing value is written <code>TBD</code> and never guessed.</p>
       </article>
@@ -523,13 +614,14 @@
         The engine is decided by <strong>which section a figure lives in</strong>.
         Results plots draw from real data with matplotlib &mdash; numerically exact,
         born vector, never from an image model. Every other figure runs a three-act
-        pipeline: the official <strong>PaperBanana</strong> agent team renders candidate
-        images; <code>ts-figure-svg</code> learns the winner&rsquo;s design language and
-        <strong>redraws the figure natively</strong> &mdash; real
-        <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, its content taken from the
-        paper&rsquo;s own facts, never traced from pixels; then a stdlib geometry audit
-        drives a repair loop of at least four rounds. If native redraw is impossible,
-        the DrawAI hybrid &mdash; then the approved PNG &mdash; steps in.
+        pipeline: the official <strong>PaperBanana</strong> agent team renders the
+        candidate image that becomes the <strong>visual target</strong>;
+        <code>ts-figure-svg</code> reconstructs it in code as editable vector graphics
+        &mdash; real <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, every label
+        live text &mdash; rendering each round and comparing it against the target
+        until structure and appearance are recovered; a geometry audit drives at
+        least four repair rounds. If reconstruction stays unreliable, the DrawAI
+        hybrid &mdash; then the approved PNG &mdash; steps in.
         <strong>Never a lossy trace.</strong>
       </p>
     </div>
@@ -541,15 +633,15 @@
       </div>
       <div class="step">
         <strong data-i18n="fig.s2.title">Learn the look</strong>
-        <p data-i18n="fig.s2.body">Claude looks at the chosen render and extracts its design language &mdash; palette, type scale, spacing, idiom &mdash; into a style sheet. The PNG is a <em>style reference only</em>.</p>
+        <p data-i18n="fig.s2.body">Claude looks at the chosen render and extracts its design language &mdash; palette, type scale, spacing, idiom &mdash; into a style sheet. The PNG is also the <em>visual target</em>: the redraw is rendered and compared against it, round by round, until its structure and appearance are recovered.</p>
       </div>
       <div class="step">
-        <strong data-i18n="fig.s3.title">Redraw from the facts</strong>
-        <p data-i18n="fig.s3.body">The figure is redrawn as a native SVG from the paper&rsquo;s own text: every label live <code>&lt;text&gt;</code>, every edge traceable to the method. Never traced, never embedded &mdash; take the PNG&rsquo;s look, take the paper&rsquo;s content.</p>
+        <strong data-i18n="fig.s3.title">Reconstruct in code</strong>
+        <p data-i18n="fig.s3.body">The figure is reconstructed as editable vector graphics through code &mdash; every label live <code>&lt;text&gt;</code>, every element a real object &mdash; with the chosen render as its visual target. Reference grounding and visual review then check the figure against the manuscript itself.</p>
       </div>
       <div class="step">
         <strong data-i18n="fig.s4.title">Audit &amp; repair</strong>
-        <p data-i18n="fig.s4.body">A stdlib-only geometry audit measures the drawing &mdash; overflow, text-on-text, clipped arrowheads, sub-legible type &mdash; and drives repairs for at least four rounds, with no upper bound while defects remain.</p>
+        <p data-i18n="fig.s4.body">Each round renders the reconstruction and compares it with the target, and a geometry audit measures the drawing &mdash; overflow, text-on-text, clipped arrowheads, sub-legible type &mdash; driving repairs for at least four rounds, with no upper bound while defects remain.</p>
       </div>
     </div>
 
@@ -571,8 +663,8 @@
           <article class="loop-step">
             <span class="loop-num" aria-hidden="true">2</span>
             <div>
-              <strong data-i18n="fig.l2.title">Content from the paper</strong>
-              <p data-i18n="fig.l2.body">Modules, edges and labels come from the figure spec and the paper&rsquo;s equations &mdash; generated renders invent links and garble labels, so their logic is never trusted.</p>
+              <strong data-i18n="fig.l2.title">Checked against the paper</strong>
+              <p data-i18n="fig.l2.body">Modules, edges and labels are then checked against the figure spec and the paper&rsquo;s equations &mdash; reference grounding and visual review catch a garbled label or an invented link before it ships.</p>
             </div>
           </article>
           <article class="loop-step">
@@ -614,13 +706,13 @@
           <header class="loop-group-head">
             <span class="loop-badge" aria-hidden="true">M</span>
             <span class="loop-group-name" data-i18n="fig.lane.rebuild">Measure</span>
-            <span class="loop-group-note" data-i18n="fig.lane.rebuild.note">stdlib-only &mdash; no renderer, no models, no key</span>
+            <span class="loop-group-note" data-i18n="fig.lane.rebuild.note">render &amp; compare against the target, then measure</span>
           </header>
           <article class="loop-step">
             <span class="loop-num" aria-hidden="true">4</span>
             <div>
               <strong data-i18n="fig.l4.title">The audit measures the drawing</strong>
-              <p data-i18n="fig.l4.body"><code>audit_svg.py</code> computes text boxes from Times core-14 metrics and fails a round on canvas or card overflow, a clipped arrowhead, text over text, shapes painted over text, sub-legible type, font-fallback glyphs, CSS-cascade colour traps &mdash; and path soup, the signature of a traced raster.</p>
+              <p data-i18n="fig.l4.body">Each round renders the reconstruction and compares it with the reference; a gap in layout, geometry or text placement fails the round. <code>audit_svg.py</code> then measures the drawing &mdash; canvas or card overflow, a clipped arrowhead, text over text, sub-legible type, font-fallback glyphs &mdash; and path soup, the signature of a traced raster.</p>
             </div>
           </article>
         </section>
@@ -658,9 +750,9 @@
       </li>
       <li class="kpi">
         <span class="kpi-bench" data-i18n="fig.k2.name">Audit cost</span>
-        <span class="kpi-metric" data-i18n="fig.k2.metric">renderer &middot; models &middot; keys</span>
+        <span class="kpi-metric" data-i18n="fig.k2.metric">extra models &middot; API keys</span>
         <span class="kpi-num"><b class="kpi-to">0</b></span>
-        <span class="kpi-delta" data-i18n="fig.k2.delta">stdlib-only</span>
+        <span class="kpi-delta" data-i18n="fig.k2.delta">code-only</span>
       </li>
       <li class="kpi">
         <span class="kpi-bench" data-i18n="fig.k3.name">Fallback hybrid</span>
@@ -682,9 +774,9 @@
         <span class="plot-note" data-i18n="fig.demo.note">Results plots are drawn from code with the suite&rsquo;s publication house style &mdash; semantic colors, exact numbers from <code>results.facts.json</code>, and a vector PDF written alongside every PNG with the text kept editable.</span>
       </figcaption>
       <div class="plot-demo">
-        <img src="figs/plot-pm25.png" alt="Bar chart from the PM2.5 paper: honest decomposition is worse than plain GRU; only the leaky bar looks good." loading="lazy" />
-        <img src="figs/plot-bearing.png" alt="Bar chart from the bearing-fault paper: three protocols compared — the naive split saturates, honest splits expose the gap." loading="lazy" />
-        <img src="figs/plot-chronic.png" alt="Bar chart from the chronic-disease paper: discrimination AUC by model family per cohort under the leakage-safe protocol." loading="lazy" />
+        <img src="figs/plot-pm25.png" alt="Bar chart from the PM2.5 paper: honest decomposition is worse than plain GRU; only the leaky bar looks good." loading="lazy" width="791" height="779" />
+        <img src="figs/plot-bearing.png" alt="Bar chart from the bearing-fault paper: three protocols compared — the naive split saturates, honest splits expose the gap." loading="lazy" width="719" height="574" />
+        <img src="figs/plot-chronic.png" alt="Bar chart from the chronic-disease paper: discrimination AUC by model family per cohort under the leakage-safe protocol." loading="lazy" width="729" height="461" />
       </div>
     </figure>
 
@@ -692,7 +784,7 @@
       <div class="finding-card">
         <span class="finding-value">59,430</span>
         <span class="finding-title" data-i18n="fig.f1.title">Why not just trace the PNG?</span>
-        <p data-i18n="fig.f1.body">Auto-tracing one figure produced 59,430 paths, 10&nbsp;MB, and not one editable label &mdash; and it was still blurry when zoomed. &ldquo;No <code>&lt;image&gt;</code> element&rdquo; does not mean vector. So the redraw takes the PNG&rsquo;s <em>look</em> and the paper&rsquo;s <em>content</em>, and draws real objects.</p>
+        <p data-i18n="fig.f1.body">Auto-tracing one figure produced 59,430 paths, 10&nbsp;MB, and not one editable label &mdash; and it was still blurry when zoomed. &ldquo;No <code>&lt;image&gt;</code> element&rdquo; does not mean vector. So the reconstruction draws <em>real objects</em> to match the render &mdash; live labels, editable shapes &mdash; never traced pixels.</p>
       </div>
       <div class="finding-card">
         <span class="finding-value" data-i18n="fig.f2.value">3<em>rungs</em></span>
@@ -753,6 +845,21 @@
         <p data-i18n="exp.f2.body">Anything classified CLAIMED_BUT_NOT_RUN gets its claim weakened or removed &mdash; or the run stops to ask. The final step diffs the before/after paper and issues an honesty verdict, admitting when experiments weakened the original story.</p>
       </div>
     </div>
+
+    <article class="idea-statement">
+      <h3 data-i18n="exp.srl.title">The Self-Refutation Loop &mdash; named, bounded, survived.</h3>
+      <p data-i18n="exp.srl.body">
+        Long research trajectories have a failure mode the paper names the
+        <strong>Self-Refutation Loop</strong>: the system keeps judging its own
+        evidence insufficient for the original objective, yet keeps revising the
+        same direction without converging. Spark-to-Paper bounds it at
+        <strong>seven experiment&ndash;critique&ndash;revision cycles</strong>; an
+        unresolved trajectory is terminated and written up as an honest failure
+        report &mdash; idea, methods, experiments, results, and why the evidence
+        fell short &mdash; and the system restarts from a new idea rather than
+        forcing success.
+      </p>
+    </article>
 
     <div class="table-wrap">
       <div class="table-title"><span data-i18n="exp.table.title">Guardrails, out of the box.</span></div>
@@ -821,15 +928,17 @@
     <article class="idea-statement">
       <h3 class="hang-quote" data-i18n="wr.rev.title">&ldquo;Can&rsquo;t quote = didn&rsquo;t read.&rdquo;</h3>
       <p data-i18n="wr.rev.body">
-        The review panel runs N isolated reviewers &mdash; theory, empirical, applied
-        lenses &mdash; each seeing nothing but the paper. Every issue must carry an
-        exact verbatim quote and a closeable criterion. Each finding then faces
-        three perspective-diverse skeptics &mdash; misreading? already addressed?
-        overblown? &mdash; and survives unless a majority refute it. Fresh panels re-run
-        until a full pass finds nothing new &mdash; within a budget-capped number of
-        rounds. Fixes are minimal, targeted, and re-gated: the linters are re-run
-        after the edits land, because the suite derives &ldquo;green&rdquo; &mdash; it
-        never forecasts it.
+        The review panel runs N isolated reviewers &mdash; theoretical soundness,
+        experimental design, systems validity &mdash; each seeing nothing but the
+        paper. Every issue must carry an exact verbatim quote and a closeable
+        criterion. Each finding then faces three perspective-diverse skeptics
+        &mdash; misreading? already addressed? out of scope? &mdash; and survives
+        unless a majority refute it. Fresh panels re-run until a full pass finds
+        nothing new &mdash; within a budget-capped number of rounds. Fixes are
+        minimal, targeted, and re-gated: the linters are re-run after the edits
+        land, because the suite derives &ldquo;green&rdquo; &mdash; it never
+        forecasts it. In the paper&rsquo;s blinded evaluation, issues raised this
+        way were verified at <strong>74% precision</strong>.
       </p>
     </article>
 
@@ -890,7 +999,9 @@
       <p class="section-lede" data-i18n="sc.lede">
         Each paper below started as a research proposal and ran the full chain &mdash;
         plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr;
-        compile. Click any card for the compiled PDF.
+        compile &mdash; then the experiment stage ran the planned experiments and
+        wrote the measured results back into the draft. Click any card for the
+        compiled PDF.
       </p>
     </div>
 
@@ -992,7 +1103,9 @@
       and two in the official NeurIPS 2025 style (preprint option); the remaining
       four use the Traitement du Signal journal format. References verified via
       WebSearch + Crossref on every paper; all figures delivered as editable
-      vector PDFs; integrity gates passed on all seven.
+      vector PDFs; integrity gates passed on all seven. Two of these domains
+      &mdash; chronic-disease screening and PM2.5 forecasting &mdash; are dissected
+      as case studies in the paper.
     </p>
   </section>
 
@@ -1014,13 +1127,59 @@
       </p>
     </div>
 
-    <figure class="figure-block fig-band">
-      <img width="2068" height="708" src="comparison.svg" alt="Capability comparison matrix: spark-to-paper-skills versus ARS, Idea2Paper, AutoResearchClaw, AI-Scientist, Kosmos and others across idea-to-PDF coverage, experiments, figures, and integrity checking." loading="lazy" />
-      <figcaption class="plot-head">
-        <span class="plot-title" data-i18n="cmp.fig.title">Capability matrix across AI-research tools</span>
-        <span class="plot-note" data-i18n="cmp.fig.note">&#10003; full &middot; &#9679; partial &middot; &ndash; none. Sources: the linked repos of ARS, Idea2Paper, AutoResearchClaw, AI-Scientist, Kosmos, karpathy/autoresearch and auto_research.</span>
-      </figcaption>
-    </figure>
+    <div class="table-wrap">
+      <div class="table-title"><span data-i18n="cmp.fig.title">Capability comparison across AI-research systems</span></div>
+      <div class="table-scroll">
+        <table class="results-table cmp-table">
+          <thead>
+            <tr>
+              <th class="th-text" data-i18n="cmp.th.sys">System</th>
+              <th data-i18n="cmp.th.e2e">End-to-end</th>
+              <th data-i18n="cmp.th.exp">Runs exper.</th>
+              <th data-i18n="cmp.th.fig">Draws figures</th>
+              <th data-i18n="cmp.th.vec">Editable vectors</th>
+              <th data-i18n="cmp.th.infra">No standing infra.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="best-row">
+              <td class="model-cell"><strong>Spark-to-Paper</strong> <span data-i18n="cmp.ours">(ours)</span></td>
+              <td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">AI Scientist / v2</td>
+              <td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">AutoResearchClaw</td>
+              <td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-yes">&#10003;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">Kosmos / Robin</td>
+              <td class="cmp-part">&#9679;</td><td class="cmp-yes">&#10003;</td><td class="cmp-part">&#9679;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">Idea2Story</td>
+              <td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td><td class="cmp-part">&#9679;</td><td class="cmp-no">&ndash;</td><td class="cmp-yes">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">ARS</td>
+              <td class="cmp-part">&#9679;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td><td class="cmp-yes">&#10003;</td>
+            </tr>
+            <tr>
+              <td class="model-cell">CycleResearcher</td>
+              <td class="cmp-part">&#9679;</td><td class="cmp-yes">&#10003;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td><td class="cmp-no">&ndash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption" data-i18n="cmp.fig.note">
+        &#10003; full &middot; &#9679; partial &middot; &ndash; not offered or not
+        documented. Reproduced from Table&nbsp;1 of the
+        <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">paper</a>,
+        based on each system&rsquo;s own public documentation.
+      </p>
+    </div>
 
     <aside class="takeaway" aria-label="Takeaway">
       <p class="takeaway-kicker" data-i18n="takeaway.kicker">The takeaway</p>
@@ -1047,20 +1206,22 @@
       </div>
       <h2 data-i18n="cite.title">Cite this work.</h2>
       <p class="section-lede" data-i18n="cite.lede">
-        If spark-to-paper-skills helps your research, please cite the project.
+        If Spark-to-Paper helps your research, please cite the paper
+        (<a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">arXiv:2608.11924</a>).
       </p>
     </div>
 
     <div class="bibtex">
       <button class="bib-copy" id="bib-copy" type="button" aria-label="Copy BibTeX" data-i18n-label="bib.copy.aria" data-i18n="cite.copy">Copy</button>
-<pre id="bibtex-code"><code>@software{spark_to_paper_skills_2026,
-  author  = {White, Albus},
-  title   = {spark-to-paper-skills: 14 composable Claude Code skills
-             from a one-line idea to a compiled paper},
+<pre id="bibtex-code"><code>@article{qian2026sparktopaper,
+  author  = {Qian, Zhuoyang and Wu, Biao and Wang, Yiran and Yan, Chris D and
+             Dai, Desan and Zheng, Liangwei and Jiang, Jin and
+             Zhang, Junsheng and Wang, Wenhao},
+  title   = {Spark-to-Paper: End-to-End Research Paper Generation
+             as a Composable Skill},
+  journal = {arXiv preprint arXiv:2608.11924},
   year    = {2026},
-  version = {1.2.0},
-  url     = {https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills},
-  license = {MIT}
+  url     = {https://arxiv.org/abs/2608.11924}
 }</code></pre>
     </div>
   </section>
@@ -1068,7 +1229,7 @@
 </main>
 
 <footer class="footer">
-  <p data-i18n="footer.copy">&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Built on Claude Code &middot; Figures: PaperBanana+ native SVG, DrawAI hybrid as fallback &middot; Site design after <a href="https://lh-harness.pages.dev/" target="_blank" rel="noopener">LongHorizon-Harness</a>.</p>
+  <p data-i18n="footer.copy">&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Paper: <a href="https://arxiv.org/abs/2608.11924" target="_blank" rel="noopener">arXiv:2608.11924</a> &middot; Built on Claude Code &middot; Figures: PaperBanana+ native SVG, DrawAI hybrid as fallback &middot; Site design after <a href="https://lh-harness.pages.dev/" target="_blank" rel="noopener">LongHorizon-Harness</a>.</p>
 </footer>
 
 </body>

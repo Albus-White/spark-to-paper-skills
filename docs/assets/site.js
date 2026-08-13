@@ -23,28 +23,30 @@
     "nav.compare": { en: "Compare", zh: "横向对比" },
     "nav.cite": { en: "BibTeX", zh: "引用" },
     "nav.papers": { en: "Papers", zh: "论文" },
+    "nav.paper": { en: "Paper", zh: "arXiv" },
     "nav.code": { en: "Code", zh: "代码" },
 
     /* --- hero --- */
     "hero.subtitle": {
-      en: "14 composable Claude Code skills turn a one-line idea into a <strong>compiled paper PDF</strong> — real verified references, editable vector figures, and <strong>machine-checked integrity</strong> included. Claude owns the judgment; deterministic Python gates own the facts. <em>No app. No server. No setup.</em>",
-      zh: "14 个可组合的 Claude Code skill，把一句话的想法做成<strong>编译完成的论文 PDF</strong>：参考文献真实且经过核验，插图是可编辑的矢量图，<strong>诚实性由机器校验</strong>。判断交给 Claude，事实交给确定性的 Python 闸门。<em>不装应用，不起服务，零配置。</em>"
+      en: "13 composable Claude Code skills turn a one-line idea into a <strong>compiled paper PDF</strong> — real verified references, editable vector figures, and <strong>machine-checked integrity</strong> included. Claude owns the judgment; deterministic Python gates own the facts. <em>No app. No server. No setup.</em>",
+      zh: "13 个可组合的 Claude Code skill，把一句话的想法做成<strong>编译完成的论文 PDF</strong>：参考文献真实且经过核验，插图是可编辑的矢量图，<strong>诚实性由机器校验</strong>。判断交给 Claude，事实交给确定性的 Python 闸门。<em>不装应用，不起服务，零配置。</em>"
     },
     "hero.btn.papers": { en: "See the papers", zh: "看论文成品" },
     "hero.btn.figures": { en: "Figure engine", zh: "画图引擎" },
     "hero.btn.pipeline": { en: "How it works", zh: "工作原理" },
-    "hero.btn.code": { en: "Code Repo", zh: "代码仓库" },
+    "hero.btn.code": { en: "Code &middot; 500+ stars", zh: "代码 · 500+ star" },
     "hero.btn.sample": { en: "Sample paper", zh: "论文样例" },
     "hero.btn.sample.aria": { en: "Open a sample generated paper (PDF)", zh: "打开一篇生成的论文样例（PDF）" },
     "hero.btn.release": { en: "v1.2.0", zh: "v1.2.0" },
-    "hero.related.tag": { en: "14 skills &middot; one orchestrator", zh: "14 个 skill · 一个调度器" },
+    "hero.flag.hf": { en: "Daily Papers &middot; Aug 13, 2026", zh: "Daily Papers 日榜 · 2026-08-13" },
+    "hero.related.tag": { en: "13 skills &middot; one orchestrator", zh: "13 个 skill · 一个调度器" },
     "backends.sub": { en: "ts-paper routes any input shape and drives the chain end to end", zh: "无论输入是什么形态，ts-paper 都能路由到位，驱动整条链跑完全程" },
     "backends.in": { en: "You drop", zh: "你丢进来" },
     "backends.out": { en: "You get", zh: "你拿到" },
     "backends.orch": { en: "Stage 0 &middot; route", zh: "Stage 0 · 路由" },
     "backends.a11y": {
-      en: "A one-line idea, a proposal, a proposal with real results, or a corpus file all route through ts-paper and the 14-skill suite, and come out as a compiled PDF with sources, figures and logs on disk.",
-      zh: "无论是一句话想法、proposal、带真实结果的 proposal，还是语料文件，都由 ts-paper 路由进这套 14 个 skill 的流程，最终产出编译好的 PDF，源文件、插图和日志也都留在磁盘上。"
+      en: "A one-line idea, a proposal, a proposal with real results, or a story from a previous run all route through ts-paper and the 13-skill suite, and come out as a compiled PDF with sources, figures and logs on disk.",
+      zh: "无论是一句话想法、proposal、带真实结果的 proposal，还是上次运行留下的 story，都由 ts-paper 路由进这套 13 个 skill 的流程，最终产出编译好的 PDF，源文件、插图和日志也都留在磁盘上。"
     },
     "backends.role.up": { en: "UPSTREAM", zh: "上游" },
     "backends.role.chain": { en: "THE CHAIN", zh: "主链" },
@@ -90,6 +92,25 @@
       en: "Totals across the seven showcase papers below. References verified via WebSearch + Crossref; figures delivered as editable vector PDFs; integrity gates passed on all seven.",
       zh: "以上数字是下方七篇 showcase 论文的合计。参考文献经 WebSearch + Crossref 核验，图以可编辑矢量 PDF 交付，七篇的诚实性闸门全部通过。"
     },
+    "sbp.kicker": { en: "Measured in the paper", zh: "论文实测" },
+    "sbp.sub": {
+      en: "Across eight controlled research topics, from instrumented runs and a controlled ablation &mdash; <a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>.",
+      zh: "覆盖八个受控研究课题，数字来自埋点运行与受控消融实验——<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>。"
+    },
+    "sbp.k1.name": { en: "Citation validity", zh: "引文有效率" },
+    "sbp.k1.metric": { en: "resolved references / total", zh: "可解析引文 / 全部引文" },
+    "sbp.k1.delta": { en: "384 refs", zh: "384 条" },
+    "sbp.k2.name": { en: "Figure editability", zh: "图可编辑率" },
+    "sbp.k2.metric": { en: "editable elements / total", zh: "可编辑元素 / 全部元素" },
+    "sbp.k2.delta": { en: "~1,900 elems", zh: "1,900 元素" },
+    "sbp.k3.name": { en: "Fabrication detection", zh: "伪造检出率" },
+    "sbp.k3.metric": { en: "single pass &rarr; full stack", zh: "单遍成稿 &rarr; 完整体系" },
+    "sbp.k3.delta": { en: "36 probes", zh: "36 探针" },
+    "sbp.k4.name": { en: "Review precision", zh: "评审精确率" },
+    "sbp.k4.metric": { en: "verified / raised issues", zh: "查实意见 / 提出意见" },
+    "sbp.k4.delta": { en: "42/57", zh: "42/57" },
+    "sbp.k5.name": { en: "Per manuscript", zh: "单篇成本" },
+    "sbp.k5.metric": { en: "avg &middot; 11.9M tokens", zh: "单篇平均 · 11.9M token" },
 
     /* --- overview strip --- */
     "ov.kicker": { en: "Overview", zh: "总览" },
@@ -99,8 +120,8 @@
     "idea.eyebrow": { en: "Core Idea", zh: "核心理念" },
     "idea.title": { en: "The model does the reasoning. The code keeps it honest.", zh: "模型负责推理，代码负责诚实。" },
     "idea.lede": {
-      en: "Autonomous paper generators fail in three familiar ways: they invent numbers, they cite papers that do not exist, and they ship figures nobody can edit. spark-to-paper splits every stage between two actors &mdash; <strong>Claude owns the judgment</strong> (writing, research, critique, review) and <strong>deterministic Python gates own the facts</strong>. A red gate does not warn; it fails the build.",
-      zh: "自动写论文的系统，常见的翻车方式有三种：编造数字、引用不存在的文献、交出没人能编辑的图。spark-to-paper 把每个阶段的工作拆给两个角色：<strong>判断交给 Claude</strong>（写作、检索、批评、评审），<strong>事实交给确定性的 Python 闸门</strong>。闸门亮红不发警告，直接让构建失败。"
+      en: "Autonomous paper generators fail in three familiar ways: they invent numbers, they cite papers that do not exist, and they ship figures nobody can edit. Spark-to-Paper splits every stage between two actors &mdash; <strong>Claude owns the judgment</strong> (writing, research, critique, review) and <strong>deterministic Python gates own the facts</strong>. A red gate does not warn; it fails the build.",
+      zh: "自动写论文的系统，常见的翻车方式有三种：编造数字、引用不存在的文献、交出没人能编辑的图。Spark-to-Paper 把每个阶段的工作拆给两个角色：<strong>判断交给 Claude</strong>（写作、检索、批评、评审），<strong>事实交给确定性的 Python 闸门</strong>。闸门亮红不发警告，直接让构建失败。"
     },
     "problem.p1.title": { en: "Fabricated numbers", zh: "编造数字" },
     "problem.p1.body": {
@@ -160,6 +181,11 @@
     },
 
     /* --- 02 pipeline --- */
+    "idea.ablation": {
+      en: "Measured in the paper&rsquo;s controlled ablation: with 36 unsupported claims injected, detection climbs from 14% for a single-pass draft to 69% with the gates, 81% adding self-review, and <strong>92%</strong> with the full stack (<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>, Table&nbsp;4).",
+      zh: "论文的受控消融实验实测：注入 36 条无依据论断后，单遍成稿只能查出 14%，加上闸门升到 69%，再加自查升到 81%，完整体系达到 <strong>92%</strong>（<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>，Table&nbsp;4）。"
+    },
+
     "pipe.eyebrow": { en: "Pipeline", zh: "流水线" },
     "pipe.title": { en: "One input in. Eight stages later, a compiled PDF.", zh: "丢进一个输入，走完八个阶段，拿到一份编译好的 PDF。" },
     "pipe.lede": {
@@ -178,8 +204,8 @@
     "pipe.route.d1": { en: "A <code>story.json</code> from a prior run", zh: "上次运行留下的 <code>story.json</code>" },
     "pipe.route.d2": { en: "Skips idea2story, straight to planning", zh: "跳过 idea2story，直接进入规划" },
     "pipe.route.caption": {
-      en: "Any real measured number in the input &mdash; a filled table, &ldquo;achieved 0.62 HOTA&rdquo; &mdash; forces the data-aware route; it is never sent down the no-numbers proposal path. Optional upstream: <code>ts-kg-build</code> turns a <code>corpus.jsonl</code> into a research-pattern knowledge graph for story recall, degrading gracefully when no embedding endpoint is configured.",
-      zh: "输入里只要有真实测量值，比如一张填好的表、一句「achieved 0.62 HOTA」，就会强制走 data-aware 路线，绝不会落进无数字的 proposal 路径。另有可选上游：<code>ts-kg-build</code> 把 <code>corpus.jsonl</code> 构建成研究模式知识图谱，用于 story 召回；没有配置 embedding 端点时会平滑降级。"
+      en: "Any real measured number in the input &mdash; a filled table, &ldquo;achieved 0.62 HOTA&rdquo; &mdash; forces the data-aware route; it is never sent down the no-numbers proposal path.",
+      zh: "输入里只要有真实测量值，比如一张填好的表、一句「achieved 0.62 HOTA」，就会强制走 data-aware 路线，绝不会落进无数字的 proposal 路径。"
     },
     "pipe.fig.title": { en: "The chain and its artifacts", zh: "链条与它的产物" },
     "pipe.fig.note": {
@@ -213,8 +239,8 @@
     },
     "pipe.s6.title": { en: "6 &middot; Figures", zh: "6 · 画图" },
     "pipe.s6.body": {
-      en: "Data plots are born-vector matplotlib; schematics are PaperBanana renders whose design language is learned, then redrawn as native, audited SVG.",
-      zh: "数据图用 matplotlib 直接生成矢量图；示意图先由 PaperBanana 渲染，学习其设计语言后重绘成原生 SVG，并经过审计。"
+      en: "Data plots are born-vector matplotlib; schematics are PaperBanana renders reconstructed in code as native, audited vector graphics.",
+      zh: "数据图用 matplotlib 直接生成矢量图；示意图先由 PaperBanana 渲染，再用代码重建成原生矢量图，并经过审计。"
     },
     "pipe.s7.title": { en: "7 &middot; Compile", zh: "7 · 编译" },
     "pipe.s7.body": {
@@ -226,13 +252,13 @@
       en: "Runs automatically after the first gates-green draft: diagnoses the paper&rsquo;s logic, runs only feasible experiments on real data, fills the tables, recompiles.",
       zh: "首版通过全部闸门后自动启动：先诊断论文的逻辑，只在真实数据上跑可行的实验，把结果填进表里，再重新编译。"
     },
-    "pipe.mode.p.tag": { en: "results_mode &middot; proposal", zh: "results_mode · proposal" },
+    "pipe.mode.p.tag": { en: "Proposal Mode &middot; results_mode: proposal", zh: "Proposal Mode · results_mode: proposal" },
     "pipe.mode.p.title": { en: "No numbers, ever", zh: "一个数字都不许有" },
     "pipe.mode.p.body": {
       en: "Forward-looking prose only. A concrete metric in a sentence &mdash; &ldquo;18.3%&rdquo;, &ldquo;0.72 F1&rdquo;, &ldquo;2.5&times;&rdquo;, even &ldquo;doubles&rdquo; &mdash; hard-fails the lint; bare-integer results are caught in self-review. Result tables exist with every cell literally <code>--</code>; the only place a dash may appear. No results figure is drawn at all, because drawing one would fabricate data.",
       zh: "行文只允许写计划和预期。句子里一旦出现具体指标，如「18.3%」「0.72 F1」「2.5&times;」，甚至「翻倍」这样的说法，lint 直接判失败；裸整数形式的结果由自查环节拦截。结果表照常保留，但每个单元格都写成 <code>--</code>，这也是全文唯一允许出现这种横线的地方。结果图一张都不画，因为画出来就是在捏造数据。"
     },
-    "pipe.mode.d.tag": { en: "results_mode &middot; data_aware", zh: "results_mode · data_aware" },
+    "pipe.mode.d.tag": { en: "Data-Aware Mode &middot; results_mode: data_aware", zh: "Data-Aware Mode · results_mode: data_aware" },
     "pipe.mode.d.title": { en: "Every number traced", zh: "每个数字可溯源" },
     "pipe.mode.d.body": {
       en: "Your real results are distilled into <code>results.facts.json</code> &mdash; the audit ground truth. Result sections switch to definitive past tense; any decimal or percent in prose that is not in the facts file fails the build. A measured-but-missing value is written <code>TBD</code> and never guessed.",
@@ -246,8 +272,8 @@
       zh: "AI 图像模型画出来的是位图，论文要的是可编辑矢量图：这套引擎两样都给。"
     },
     "fig.lede": {
-      en: "The engine is decided by <strong>which section a figure lives in</strong>. Results plots draw from real data with matplotlib &mdash; numerically exact, born vector, never from an image model. Every other figure runs a three-act pipeline: the official <strong>PaperBanana</strong> agent team renders candidate images; <code>ts-figure-svg</code> learns the winner&rsquo;s design language and <strong>redraws the figure natively</strong> &mdash; real <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, its content taken from the paper&rsquo;s own facts, never traced from pixels; then a stdlib geometry audit drives a repair loop of at least four rounds. If native redraw is impossible, the DrawAI hybrid &mdash; then the approved PNG &mdash; steps in. <strong>Never a lossy trace.</strong>",
-      zh: "一张图用哪套引擎，取决于它<strong>属于哪个章节</strong>。结果图由 matplotlib 从真实数据绘制，数值精确、天生就是矢量，绝不出自图像模型。其余图走三段式流水线：官方 <strong>PaperBanana</strong> 智能体团队先渲染候选图；<code>ts-figure-svg</code> 学习胜出候选的设计语言，<strong>用原生元素重绘整张图</strong>，画出真正的 <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>，内容取自论文自身的事实，绝不从像素描摹；随后由 stdlib 几何审计驱动至少四轮修复。原生重绘确实不可行时，依次退到 DrawAI hybrid 和定稿 PNG。<strong>绝不做有损描摹。</strong>"
+      en: "The engine is decided by <strong>which section a figure lives in</strong>. Results plots draw from real data with matplotlib &mdash; numerically exact, born vector, never from an image model. Every other figure runs a three-act pipeline: the official <strong>PaperBanana</strong> agent team renders the candidate image that becomes the <strong>visual target</strong>; <code>ts-figure-svg</code> reconstructs it in code as editable vector graphics &mdash; real <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, every label live text &mdash; rendering each round and comparing it against the target until structure and appearance are recovered; a geometry audit drives at least four repair rounds. If reconstruction stays unreliable, the DrawAI hybrid &mdash; then the approved PNG &mdash; steps in. <strong>Never a lossy trace.</strong>",
+      zh: "一张图用哪套引擎，取决于它<strong>属于哪个章节</strong>。结果图由 matplotlib 从真实数据绘制，数值精确、天生就是矢量，绝不出自图像模型。其余图走三段式流水线：官方 <strong>PaperBanana</strong> 智能体团队渲染出的候选图就是<strong>视觉目标</strong>；<code>ts-figure-svg</code> 用代码把它重建成可编辑矢量图——真正的 <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>，每条标签都是活文本——每一轮都把重建结果渲染出来与目标比对，直到复现它的结构与外观；几何审计至少驱动四轮修复。重建始终不可靠时，依次退到 DrawAI hybrid 和定稿 PNG。<strong>绝不做有损描摹。</strong>"
     },
     "fig.s1.title": { en: "Render candidates", zh: "渲染候选" },
     "fig.s1.body": {
@@ -256,18 +282,18 @@
     },
     "fig.s2.title": { en: "Learn the look", zh: "学习设计语言" },
     "fig.s2.body": {
-      en: "Claude looks at the chosen render and extracts its design language &mdash; palette, type scale, spacing, idiom &mdash; into a style sheet. The PNG is a <em>style reference only</em>.",
-      zh: "Claude 观察选中的渲染图，把配色、字号层级、留白、视觉习惯这些设计语言提炼成样式表。PNG <em>只作风格参照</em>。"
+      en: "Claude looks at the chosen render and extracts its design language &mdash; palette, type scale, spacing, idiom &mdash; into a style sheet. The PNG is also the <em>visual target</em>: the redraw is rendered and compared against it, round by round, until its structure and appearance are recovered.",
+      zh: "Claude 观察选中的渲染图，把配色、字号层级、留白、视觉习惯这些设计语言提炼成样式表。这张 PNG 同时也是<em>视觉目标</em>：重建结果要渲染出来与它比对，逐轮修正，直到复现它的结构和外观。"
     },
-    "fig.s3.title": { en: "Redraw from the facts", zh: "按事实重绘" },
+    "fig.s3.title": { en: "Reconstruct in code", zh: "代码重建" },
     "fig.s3.body": {
-      en: "The figure is redrawn as a native SVG from the paper&rsquo;s own text: every label live <code>&lt;text&gt;</code>, every edge traceable to the method. Never traced, never embedded &mdash; take the PNG&rsquo;s look, take the paper&rsquo;s content.",
-      zh: "整张图依据论文自身的文本重绘为原生 SVG：每条标签都是活的 <code>&lt;text&gt;</code>，每条边都能追溯到方法本身。不描摹、不内嵌位图，样式取自 PNG，内容取自论文。"
+      en: "The figure is reconstructed as editable vector graphics through code &mdash; every label live <code>&lt;text&gt;</code>, every element a real object &mdash; with the chosen render as its visual target. Reference grounding and visual review then check the figure against the manuscript itself.",
+      zh: "整张图用代码重建为可编辑矢量图：每条标签都是活的 <code>&lt;text&gt;</code>，每个元素都是真实对象；选中的渲染图就是视觉目标。随后再对照论文正文核查图的内容，并做视觉复核。"
     },
     "fig.s4.title": { en: "Audit &amp; repair", zh: "审计与修复" },
     "fig.s4.body": {
-      en: "A stdlib-only geometry audit measures the drawing &mdash; overflow, text-on-text, clipped arrowheads, sub-legible type &mdash; and drives repairs for at least four rounds, with no upper bound while defects remain.",
-      zh: "纯 stdlib 的几何审计逐项测量这张图，查溢出、文字叠压、箭头被裁、字号小到难辨，并据此驱动至少四轮修复；只要缺陷还在，轮数就没有上限。"
+      en: "Each round renders the reconstruction and compares it with the target, and a geometry audit measures the drawing &mdash; overflow, text-on-text, clipped arrowheads, sub-legible type &mdash; driving repairs for at least four rounds, with no upper bound while defects remain.",
+      zh: "每一轮都把重建结果渲染出来与目标比对，几何审计再逐项测量这张图：查溢出、文字叠压、箭头被裁、字号小到难辨，并据此驱动至少四轮修复；只要缺陷还在，轮数就没有上限。"
     },
     "fig.lane.decompose": { en: "Redraw", zh: "重绘" },
     "fig.lane.decompose.note": { en: "native objects &mdash; no pixels, no tracing", zh: "原生对象——不贴像素，不描摹" },
@@ -276,10 +302,10 @@
       en: "Palette, type scale, spacing and visual idiom are read off the chosen PaperBanana candidate by eye and written down as a style sheet.",
       zh: "配色、字号层级、留白和视觉习惯，都从选中的 PaperBanana 候选图上目测读出，记录成样式表。"
     },
-    "fig.l2.title": { en: "Content from the paper", zh: "内容来自论文" },
+    "fig.l2.title": { en: "Checked against the paper", zh: "对照论文核查" },
     "fig.l2.body": {
-      en: "Modules, edges and labels come from the figure spec and the paper&rsquo;s equations &mdash; generated renders invent links and garble labels, so their logic is never trusted.",
-      zh: "模块、连线和标签全部来自图规格与论文公式。生成的渲染图会凭空编造连线、写错标签，所以它的逻辑从来不作数。"
+      en: "Modules, edges and labels are then checked against the figure spec and the paper&rsquo;s equations &mdash; reference grounding and visual review catch a garbled label or an invented link before it ships.",
+      zh: "模块、连线和标签随后要对照图规格与论文公式核查——引用接地与视觉复核会在出稿前拦下写错的标签、凭空的连线。"
     },
     "fig.l3.title": { en: "Real vector objects", zh: "真正的矢量对象" },
     "fig.l3.body": {
@@ -291,11 +317,11 @@
     "fig.ring.build": { en: "Repair", zh: "修复" },
     "fig.ring.core": { en: "<em>PaperBanana+</em><i>&ge;4 rounds</i>", zh: "<em>PaperBanana+</em><i>&ge;4 轮</i>" },
     "fig.lane.rebuild": { en: "Measure", zh: "测量" },
-    "fig.lane.rebuild.note": { en: "stdlib-only &mdash; no renderer, no models, no key", zh: "纯 stdlib：不依赖渲染器、模型或 key" },
+    "fig.lane.rebuild.note": { en: "render &amp; compare against the target, then measure", zh: "渲染后与目标比对，再逐项测量" },
     "fig.l4.title": { en: "The audit measures the drawing", zh: "审计逐项测量" },
     "fig.l4.body": {
-      en: "<code>audit_svg.py</code> computes text boxes from Times core-14 metrics and fails a round on canvas or card overflow, a clipped arrowhead, text over text, shapes painted over text, sub-legible type, font-fallback glyphs, CSS-cascade colour traps &mdash; and path soup, the signature of a traced raster.",
-      zh: "<code>audit_svg.py</code> 按 Times core-14 字体度量计算每个文本框，一旦发现画布或卡片溢出、箭头被裁、文字叠压、图形盖住文字、字号小到读不清、字形触发字体回退、CSS 级联吞掉颜色，或是描摹位图特有的 path soup，当轮即判失败。"
+      en: "Each round renders the reconstruction and compares it with the reference; a gap in layout, geometry or text placement fails the round. <code>audit_svg.py</code> then measures the drawing &mdash; canvas or card overflow, a clipped arrowhead, text over text, sub-legible type, font-fallback glyphs &mdash; and path soup, the signature of a traced raster.",
+      zh: "每一轮先把重建结果渲染出来与参考图比对，布局、几何或文字位置有差距，当轮即判失败。<code>audit_svg.py</code> 再逐项测量这张图：画布或卡片溢出、箭头被裁、文字叠压、字号小到读不清、字形触发字体回退，以及描摹位图特有的 path soup。"
     },
     "fig.lane.verify": { en: "Verify", zh: "核验" },
     "fig.lane.verify.note": { en: "the gate reads the audit trail, not the report", zh: "闸门看审计记录，不看汇报" },
@@ -313,8 +339,8 @@
     "fig.k1.metric": { en: "audit rounds per figure", zh: "每张图审计轮数" },
     "fig.k1.delta": { en: "gate-enforced", zh: "闸门强制" },
     "fig.k2.name": { en: "Audit cost", zh: "审计成本" },
-    "fig.k2.metric": { en: "renderer &middot; models &middot; keys", zh: "渲染器 · 模型 · key" },
-    "fig.k2.delta": { en: "stdlib-only", zh: "纯 stdlib" },
+    "fig.k2.metric": { en: "extra models &middot; API keys", zh: "额外模型 · API key" },
+    "fig.k2.delta": { en: "code-only", zh: "纯代码" },
     "fig.k3.name": { en: "Fallback hybrid", zh: "兜底 HYBRID" },
     "fig.k3.metric": { en: "SSIM vs full redraw", zh: "SSIM，对比整图重画" },
     "fig.k3.delta": { en: "reported", zh: "项目实测" },
@@ -328,8 +354,8 @@
     },
     "fig.f1.title": { en: "Why not just trace the PNG?", zh: "为什么不直接描摹 PNG？" },
     "fig.f1.body": {
-      en: "Auto-tracing one figure produced 59,430 paths, 10&nbsp;MB, and not one editable label &mdash; and it was still blurry when zoomed. &ldquo;No <code>&lt;image&gt;</code> element&rdquo; does not mean vector. So the redraw takes the PNG&rsquo;s <em>look</em> and the paper&rsquo;s <em>content</em>, and draws real objects.",
-      zh: "自动描摹一张图，结果是 59,430 条 path、10&nbsp;MB 的文件，可编辑标签一条也没有，放大看照样模糊。「没有 <code>&lt;image&gt;</code> 元素」不等于矢量。所以重绘取 PNG 的<em>样子</em>、取论文的<em>内容</em>，画出来的是真正的图形对象。"
+      en: "Auto-tracing one figure produced 59,430 paths, 10&nbsp;MB, and not one editable label &mdash; and it was still blurry when zoomed. &ldquo;No <code>&lt;image&gt;</code> element&rdquo; does not mean vector. So the reconstruction draws <em>real objects</em> to match the render &mdash; live labels, editable shapes &mdash; never traced pixels.",
+      zh: "自动描摹一张图，结果是 59,430 条 path、10&nbsp;MB 的文件，可编辑标签一条也没有，放大看照样模糊。「没有 <code>&lt;image&gt;</code> 元素」不等于矢量。所以系统用<em>真正的图形对象</em>把它重建出来——标签是活文本，图形可编辑——绝不描摹像素。"
     },
     "fig.f2.value": { en: "3<em>rungs</em>", zh: "三<em>级</em>" },
     "fig.f2.title": { en: "The fallback ladder", zh: "兜底阶梯" },
@@ -378,6 +404,11 @@
     "exp.f2.body": {
       en: "Anything classified CLAIMED_BUT_NOT_RUN gets its claim weakened or removed &mdash; or the run stops to ask. The final step diffs the before/after paper and issues an honesty verdict, admitting when experiments weakened the original story.",
       zh: "凡被判为 CLAIMED_BUT_NOT_RUN 的论断，对应说法会弱化或删除，再不然就停下来问用户。最后一步对比修改前后的论文，给出诚实性裁定；如果实验结果削弱了原有的故事，也照实写明。"
+    },
+    "exp.srl.title": { en: "The Self-Refutation Loop &mdash; named, bounded, survived.", zh: "自我否定循环：点名它，限住它。" },
+    "exp.srl.body": {
+      en: "Long research trajectories have a failure mode the paper names the <strong>Self-Refutation Loop</strong>: the system keeps judging its own evidence insufficient for the original objective, yet keeps revising the same direction without converging. Spark-to-Paper bounds it at <strong>seven experiment&ndash;critique&ndash;revision cycles</strong>; an unresolved trajectory is terminated and written up as an honest failure report &mdash; idea, methods, experiments, results, and why the evidence fell short &mdash; and the system restarts from a new idea rather than forcing success.",
+      zh: "长程研究轨迹有一种论文专门命名的失败模式——<strong>自我否定循环（Self-Refutation Loop）</strong>：系统反复判定证据不足以支撑最初的研究目标，却又一直沿原方向修改，始终不收敛。Spark-to-Paper 给它设了上限：<strong>实验-批评-修改最多七轮</strong>；仍未解决的轨迹会被终止，写成一份诚实的失败报告——想法、方法、实验、结果，以及证据差在哪里——然后系统换一个新想法重新出发，绝不硬凑一个成功。"
     },
     "exp.table.title": { en: "Guardrails, out of the box.", zh: "开箱即有的护栏。" },
     "exp.table.th1": { en: "Guard", zh: "护栏" },
@@ -430,8 +461,8 @@
     },
     "wr.rev.title": { en: "&ldquo;Can&rsquo;t quote = didn&rsquo;t read.&rdquo;", zh: "「引不出原文 = 没读。」" },
     "wr.rev.body": {
-      en: "The review panel runs N isolated reviewers &mdash; theory, empirical, applied lenses &mdash; each seeing nothing but the paper. Every issue must carry an exact verbatim quote and a closeable criterion. Each finding then faces three perspective-diverse skeptics &mdash; misreading? already addressed? overblown? &mdash; and survives unless a majority refute it. Fresh panels re-run until a full pass finds nothing new &mdash; within a budget-capped number of rounds. Fixes are minimal, targeted, and re-gated: the linters are re-run after the edits land, because the suite derives &ldquo;green&rdquo; &mdash; it never forecasts it.",
-      zh: "评审团由 N 位互相隔离的评审组成，分别从理论、实证、应用三个视角出发，每人只看论文本身。每条意见都必须附上精确的原文引用和一条可关闭的验收标准。之后，每条意见还要过三位视角各异的质疑者：是不是读岔了？是不是已经处理过？是不是言过其实？只有多数质疑者反驳成立，这条意见才会被否决。评审团会换一批人重开，直到完整一轮再无新发现为止，轮数受预算上限约束。修复只做最小的定点改动，改完重新过闸：linter 在修改落盘后重跑，这套系统只从结果推导绿灯，从不预告绿灯。"
+      en: "The review panel runs N isolated reviewers &mdash; theoretical soundness, experimental design, systems validity &mdash; each seeing nothing but the paper. Every issue must carry an exact verbatim quote and a closeable criterion. Each finding then faces three perspective-diverse skeptics &mdash; misreading? already addressed? out of scope? &mdash; and survives unless a majority refute it. Fresh panels re-run until a full pass finds nothing new &mdash; within a budget-capped number of rounds. Fixes are minimal, targeted, and re-gated: the linters are re-run after the edits land, because the suite derives &ldquo;green&rdquo; &mdash; it never forecasts it. In the paper&rsquo;s blinded evaluation, issues raised this way were verified at <strong>74% precision</strong>.",
+      zh: "评审团由 N 位互相隔离的评审组成，分别检查理论正确性、实验设计与系统有效性，每人只看论文本身。每条意见都必须附上精确的原文引用和一条可关闭的验收标准。之后，每条意见还要过三位视角各异的质疑者：是不是读岔了？是不是已经处理过？是不是超出论文声明的范围？只有多数质疑者反驳成立，这条意见才会被否决。评审团会换一批人重开，直到完整一轮再无新发现为止，轮数受预算上限约束。修复只做最小的定点改动，改完重新过闸：linter 在修改落盘后重跑，这套系统只从结果推导绿灯，从不预告绿灯。论文的盲评实测：这样提出的意见有 <strong>74%</strong> 被查实。"
     },
     "wr.tpl.title": { en: "Templates &middot; pick a venue, keep the quality.", zh: "模板 · 换 venue，不换质量。" },
     "wr.tpl.th1": { en: "Template", zh: "模板" },
@@ -454,8 +485,8 @@
     "sc.eyebrow": { en: "Showcase", zh: "论文展示" },
     "sc.title": { en: "Seven papers. Six domains. Every number traceable.", zh: "七篇论文，六个领域，每个数字都可溯源。" },
     "sc.lede": {
-      en: "Each paper below started as a research proposal and ran the full chain &mdash; plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile. Click any card for the compiled PDF.",
-      zh: "下面每篇论文都从一份研究 proposal 出发，跑完 plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile 全链条。点击卡片可查看编译好的 PDF。"
+      en: "Each paper below started as a research proposal and ran the full chain &mdash; plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile &mdash; then the experiment stage ran the planned experiments and wrote the measured results back into the draft. Click any card for the compiled PDF.",
+      zh: "下面每篇论文都从一份研究 proposal 出发，跑完 plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile 全链条，随后实验阶段把规划好的实验真的跑了一遍，再把实测数字写回论文。点击卡片可查看编译好的 PDF。"
     },
     "sc.read": { en: "Read the PDF &#8599;", zh: "阅读 PDF &#8599;" },
     "sc.p1.fmt": { en: "Traitement du Signal format", zh: "Traitement du Signal 版式" },
@@ -501,8 +532,8 @@
       zh: "在 PlantVillage Tomato 上把疑似泄漏与实测效应分开验证：近重复带来的泄漏可以忽略，背景捷径确实存在，但幅度不大。"
     },
     "sc.caption": {
-      en: "Conference-format samples lead the set: one in the official ICML 2025 style and two in the official NeurIPS 2025 style (preprint option); the remaining four use the Traitement du Signal journal format. References verified via WebSearch + Crossref on every paper; all figures delivered as editable vector PDFs; integrity gates passed on all seven.",
-      zh: "会议版式的样例排在前面：一篇采用 ICML 2025 官方样式，两篇采用 NeurIPS 2025 官方样式（preprint 选项）；其余四篇为 Traitement du Signal 期刊版式。七篇的参考文献均经 WebSearch + Crossref 核验，插图全部以可编辑的矢量 PDF 交付，诚实性闸门也全部通过。"
+      en: "Conference-format samples lead the set: one in the official ICML 2025 style and two in the official NeurIPS 2025 style (preprint option); the remaining four use the Traitement du Signal journal format. References verified via WebSearch + Crossref on every paper; all figures delivered as editable vector PDFs; integrity gates passed on all seven. Two of these domains &mdash; chronic-disease screening and PM2.5 forecasting &mdash; are dissected as case studies in the paper.",
+      zh: "会议版式的样例排在前面：一篇采用 ICML 2025 官方样式，两篇采用 NeurIPS 2025 官方样式（preprint 选项）；其余四篇为 Traitement du Signal 期刊版式。七篇的参考文献均经 WebSearch + Crossref 核验，插图全部以可编辑的矢量 PDF 交付，诚实性闸门也全部通过。其中慢性病筛查与 PM2.5 预测两个领域，论文还作为案例研究做了拆解。"
     },
 
     /* --- 07 compare --- */
@@ -512,11 +543,18 @@
       en: "The heavy autonomous scientists match the breadth &mdash; but ship as standalone Python products: Docker, Neo4j, tens of thousands of lines. The lighter skill suites stay in Claude Code &mdash; but don&rsquo;t run experiments or draw figures. This is the only pure Claude Code plugin that runs the entire arc, and the only tool of any kind with an <strong>editable-vector figure engine</strong>.",
       zh: "重型的自动科学家覆盖面不输本项目，但它们都是独立的 Python 产品，要装 Docker、Neo4j，代码动辄数万行；轻量的 skill 套件虽然留在 Claude Code 里，却既不跑实验也不画图。本项目是唯一跑通全流程的纯 Claude Code 插件，也是这些工具里唯一带<strong>可编辑矢量画图引擎</strong>的一个。"
     },
-    "cmp.fig.title": { en: "Capability matrix across AI-research tools", zh: "AI 科研工具能力矩阵" },
+    "cmp.fig.title": { en: "Capability comparison across AI-research systems", zh: "AI 科研系统能力对比" },
     "cmp.fig.note": {
-      en: "&#10003; full &middot; &#9679; partial &middot; &ndash; none. Sources: the linked repos of ARS, Idea2Paper, AutoResearchClaw, AI-Scientist, Kosmos, karpathy/autoresearch and auto_research.",
-      zh: "&#10003; 完整 · &#9679; 部分 · &ndash; 无。来源：ARS、Idea2Paper、AutoResearchClaw、AI-Scientist、Kosmos、karpathy/autoresearch 与 auto_research 各自的仓库。"
+      en: "&#10003; full &middot; &#9679; partial &middot; &ndash; not offered or not documented. Reproduced from Table&nbsp;1 of the <a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">paper</a>, based on each system&rsquo;s own public documentation.",
+      zh: "&#10003; 完整 · &#9679; 部分 · &ndash; 未提供或未见文档。复刻自<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">论文</a>的 Table&nbsp;1，依据各系统自己的公开文档整理。"
     },
+    "cmp.th.sys": { en: "System", zh: "系统" },
+    "cmp.th.e2e": { en: "End-to-end", zh: "端到端" },
+    "cmp.th.exp": { en: "Runs exper.", zh: "跑实验" },
+    "cmp.th.fig": { en: "Draws figures", zh: "画图" },
+    "cmp.th.vec": { en: "Editable vectors", zh: "可编辑矢量图" },
+    "cmp.th.infra": { en: "No standing infra.", zh: "零常驻服务" },
+    "cmp.ours": { en: "(ours)", zh: "（本项目）" },
     "takeaway.kicker": { en: "The takeaway", zh: "一句话总结" },
     "takeaway.lead": {
       en: "The model does the reasoning. The code keeps it honest. <strong>You get a paper.</strong>",
@@ -530,15 +568,18 @@
     /* --- 08 cite / copy --- */
     "cite.eyebrow": { en: "BibTeX", zh: "引用" },
     "cite.title": { en: "Cite this work.", zh: "引用本项目。" },
-    "cite.lede": { en: "If spark-to-paper-skills helps your research, please cite the project.", zh: "如果 spark-to-paper-skills 对你的研究有帮助，欢迎引用本项目。" },
+    "cite.lede": {
+      en: "If Spark-to-Paper helps your research, please cite the paper (<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>).",
+      zh: "如果 Spark-to-Paper 对你的研究有帮助，欢迎引用论文（<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a>）。"
+    },
     "cite.copy": { en: "Copy", zh: "复制" },
     "cite.copied": { en: "Copied!", zh: "已复制！" },
     "cite.copyFail": { en: "Press Ctrl+C", zh: "请按 Ctrl+C" },
 
     /* --- footer --- */
     "footer.copy": {
-      en: "&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Built on Claude Code &middot; Figures: PaperBanana+ native SVG, DrawAI hybrid as fallback &middot; Site design after <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>.",
-      zh: "&copy; 2026 spark-to-paper-skills · MIT License · 基于 Claude Code 构建 · 画图：PaperBanana+ 原生 SVG，DrawAI hybrid 兜底 · 网站设计参考 <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>。"
+      en: "&copy; 2026 spark-to-paper-skills &middot; MIT License &middot; Paper: <a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a> &middot; Built on Claude Code &middot; Figures: PaperBanana+ native SVG, DrawAI hybrid as fallback &middot; Site design after <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>.",
+      zh: "&copy; 2026 spark-to-paper-skills · MIT License · 论文：<a href=\"https://arxiv.org/abs/2608.11924\" target=\"_blank\" rel=\"noopener\">arXiv:2608.11924</a> · 基于 Claude Code 构建 · 画图：PaperBanana+ 原生 SVG，DrawAI hybrid 兜底 · 网站设计参考 <a href=\"https://lh-harness.pages.dev/\" target=\"_blank\" rel=\"noopener\">LongHorizon-Harness</a>。"
     }
   };
 
@@ -783,7 +824,6 @@
       { label: () => d("bk.in.idea"), h: 18 },
       { label: () => "proposal.md", h: 30 },
       { label: () => "proposal + results.csv", h: 42 },
-      { label: () => "corpus.jsonl", h: 172 },
       { label: () => "story.json", h: 260 },
     ];
     const OUT_CHIPS = [
@@ -796,7 +836,7 @@
       { label: () => "logs/*.io.md", h: 272 },
     ];
     const ROLES = [
-      { role: "m", name: "backends.role.up", words: ["idea2story", "kg-build"] },
+      { role: "m", name: "backends.role.up", words: ["idea2story"] },
       { role: "e", name: "backends.role.chain", words: ["plan", "cite", "write", "refine", "review", "data", "figure", "figure-svg", "figure-optimize", "latex"] },
       { role: "a", name: "backends.role.auto", words: ["experiment"] },
     ];
