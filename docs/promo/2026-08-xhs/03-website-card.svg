@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <defs><clipPath id="screen"><rect x="70" y="322" width="1102" height="620" rx="28"/></clipPath><filter id="s"><feDropShadow dx="0" dy="8" stdDeviation="13" flood-color="#080a10" flood-opacity=".22"/></filter></defs>
+  <rect width="1242" height="1656" fill="#111318"/>
+  <circle cx="1050" cy="120" r="220" fill="#e9815d" opacity=".12"/>
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="70" y="92" font-size="25" font-weight="700" letter-spacing="2" fill="#e9815d">03 · 官网</text>
+    <text x="70" y="190" font-size="68" font-weight="800" fill="#f8f4ee">不是一句 prompt，</text><text x="70" y="278" font-size="68" font-weight="800" fill="#f8f4ee">而是一整套研究流程</text>
+    <g filter="url(#s)"><rect x="70" y="322" width="1102" height="620" rx="28" fill="#090b10"/><image href="03-website-home-zh-2026-08-14.png" x="70" y="322" width="1102" height="620" preserveAspectRatio="xMidYMid meet" clip-path="url(#screen)"/></g>
+    <rect x="70" y="1000" width="1102" height="420" rx="34" fill="#191c24" stroke="#343944"/>
+    <text x="120" y="1082" font-size="29" font-weight="700" fill="#e9815d">1 个调度器 + 13 个 Skills</text>
+    <text x="120" y="1160" font-size="32" fill="#f8f4ee">你可以让它从头跑到尾，也可以只叫一个来帮忙：</text>
+    <text x="120" y="1234" font-size="28" fill="#b8becb">找文献 · 定实验 · 跑实验 · 画图 · 审稿 · 查引用</text>
+    <line x1="120" y1="1294" x2="1120" y2="1294" stroke="#3a404b"/>
+    <text x="120" y="1350" font-size="24" fill="#939baa">截图：2026-08-14 · 官网中文首页</text>
+    <text x="70" y="1588" font-size="23" fill="#77808e">spark-to-paper-skills.github.io/spark-to-paper-skills/</text>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <defs><clipPath id="a"><rect x="90" y="500" width="330" height="285" rx="18"/></clipPath><clipPath id="b"><rect x="456" y="500" width="330" height="285" rx="18"/></clipPath><clipPath id="c"><rect x="822" y="500" width="330" height="285" rx="18"/></clipPath></defs>
+  <rect width="1242" height="1656" fill="#f7f3eb"/>
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#153945">
+    <text x="74" y="98" font-size="25" font-weight="700" fill="#d86437">FIGURES</text>
+    <text x="74" y="210" font-size="72" font-weight="800">数据图直接读取真实结果</text>
+    <text x="74" y="300" font-size="72" font-weight="800">交付后还能继续编辑</text>
+    <text x="74" y="372" font-size="29" fill="#61767d">项目样例中的环境监测、故障诊断与临床预测结果图</text>
+    <rect x="74" y="450" width="1094" height="420" rx="36" fill="#fff" stroke="#e0d8ca"/>
+    <image href="../../figs/plot-pm25.png" x="90" y="500" width="330" height="285" preserveAspectRatio="xMidYMid meet" clip-path="url(#a)"/>
+    <image href="../../figs/plot-bearing.png" x="456" y="500" width="330" height="285" preserveAspectRatio="xMidYMid meet" clip-path="url(#b)"/>
+    <image href="../../figs/plot-chronic.png" x="822" y="500" width="330" height="285" preserveAspectRatio="xMidYMid meet" clip-path="url(#c)"/>
+    <text x="144" y="830" font-size="22" font-weight="700">环境监测</text><text x="522" y="830" font-size="22" font-weight="700">故障诊断</text><text x="900" y="830" font-size="22" font-weight="700">临床预测</text>
+    <rect x="74" y="950" width="1094" height="430" rx="36" fill="#153945"/>
+    <text x="124" y="1045" font-size="28" font-weight="700" fill="#f29a72">同一张图，同时保留三种交付物</text>
+    <text x="124" y="1150" font-size="62" font-weight="900" fill="#fff">PNG</text><text x="340" y="1150" font-size="62" font-weight="900" fill="#fff">SVG</text><text x="565" y="1150" font-size="62" font-weight="900" fill="#fff">vector PDF</text>
+    <text x="124" y="1230" font-size="29" fill="#d1dcdf">看图、改图、放进论文，各自都有合适的文件。</text>
+    <line x1="124" y1="1285" x2="1110" y2="1285" stroke="#54717b"/>
+    <text x="124" y="1342" font-size="25" fill="#b9c8cc">方法图和架构图会继续检查内容、布局与可编辑性，直到定稿。</text>
+    <text x="74" y="1588" font-size="23" fill="#806f5e">真实结果图取自项目公开 Showcase</text>
+  </g>
+</svg>

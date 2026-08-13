@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <defs><clipPath id="screen"><rect x="70" y="315" width="1102" height="620" rx="28"/></clipPath><filter id="s"><feDropShadow dx="0" dy="8" stdDeviation="13" flood-color="#000" flood-opacity=".25"/></filter></defs>
+  <rect width="1242" height="1656" fill="#0d1117"/>
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="70" y="92" font-size="25" font-weight="700" letter-spacing="2" fill="#f0805a">07 · GITHUB</text>
+    <text x="70" y="188" font-size="70" font-weight="800" fill="#f0f6fc">项目已经开源，</text><text x="70" y="275" font-size="70" font-weight="800" fill="#f0f6fc">代码和样例都能直接看</text>
+    <g filter="url(#s)"><rect x="70" y="315" width="1102" height="620" rx="28" fill="#161b22"/><image href="07-github-home-2026-08-14.png" x="70" y="315" width="1102" height="620" preserveAspectRatio="xMidYMid meet" clip-path="url(#screen)"/></g>
+    <rect x="70" y="990" width="1102" height="420" rx="34" fill="#161b22" stroke="#30363d"/>
+    <text x="120" y="1072" font-size="28" font-weight="700" fill="#f0805a">安装</text>
+    <rect x="120" y="1110" width="1000" height="140" rx="20" fill="#090c10"/>
+    <text x="150" y="1170" font-size="23" font-family="Consolas, monospace" fill="#d2d9e0">git clone https://github.com/Spark-To-Paper-Skills/</text>
+    <text x="150" y="1212" font-size="23" font-family="Consolas, monospace" fill="#d2d9e0">spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills</text>
+    <text x="120" y="1322" font-size="26" fill="#b8c2cc">2026-08-14 截图：535 stars · 2 forks</text>
+    <text x="70" y="1588" font-size="23" fill="#8b949e">github.com/Spark-To-Paper-Skills/spark-to-paper-skills</text>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff9eb" stop-opacity="1"/><stop offset="0.78" stop-color="#fff9eb" stop-opacity=".94"/><stop offset="1" stop-color="#fff9eb" stop-opacity="0"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0d2c3c" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="1242" height="1656" fill="#fff9eb"/>
+  <image href="00-cover-background-v2.png" width="1242" height="1656" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1242" height="620" fill="url(#fade)"/>
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif">
+    <text x="78" y="88" font-size="27" font-weight="700" letter-spacing="2.5" fill="#0d2c3c">SPARK-TO-PAPER · 2026-08 更新</text>
+    <text x="78" y="202" font-size="72" font-weight="800" fill="#0d2c3c">Agent 开始下场做科研</text>
+    <text x="78" y="298" font-size="70" font-weight="900" fill="#0d2c3c">从想法、实验一路走到论文</text>
+    <text x="82" y="374" font-size="34" font-weight="700" fill="#d9693b">跑真实实验 · 改结论 · 寻找新发现</text>
+    <text x="82" y="428" font-size="26" font-weight="600" fill="#3e716d">经验会沉淀，工作流也会继续进化</text>
+    <g filter="url(#shadow)">
+      <rect x="78" y="466" width="650" height="70" rx="35" fill="#0d2c3c"/>
+      <text x="112" y="512" font-size="29" font-weight="700" fill="#fff9eb">HF Daily Papers #1 · 2026-08-13</text>
+    </g>
+  </g>
+</svg>

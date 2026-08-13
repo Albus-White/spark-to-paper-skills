@@ -7,27 +7,33 @@
 <h3 align="center"><b><i>Drop a spark. Get a paper.</i></b></h3>
 
 <p align="center">
-  <i>Every citation verified. Every figure editable. Every number traced to source.</i>
+  <i>Citation checks. Editable vector figures. Source-traced numbers.</i>
 </p>
 
 <p align="center">
-  13 composable <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
+  One orchestrator and 13 composable <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
   real references, editable vector figures, and machine-checked integrity included.<br>
-  No app. No server. No setup.
+  No separate app or orchestration server.
 </p>
 
 <h3 align="center">
-  📣 Our paper is out: <a href="https://arxiv.org/abs/2608.11924">arXiv:2608.11924</a> —
-  ranked <a href="https://huggingface.co/papers/2608.11924"><b>#2 on 🤗 Hugging Face Daily Papers</b></a> (Aug 13, 2026)
+  🎉 A paper produced end-to-end by Spark-to-Paper has been accepted by an <b>SCI-indexed Q2 journal</b>.
 </h3>
 
 <p align="center">
+  📣 The preprint is on <a href="https://arxiv.org/abs/2608.11924">arXiv:2608.11924</a> —
+  <a href="https://huggingface.co/papers/2608.11924"><b>#1 on 🤗 Hugging Face Daily Papers</b></a>
+  (Aug 13, 2026) and included in the
+  <a href="https://huggingface.co/papers/month/2026-08"><b>August 2026 Monthly Papers</b></a> list.
+</p>
+
+<p align="center">
   <a href="https://arxiv.org/abs/2608.11924"><img src="https://img.shields.io/badge/arXiv-2608.11924-b31b1b?logo=arxiv&logoColor=white" alt="arXiv paper"></a>
-  <a href="https://huggingface.co/papers/2608.11924"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Daily%20Papers-%232%20·%20Aug%2013%202026-ffd21e" alt="Hugging Face Daily Papers #2"></a>
+  <a href="https://huggingface.co/papers/2608.11924"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Daily%20Papers-%231%20·%20Aug%2013%202026-ffd21e" alt="Hugging Face Daily Papers #1"></a>
   <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Spark-To-Paper-Skills/spark-to-paper-skills?label=Release&color=d97757" alt="Latest Release"></a>
   <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills"><img src="https://img.shields.io/github/stars/Spark-To-Paper-Skills/spark-to-paper-skills?style=flat&color=f5c542" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-d97757?logo=anthropic&logoColor=white" alt="Claude Code Plugin">
-  <img src="https://img.shields.io/badge/Skills-13_Active-6f42c1" alt="13 skills">
+  <img src="https://img.shields.io/badge/Skills-13_+_1_Orchestrator-6f42c1" alt="13 skills plus one orchestrator">
   <img src="https://img.shields.io/badge/Figures-Editable_Vector-ff8c42" alt="Editable vector figures">
   <img src="https://img.shields.io/badge/Integrity-Machine--Checked-b31b1b" alt="Machine-checked integrity">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
@@ -65,11 +71,13 @@
 
 ## 🔥 What's New
 
-- **`2026-08`** — **📄 The paper is published.** [*Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill*](https://arxiv.org/abs/2608.11924) (arXiv 2608.11924) — featured at **[#2 on 🤗 Hugging Face Daily Papers](https://huggingface.co/papers/2608.11924)**, Aug 13, 2026. See [Citation](#-citation).
-- **`v1.2.0`** — **PaperBanana+ figure engine.** The official [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates; the new `ts-figure-svg` skill learns the render's design language and redraws the figure natively from the paper's facts, repaired over ≥4 rounds against a stdlib-only geometry audit (`audit_svg.py`).
+- **`2026-08`** — **🎉 Journal acceptance.** A paper produced end-to-end by Spark-to-Paper has been accepted by an **SCI-indexed Q2 journal**.
+- **`2026-08-13`** — **🤗 Hugging Face Daily Papers #1.** The preprint reached **[#1 on Daily Papers](https://huggingface.co/papers/2608.11924)** and included in the [August 2026 Monthly Papers](https://huggingface.co/papers/month/2026-08) list.
+- **`2026-08-12`** — **📄 Preprint submitted.** [*Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill*](https://arxiv.org/abs/2608.11924) is available as arXiv:2608.11924. See [Citation](#-citation).
+- **`v1.2.0`** — **PaperBanana+ figure engine.** The official [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates; the new `ts-figure-svg` skill learns the render's design language and redraws the figure natively from the paper's facts, iterating against a stdlib-only geometry audit (`audit_svg.py`) until it passes.
 - **`v1.1.0`** — **Claude Code plugin support.** Restructured as a proper plugin with `.claude-plugin/plugin.json`. One-command install, auto-loads on session start.
 - **`v1.0.1`** — **Soft update notification.** `check_update.py` queries GitHub Releases API on each run (24h cache, silent when up-to-date, never blocks).
-- **`v1.0`** — **Initial release.** 13 skills, end-to-end pipeline, DrawAI hybrid figure engine, MIT License.
+- **`v1.0`** — **Initial release.** 13 skills, end-to-end pipeline, hybrid vector figure engine, MIT License.
 
 ---
 
@@ -94,7 +102,7 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 <tr><td>📄</td><td><code>main.tex</code> · <code>main.pdf</code></td><td>Compiled paper in the selected venue template</td></tr>
 <tr><td>📝</td><td><code>sections/*.tex</code></td><td>One LaTeX source file per section + abstract</td></tr>
 <tr><td>🗺️</td><td><code>blueprint.json</code></td><td>Structured title, keywords, contributions, notation, word targets</td></tr>
-<tr><td>📚</td><td><code>refs.bib</code></td><td>Real BibTeX entries — every <code>\cite{}</code> verified via WebSearch + Crossref</td></tr>
+<tr><td>📚</td><td><code>refs.bib</code></td><td>Real BibTeX entries — citation records checked via WebSearch and Crossref when available</td></tr>
 <tr><td>🖼️</td><td><code>figures/*.pdf</code></td><td>Editable vector figures (SVG + PDF + PPTX), originals always kept</td></tr>
 <tr><td>🧪</td><td><code>experiments/</code></td><td>Auto-run experiment code + filled result tables (Stage 8)</td></tr>
 <tr><td>📋</td><td><code>logs/*.io.md</code></td><td>Full INPUT / DECISIONS / OUTPUT trace for every stage</td></tr>
@@ -107,12 +115,12 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 
 | | Capability | Description |
 |:---:|---|---|
-| 🖼️ | **Editable Vector Figures** | The feature no other tool has. The official PaperBanana renders candidates; the figure is then **redrawn natively** — the render's design language learned, its content re-derived from the paper — and repaired over ≥4 rounds against a measuring audit. Live `<text>`, not a traced bitmap. DrawAI hybrid (~0.91 SSIM) as fallback. |
-| 🔗 | **End-to-End** | Idea → literature → writing → experiments → figures → compiled PDF. The only pure Claude Code plugin that runs the entire arc. |
-| 🔒 | **Machine-Checked Integrity** | No fabricated numbers — ever. Every citation verified. Deterministic gates fail the build on violations. Not a style suggestion — a hard stop. |
+| 🖼️ | **Editable Vector Figures** | A core project focus. The official PaperBanana renders candidates; the figure is then **redrawn natively** — the render's design language learned, its content re-derived from the paper — and iterated against a measuring audit until it passes. Live `<text>`, not a traced bitmap. |
+| 🔗 | **End-to-End** | Idea → literature → writing → experiments → figures → compiled PDF, run inside Claude Code as a plugin. |
+| 🔒 | **Machine-Checked Integrity** | Deterministic gates check citation records, claim-citation links, source-traced prose numbers, vector structure, and LaTeX; detected violations fail the build. |
 | 🔀 | **Two Integrity Modes** | *Proposal mode*: forward-looking, result cells stay blank. *Data-aware mode*: every number traced to your real data, in past tense. Machine-audited. |
 | ⚔️ | **Adversarial Review** | N isolated reviewers read the whole paper with verbatim-quote anti-skim, then perspective-diverse skeptics try to refute each issue. Loop until dry. |
-| 🧪 | **Auto-Experiments** | Stage 8 diagnoses logic, runs only feasible experiments on real data/code, fills result tables, and recompiles. Never invents results. |
+| 🧪 | **Auto-Experiments** | Stage 8 diagnoses logic, runs feasible experiments on supplied data/code, fills result tables from run outputs, and recompiles. |
 | 📐 | **Template-Agnostic** | NeurIPS and IIETA bundled. Add any venue — drop a `templates/<name>/` dir with `template.json` + LaTeX assets. No code changes. |
 
 ---
@@ -125,13 +133,13 @@ The orchestrator auto-routes your input, picks the right mode, and runs the full
 
 <p align="center"><sub><b>✓</b> full&nbsp;&nbsp;·&nbsp;&nbsp;<b>●</b> partial&nbsp;&nbsp;·&nbsp;&nbsp;<b>–</b> none&nbsp;&nbsp;|&nbsp;&nbsp;sources: <a href="https://github.com/Imbad0202/academic-research-skills">ARS</a> · <a href="https://github.com/AgentAlphaAGI/Idea2Paper">Idea2Paper</a> · <a href="https://github.com/aiming-lab/AutoResearchClaw">AutoResearchClaw</a> · <a href="https://github.com/SakanaAI/AI-Scientist">AI-Scientist</a> · <a href="https://github.com/jimmc414/Kosmos">Kosmos</a> · <a href="https://github.com/karpathy/autoresearch">karpathy/autoresearch</a> · <a href="https://victorchen96.github.io/auto_research/framework.html">auto_research</a></sub></p>
 
-> The heavy autonomous scientists ([AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw), [AI-Scientist](https://github.com/SakanaAI/AI-Scientist)) match the *breadth* — but ship as **standalone Python products** (Docker, Neo4j, tens of thousands of LOC). The lighter *skills* ([ARS](https://github.com/Imbad0202/academic-research-skills), [Idea2Paper](https://github.com/AgentAlphaAGI/Idea2Paper)) don't run experiments or draw figures. **Nobody else gives you all of it as drop-in Claude Code skills with editable vector figures.**
+> Based on the linked project documentation reviewed in August 2026, the heavier autonomous scientists ([AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw), [AI-Scientist](https://github.com/SakanaAI/AI-Scientist)) match the *breadth* but ship as standalone Python products. The lighter *skills* in this comparison ([ARS](https://github.com/Imbad0202/academic-research-skills), [Idea2Paper](https://github.com/AgentAlphaAGI/Idea2Paper)) do not cover the same experiment-and-figure path. This comparison is scoped to the listed projects, not the entire ecosystem.
 
 ---
 
 ## 🖼️ The Figure Engine
 
-**The capability no other skill suite has.** AI image models produce rasters — but a paper needs editable vector figures whose labels are *text* and whose logic is *the paper's*.
+**A core differentiator of this project.** AI image models produce rasters — but a paper needs editable vector figures whose labels are *text* and whose logic is *the paper's*.
 
 `ts-figure-svg` is **PaperBanana+**: the [official PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates, then the figure is **redrawn natively** — its design language learned from the render, its content re-derived from the paper, repaired against a measuring audit.
 
@@ -141,7 +149,7 @@ figure brief (from the paper's own method text)
    ├─ pick a candidate → scientific correctness first, beauty last
    ├─ learn the STYLE  → palette · type scale · spacing · idiom  →  <label>.style.json
    ├─ redraw NATIVE    → real <rect>/<path>/<text>, content from the PAPER, never a pixel trace
-   └─ audit & repair   → ≥4 rounds, no upper bound while defects remain
+   └─ audit & repair   → iterate until the audit passes and the result is approved
    │
    └─▶ editable SVG · vector PDF   (live text, verified at real column width)
 ```
@@ -157,7 +165,7 @@ figure brief (from the paper's own method text)
 | Sub-legible type, `✓`-class glyphs | shrinking text is the forbidden fix; odd glyphs silently swap font family in the PDF |
 | Embedded rasters, data URIs, traced pixel paths | a bitmap in an XML costume is still blurry at 2× |
 
-**Fallbacks, in order:** native redraw → `ts-figure-optimize`'s key-free **DrawAI HYBRID** (SAM3 + PaddleOCR + Box-IR; the approved render kept pixel-exact under an editable `<text>` overlay, ~0.91 SSIM) → keep the approved PNG. Never a lossy redraw, never a flat boxes-and-arrows regression.
+**Fallbacks, in order:** native redraw → local raster-preserving optimization → keep the approved PNG. Never a lossy redraw, never a flat boxes-and-arrows regression.
 
 <details>
 <summary>Provision</summary>
@@ -167,7 +175,6 @@ python skills/ts-figure-svg/scripts/setup_paperbanana.py            # pull offic
 export OPENROUTER_API_KEY="sk-or-v1-..."                            # VLM agents + image generation
 python skills/ts-figure-svg/scripts/audit_svg.py --selftest         # the audit needs nothing else
 
-python skills/ts-figure-optimize/scripts/setup_drawai.py --device cpu   # optional HYBRID fallback (~4 GB)
 ```
 </details>
 
@@ -271,7 +278,7 @@ Write to **whatever venue you pick** — content quality is invariant.
 
 ## 🧩 The Skills
 
-13 skill folders; all active.
+1 orchestrator plus 13 composable skills; all active.
 
 | Skill | Stage | Role |
 |---|---|---|
@@ -286,7 +293,7 @@ Write to **whatever venue you pick** — content quality is invariant.
 | `ts-paper-figure` | 6 | Figure routing: matplotlib (data) / PaperBanana (schematics) |
 | `ts-paper-data` | 6 (data) | Data-aware mode: real results → filled tables + plots |
 | `ts-figure-svg` | 6 (vector) | PaperBanana+ : learn the render's style → native audited SVG |
-| `ts-figure-optimize` | 6 (fallback) | Raster → editable SVG/PDF/PPTX via DrawAI hybrid |
+| `ts-figure-optimize` | 6 (fallback) | Raster → editable SVG/PDF/PPTX via local hybrid optimization |
 | `ts-paper-latex` | 7 | Assemble + compile the final PDF |
 | `ts-paper-experiment` | 8 | Run feasible experiments, fill tables, recompile |
 
@@ -332,7 +339,7 @@ git submodule add https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills
 | 🎨 **Figure model** | `TS_FIG_API_KEY`, `TS_FIG_BASE_URL`, `TS_FIG_MODEL` | Render schematics with an image model |
 | 👁️ **Vision QA** | `OPENAI_API_KEY`, `VISION_MODEL` | Correct figure text, per-region defect comparison |
 | 🧠 **Embeddings** | `TS_EMBED_*` | KG-grounded recall (optional, graceful degradation) |
-| 📦 **DrawAI** | `HF_TOKEN` | Download gated SAM3 weights once |
+| 📦 **Raster fallback** | `HF_TOKEN` | Download optional local vision weights once |
 | ☁️ **Overleaf** | `OVERLEAF_GIT_URL`, `OVERLEAF_TOKEN` | Sync with Overleaf when enabled |
 
 Copy `.env.example` → `.env` and fill in only what you use.
@@ -352,7 +359,7 @@ Paste your idea, proposal, or proposal + data. The orchestrator auto-routes, run
 - **Claude Code** (the suite is a plugin)
 - **Python 3.10+** with `pip install -r skills/ts-figure-optimize/requirements.txt`
 - **LaTeX** (`latexmk` + a TeX distribution) for compilation
-- *Optional:* DrawAI runtime (~4 GB) · image-model endpoint · LibreOffice
+- *Optional:* local raster fallback runtime (~4 GB) · image-model endpoint · LibreOffice
 
 ---
 
@@ -361,19 +368,19 @@ Paste your idea, proposal, or proposal + data. The orchestrator auto-routes, run
 <details>
 <summary><b>Will it invent results to make the paper look complete?</b></summary>
 <br>
-No. In proposal mode, <code>draft_lint</code> fails the build on any prose number not backed by data. In data-aware mode, every number is audited against <code>results.facts.json</code>.
+The workflow is designed not to fill results without evidence. In proposal mode, <code>draft_lint</code> fails the build on prose numbers that are not backed by data. In data-aware mode, prose-number checks use <code>results.facts.json</code>; result tables remain subject to the current gate coverage documented in the code.
 </details>
 
 <details>
 <summary><b>How is this different from AutoResearchClaw / AI-Scientist / Kosmos?</b></summary>
 <br>
-The heavy autonomous scientists match the breadth but ship as standalone Python products (Docker, Neo4j, tens of thousands of LOC). The other skills don't run experiments or draw figures. This is the only <b>pure Claude Code plugin</b> that does the whole arc — and the only tool of any kind with an <b>editable-vector figure engine</b>.
+The heavier autonomous scientists in the comparison match the breadth but ship as standalone Python products. Spark-to-Paper runs the full arc as a Claude Code plugin and includes an editable-vector figure engine. The comparison is limited to the linked projects reviewed in August 2026.
 </details>
 
 <details>
-<summary><b>Do I need GPUs or the heavy DrawAI runtime?</b></summary>
+<summary><b>Do I need GPUs or the optional raster runtime?</b></summary>
 <br>
-Only for free-form raster figures. DrawAI runs on CPU; matplotlib figures are born-vector and skip the engine; a paper with no figures skips Stage 6 entirely.
+Only for the local free-form raster fallback. It can run on CPU; matplotlib figures are born-vector and skip it, and a paper with no figures skips Stage 6 entirely.
 </details>
 
 <details>
@@ -392,7 +399,7 @@ Yes — drop a <code>templates/&lt;name&gt;/</code> directory with <code>templat
 
 ## 📖 Citation
 
-The paper — **[Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill](https://arxiv.org/abs/2608.11924)** — was featured at **#2 on [🤗 Hugging Face Daily Papers](https://huggingface.co/papers/2608.11924)** (Aug 13, 2026).
+A paper produced end-to-end by Spark-to-Paper has been accepted by an **SCI-indexed Q2 journal**. Until the version of record is public, please cite the arXiv version below. The preprint reached **#1 on [🤗 Hugging Face Daily Papers](https://huggingface.co/papers/2608.11924)** (Aug 13, 2026) and is included in the [August 2026 Monthly Papers](https://huggingface.co/papers/month/2026-08) list.
 
 If Spark-to-Paper helps your research, please cite:
 
@@ -419,7 +426,6 @@ Inspired by:
 - 🦞 [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) (AIMING Lab) — 23-stage autonomous research pipeline
 - 📚 [academic-research-skills](https://github.com/imbad0202/academic-research-skills) (Imbad0202) — Claude Code research skill suite
 - 🧠 [autoresearch](https://github.com/karpathy/autoresearch) (Andrej Karpathy) — End-to-end research automation
-- 🎨 [DrawAI](https://github.com/DrawAI) — Figure vectorization engine (vendored)
 
 ---
 
@@ -437,5 +443,5 @@ Inspired by:
 
 <p align="center">
   <i>The model does the reasoning. The code keeps it honest. You get a paper.</i><br>
-  <sub>Built on <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> · Figure engine vendored from DrawAI · <a href="LICENSE">MIT License</a></sub>
+  <sub>Built on <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started">Claude Code</a> · native editable SVG figure engine · <a href="LICENSE">MIT License</a></sub>
 </p>

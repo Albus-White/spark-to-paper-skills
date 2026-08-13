@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <rect width="1242" height="1656" fill="#f5f1e8"/>
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#143846">
+    <text x="74" y="96" font-size="25" font-weight="700" fill="#d86437">SPARK-TO-PAPER</text>
+    <text x="74" y="205" font-size="70" font-weight="800">把时间留给研究问题，</text>
+    <text x="74" y="292" font-size="70" font-weight="800">让 Agent 去跑完整流程</text>
+    <text x="74" y="360" font-size="29" fill="#61767d">从一句想法，到真实实验、证据检查和编译完成的论文</text>
+    <rect x="74" y="446" width="1094" height="690" rx="38" fill="#143846"/>
+    <g font-size="29" font-weight="700" fill="#fff">
+      <circle cx="210" cy="620" r="80" fill="#e06a3a"/><text x="210" y="630" text-anchor="middle">研究问题</text>
+      <circle cx="510" cy="620" r="80" fill="#2d897c"/><text x="510" y="630" text-anchor="middle">真实实验</text>
+      <circle cx="810" cy="620" r="80" fill="#e06a3a"/><text x="810" y="630" text-anchor="middle">证据检查</text>
+      <circle cx="1060" cy="620" r="80" fill="#2d897c"/><text x="1060" y="630" text-anchor="middle">完整论文</text>
+    </g>
+    <path d="M290 620H430M590 620H730M890 620H980" stroke="#f5f1e8" stroke-width="12" stroke-linecap="round"/>
+    <text x="126" y="820" font-size="36" font-weight="700" fill="#fff">实验没跑出来，数字不会写进论文。</text>
+    <text x="126" y="900" font-size="36" font-weight="700" fill="#fff">结果不支持，结论就跟着改。</text>
+    <line x1="126" y1="968" x2="1110" y2="968" stroke="#59727c"/>
+    <text x="126" y="1038" font-size="27" fill="#cbd6d9">1 个调度器 + 13 个 Skills，可以整套运行，也能单独调用。</text>
+    <rect x="74" y="1218" width="1094" height="220" rx="36" fill="#fff" stroke="#ded6c8" stroke-width="2"/>
+    <text x="124" y="1300" font-size="31" font-weight="700">查资料、定实验、跑实验、改结论、画图、审稿、编译</text>
+    <text x="124" y="1360" font-size="27" fill="#61767d">成功经验与失败路线继续沉淀，下一次不必从零开始。</text>
+    <text x="74" y="1588" font-size="23" fill="#806f5e">开源科研工作流 · github.com/Spark-To-Paper-Skills</text>
+  </g>
+</svg>

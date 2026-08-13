@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1242" height="1656" viewBox="0 0 1242 1656">
+  <rect width="1242" height="1656" fill="#edf2ef"/>
+  <path d="M170 475 C450 370 510 610 780 505 S1060 560 1030 760 C1000 960 760 930 650 1080 S370 1270 180 1170" fill="none" stroke="#b8cbc5" stroke-width="18" stroke-linecap="round"/>
+  <g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#17333d">
+    <text x="70" y="92" font-size="25" font-weight="700" letter-spacing="2" fill="#2b8375">05 · 它到底在做什么</text>
+    <text x="70" y="190" font-size="72" font-weight="800">把零碎的研究工作，</text><text x="70" y="280" font-size="72" font-weight="800">接成一条能检查的链</text>
+    <g font-size="31" font-weight="700">
+      <g><circle cx="180" cy="470" r="82" fill="#17333d"/><text x="180" y="480" text-anchor="middle" fill="#fff">想法</text><text x="180" y="575" text-anchor="middle" font-size="22" fill="#607a75">整理问题</text></g>
+      <g><circle cx="510" cy="520" r="82" fill="#d9673c"/><text x="510" y="530" text-anchor="middle" fill="#fff">文献</text><text x="510" y="625" text-anchor="middle" font-size="22" fill="#607a75">核对来源</text></g>
+      <g><circle cx="850" cy="480" r="82" fill="#2b8375"/><text x="850" y="490" text-anchor="middle" fill="#fff">实验</text><text x="850" y="585" text-anchor="middle" font-size="22" fill="#607a75">真实运行</text></g>
+      <g><circle cx="1010" cy="790" r="82" fill="#17333d"/><text x="1010" y="800" text-anchor="middle" fill="#fff">写作</text><text x="1010" y="895" text-anchor="middle" font-size="22" fill="#607a75">结果回写</text></g>
+      <g><circle cx="760" cy="1080" r="82" fill="#d9673c"/><text x="760" y="1090" text-anchor="middle" fill="#fff">画图</text><text x="760" y="1185" text-anchor="middle" font-size="22" fill="#607a75">矢量可改</text></g>
+      <g><circle cx="400" cy="1130" r="82" fill="#2b8375"/><text x="400" y="1140" text-anchor="middle" fill="#fff">审稿</text><text x="400" y="1235" text-anchor="middle" font-size="22" fill="#607a75">找出漏洞</text></g>
+      <g><circle cx="180" cy="900" r="82" fill="#17333d"/><text x="180" y="910" text-anchor="middle" fill="#fff">编译</text><text x="180" y="1005" text-anchor="middle" font-size="22" fill="#607a75">交付 PDF</text></g>
+    </g>
+    <rect x="70" y="1370" width="1102" height="150" rx="34" fill="#fff"/>
+    <text x="120" y="1435" font-size="27" font-weight="700">真实实验会留下证据，成功和失败都会留下经验。</text>
+    <text x="120" y="1482" font-size="24" fill="#607a75">沉淀进知识图谱和规则，下一轮不再从零开始。</text>
+    <text x="70" y="1592" font-size="23" fill="#607a75">1 个调度器 + 13 个可组合 Skills</text>
+  </g>
+</svg>
