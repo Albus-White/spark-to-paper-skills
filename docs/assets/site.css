@@ -90,3 +90,26 @@
 @media(prefers-reduced-motion:reduce){.hero h1:after{animation:none;opacity:1}}
 
 .steps+.steps{margin-top:var(--s3)}
+
+.section h2 em,.video-title em,.hero-paper-title em{font-style:normal;background:var(--grad-1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-stats{list-style:none;display:flex;flex-wrap:wrap;gap:var(--s2) var(--s6);margin:4px 0 0;padding:14px 0 0;border-top:1px solid var(--line);max-width:32rem}
+.hero-stats li{display:flex;flex-direction:column;gap:3px}
+.hero-stats b{font-family:var(--font-mono);font-size:1.24rem;font-weight:700;letter-spacing:-.02em;color:var(--blue-deep);font-variant-numeric:tabular-nums;line-height:1}
+.hero-stats span{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.skill-wall{margin-top:var(--s5);padding:var(--s4) var(--s4) var(--s3);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface-inset)}
+.skill-wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2) var(--s4);flex-wrap:wrap;margin-bottom:var(--s3)}
+.skill-wall-tag{font-family:var(--font-mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.skill-wall-tag b{color:var(--blue-deep);font-size:.84rem}
+.skill-wall-key{display:inline-flex;gap:var(--s4);flex-wrap:wrap}
+.skill-wall-key>span{--role:var(--role-e);display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.skill-wall-key>span[data-role=m]{--role:var(--role-m)}
+.skill-wall-key>span[data-role=a]{--role:var(--role-a)}
+.skill-wall-key>span[data-role=o]{--role:var(--blue-deep)}
+.skill-wall-key i{width:7px;height:7px;border-radius:50%;background:var(--role);flex:none}
+.skill-chips{display:flex;flex-wrap:wrap;gap:7px}
+.skill-chip{--role:var(--role-e);display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--r-pill);border:1px solid color-mix(in srgb,var(--role) 36%,var(--line));background:var(--surface-raised);font-family:var(--font-mono);font-size:.76rem;font-weight:600;color:var(--ink);white-space:nowrap}
+.skill-chip i{width:7px;height:7px;border-radius:50%;background:var(--role);flex:none}
+.skill-chip[data-role=o]{--role:var(--blue-deep);background:color-mix(in srgb,var(--blue) 10%,var(--surface-raised));font-weight:700;color:var(--ink2)}
+.skill-chip[data-role=m]{--role:var(--role-m)}
+.skill-chip[data-role=a]{--role:var(--role-a)}
+@media(max-width:640px){.hero-stats{gap:var(--s2) var(--s5)}.hero-stats b{font-size:1.1rem}.skill-chip{font-size:.7rem;padding:4px 10px}}

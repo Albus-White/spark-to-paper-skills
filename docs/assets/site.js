@@ -39,6 +39,12 @@
     "hero.btn.sample.aria": { en: "Open a sample generated paper (PDF)", zh: "打开一篇生成的论文样例（PDF）" },
     "hero.btn.release": { en: "v1.2.0", zh: "v1.2.0" },
     "hero.flag.hf": { en: "Daily Papers &middot; Aug 13, 2026", zh: "Daily Papers 日榜 · 2026-08-13" },
+    "hero.st1": { en: "citation validity", zh: "引文有效率" },
+    "hero.st2": { en: "figure editability", zh: "图可编辑率" },
+    "hero.st3": { en: "cost per paper", zh: "单篇成本" },
+    "hero.st4": { en: "idea to PDF", zh: "出稿耗时" },
+    "pipe.wall.tag": { en: "skills, by name", zh: "个 skill，全员点名" },
+    "pipe.wall.o": { en: "orchestrator", zh: "调度器" },
     "hero.related.tag": { en: "13 skills &middot; one orchestrator", zh: "13 个 skill · 一个调度器" },
     "backends.sub": { en: "ts-paper routes any input shape and drives the chain end to end", zh: "无论输入是什么形态，ts-paper 都能路由到位，驱动整条链跑完全程" },
     "backends.in": { en: "You drop", zh: "你丢进来" },
@@ -114,11 +120,11 @@
 
     /* --- overview strip --- */
     "ov.kicker": { en: "Overview", zh: "总览" },
-    "ov.title": { en: "Every page below came out of the pipeline.", zh: "下面每一页，都是流水线生成的。" },
+    "ov.title": { en: "Every page below came out of <em>the pipeline</em>.", zh: "下面每一页，都是<em>流水线生成的</em>。" },
 
     /* --- 01 core idea --- */
     "idea.eyebrow": { en: "Core Idea", zh: "核心理念" },
-    "idea.title": { en: "The model does the reasoning. The code keeps it honest.", zh: "模型负责推理，代码负责诚实。" },
+    "idea.title": { en: "The model does the reasoning. <em>The code keeps it honest.</em>", zh: "模型负责推理，<em>代码负责诚实</em>。" },
     "idea.lede": {
       en: "Autonomous paper generators fail in three familiar ways: they invent numbers, they cite papers that do not exist, and they ship figures nobody can edit. Spark-to-Paper splits every stage between two actors &mdash; <strong>Claude owns the judgment</strong> (writing, research, critique, review) and <strong>deterministic Python gates own the facts</strong>. A red gate does not warn; it fails the build.",
       zh: "自动写论文的系统，常见的翻车方式有三种：编造数字、引用不存在的文献、交出没人能编辑的图。Spark-to-Paper 把每个阶段的工作拆给两个角色：<strong>判断交给 Claude</strong>（写作、检索、批评、评审），<strong>事实交给确定性的 Python 闸门</strong>。闸门亮红不发警告，直接让构建失败。"
@@ -187,7 +193,7 @@
     },
 
     "pipe.eyebrow": { en: "Pipeline", zh: "流水线" },
-    "pipe.title": { en: "One input in. Eight stages later, a compiled PDF.", zh: "丢进一个输入，走完八个阶段，拿到一份编译好的 PDF。" },
+    "pipe.title": { en: "One input in. Eight stages later, <em>a compiled PDF</em>.", zh: "丢进一个输入，走完八个阶段，拿到<em>一份编译好的 PDF</em>。" },
     "pipe.lede": {
       en: "You drop <strong>one</strong> input &mdash; a bare idea, a structured proposal, a proposal with real results, or a story from a previous run. Stage&nbsp;0 of <code>ts-paper</code> classifies it with no fixed schema, sets the one switch the whole suite reads (<code>results_mode</code>), and drives the chain. <strong>Files on disk are the contract between stages</strong>; each stage writes an INPUT / DECISIONS / OUTPUT trace to <code>logs/</code>.",
       zh: "你只需要提供<strong>一个</strong>输入：一句想法、一份结构化 proposal、附带真实结果的 proposal，或者上次运行留下的 story。<code>ts-paper</code> 的 Stage&nbsp;0 不依赖固定 schema，自行判断输入属于哪一类，设好全套件都读取的唯一开关（<code>results_mode</code>），然后驱动整条链跑下去。<strong>阶段之间以磁盘文件为契约</strong>，每个阶段都会把 INPUT / DECISIONS / OUTPUT 记录写进 <code>logs/</code>。"
@@ -268,8 +274,8 @@
     /* --- 03 figure engine --- */
     "fig.eyebrow": { en: "Figure Engine", zh: "画图引擎" },
     "fig.title": {
-      en: "AI image models make rasters. Papers need editable vectors. This engine ships both.",
-      zh: "AI 图像模型画出来的是位图，论文要的是可编辑矢量图：这套引擎两样都给。"
+      en: "AI image models make rasters. Papers need editable vectors. <em>This engine ships both.</em>",
+      zh: "AI 图像模型画出来的是位图，论文要的是可编辑矢量图：这套引擎<em>两样都给</em>。"
     },
     "fig.lede": {
       en: "The engine is decided by <strong>which section a figure lives in</strong>. Results plots draw from real data with matplotlib &mdash; numerically exact, born vector, never from an image model. Every other figure runs a three-act pipeline: the official <strong>PaperBanana</strong> agent team renders the candidate image that becomes the <strong>visual target</strong>; <code>ts-figure-svg</code> reconstructs it in code as editable vector graphics &mdash; real <code>&lt;rect&gt;/&lt;path&gt;/&lt;text&gt;</code>, every label live text &mdash; rendering each round and comparing it against the target until structure and appearance are recovered; a geometry audit drives at least four repair rounds. If reconstruction stays unreliable, the DrawAI hybrid &mdash; then the approved PNG &mdash; steps in. <strong>Never a lossy trace.</strong>",
@@ -367,8 +373,8 @@
     /* --- 04 experiments --- */
     "exp.eyebrow": { en: "Experiments", zh: "实验" },
     "exp.title": {
-      en: "Stage 8 runs what the paper claims &mdash; or files a report saying why it can&rsquo;t.",
-      zh: "Stage 8 把论文声称的实验真的跑一遍；跑不了的，就交一份报告写清楚原因。"
+      en: "Stage 8 <em>runs what the paper claims</em> &mdash; or files a report saying why it can&rsquo;t.",
+      zh: "Stage 8 把论文声称的实验<em>真的跑一遍</em>；跑不了的，就交一份报告写清楚原因。"
     },
     "exp.lede": {
       en: "After the chain delivers a gates-green first draft, <code>ts-paper-experiment</code> starts automatically &mdash; no one has to ask. It maps the paper&rsquo;s logic, plans the minimum set of experiments, classifies each as <strong>necessary, feasible, or blocked</strong>, executes only what real data and code support, and recompiles the paper with measured numbers. If nothing can run, it writes a requirements report and leaves the tables in proposal form &mdash; <strong>it never invents results</strong>.",
@@ -432,8 +438,8 @@
     /* --- 05 writing & review --- */
     "wr.eyebrow": { en: "Writing &amp; Review", zh: "写作与评审" },
     "wr.title": {
-      en: "Journal-shaped prose, with the AI scrubbed out and a courtroom at the end.",
-      zh: "期刊味的行文，洗掉 AI 腔，最后还有一场庭审。"
+      en: "Journal-shaped prose, with the AI scrubbed out and <em>a courtroom at the end</em>.",
+      zh: "期刊味的行文，洗掉 AI 腔，最后还有<em>一场庭审</em>。"
     },
     "wr.lede": {
       en: "The blueprint fixes the shape before a word is written: per-section word bands, exactly three contributions, a notation table every section must reuse. The draft is written in <strong>one holistic pass</strong> so terminology never drifts; refine right-sizes it and scrubs the tells; and then a review panel does what the rest of the suite never does &mdash; <strong>argues against the paper</strong>.",
@@ -483,7 +489,7 @@
 
     /* --- 06 showcase --- */
     "sc.eyebrow": { en: "Showcase", zh: "论文展示" },
-    "sc.title": { en: "Seven papers. Six domains. Every number traceable.", zh: "七篇论文，六个领域，每个数字都可溯源。" },
+    "sc.title": { en: "Seven papers. Six domains. <em>Every number traceable.</em>", zh: "七篇论文，六个领域，<em>每个数字都可溯源</em>。" },
     "sc.lede": {
       en: "Each paper below started as a research proposal and ran the full chain &mdash; plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile &mdash; then the experiment stage ran the planned experiments and wrote the measured results back into the draft. Click any card for the compiled PDF.",
       zh: "下面每篇论文都从一份研究 proposal 出发，跑完 plan &rarr; cite &rarr; write &rarr; refine &rarr; review &rarr; figure &rarr; compile 全链条，随后实验阶段把规划好的实验真的跑了一遍，再把实测数字写回论文。点击卡片可查看编译好的 PDF。"
@@ -538,7 +544,7 @@
 
     /* --- 07 compare --- */
     "cmp.eyebrow": { en: "Compare", zh: "横向对比" },
-    "cmp.title": { en: "The whole arc, as drop-in skills.", zh: "端到端全流程，装上就能用的 skill。" },
+    "cmp.title": { en: "The whole arc, <em>as drop-in skills</em>.", zh: "端到端全流程，<em>装上就能用的 skill</em>。" },
     "cmp.lede": {
       en: "The heavy autonomous scientists match the breadth &mdash; but ship as standalone Python products: Docker, Neo4j, tens of thousands of lines. The lighter skill suites stay in Claude Code &mdash; but don&rsquo;t run experiments or draw figures. This is the only pure Claude Code plugin that runs the entire arc, and the only tool of any kind with an <strong>editable-vector figure engine</strong>.",
       zh: "重型的自动科学家覆盖面不输本项目，但它们都是独立的 Python 产品，要装 Docker、Neo4j，代码动辄数万行；轻量的 skill 套件虽然留在 Claude Code 里，却既不跑实验也不画图。本项目是唯一跑通全流程的纯 Claude Code 插件，也是这些工具里唯一带<strong>可编辑矢量画图引擎</strong>的一个。"
