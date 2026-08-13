@@ -16,6 +16,11 @@
   No app. No server. No setup.
 </p>
 
+<h3 align="center">
+  📣 Our paper is out: <a href="https://arxiv.org/abs/2608.11924">arXiv:2608.11924</a> —
+  ranked <a href="https://huggingface.co/papers/2608.11924"><b>#2 on 🤗 Hugging Face Daily Papers</b></a> (Aug 13, 2026)
+</h3>
+
 <p align="center">
   <a href="https://arxiv.org/abs/2608.11924"><img src="https://img.shields.io/badge/arXiv-2608.11924-b31b1b?logo=arxiv&logoColor=white" alt="arXiv paper"></a>
   <a href="https://huggingface.co/papers/2608.11924"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Daily%20Papers-%232%20·%20Aug%2013%202026-ffd21e" alt="Hugging Face Daily Papers #2"></a>
@@ -60,6 +65,7 @@
 
 ## 🔥 What's New
 
+- **`2026-08`** — **📄 The paper is published.** [*Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill*](https://arxiv.org/abs/2608.11924) (arXiv 2608.11924) — featured at **[#2 on 🤗 Hugging Face Daily Papers](https://huggingface.co/papers/2608.11924)**, Aug 13, 2026. See [Citation](#-citation).
 - **`v1.2.0`** — **PaperBanana+ figure engine.** The official [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates; the new `ts-figure-svg` skill learns the render's design language and redraws the figure natively from the paper's facts, repaired over ≥4 rounds against a stdlib-only geometry audit (`audit_svg.py`).
 - **`v1.1.0`** — **Claude Code plugin support.** Restructured as a proper plugin with `.claude-plugin/plugin.json`. One-command install, auto-loads on session start.
 - **`v1.0.1`** — **Soft update notification.** `check_update.py` queries GitHub Releases API on each run (24h cache, silent when up-to-date, never blocks).
