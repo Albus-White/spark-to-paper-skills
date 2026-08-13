@@ -11,22 +11,25 @@
 </p>
 
 <p align="center">
-  14 composable <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
+  13 composable <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code</a> skills turn a one-line idea into a compiled PDF —<br>
   real references, editable vector figures, and machine-checked integrity included.<br>
   No app. No server. No setup.
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2608.11924"><img src="https://img.shields.io/badge/arXiv-2608.11924-b31b1b?logo=arxiv&logoColor=white" alt="arXiv paper"></a>
+  <a href="https://huggingface.co/papers/2608.11924"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Daily%20Papers-%232%20·%20Aug%2013%202026-ffd21e" alt="Hugging Face Daily Papers #2"></a>
   <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills/releases/latest"><img src="https://img.shields.io/github/v/release/Spark-To-Paper-Skills/spark-to-paper-skills?label=Release&color=d97757" alt="Latest Release"></a>
   <a href="https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills"><img src="https://img.shields.io/github/stars/Spark-To-Paper-Skills/spark-to-paper-skills?style=flat&color=f5c542" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-d97757?logo=anthropic&logoColor=white" alt="Claude Code Plugin">
-  <img src="https://img.shields.io/badge/Skills-14_Active-6f42c1" alt="14 skills">
+  <img src="https://img.shields.io/badge/Skills-13_Active-6f42c1" alt="13 skills">
   <img src="https://img.shields.io/badge/Figures-Editable_Vector-ff8c42" alt="Editable vector figures">
   <img src="https://img.shields.io/badge/Integrity-Machine--Checked-b31b1b" alt="Machine-checked integrity">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2608.11924">📄 Paper</a> &middot;
   <a href="https://spark-to-paper-skills.github.io/spark-to-paper-skills/">🌐 Website</a> &middot;
   <a href="#-generated-paper-showcase">🏆 Showcase</a> &middot;
   <a href="#-what-makes-it-different">✨ Features</a> &middot;
@@ -378,6 +381,27 @@ Yes — drop a <code>templates/&lt;name&gt;/</code> directory with <code>templat
 ## ✅ Definition of Done
 
 `main.pdf` exists and is non-trivial · **zero LaTeX errors** · `main.bbl` resolved all citations · every `\cite{}` maps to a complete `refs.bib` entry · **no fabricated numbers** anywhere · **every figure embedded as an editable vector PDF** · the adversarial **review stage ran** · and `run_gates.py <workdir> all` **exits zero**.
+
+---
+
+## 📖 Citation
+
+The paper — **[Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill](https://arxiv.org/abs/2608.11924)** — was featured at **#2 on [🤗 Hugging Face Daily Papers](https://huggingface.co/papers/2608.11924)** (Aug 13, 2026).
+
+If Spark-to-Paper helps your research, please cite:
+
+```bibtex
+@article{qian2026sparktopaper,
+  author  = {Qian, Zhuoyang and Wu, Biao and Wang, Yiran and Yan, Chris D and
+             Dai, Desan and Zheng, Liangwei and Jiang, Jin and
+             Zhang, Junsheng and Wang, Wenhao},
+  title   = {Spark-to-Paper: End-to-End Research Paper Generation
+             as a Composable Skill},
+  journal = {arXiv preprint arXiv:2608.11924},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2608.11924}
+}
+```
 
 ---
 
