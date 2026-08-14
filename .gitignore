@@ -38,3 +38,4 @@ kg/kg_ai/
 # Generated outputs & process artifacts (not source) — don't track/push
 outputs/
 docs/superpowers/
+docs/promo/
