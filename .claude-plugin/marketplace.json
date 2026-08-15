@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "spark-to-paper-skills",
+  "description": "Spark-to-Paper Claude Code plugin marketplace",
+  "owner": {
+    "name": "Spark-To-Paper-Skills"
+  },
+  "plugins": [
+    {
+      "name": "spark-to-paper",
+      "source": "./",
+      "description": "End-to-end academic paper generation suite for Claude Code",
+      "author": {
+        "name": "Albus White"
+      },
+      "homepage": "https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills"
+    }
+  ]
+}
