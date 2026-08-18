@@ -16,9 +16,7 @@
   No separate app or orchestration server.
 </p>
 
-<h3 align="center">
-  🎉 A paper produced end-to-end by Spark-to-Paper has been accepted by an <b>SCI-indexed Q2 journal</b>.
-</h3>
+
 
 <p align="center">
   📣 The preprint is on <a href="https://arxiv.org/abs/2608.11924">arXiv:2608.11924</a> —
