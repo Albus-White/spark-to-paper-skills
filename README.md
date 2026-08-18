@@ -71,7 +71,6 @@
 
 ## 🔥 What's New
 
-- **`2026-08`** — **🎉 Journal acceptance.** A paper produced end-to-end by Spark-to-Paper has been accepted by an **SCI-indexed Q2 journal**.
 - **`2026-08-13`** — **🤗 Hugging Face Daily Papers #1.** The preprint reached **[#1 on Daily Papers](https://huggingface.co/papers/2608.11924)** and included in the [August 2026 Monthly Papers](https://huggingface.co/papers/month/2026-08) list.
 - **`2026-08-12`** — **📄 Preprint submitted.** [*Spark-to-Paper: End-to-End Research Paper Generation as a Composable Skill*](https://arxiv.org/abs/2608.11924) is available as arXiv:2608.11924. See [Citation](#-citation).
 - **`v1.2.0`** — **PaperBanana+ figure engine.** The official [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) renders candidates; the new `ts-figure-svg` skill learns the render's design language and redraws the figure natively from the paper's facts, iterating against a stdlib-only geometry audit (`audit_svg.py`) until it passes.
