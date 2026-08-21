@@ -81,15 +81,18 @@
 ## ⚡ One Command. One Paper.
 
 ```bash
-# Install — auto-loads on next Claude Code session
-git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+claude plugin marketplace add Spark-To-Paper-Skills/spark-to-paper-skills
+claude plugin install spark-to-paper@spark-to-paper-skills
 ```
 
-```
-Run ts-paper on this proposal.   ← paste your idea, proposal, or data
+Start or reload Claude Code, then run:
+
+```text
+/reload-plugins
+/spark-to-paper:ts-paper
 ```
 
-The orchestrator auto-routes your input, picks the right mode, and runs the full chain.
+Paste your idea, proposal, or data. The orchestrator auto-routes your input, picks the right mode, and runs the full chain.
 
 ---
 
@@ -236,7 +239,7 @@ One orchestrator (`ts-paper`) routes the input, then drives a **7-stage chain** 
 | :-: | :--- | :--- |
 | 🧠 | **Model reasons** | Claude owns judgment-heavy work: writing, research, critique, review |
 | 🛠 | **Code backstops** | Python handles deterministic tasks: linting, assembly, plotting, vectorization |
-| 🪶 | **Zero infra** | No app, server, database, or Docker — copy skills into `.claude/skills/` and go |
+| 🪶 | **Zero infra** | No app, server, database, or Docker — install the Claude Code plugin and go |
 | 🏆 | **Quality first** | Verify citations, self-review, run linters, polish before delivery |
 | 🔒 | **Integrity always** | Never invent numbers; trace every value to source data; red gates fail the build |
 
@@ -300,34 +303,45 @@ Write to **whatever venue you pick** — content quality is invariant.
 
 ### 1 · Install
 
-**Option A — Claude Code plugin (recommended)**
+**Option A — User scope (recommended)**
 
 ```bash
-git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git ~/.claude/skills/spark-to-paper-skills
+claude plugin marketplace add Spark-To-Paper-Skills/spark-to-paper-skills
+claude plugin install spark-to-paper@spark-to-paper-skills
 ```
 
-Auto-loads on next session. Skills available as `/spark-to-paper:ts-paper`, etc.
+Available in all projects for the current user. Run `/reload-plugins` in an existing Claude Code session, then use `/spark-to-paper:ts-paper`.
 
-**Option B — Try before you install**
+**Option B — Current repository, personal only**
+
+```bash
+cd /path/to/your/project
+claude plugin marketplace add Spark-To-Paper-Skills/spark-to-paper-skills --scope local
+claude plugin install spark-to-paper@spark-to-paper-skills --scope local
+```
+
+This writes project-local, gitignored configuration to `.claude/settings.local.json`.
+
+**Option C — Current repository, shared with collaborators**
+
+```bash
+cd /path/to/your/project
+claude plugin marketplace add Spark-To-Paper-Skills/spark-to-paper-skills --scope project
+claude plugin install spark-to-paper@spark-to-paper-skills --scope project
+```
+
+Commit the resulting `.claude/settings.json` so collaborators are prompted to use the same marketplace and plugin.
+
+**Option D — Try or develop without installing**
 
 ```bash
 git clone https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git
 claude --plugin-dir ./spark-to-paper-skills
 ```
 
-**Option C — Standalone skills (no namespacing)**
+Do not clone the whole repository into `.claude/skills/spark-to-paper-skills`. That directory expects standalone skill folders shaped like `.claude/skills/<skill-name>/SKILL.md`; this repository is a plugin whose skills live under `skills/`.
 
-```bash
-cp -r spark-to-paper-skills/skills/ts-* ~/.claude/skills/
-```
-
-**Option D — Git submodule (auto-updatable)**
-
-```bash
-git submodule add https://github.com/Spark-To-Paper-Skills/spark-to-paper-skills.git .claude/skills/spark-to-paper-skills
-```
-
-> 💡 The suite checks GitHub for newer versions on each run. Update: `git -C ~/.claude/skills/spark-to-paper-skills pull`
+> 💡 Update an installed plugin with `claude plugin update spark-to-paper@spark-to-paper-skills`. Add `--scope project` or `--scope local` when updating a non-user installation.
 
 ### 2 · (Optional) Configure secrets
 
@@ -343,8 +357,8 @@ Copy `.env.example` → `.env` and fill in only what you use.
 
 ### 3 · Just ask Claude
 
-```
-Run ts-paper on this proposal.
+```text
+/spark-to-paper:ts-paper
 ```
 
 Paste your idea, proposal, or proposal + data. The orchestrator auto-routes, runs the chain, and delivers a compiled paper with page count, sections, references, review outcome, and editable vector figures.
