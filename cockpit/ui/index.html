@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>SparkBoard</title>
+<!-- The modular shell. sparkboard.css owns tokens + reader + primitives; each
+     workspace adds only its own bits. All same-origin, zero external network. -->
+<link rel="stylesheet" href="/ui/sparkboard.css">
+<link rel="stylesheet" href="/ui/spark.css">
+<link rel="stylesheet" href="/ui/jury.css">
+<link rel="stylesheet" href="/ui/wiki.css">
+<link rel="stylesheet" href="/ui/manuscript.css">
+</head>
+<body>
+<!-- Shared shell + reader. Each module self-registers via SB.registerTool on load,
+     so order is: shell → workspaces → boot. A workspace that fails to load simply
+     doesn't register; the switcher then no-ops for it rather than breaking. -->
+<script src="/ui/reader.js"></script>
+<script src="/ui/ai.js"></script>
+<script src="/ui/data.js"></script>
+<script src="/ui/settings.js"></script>
+<script src="/ui/spark.js"></script>
+<!-- Native "稿件 / Manuscript" view (defines SB.sparkManuscript; spark.js dispatches to it). -->
+<script src="/ui/manuscript.js"></script>
+<script src="/ui/jury.js"></script>
+<script src="/ui/wiki.js"></script>
+<script>
+  // Boot. The shell restores the last tool/theme/lang from localStorage (or the
+  // ?tool=/?theme=/?lang= overrides used for deterministic screenshots).
+  SB.mountShell(document.body);
+  // ?view= deep-links straight to a workspace sub-view (also used for screenshots).
+  var _v = new URLSearchParams(location.search).get("view");
+  if (_v) try { SB.setSub(_v); } catch (e) {}
+</script>
+</body>
+</html>

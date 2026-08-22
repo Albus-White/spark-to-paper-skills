@@ -1,0 +1,281 @@
+/* ============================================================================
+   SparkBoard · 稿件 / Manuscript sub-view — cockpit/ui/manuscript.css
+   Owned by manuscript.js. Reuses the shared tokens (--ink/--muted/--hair/
+   --accent/--well/--raise/--mono/--serif/--ok/--bad/--wait/--stale/--s*/--t-*)
+   and the shared .card/.chip/.btn/.src-hint/.sample-banner primitives; adds only
+   the IDE-like split layout, the line-numbered editor, and the PR-diff cards.
+   The whole surface fills the sized `main` and scrolls internally (never the body).
+   ============================================================================ */
+
+/* ---- root: header (fixed) over a body grid (fills, scrolls internally) ----- */
+/* (item10) flex:1 + min-height:0 so ms-grid + the PDF iframe/editor fill the sized main
+   on a short window; height:100% stays as a fallback when main is a plain block. */
+.ms-root { flex: 1 1 auto; height: 100%; min-height: 0; display: flex; flex-direction: column;
+  font-size: var(--t-ui); color: var(--ink); }
+
+.ms-head { flex: none; display: flex; align-items: baseline; gap: 12px;
+  padding: var(--s4) var(--gutter) var(--s3); }
+.ms-head-l { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.ms-head h2 { font-family: var(--serif); font-size: var(--t-title); font-weight: 600; letter-spacing: .005em; }
+.ms-head .ms-sub { font-size: var(--t-ui); color: var(--muted); }
+
+/* the amber sample/couldNotRead banner rides in the header column */
+.ms-root > .sample-banner { flex: none; margin: 0 var(--gutter) var(--s3); }
+
+.ms-grid { flex: 1; min-height: 0; display: grid;
+  grid-template-columns: 244px 1fr; gap: 0;
+  border-top: 1px solid var(--hair); }
+
+/* ---- left: tex file tree -------------------------------------------------- */
+.ms-tree { min-height: 0; overflow: auto; padding: var(--s3) var(--s2) var(--s5);
+  border-right: 1px solid var(--hair); background: color-mix(in oklab, var(--well) 40%, transparent); }
+.ms-tree-h { display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  font-size: var(--t-note); font-weight: 640; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint); padding: 4px 10px 8px; }
+.ms-collapse { padding: 2px 6px; min-width: 0; color: var(--faint); }
+.ms-collapse:hover { color: var(--ink); }
+.ms-collapse .i { width: 13px; height: 13px; }
+.i.ms-flip { transform: rotate(180deg); }
+.ms-tnode { display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-radius: 8px; color: var(--muted); cursor: pointer; user-select: none;
+  transition: color .12s, background .12s; }
+.ms-tnode:hover { color: var(--ink); background: var(--well); }
+.ms-tnode.sel { color: var(--ink); background: var(--raise); box-shadow: var(--lift-sheet);
+  border: 1px solid var(--hair); }
+.ms-tnode:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.ms-tic { display: inline-flex; flex: none; color: var(--faint); }
+.ms-tnode.sel .ms-tic { color: var(--accent); }
+.ms-tname { font-family: var(--mono); font-size: 12.5px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+.ms-tbadge { flex: none; font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--accent-ink);
+  background: color-mix(in oklab, var(--accent) 13%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent);
+  border-radius: var(--r-pill); padding: 1px 6px; }
+
+/* per-file unsaved marker (item10) — shown only while the node's draft is dirty */
+.ms-tdot { display: none; flex: none; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--stale); }
+.ms-tnode .ms-tdot { margin-left: 4px; }
+.ms-tnode.is-dirty .ms-tdot { display: inline-block; }
+
+/* ---- collapsed rail (item21): thin icon-only file switcher ---------------- */
+.ms-grid.tree-collapsed { grid-template-columns: 42px 1fr; }
+.ms-tree.mini { padding: var(--s3) 5px var(--s5); display: flex; flex-direction: column;
+  align-items: center; gap: 4px; }
+.ms-railtop { display: flex; justify-content: center; padding-bottom: 4px; }
+.ms-mininode { position: relative; appearance: none; width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center; padding: 0;
+  border: 1px solid transparent; border-radius: 8px; background: transparent;
+  color: var(--faint); cursor: pointer; transition: color .12s, background .12s; }
+.ms-mininode:hover { color: var(--ink); background: var(--well); }
+.ms-mininode.sel { color: var(--accent); background: var(--raise);
+  box-shadow: var(--lift-sheet); border-color: var(--hair); }
+.ms-mininode:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.ms-mininode .ms-tdot { position: absolute; top: 3px; right: 3px; margin: 0; }
+.ms-mininode.is-dirty .ms-tdot { display: block; }
+
+/* ---- center: tablist + panel body ---------------------------------------- */
+.ms-panel { min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.ms-tabs { flex: none; display: flex; align-items: center; gap: 2px;
+  padding: var(--s2) var(--s4); border-bottom: 1px solid var(--hair); }
+.ms-tab { appearance: none; border: 1px solid transparent; background: transparent;
+  padding: 6px 14px; border-radius: 8px; font: inherit; font-size: var(--t-ui);
+  font-weight: 520; color: var(--muted); cursor: pointer;
+  transition: color .12s, background .12s, box-shadow .12s; }
+.ms-tab:hover { color: var(--ink); }
+.ms-tab.sel { color: var(--ink); background: var(--raise); box-shadow: var(--lift-sheet);
+  border-color: var(--hair); }
+.ms-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+.ms-tabbody { flex: 1; min-height: 0; overflow: auto; }
+.ms-tabbody.is-source { overflow: hidden; }   /* the editor manages its own scroll */
+
+/* ---- TAB 1 · source editor (line-numbered monospace) --------------------- */
+.ms-source { height: 100%; min-height: 0; display: flex; flex-direction: column; }
+.ms-editorbar { flex: none; display: flex; align-items: center; gap: 10px;
+  padding: var(--s2) var(--s4); border-bottom: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--well) 30%, transparent); }
+.ms-fname { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono);
+  font-size: 12.5px; color: var(--ink); }
+.ms-fname .i { color: var(--accent); }
+.ms-bar-sp { flex: 1; }
+.ms-state { font-size: var(--t-note); }
+.ms-st { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono);
+  font-size: 11.5px; letter-spacing: .01em; }
+.ms-st-clean { color: var(--ok); }
+.ms-st-clean .i { width: 12px; height: 12px; }
+.ms-st-dirty { color: var(--stale); }
+.ms-st-sample { color: var(--faint); }
+.ms-st-bad { color: var(--bad); }
+.ms-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--stale) 22%, transparent); }
+.ms-save.busy, .ms-saveall.busy { opacity: .6; }
+
+/* editorbar right cluster (item10/item21): unsaved count + wrap toggle */
+.ms-unsaved { font-family: var(--mono); font-size: 11.5px; color: var(--stale);
+  white-space: nowrap; }
+.ms-unsaved[hidden] { display: none; }
+.ms-wrap.on { color: var(--accent-ink);
+  background: color-mix(in oklab, var(--accent) 13%, transparent);
+  border-color: color-mix(in oklab, var(--accent) 26%, transparent); }
+
+.ms-editor { position: relative; flex: 1; min-height: 0; display: flex; overflow: hidden;
+  background: var(--sheet); }
+/* (item3b) container focus ring — stronger than the bare textarea outline:none */
+.ms-editor:focus-within { box-shadow: inset 0 0 0 2px var(--focus-ring); }
+/* (item3d) one-shot flash after Apply-to-source lands the caret on the edited range */
+.ms-editor.ms-flash { animation: ms-editflash .9s ease-out; }
+@keyframes ms-editflash {
+  0% { box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--accent) 70%, transparent); }
+  100% { box-shadow: inset 0 0 0 2px transparent; } }
+@media (prefers-reduced-motion: reduce) { .ms-editor.ms-flash { animation: none; } }
+.ms-gutter { flex: none; overflow: hidden; padding: 12px 10px 12px 14px;
+  text-align: right; white-space: pre; user-select: none;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.65;
+  color: var(--graphite); background: color-mix(in oklab, var(--well) 55%, transparent);
+  border-right: 1px solid var(--hair); font-variant-numeric: tabular-nums;
+  -webkit-tap-highlight-color: transparent; }
+.ms-ta { flex: 1; min-width: 0; overflow: auto; resize: none; border: 0;
+  padding: 12px 16px; margin: 0; background: transparent; color: var(--ink);
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.65;
+  white-space: pre; tab-size: 2; -moz-tab-size: 2; }
+.ms-ta.wrap { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.ms-ta:focus { outline: none; }
+.ms-ta:focus-visible { outline: none; box-shadow: inset 4px 0 0 var(--accent); }
+.ms-ta[readonly] { color: var(--muted); }
+
+/* (item3a) find bar over the editor (absolute, top-right) */
+.ms-find { position: absolute; top: 8px; right: 8px; z-index: 5;
+  display: flex; align-items: center; gap: 4px; padding: 4px 5px;
+  border-radius: 8px; background: var(--raise); border: 1px solid var(--hair);
+  box-shadow: var(--lift-sheet); }
+.ms-find[hidden] { display: none; }
+.ms-find-in { width: 168px; height: 24px; padding: 0 8px; margin: 0;
+  border: 1px solid var(--hair); border-radius: 6px; background: var(--sheet);
+  color: var(--ink); font-family: var(--mono); font-size: 12px; outline: none; }
+.ms-find-in:focus { border-color: var(--focus-ring); }
+.ms-find-count { min-width: 42px; text-align: center; font-family: var(--mono);
+  font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ms-find.no-match .ms-find-in { border-color: var(--bad); }
+.ms-find.no-match .ms-find-count { color: var(--bad); }
+.ms-find-btn { appearance: none; width: 24px; height: 24px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid transparent; border-radius: 6px; background: transparent;
+  color: var(--muted); cursor: pointer; transition: color .12s, background .12s; }
+.ms-find-btn:hover { color: var(--ink); background: var(--well); }
+.ms-find-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.ms-find-btn .i { width: 12px; height: 12px; }
+.i.ms-cup { transform: rotate(-90deg); }
+.i.ms-cdown { transform: rotate(90deg); }
+
+/* (item3c) persistent inline keyboard hint under the editor */
+.ms-hint { flex: none; padding: 5px var(--s4); border-top: 1px solid var(--hair);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .01em; color: var(--faint);
+  background: color-mix(in oklab, var(--well) 30%, transparent);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- TAB 2 · PDF ---------------------------------------------------------- */
+.ms-pdfwrap { height: 100%; min-height: 0; display: flex; flex-direction: column; background: var(--well); }
+/* (item1) stage holds the iframe + its loading/error overlays (position context) */
+.ms-pdfstage { position: relative; flex: 1; min-height: 0; display: flex; }
+.ms-pdf { flex: 1; min-height: 0; display: block; width: 100%; border: 0; background: #fff; }
+/* loading skeleton (cleared on load) + honest error overlay (shown on error/timeout) */
+.ms-pdfover { position: absolute; inset: 0; height: auto; min-height: 0; margin: 0;
+  background: var(--well); }
+.ms-pdfover[hidden] { display: none; }   /* beats .ms-empty's display:flex */
+/* passive staleness note above the iframe — no recompile is launched from here */
+.ms-pdfstale { flex: none; display: flex; align-items: center; gap: 7px;
+  padding: 8px var(--gutter); font-size: var(--t-note); color: var(--stale);
+  background: color-mix(in oklab, var(--stale) 12%, var(--sheet));
+  border-bottom: 1px solid color-mix(in oklab, var(--stale) 32%, var(--hair)); }
+.ms-pdfstale .i { width: 14px; height: 14px; flex: none; }
+
+/* ---- empty states (shared by source/pdf/changes) ------------------------- */
+.ms-empty { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; height: 100%; min-height: 220px; padding: var(--s6) var(--s4);
+  text-align: center; color: var(--muted); }
+.ms-empty .i { width: 30px; height: 30px; color: var(--graphite); }
+.ms-empty p { font-size: 14px; font-weight: 560; color: var(--ink); margin: 0; }
+.ms-empty-note { font-size: var(--t-note); color: var(--faint); font-family: var(--mono);
+  max-width: 52ch; line-height: 1.5; overflow-wrap: anywhere; }
+.ms-fileerr .i { color: var(--stale); }
+
+/* ---- TAB 3 · changes (github-PR view) ------------------------------------ */
+.ms-scroll { height: 100%; min-height: 0; overflow: auto; padding: var(--s4) var(--gutter) var(--s7); }
+.ms-prhead { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px;
+  padding-bottom: var(--s3); margin-bottom: var(--s4); border-bottom: 1px solid var(--hair); }
+.ms-prtitle { display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
+.ms-prtitle .i { color: var(--accent); }
+.ms-prsum { display: inline-flex; align-items: center; gap: 14px; }
+.ms-prstat { font-size: var(--t-ui); color: var(--muted); }
+.ms-prstat b { font-family: var(--mono); font-size: 14px; color: var(--ink);
+  font-variant-numeric: tabular-nums; }
+.ms-prpend.warn { color: var(--stale); }
+.ms-prpend.warn b { color: var(--stale); }
+.ms-prhead .src-hint { margin-left: auto; }
+
+.ms-edits { display: flex; flex-direction: column; gap: var(--s3); }
+.ms-edit { border: 1px solid var(--hair); border-radius: var(--r-lift);
+  background: var(--raise); box-shadow: var(--lift-sheet); overflow: hidden; }
+.ms-edit-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: var(--s3) var(--s4); border-bottom: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--well) 30%, transparent); }
+.ms-esec { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+/* (item18) persistent subtle border so it reads as a button at rest, not plain text */
+.ms-edit-head .ms-apply { margin-left: auto; border-color: var(--hair); }
+.ms-edit-head .ms-apply .i { width: 12px; height: 12px; }
+.ms-edit-head .ms-apply + .ms-jump { margin-left: 6px; }
+.ms-edit-head .ms-jump { margin-left: auto; }
+.ms-edit-head .ms-jump .i { width: 13px; height: 13px; }
+
+.ms-ecrit { padding: var(--s3) var(--s4) 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.ms-ecrit-k { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 640;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin-right: 7px; }
+
+/* the diff itself — red − del rows over green + add rows */
+.ms-diff { margin: var(--s3) var(--s4); border: 1px solid var(--hair);
+  border-radius: 8px; overflow: hidden; background: var(--sheet); }
+.ms-dl { display: flex; align-items: flex-start; gap: 0; font-family: var(--mono);
+  font-size: 12px; line-height: 1.55; }
+.ms-dsign { flex: none; width: 26px; text-align: center; padding: 3px 0; user-select: none;
+  font-weight: 700; color: var(--faint); }
+.ms-dtext { flex: 1; min-width: 0; padding: 3px 12px 3px 4px; white-space: pre-wrap;
+  overflow-wrap: anywhere; }
+.ms-dl.del { background: color-mix(in oklab, var(--bad) 9%, transparent); }
+.ms-dl.del .ms-dsign { color: var(--bad); }
+.ms-dl.del .ms-dtext { color: color-mix(in oklab, var(--bad) 55%, var(--ink)); }
+.ms-dl.add { background: color-mix(in oklab, var(--ok) 10%, transparent); }
+.ms-dl.add .ms-dsign { color: var(--ok); }
+.ms-dl.add .ms-dtext { color: color-mix(in oklab, var(--ok) 52%, var(--ink)); }
+
+.ms-edit-foot { display: flex; align-items: center; gap: 12px; padding: 0 var(--s4) var(--s3);
+  font-family: var(--mono); font-size: 11px; color: var(--faint); }
+.ms-epass { color: var(--graphite); }
+.ms-ets { margin-left: auto; }
+
+/* ---- skeleton (first paint before data lands) ---------------------------- */
+.ms-skel .ms-tree, .ms-skel .ms-panel { padding: var(--s4); }
+.ms-sk-line { height: 12px; border-radius: 6px; margin: 10px 0;
+  background: linear-gradient(90deg, var(--well), color-mix(in oklab, var(--well) 55%, var(--raise)), var(--well));
+  background-size: 200% 100%; animation: ms-shimmer 1.3s linear infinite; }
+.ms-sk-line.w40 { width: 40%; } .ms-sk-line.w60 { width: 60%; }
+.ms-sk-block { height: 60%; min-height: 180px; border-radius: var(--r-lift);
+  background: linear-gradient(90deg, var(--well), color-mix(in oklab, var(--well) 55%, var(--raise)), var(--well));
+  background-size: 200% 100%; animation: ms-shimmer 1.3s linear infinite; }
+@keyframes ms-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .ms-sk-line, .ms-sk-block { animation: none; } }
+
+/* ---- responsive: stack the tree above the panel on narrow viewports ------- */
+@media (max-width: 760px) {
+  .ms-head { padding: var(--s3) var(--s4) var(--s2); }
+  .ms-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .ms-tree { display: flex; flex-wrap: wrap; gap: 4px; max-height: 132px;
+    border-right: 0; border-bottom: 1px solid var(--hair); }
+  .ms-tree-h { width: 100%; }
+  .ms-tnode { flex: 0 0 auto; }
+  .ms-tname { max-width: 40vw; }
+  .ms-scroll { padding: var(--s4) var(--s4) var(--s6); }
+  .ms-prhead .src-hint { margin-left: 0; }
+}

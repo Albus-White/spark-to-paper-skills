@@ -1,0 +1,888 @@
+/* ============================================================================
+   SparkBoard · SPARK workspace styles — cockpit/ui/spark.css
+   ONLY the Spark-specific structural bits not covered by sparkboard.css
+   primitives (.card/.chip/.meter/.timeline/.stat/.grid/.badge/.side-row/.entry).
+   Everything below inherits the design tokens + per-tool --accent (terracotta),
+   works in light + dark, and keeps all wide content scrolling inside its own
+   container (never the page body). Comments explain WHY.
+   ========================================================================== */
+
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ============================================================================
+   READING — story origin card + freshness banner (live inside .reader, so they
+   use the warm --paper-* tokens to sit in the reading surface, not the chrome)
+   ========================================================================== */
+/* item18 — dismissible "return to the Jury charge this jump came from" breadcrumb, pinned
+   at the very top of the reader body. */
+.reader .read-breadcrumb { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; }
+.read-breadcrumb .rb-link { display: inline-flex; align-items: center; gap: 6px; flex: 1; min-width: 0;
+  font: inherit; font-size: 12.5px; font-weight: 560; color: var(--accent-ink);
+  background: color-mix(in oklab, var(--accent) 8%, var(--paper-card));
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, var(--paper-rule));
+  border-radius: 8px; padding: 7px 12px; cursor: pointer; text-align: left; }
+.read-breadcrumb .rb-link:hover { border-color: color-mix(in oklab, var(--accent) 44%, var(--paper-rule)); }
+.read-breadcrumb .rb-arrow { font-weight: 700; }
+.read-breadcrumb .rb-x { flex: none; color: var(--paper-muted); }
+.read-breadcrumb .rb-x:hover { color: var(--paper-ink); }
+.fresh-banner {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 22px;
+  padding: 12px 14px; border-radius: 10px;
+  /* amber "one lie the report exists to prevent" — stale until recompiled */
+  background: color-mix(in oklab, var(--stale) 12%, var(--paper-card));
+  border: 1px solid color-mix(in oklab, var(--stale) 34%, var(--paper-rule));
+}
+.fresh-banner.fresh { background: color-mix(in oklab, var(--ok) 12%, var(--paper-card));
+  border-color: color-mix(in oklab, var(--ok) 34%, var(--paper-rule)); }
+.fresh-banner .fb-ic { display: flex; color: var(--stale); flex: none; }
+.fresh-banner.fresh .fb-ic { color: var(--ok); }
+.fresh-banner .fb-ic.spin { animation: sp-spin 1s linear infinite; }
+.fresh-banner .fb-tx { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.fresh-banner .fb-tx b { font-size: .92em; color: var(--paper-ink); font-weight: 640; }
+.fresh-banner .fb-tx span { font-size: .82em; color: var(--paper-muted); line-height: 1.4; }
+@keyframes sp-spin { to { transform: rotate(360deg); } }
+
+/* R13 — a compact go/no-go submittable ribbon that rides beside the freshness banner on the
+   paper surface. Driven by the shared Jury needs signal; deep-links into the submission
+   shield. Green = submittable, red = blocking issues still open. */
+.submit-ribbon { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 20px;
+  padding: 6px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .82em;
+  font-weight: 640; letter-spacing: .01em; color: var(--paper-ink);
+  background: var(--paper-card); border: 1px solid var(--paper-rule); transition: border-color .15s; }
+.submit-ribbon .i { width: 13px; height: 13px; flex: none; }
+.submit-ribbon.ok { color: var(--ok); background: color-mix(in oklab, var(--ok) 10%, var(--paper-card));
+  border-color: color-mix(in oklab, var(--ok) 34%, var(--paper-rule)); }
+.submit-ribbon.ok .i { color: var(--ok); }
+.submit-ribbon.bad { color: var(--bad); background: color-mix(in oklab, var(--bad) 10%, var(--paper-card));
+  border-color: color-mix(in oklab, var(--bad) 34%, var(--paper-rule)); }
+.submit-ribbon.bad .i { color: var(--bad); }
+.submit-ribbon:hover { border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-rule)); }
+
+/* item9 — the freshness + go/no-go states collapse into ONE compact inline status bar under
+   .meta (a freshness chip + a blocker chip), not two stacked full-width cards. The chips keep
+   their .fresh-banner / .submit-ribbon classes so SHELL-CSS can Zen-hide them. */
+.reader .reading-statusbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 20px; }
+.reader .reading-statusbar:empty { display: none; margin: 0; }
+.reader .reading-statusbar .submit-ribbon { margin: 0; }
+/* the freshness state as a compact pill (was a full-width card) */
+.fresh-banner.chip-mode { display: inline-flex; align-items: center; gap: 6px; margin: 0;
+  padding: 6px 12px; border-radius: 999px; font-size: .82em; font-weight: 640;
+  letter-spacing: .01em; line-height: 1.2; color: var(--paper-ink); cursor: default; }
+button.fresh-banner.chip-mode { font-family: inherit; cursor: pointer; }
+.fresh-banner.chip-mode .i { width: 13px; height: 13px; flex: none; }
+.fresh-banner.chip-mode.fresh { color: var(--ok);
+  background: color-mix(in oklab, var(--ok) 12%, var(--paper-card));
+  border: 1px solid color-mix(in oklab, var(--ok) 34%, var(--paper-rule)); }
+.fresh-banner.chip-mode.stale { color: var(--stale);
+  background: color-mix(in oklab, var(--stale) 12%, var(--paper-card));
+  border: 1px solid color-mix(in oklab, var(--stale) 34%, var(--paper-rule)); }
+.fresh-banner.chip-mode.stale:hover { border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-rule)); }
+.fresh-banner.chip-mode .fc-cta { padding-left: 8px; margin-left: 2px;
+  border-left: 1px solid color-mix(in oklab, var(--stale) 30%, var(--paper-rule));
+  color: var(--paper-muted); font-weight: 600; }
+/* item1d — a neutral "checking review…" chip while the needs poll is still in flight */
+.submit-ribbon.checking { cursor: default; color: var(--paper-muted);
+  background: var(--paper-card); border-color: var(--paper-rule); }
+.submit-ribbon.checking .dotb { flex: none; animation: sp-pulse 1.6s ease-in-out infinite; }
+
+.story-card {
+  position: relative; margin: 0 0 26px; padding: 20px 22px 16px;
+  border-radius: 12px; background: var(--paper-card);
+  border: 1px solid var(--paper-rule);
+  box-shadow: var(--lift-sheet);
+  /* a hairline terracotta spine — this is the "spark → thesis" hero */
+  border-left: 3px solid var(--accent);
+}
+.story-card .sc-mark { position: absolute; top: 14px; right: 16px; color: var(--accent); opacity: .28; }
+.story-card .sc-mark .i { width: 26px; height: 26px; }
+.story-card .sc-kick { font-family: var(--sans); font-size: var(--t-fine); font-weight: 640;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.story-card .sc-one { font-family: var(--serif); font-size: 1.28em; line-height: 1.4; font-weight: 600;
+  color: var(--paper-ink); margin: 0 0 16px; letter-spacing: .006em; }
+/* R3 — a long / multi-sentence spark (e.g. hydrated from st.solution) degrades gracefully:
+   calmer size, weight and leading so it never becomes a wall of bold display serif. Only the
+   first sentence carries emphasis; the rest drops to body weight. Genuine single-line sparks
+   keep the full 1.28em display treatment above. */
+.story-card .sc-one.sc-long { font-size: 1.12em; line-height: 1.5; font-weight: 500; letter-spacing: 0; }
+.story-card .sc-one .sc-lead { font-weight: 640; }
+.story-card .sc-one.sc-long .sc-rest { font-weight: 400; color: var(--paper-muted); }
+.story-card .sc-flow { display: grid; grid-template-columns: 1fr auto 1.1fr; gap: 12px; align-items: stretch; }
+.story-card .sc-cell { font-size: .82em; line-height: 1.5; color: var(--paper-muted);
+  background: color-mix(in oklab, var(--paper-ink) 4%, transparent); border-radius: 9px; padding: 10px 12px; }
+.story-card .sc-cell.sc-sol { background: color-mix(in oklab, var(--accent) 9%, transparent);
+  color: var(--paper-ink); border: 1px solid color-mix(in oklab, var(--accent) 20%, transparent); }
+.story-card .sc-lbl { display: block; font-family: var(--sans); font-size: 10px; font-weight: 640;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--paper-warm); margin-bottom: 4px; }
+.story-card .sc-arrow { display: flex; align-items: center; color: var(--accent); }
+.story-card .sc-arrow .i { transform: rotate(-90deg); width: 18px; height: 18px; }
+.story-card .sc-prov { display: flex; align-items: center; gap: 10px; margin-top: 14px;
+  padding-top: 12px; border-top: 1px dashed var(--paper-rule); }
+.story-card .sc-prov-t { font-size: .78em; color: var(--paper-muted); }
+.story-card .sc-prov code { font-family: var(--mono); font-size: .92em; background: var(--paper-code);
+  padding: .1em .4em; border-radius: 4px; color: var(--paper-warm); }
+@media (max-width: 620px) { .story-card .sc-flow { grid-template-columns: 1fr; } .story-card .sc-arrow .i { transform: rotate(0deg); } }
+
+/* ============================================================================
+   RUNS — folio numeral, stage tape, triptych, waiting line, telemetry
+   ========================================================================== */
+.run-head { padding: var(--s4) var(--s4) 18px; margin-bottom: var(--s3); }
+.folio-wrap { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
+.folio { font-family: var(--serif); font-weight: 700; font-size: var(--t-folio); line-height: 1;
+  color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.folio .folio-den { font-size: .42em; color: var(--faint); margin-left: 6px; font-weight: 600; }
+/* item31a — on a terminal run the stage tape + verdict banner carry the "where/how it ended"
+   signal, so tint + shrink the giant folio numeral rather than let it dominate the header. */
+.folio-wrap.terminal .folio { color: var(--faint); font-size: calc(var(--t-folio) * .56); }
+.folio-meta { display: flex; flex-direction: column; gap: 4px; }
+.folio-meta .kick { font-size: var(--t-fine); font-weight: 640; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--faint); }
+.folio-stage { font-family: var(--serif); font-size: var(--t-lead); font-weight: 600; color: var(--ink); line-height: 1; }
+.folio-meta .chip { align-self: flex-start; }
+/* the chip.wait dot pulses so a static screenshot still reads "alive" */
+.folio-meta .chip.wait .dotb { animation: sp-pulse 1.6s ease-in-out infinite; }
+@keyframes sp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+.stage-tape-wrap { overflow-x: auto; scrollbar-width: none; margin: 0 -4px; padding: 4px; }
+.stage-tape-wrap::-webkit-scrollbar { height: 0; }
+.stage-tape { display: flex; align-items: flex-start; gap: 0; min-width: max-content; }
+.st-node { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px;
+  flex: 1 0 auto; min-width: 78px; padding: 0 4px; }
+/* connector rail between nodes, drawn on the dot's vertical center (top:7px+dot) */
+.st-node::before { content: ""; position: absolute; top: 6px; left: -50%; width: 100%; height: 2px;
+  background: var(--hair-2); z-index: 0; }
+.st-node:first-child::before { display: none; }
+.st-node.done::before, .st-node.now::before { background: color-mix(in oklab, var(--accent) 55%, var(--hair-2)); }
+.st-dot { position: relative; z-index: 1; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--raise); border: 2px solid var(--graphite); }
+.st-node.done .st-dot { background: var(--accent); border-color: var(--accent); }
+.st-node.now .st-dot { background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent); }
+.st-lbl { font-size: 11.5px; font-weight: 540; color: var(--muted); white-space: nowrap; }
+.st-node.now .st-lbl { color: var(--accent); font-weight: 640; }
+.st-node.todo .st-lbl { color: var(--faint); }
+/* R13 — WHERE a terminal-but-not-done run stopped: a filled bad/stale dot carrying a small
+   ✕ / ! glyph, no "now" glow. The rail INTO the stage stays accent (the run reached it). */
+.st-node.error .st-dot, .st-node.halt .st-dot { display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 9px; font-weight: 800; line-height: 1; }
+.st-node.error .st-dot { background: var(--bad); border-color: var(--bad); }
+.st-node.halt .st-dot { background: var(--stale); border-color: var(--stale); }
+.st-node.error .st-lbl { color: var(--bad); font-weight: 640; }
+.st-node.halt .st-lbl { color: var(--stale); font-weight: 640; }
+.st-node.error::before, .st-node.halt::before { background: color-mix(in oklab, var(--accent) 55%, var(--hair-2)); }
+.run-status { margin: 16px 0 0; font-size: 14.5px; line-height: 1.55; color: var(--ink);
+  max-width: 78ch; }
+
+/* R18 — terminal verdict banner: the loudest thing on the runs screen, toned by
+   outcome, sized a touch larger than .run-status (mirrors the reader freshness banner) */
+.run-verdict { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 16px 0 0;
+  padding: 13px 16px; border-radius: 10px; }
+.run-verdict .rv-ic { display: flex; flex: none; }
+.run-verdict .rv-ic .i { width: 18px; height: 18px; }
+.run-verdict .rv-tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+/* R10 — the done-run call-to-action lives INSIDE the verdict: solid primary "Open PDF"
+   with a ghost "Send to Jury" beside it, pushed to the trailing edge of the banner. */
+.run-verdict .rv-cta { display: flex; align-items: center; gap: 8px; flex: none; margin-left: auto; }
+/* item31a — the verdict word is the answer to "is my paper OK?"; promote it above the (now
+   demoted) folio numeral on a terminal run. The verdict banner only renders when terminal. */
+.run-verdict .rv-tx b { font-size: 17px; font-weight: 680; color: var(--ink); }
+.run-verdict .rv-tx span { font-size: 12.5px; line-height: 1.45; color: var(--muted); overflow-wrap: anywhere; }
+.run-verdict.ok { background: color-mix(in oklab, var(--ok) 12%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--ok) 34%, var(--hair)); }
+.run-verdict.ok .rv-ic { color: var(--ok); }
+.run-verdict.err { background: color-mix(in oklab, var(--bad) 12%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--bad) 34%, var(--hair)); }
+.run-verdict.err .rv-ic { color: var(--bad); }
+.run-verdict.halt { background: color-mix(in oklab, var(--stale) 12%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--stale) 34%, var(--hair)); }
+.run-verdict.halt .rv-ic { color: var(--stale); }
+
+/* item24 — align-items:start (not the grid default stretch) so a single-line narration card
+   sizes to its content instead of stretching into 200px+ of dead whitespace. */
+.triptych { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s3); margin-bottom: var(--s3); align-items: start; }
+.tri-col { display: flex; flex-direction: column; min-width: 0; }
+/* item31c — in the ~300px tri-col card the EN title 'What the agent is doing' wrapped to 4
+   lines beside the eyebrow; stack the eyebrow over the title (kick takes a full row) so the
+   heading gets the card's full width. The right-aligned toggle rides the title row. */
+.tri-col .card-h { margin-bottom: 12px; flex-wrap: wrap; }
+.tri-col .card-h .kick { flex: 1 0 100%; }
+@media (max-width: 940px) { .triptych { grid-template-columns: 1fr; } }
+
+.narration { display: flex; flex-direction: column; gap: 12px; }
+.nr-line { display: flex; gap: 10px; min-width: 0; }
+.nr-t { font-family: var(--mono); font-size: 11px; color: var(--accent); flex: none; padding-top: 2px;
+  font-variant-numeric: tabular-nums; }
+/* long Windows paths / the DONE handoff must wrap, never clip mid-word (mirror .ap-arg) */
+.nr-line p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ink);
+  min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+.nr-line:first-child p { color: var(--ink); }
+.nr-line:not(:first-child) p { color: var(--muted); }
+
+.apparatus { font-family: var(--mono); font-size: 12px; line-height: 1.5;
+  background: var(--well); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
+  box-shadow: var(--letterpress); overflow-x: auto; }
+.ap-row { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.ap-tool { color: var(--accent); font-weight: 600; }
+.ap-arg { color: var(--ink); overflow-wrap: anywhere; }
+.ap-out { color: var(--muted); margin-left: auto; white-space: nowrap; }
+.ap-row.live .ap-arg { color: var(--muted); }
+.ap-cursor { display: inline-block; width: 7px; height: 13px; background: var(--accent);
+  animation: sp-blink 1s step-end infinite; vertical-align: middle; }
+@keyframes sp-blink { 50% { opacity: 0; } }
+
+/* R8 — apparatus disclosure. On a terminal run the raw mono tool-log is collapsed behind a
+   "show log" toggle (right-aligned in the card header) and a one-line summary leads instead;
+   the live log stays fully expanded while the run is still going. */
+.tri-appr .card-h .appr-toggle { margin-left: auto; flex: none; }
+.appr-summary { font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--muted);
+  background: var(--well); border-radius: 8px; padding: 8px 12px; box-shadow: var(--letterpress);
+  overflow-wrap: anywhere; }
+.tri-appr.collapsed .apparatus { display: none; }
+.tri-appr:not(.collapsed) .appr-summary { display: none; }
+
+/* item18 — narration terminal treatment, parallel to the apparatus disclosure: a pinned bold
+   lead (the closing takeaway), a collapsed body behind "show full", and an amber chip when the
+   final turn ends on an open question. */
+.tri-narr .card-h .narr-toggle { margin-left: auto; flex: none; }
+/* item20b — the narration translate toggle sits at the right of the card head (both the sample
+   .tri-col and the live .tri-narr). With the sibling narr-toggle it shares the .card-h gap. */
+.tri-col .card-h .narr-trans { margin-left: auto; flex: none; }
+.narr-lead { font-size: 13.5px; line-height: 1.5; font-weight: 640; color: var(--ink);
+  padding: 10px 12px; margin-bottom: 10px; border-radius: 8px; background: var(--sheet);
+  border: 1px solid var(--hair); border-left: 3px solid var(--accent); overflow-wrap: anywhere; }
+.narr-ask { margin-bottom: 10px; }
+.narr-ask-chip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 12px;
+  font-weight: 640; cursor: pointer; color: var(--stale); padding: 6px 11px; border-radius: 999px;
+  background: color-mix(in oklab, var(--stale) 12%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--stale) 40%, var(--hair)); }
+.narr-ask-chip .i { width: 13px; height: 13px; flex: none; color: var(--stale); }
+.narr-ask-chip:hover { border-color: color-mix(in oklab, var(--stale) 60%, var(--hair)); }
+.tri-narr.collapsed .narration { display: none; }
+
+.shelf { display: flex; flex-direction: column; gap: 8px; }
+.sh-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 8px;
+  background: var(--sheet); border: 1px solid var(--hair); }
+.sh-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--graphite); flex: none; }
+.sh-dot.ok { background: var(--ok); } .sh-dot.wait { background: var(--wait); }
+/* R3c — the mono filename must yield (flex:1;min-width:0) so its ellipsis fires and the note
+   (flex:none) is never pushed off the narrow Runs third column. */
+.sh-lbl { flex: 1; min-width: 0; font-family: var(--mono); font-size: 12px; color: var(--ink); overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; }
+.sh-note { flex: none; margin-left: auto; font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.wait-line { display: flex; align-items: center; gap: 11px; margin-bottom: var(--s3);
+  padding: 12px 16px; border-radius: 10px;
+  /* the human-in-the-loop question uses the WAIT ink (violet) — its own register */
+  background: color-mix(in oklab, var(--wait) 12%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--wait) 34%, var(--hair));
+  color: var(--wait); }
+.wait-line > .i { flex: none; }
+.wait-line .wl-tx { flex: 1; font-size: 13.5px; line-height: 1.5; color: var(--ink); min-width: 0; }
+.wait-line .wl-tx b { color: var(--wait); font-weight: 640; }
+.wait-line .wl-chip { flex: none; font-family: var(--mono); font-size: 11px; color: var(--wait);
+  padding: 3px 9px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--wait) 40%, transparent);
+  background: color-mix(in oklab, var(--wait) 10%, transparent); }
+
+.telemetry { display: flex; flex-wrap: wrap; gap: 0; padding: 0; overflow: hidden; }
+.tel-cell { flex: 1 1 120px; display: flex; flex-direction: column; gap: 3px; padding: 14px 16px;
+  border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.tel-cell.wide { flex: 1 1 200px; }
+.tel-k { font-size: 10px; font-weight: 640; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+/* item12 — zh keys ("输入token") carry Latin that the uppercase idiom would mangle and prise
+   apart; drop the transform + tighten tracking so the value renders verbatim (no <html lang>). */
+.tel-k.zh { text-transform: none; letter-spacing: .02em; }
+.tel-v { font-family: var(--mono); font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ============================================================================
+   FIGURES — gallery cards + lightbox
+   ========================================================================== */
+.fig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: var(--s3); }
+.fig-card { background: var(--raise); border: 1px solid var(--hair); border-radius: var(--r-lift);
+  box-shadow: var(--lift-sheet); overflow: hidden; cursor: pointer;
+  transition: transform .14s cubic-bezier(.16,1,.3,1), box-shadow .18s, border-color .18s; }
+.fig-card:hover { transform: translateY(-2px); box-shadow: var(--lift-pop);
+  border-color: color-mix(in oklab, var(--accent) 34%, var(--hair)); }
+.fig-thumb { position: relative; height: 140px; display: flex; align-items: center; justify-content: center;
+  background: color-mix(in oklab, var(--accent) 5%, var(--well)); color: var(--paper-ink);
+  border-bottom: 1px solid var(--hair); }
+.fig-svg { width: 78%; height: 78%; color: color-mix(in oklab, var(--paper-ink) 62%, transparent); }
+.fig-type { position: absolute; top: 8px; left: 8px; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 12%, var(--raise)); padding: 2px 7px; border-radius: 5px; }
+.fig-meta { padding: 12px 13px 13px; display: flex; flex-direction: column; gap: 8px; }
+.fig-label { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fig-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip.mono { font-family: var(--mono); font-size: 10px; letter-spacing: .03em; height: 20px; padding: 0 7px; }
+.fig-nums { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 11.5px;
+  color: var(--muted); padding-top: 8px; border-top: 1px solid var(--hair); }
+.fig-nums > span { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
+.fig-nums .i { color: var(--faint); }
+.fig-nums .chip { margin-left: auto; }
+
+.fig-scrim { position: fixed; inset: 0; background: var(--scrim); backdrop-filter: blur(3px); z-index: 80;
+  animation: sp-fade .16s ease-out; }
+.fig-lightbox { position: fixed; z-index: 81; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(560px, 92vw); max-height: 88vh; overflow: auto; scrollbar-width: none;
+  background: var(--raise); border: 1px solid var(--hair-2); border-radius: 16px; box-shadow: var(--lift-pop);
+  animation: materialize .2s cubic-bezier(.16,1,.3,1); }
+.fig-lightbox::-webkit-scrollbar { width: 0; }
+.lb-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--hair); }
+.lb-head h3 { flex: 1; font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-stage { height: 240px; display: flex; align-items: center; justify-content: center;
+  background: color-mix(in oklab, var(--accent) 5%, var(--well)); color: var(--paper-ink); }
+.lb-stage .fig-svg { width: 60%; height: 72%; }
+.lb-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.lb-table tr { border-top: 1px solid var(--hair); }
+.lb-table td { padding: 9px 16px; vertical-align: top; }
+.lb-table .lk { color: var(--faint); font-family: var(--mono); font-size: 11.5px; width: 42%;
+  text-transform: uppercase; letter-spacing: .03em; }
+.lb-table .lv { color: var(--ink); font-family: var(--mono); overflow-wrap: anywhere; }
+@keyframes sp-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============================================================================
+   GOVERNANCE — stat strip, masonry grid, seals, decision queue, tier, claims,
+   facts, dead-ends, gates, E14 trends
+   ========================================================================== */
+.gov-stats { margin-bottom: var(--s4); }
+/* R9 — newcomer glossary strip: names the four densest insider terms in one calm block that
+   wraps on narrow widths. Sits between the stat tiles and the card masonry. */
+.gov-gloss { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px;
+  margin: 0 0 var(--s4); padding: 10px 14px; border-radius: 10px;
+  background: var(--sheet); border: 1px solid var(--hair); font-size: 12px; line-height: 1.5; color: var(--muted); }
+.gov-gloss .gg-h { flex: none; font-size: 10px; font-weight: 640; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint); }
+.gov-gloss .gg-item b { color: var(--ink); font-weight: 640; margin-right: 5px; }
+/* item21 — the '知道了 / Got it' dismiss rides the trailing edge of the gloss strip. */
+.gov-gloss .gg-dismiss { flex: none; margin-left: auto; align-self: center; }
+.stat-card { display: flex; align-items: center; justify-content: space-between; padding: var(--s3) var(--s4); }
+.stat-card .v { font-size: clamp(22px, 2vw, 30px); }
+/* R18 — the "best tier" value is a categorical enum, not a numeral. Render it as a
+   medium-weight accent-ink pill (like the reader tier chips) so it stops competing with
+   the mono numeral scale of the sibling KPI tiles. */
+.stat-card .v.accent-v { align-self: flex-start; font-size: 13px; font-weight: 600;
+  font-family: var(--sans); letter-spacing: .01em; line-height: 1.3; color: var(--accent-ink);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent);
+  padding: 3px 10px; border-radius: 999px; }
+.stat-card .sc-chip { width: 9px; height: 9px; padding: 0; border-radius: 50%; }
+/* R28a — a count class pins the KPI grid to a clean layout (one row → 2×2 → 1-col),
+   overriding the auto-fill that otherwise leaves an orphan tile on a half-empty row. */
+.gov-stats.gov-stats-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .gov-stats.gov-stats-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .gov-stats.gov-stats-4 { grid-template-columns: 1fr; } }
+/* item22 — the KPI row mixes a large-numeral archetype (open decisions / GPU-h / rounds) with the
+   small accent-pill tier archetype; top-aligned, their .k eyebrows landed on different baselines.
+   Reserve the SAME value-line box on every tile (the numeral's own line-box) and center the value
+   in it, so every eyebrow beneath shares one baseline whatever the tile's archetype. */
+.gov-stats .stat { justify-content: center; }
+.gov-stats .stat-card .v { min-height: clamp(22px, 2vw, 30px); display: flex; align-items: center; }
+
+/* a light masonry: two columns, wide cards span both (tables get full width).
+   NOTE: display:inline-block would disable column-span, so keep cards as blocks
+   and rely on break-inside:avoid to keep a card from splitting across columns. */
+.gov-grid { columns: 2; column-gap: var(--s3); }
+.gov-grid > .card { break-inside: avoid; margin: 0 0 var(--s3); }
+.gov-grid > .card.gov-wide { column-span: all; }
+@media (max-width: 860px) { .gov-grid { columns: 1; } }
+
+/* stage seals */
+.seals { display: flex; flex-direction: column; gap: 8px; }
+.seal-node { border: 1px solid var(--hair); border-radius: 9px; overflow: hidden; background: var(--sheet);
+  border-left: 3px solid var(--graphite); }
+.seal-node.ok { border-left-color: var(--ok); }
+.seal-node.warn { border-left-color: var(--stale); }
+.seal-head { display: flex; align-items: center; gap: 9px; padding: 9px 12px; cursor: pointer; }
+.seal-head:hover { background: var(--well); }
+.seal-nn { flex: none; }
+.seal-stage { font-family: var(--serif); font-size: 14.5px; font-weight: 600; color: var(--ink);
+  text-transform: capitalize; }
+.seal-ts { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--faint); }
+.seal-chev { color: var(--faint); transition: transform .2s; }
+.seal-node.open .seal-chev { transform: rotate(180deg); }
+.rollcall { display: none; padding: 4px 12px 12px; flex-direction: column; gap: 3px; }
+.seal-node.open .rollcall { display: flex; }
+.rc-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px;
+  font-size: 12px; background: color-mix(in oklab, var(--ink) 3%, transparent); }
+.rc-g { flex: none; width: 15px; text-align: center; font-family: var(--mono); font-weight: 700; }
+.rc-row.ok .rc-g { color: var(--ok); } .rc-row.ok .rc-g .i { color: var(--ok); }
+.rc-row.waived .rc-g { color: var(--stale); } .rc-row.missing .rc-g { color: var(--bad); }
+.rc-id { font-family: var(--mono); color: var(--ink); }
+.rc-cls { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--faint);
+  padding: 1px 6px; border-radius: 4px; border: 1px solid var(--hair); }
+.rc-art { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46%; }
+.rc-empty { font-size: 12px; color: var(--faint); font-style: italic; padding: 4px 8px; }
+
+/* decision queue */
+.dq { display: flex; flex-direction: column; gap: 12px; }
+.dq-row { padding: 12px; border: 1px solid var(--hair); border-radius: 9px; background: var(--sheet); }
+.dq-top { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 8px; }
+.dq-find { margin: 0 0 9px; font-size: 13px; line-height: 1.5; color: var(--ink); }
+.dq-ptr { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: var(--faint); }
+.dq-ptr code { font-family: var(--mono); font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
+.dq-acts { display: flex; gap: 8px; }
+/* R14 — the exact /ts-run command each button copies, shown as muted mono <code> so it is
+   readable (and auditable) without clicking. */
+.dq-cmds { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.dq-cmds code { font-family: var(--mono); font-size: 11px; color: var(--muted);
+  background: var(--well); border-radius: 5px; padding: 4px 8px; overflow-wrap: anywhere; }
+.dq-gauge { margin-top: 2px; }
+.dq-gauge-tx { margin-top: 7px; font-size: 12px; color: var(--muted); }
+.dq-gauge-tx code { font-family: var(--mono); color: var(--stale); }
+
+/* tier ladder */
+.tier-ladder { display: flex; flex-direction: column-reverse; gap: 2px; margin-bottom: 14px; }
+.tier-rung { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+.tier-rung .tr-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--graphite); flex: none; }
+.tier-rung .tr-name { font-family: var(--mono); font-size: 12.5px; letter-spacing: .02em; color: var(--muted); }
+.tier-rung.passed .tr-dot { background: var(--ok); }
+.tier-rung.passed .tr-name { color: var(--ink); }
+.tier-rung.current { background: color-mix(in oklab, var(--accent) 12%, transparent); }
+.tier-rung.current .tr-dot { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent); }
+.tier-rung.current .tr-name { color: var(--accent); font-weight: 640; }
+.tier-rung.current .chip { margin-left: auto; }
+.tier-rung.todo { opacity: .55; }
+.tier-floors { padding: 12px 0; border-top: 1px solid var(--hair); }
+.tf-h { font-size: 11px; font-weight: 640; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.tier-floors .chip { margin: 0 4px 4px 0; }
+.tier-budget { padding: 12px 0; border-top: 1px solid var(--hair); }
+.tb-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.tb-row .mono { color: var(--ink); }
+.tier-off { padding-top: 12px; border-top: 1px solid var(--hair); font-size: 11px; color: var(--faint); }
+.tier-off .chip { margin-left: 4px; }
+
+/* claim ledger table */
+.claim-counts { display: flex; gap: 6px; margin-bottom: 12px; }
+.tbl-scroll { overflow-x: auto; scrollbar-width: thin; }
+.claim-table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 560px; }
+.claim-table thead th { text-align: left; font-size: 10px; font-weight: 640; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--faint); padding: 0 10px 8px; border-bottom: 1px solid var(--hair-2); }
+.claim-table tbody tr { border-bottom: 1px solid var(--hair); }
+.claim-table td { padding: 10px; vertical-align: top; }
+.claim-table .cl-note { color: var(--muted); line-height: 1.45; min-width: 200px; }
+.claim-table .cl-margin { color: var(--ink); white-space: nowrap; }
+.claim-table .cl-prov code { font-family: var(--mono); font-size: 11px; color: var(--paper-warm); }
+
+/* facts panel */
+.facts-grp { padding: 12px 0; }
+.facts-grp + .facts-grp { border-top: 1px solid var(--hair); }
+.fg-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.fg-h code { font-family: var(--mono); font-size: 11px; color: var(--paper-warm); }
+.facts-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.fnum { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px; border-radius: 9px;
+  background: var(--well); border: 1px solid var(--hair); }
+.fnum.ok { background: color-mix(in oklab, var(--ok) 10%, var(--well)); border-color: color-mix(in oklab, var(--ok) 24%, transparent); }
+.fnum.bad { background: color-mix(in oklab, var(--bad) 9%, var(--well)); border-color: color-mix(in oklab, var(--bad) 22%, transparent); }
+.fnum .fv { font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+.fnum.ok .fv { color: var(--ok); } .fnum.bad .fv { color: var(--bad); }
+.fnum .fk { font-size: 10.5px; color: var(--faint); letter-spacing: .02em; }
+.facts-note { display: flex; gap: 7px; margin: 14px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.facts-note .i { color: var(--stale); flex: none; margin-top: 1px; }
+
+/* dead-ends */
+.deadends { display: flex; flex-direction: column; gap: 12px; }
+.de-row { padding: 12px; border: 1px solid var(--hair); border-radius: 9px; background: var(--sheet);
+  border-left: 3px solid var(--bad); }
+.de-top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 9px; }
+.de-line { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin-bottom: 5px; }
+.de-line .de-lbl { display: inline-block; min-width: 92px; font-size: 10px; font-weight: 640;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--faint); vertical-align: top; }
+.de-line.de-lesson { color: var(--ink); } .de-line.de-lesson .de-lbl { color: var(--accent); }
+
+/* gates + latex */
+.gate-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.gate-row { display: flex; align-items: center; gap: 9px; }
+.gate-row .chip { flex: none; width: 22px; padding: 0; justify-content: center; }
+.gate-name { font-size: 13px; color: var(--ink); flex: 1; }
+.gate-cls { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
+.latex-build { padding-top: 12px; border-top: 1px solid var(--hair); }
+.lx-verdict { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 8px; }
+.lx-sum { font-size: 11.5px; color: var(--muted); }
+.lx-lints { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* E14 trends */
+.e14-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s4); }
+@media (max-width: 780px) { .e14-grid { grid-template-columns: 1fr; } }
+.e14-block { min-width: 0; }
+.e14-h { font-size: 12px; font-weight: 640; color: var(--ink); margin-bottom: 10px; display: flex;
+  flex-direction: column; gap: 2px; }
+.e14-h .e14-sub { font-size: 10.5px; font-weight: 500; color: var(--faint); letter-spacing: .02em; }
+.rev-row { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+.rev-cls { font-family: var(--mono); font-size: 11.5px; color: var(--muted); width: 52px; flex: none; }
+.rev-row .meter { flex: 1; }
+.rev-v { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.spark-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.sp-lbl { font-size: 11px; color: var(--muted); width: 54px; flex: none; }
+.spark-svg { flex: 1; height: 26px; }
+.sp-last { font-size: 12px; color: var(--ink); }
+.e14-hist { display: flex; flex-direction: column; gap: 6px; }
+.eh-row { display: flex; align-items: center; gap: 6px; }
+.eh-id { font-size: 11px; color: var(--faint); width: 58px; flex: none; }
+.eh-row .chip { font-size: 10px; }
+
+/* run switcher popover */
+.run-switch .rs-h { font-size: 11px; font-weight: 640; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--faint); padding: 6px 8px; }
+.rs-row { display: flex; align-items: center; gap: 10px; padding: 9px 8px; border-radius: 9px; cursor: pointer; }
+.rs-row:hover { background: var(--well); }
+.rs-row.sel { background: color-mix(in oklab, var(--accent) 10%, transparent); }
+.rs-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--graphite); flex: none; }
+.rs-dot.on { background: var(--accent); }
+.rs-body { min-width: 0; }
+.rs-t { font-family: var(--serif); font-size: 13.5px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rs-s { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ============================================================================
+   LIVE WIRING — source hint, real figure images, run picker + reply, new form
+   (added when the workspace reads REAL on-disk data; sample keeps its own look)
+   ========================================================================== */
+/* the subtle "reading <dir>" vs "sample" provenance chip, shown per sub-view */
+.src-hint { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .02em; line-height: 1;
+  padding: 3px 8px; border-radius: 999px; vertical-align: middle; white-space: nowrap; }
+.src-hint.live { color: var(--ok); background: color-mix(in oklab, var(--ok) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ok) 26%, transparent); }
+.src-hint.live .i { color: var(--ok); width: 11px; height: 11px; }
+.src-hint.sample { color: var(--faint); background: color-mix(in oklab, var(--ink) 5%, transparent);
+  border: 1px solid var(--hair); }
+
+/* real figure raster/vector in the card thumb + the lightbox stage */
+.fig-img { width: 100%; height: 100%; object-fit: contain; background: #fff; display: block; }
+.lb-stage .fig-img { max-width: 100%; max-height: 100%; height: 100%; }
+
+/* the live run picker strip (from /api/state, polled ~5 s) */
+/* item31e — the first-load state carries a real spinner (a hung /api/state can't leave a
+   dead "reading runs…" line); an ~8s client timeout falls back to the sample cockpit in JS. */
+.runs-loading { padding: 48px 0; display: flex; align-items: center; justify-content: center; gap: 10px;
+  color: var(--faint); font-size: var(--t-ui); }
+.rl-spin { width: 15px; height: 15px; flex: none; border-radius: 50%;
+  border: 2px solid var(--hair-2); border-top-color: var(--accent); animation: rl-spin .8s linear infinite; }
+@keyframes rl-spin { to { transform: rotate(360deg); } }
+.runs-picker { display: flex; align-items: center; gap: 10px; margin-bottom: var(--s3); }
+.rp-runs { display: flex; gap: 8px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: thin; padding-bottom: 2px; }
+.rp-runs::-webkit-scrollbar { height: 6px; }
+.run-chip { display: flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 10px;
+  background: var(--sheet); border: 1px solid var(--hair); cursor: pointer; font: inherit; color: var(--ink);
+  white-space: nowrap; flex: none; transition: border-color .15s, background-color .15s; }
+.run-chip:hover { border-color: color-mix(in oklab, var(--accent) 34%, var(--hair)); }
+.run-chip.sel { background: color-mix(in oklab, var(--accent) 10%, var(--sheet));
+  border-color: color-mix(in oklab, var(--accent) 40%, transparent); }
+.run-chip.needs { border-color: color-mix(in oklab, var(--wait) 45%, transparent); }
+.rc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--graphite); flex: none; }
+.rc-dot.running, .rc-dot.starting { background: var(--accent); }
+.rc-dot.waiting { background: var(--wait); }
+.rc-dot.done { background: var(--ok); }
+.rc-dot.error { background: var(--bad); }
+.rc-title { font-family: var(--serif); font-size: 13px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
+.mtape { display: inline-flex; gap: 2px; margin-left: 4px; flex: none; }
+.mtape i { width: 5px; height: 5px; border-radius: 1px; background: var(--hair-2); }
+.mtape i.done { background: color-mix(in oklab, var(--accent) 55%, var(--hair-2)); }
+.mtape i.ok { background: var(--ok); }
+.mtape i.cur { background: var(--accent); }
+.mtape i.wait { background: var(--wait); }
+.mtape i.err { background: var(--bad); }
+.run-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+
+/* the live triptych columns scroll inside themselves rather than the page */
+.triptych.sp-live .narration, .triptych.sp-live .apparatus, .triptych.sp-live .shelf {
+  max-height: 360px; overflow-y: auto; scrollbar-width: thin; }
+.triptych.sp-live .narration .nr-line p { color: var(--ink); }
+.triptych.sp-live .narration .nr-line:last-child p { font-weight: 500; }
+.nr-user p b { color: var(--accent); }
+.nr-sys p { color: var(--faint) !important; font-style: italic; }
+
+/* the violet reply box under the waiting line */
+.reply-box { margin-bottom: var(--s3); padding: 14px 16px; border-radius: 10px;
+  background: color-mix(in oklab, var(--wait) 7%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--wait) 26%, var(--hair)); }
+.reply-box textarea { display: block; width: 100%; min-height: 62px; resize: vertical; font: inherit;
+  font-size: 14.5px; line-height: 1.55; color: var(--ink); background: var(--raise);
+  border: 1px solid var(--hair); border-radius: 8px; padding: 10px 12px; box-sizing: border-box; }
+.reply-box textarea:focus { outline: none; border-color: var(--wait); }
+.reply-actions { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.reply-note { font-size: var(--t-ui); color: var(--muted); }
+
+/* the new-paper form (POST /api/runs) shown when there are no runs yet */
+.new-form { padding: var(--s5) var(--s5) var(--s4); max-width: 760px; margin: 0 auto; }
+.new-form .nf-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.new-form h2 { font-family: var(--serif); font-size: var(--t-title); font-weight: 600; }
+.nf-spark { display: block; width: 100%; min-height: 140px; resize: vertical; font: inherit; font-size: 15px;
+  line-height: 1.6; color: var(--ink); background: var(--raise); border: 1px solid var(--hair);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; box-sizing: border-box; }
+.nf-name { display: block; width: 100%; font: inherit; font-size: 14px; color: var(--ink); background: var(--raise);
+  border: 1px solid var(--hair); border-radius: 9px; padding: 9px 12px; margin-bottom: 12px; box-sizing: border-box; }
+.nf-spark:focus, .nf-name:focus { outline: none; border-color: color-mix(in oklab, var(--accent) 50%, var(--hair)); }
+.nf-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.nf-row select { font: inherit; font-size: 12.5px; color: var(--ink); background: var(--sheet);
+  border: 1px solid var(--hair); border-radius: 8px; padding: 7px 9px; }
+.nf-go { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.nf-note { font-size: var(--t-ui); color: var(--muted); }
+.nf-err { margin-top: 10px; font-size: var(--t-ui); color: var(--bad); }
+
+/* ============================================================================
+   R1 — full-width "sample, not this run" banner (a real dir is open but a view or
+   field fell back to sample). Amber throughout — a couldn't-read dir is a recovered state,
+   not an error (R23). Works in both the reader surface and the .pane surface (chrome tokens resolve in
+   both), mirroring the .run-verdict banner. Replaces the tiny corner "sample" pill.
+   ========================================================================== */
+.sample-banner { display: flex; align-items: center; gap: 12px; margin: 0 0 var(--s3);
+  padding: 12px 16px; border-radius: 10px;
+  background: color-mix(in oklab, var(--stale) 13%, var(--sheet));
+  border: 1px solid color-mix(in oklab, var(--stale) 40%, var(--hair)); }
+.sample-banner .sb-ic { display: flex; flex: none; color: var(--stale); }
+.sample-banner .sb-ic .i { width: 18px; height: 18px; }
+.sample-banner .sb-tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.sample-banner .sb-tx b { font-size: 14px; font-weight: 640; color: var(--ink); }
+.sample-banner .sb-tx span { font-size: 12.5px; line-height: 1.45; color: var(--muted); overflow-wrap: anywhere; }
+.sample-banner [data-sb-dismiss] { flex: none; }
+/* R23 — a couldn't-read directory is a recovered state, not an error: use the SAME amber
+   tone as the base banner (matching the Wiki/Jury siblings), not red. The .cnr class is
+   kept only to gate the dismiss button in JS. */
+.sample-banner.cnr { background: color-mix(in oklab, var(--stale) 13%, var(--sheet));
+  border-color: color-mix(in oklab, var(--stale) 40%, var(--hair)); }
+.sample-banner.cnr .sb-ic { color: var(--stale); }
+/* a per-card "this run" chip (field-scoped truth for a real card under an amber view) */
+.src-hint.card-prov { margin-left: auto; align-self: center; }
+
+/* R30 — compact cost + duration chip in the run hero header. Right-ellipsizes, never
+   left-clips; tabular figures so $ amounts and h/m line up. */
+.hero-metric { display: inline-flex; align-items: center; gap: 5px; flex: none; max-width: 240px;
+  font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--muted);
+  padding: 4px 10px; border-radius: 999px; background: var(--sheet); border: 1px solid var(--hair);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hero-metric .i { color: var(--accent); width: 12px; height: 12px; flex: none; }
+
+/* R16 — the decision-hero stat tile: clickable (scrolls to the queue) and alert-red
+   when this run actually has open decisions. */
+.stat-card.click { cursor: pointer; transition: border-color .15s, background-color .15s; }
+.stat-card.click:hover { border-color: color-mix(in oklab, var(--accent) 34%, var(--hair)); }
+.stat-card.alert { background: color-mix(in oklab, var(--bad) 8%, var(--sheet));
+  border-color: color-mix(in oklab, var(--bad) 32%, var(--hair)); }
+.stat-card.alert .v { color: var(--bad); }
+.stat-card.alert .sc-chip.bad { animation: sp-pulse 1.6s ease-in-out infinite; }
+
+/* governance source hint row + off-ladder tier lead + floors note */
+.gov-stathead { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.tier-off-lead { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.tier-off-lead .tol-t { font-size: 11.5px; color: var(--muted); }
+.tf-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ============================================================================
+   ROUND 5 — verdict honesty (item1), budget chip (item19), jump-flash (item5),
+   reading glossary retint (item9)
+   ========================================================================== */
+/* item1 — a neutral verdict tone for sample / couldn't-read runs: never a green all-clear nor
+   a red alarm over data we did not assess. */
+.run-verdict.neutral { background: var(--sheet); border: 1px solid var(--hair); }
+.run-verdict.neutral .rv-ic { color: var(--muted); }
+/* item1 — the amber "see blocking →" deep-link chip that rides inside the verdict text when
+   the pipeline finished but Jury still holds blocking issues. */
+.run-verdict .rv-chip { display: inline-flex; align-items: center; gap: 5px; align-self: flex-start;
+  margin-top: 5px; font: inherit; font-size: 12px; font-weight: 640; cursor: pointer; color: var(--stale);
+  background: color-mix(in oklab, var(--stale) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--stale) 40%, var(--hair)); padding: 3px 10px; border-radius: 999px; }
+.run-verdict .rv-chip .i { width: 12px; height: 12px; flex: none; color: var(--stale); }
+.run-verdict .rv-chip:hover { border-color: color-mix(in oklab, var(--stale) 60%, var(--hair)); }
+
+/* item19 — runs-hero budget chip: current/cap for GPU-hours + outer rounds, tinted amber near
+   the cap and red at/over it. Tabular mono so figures line up with the sibling hero-metric. */
+.budget-chips { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.bud-chip { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11.5px;
+  font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; padding: 4px 9px;
+  border-radius: 999px; background: var(--sheet); border: 1px solid var(--hair); }
+.bud-chip.near { color: var(--stale); background: color-mix(in oklab, var(--stale) 12%, var(--sheet));
+  border-color: color-mix(in oklab, var(--stale) 38%, var(--hair)); }
+.bud-chip.over { color: var(--bad); background: color-mix(in oklab, var(--bad) 12%, var(--sheet));
+  border-color: color-mix(in oklab, var(--bad) 38%, var(--hair)); }
+
+/* item5 — flash the passage/section a Jury cross-tool jump lands on, then fade. */
+.rd-flash { animation: rd-flash 1.8s ease-out; border-radius: 6px; }
+@keyframes rd-flash {
+  0%, 12% { background: color-mix(in oklab, var(--accent) 22%, transparent);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 12%, transparent); }
+  100% { background: transparent; box-shadow: 0 0 0 6px transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rd-flash { animation: none; background: color-mix(in oklab, var(--accent) 18%, transparent); }
+}
+
+/* item9 — the reading 'New here?' strip lives on the warm paper surface; retint the reused
+   .gov-gloss with the --paper-* tokens so it blends with the story card, not the chrome. */
+.reader .reading-gloss { background: var(--paper-card); border-color: var(--paper-rule);
+  color: var(--paper-muted); margin: 0 0 22px; }
+.reader .reading-gloss .gg-h { color: var(--paper-warm); }
+.reader .reading-gloss .gg-item b { color: var(--paper-ink); }
+
+/* ============================================================================
+   A — FIGURES SHOWCASE. The gallery is the centrepiece: large hero image (click →
+   lightbox), Fig N + caption, and a "生成过程 / How it was made" strip carrying the
+   provenance badges, the SVG-audit chips, a collapsible prompt excerpt, and the
+   redraw-round carousel. No SSIM anywhere — it does not exist per-figure.
+   ============================================================================ */
+.fig-grid.showcase { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+.fig-card.showcase { position: relative; margin: 0; display: flex; flex-direction: column; cursor: default;
+  background: var(--raise); border: 1px solid var(--hair); border-radius: var(--r-lift);
+  box-shadow: var(--lift-sheet); overflow: hidden;
+  transition: box-shadow .18s, border-color .18s; }
+.fig-card.showcase:hover { transform: none; box-shadow: var(--lift-pop);
+  border-color: color-mix(in oklab, var(--accent) 30%, var(--hair)); }
+/* item12 — amber corner badge flagging a non-vector or failed card at a glance; the type
+   label steps aside so the two never overlap. */
+.fig-corner { position: absolute; top: 8px; right: 8px; z-index: 3;
+  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+  border-radius: 6px; color: var(--stale);
+  background: color-mix(in oklab, var(--stale) 16%, var(--raise));
+  border: 1px solid color-mix(in oklab, var(--stale) 40%, var(--hair));
+  box-shadow: 0 1px 3px color-mix(in oklab, var(--ink) 22%, transparent); }
+.fig-corner .i { width: 13px; height: 13px; }
+.fig-corner ~ .fig-hero .fig-type { right: 36px; }
+/* item12 — the N/A audit state reads as neutral, distinct from the amber failed chip. */
+.chip.fig-na { color: var(--faint); background: color-mix(in oklab, var(--ink) 5%, transparent);
+  border-color: var(--hair); font-family: var(--mono); }
+
+/* item27 — the hero is a gallery MAT: a true-#fff raster no longer slams edge-to-edge into
+   the (especially dark-mode) chrome. The mat stays off-white in both themes, the image is
+   kept true #fff inside a 1px --hair frame, inset ~10px. */
+.fig-hero { position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 214px; padding: 10px; border: 0; border-bottom: 1px solid var(--hair);
+  --fig-mat: color-mix(in oklab, #fff 82%, var(--well));
+  background: var(--fig-mat); color: var(--paper-ink);
+  cursor: zoom-in; overflow: hidden; }
+/* item18a — a #fff-82% mat is near-white and slams into the dark chrome; drop to ~56% white
+   over --well in dark so the gallery mat reads as a muted panel, not a lightbox. */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fig-hero { --fig-mat: color-mix(in oklab, #fff 56%, var(--well)); } }
+:root[data-theme="dark"] .fig-hero { --fig-mat: color-mix(in oklab, #fff 56%, var(--well)); }
+:root[data-theme="light"] .fig-hero { --fig-mat: color-mix(in oklab, #fff 82%, var(--well)); }
+.fig-hero:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.fig-hero .fig-img { width: 100%; height: 100%; object-fit: contain; background: #fff;
+  border: 1px solid var(--hair); border-radius: 3px; }
+.fig-hero .fig-svg { width: 66%; height: 74%; color: color-mix(in oklab, var(--paper-ink) 62%, transparent); }
+.fig-folio { position: absolute; top: 8px; left: 8px; z-index: 2; font-family: var(--mono);
+  font-size: 11px; font-weight: 700; letter-spacing: .03em; color: #fff;
+  background: color-mix(in oklab, var(--accent) 90%, #000 4%); padding: 3px 9px; border-radius: 6px;
+  box-shadow: 0 1px 3px color-mix(in oklab, var(--ink) 28%, transparent); }
+.fig-card.showcase .fig-type { left: auto; right: 8px; top: 8px; z-index: 2; }
+.fig-zoom { position: absolute; right: 8px; bottom: 8px; z-index: 2; display: inline-flex;
+  align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px;
+  background: color-mix(in oklab, var(--raise) 82%, transparent); color: var(--accent);
+  border: 1px solid var(--hair); opacity: 0; transform: translateY(3px);
+  transition: opacity .16s, transform .16s; }
+.fig-zoom .i { width: 14px; height: 14px; }
+.fig-hero:hover .fig-zoom, .fig-hero:focus-visible .fig-zoom { opacity: 1; transform: none; }
+
+.fig-cap { padding: 12px 14px 0; font-size: 13px; line-height: 1.5; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.fig-cap b { color: var(--accent); font-family: var(--mono); font-weight: 700; margin-right: 2px; }
+.fig-card.showcase .fig-chips { padding: 10px 14px 0; }
+
+.fig-made { margin-top: 11px; padding: 12px 14px 14px; border-top: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--accent) 3%, var(--raise));
+  display: flex; flex-direction: column; gap: 9px; }
+/* item18b — the accent-3% provenance tint is imperceptible over the dark --raise; bump to ~7%
+   so the "how it was made" strip separates from the card body in dark. */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fig-made { background: color-mix(in oklab, var(--accent) 7%, var(--raise)); } }
+:root[data-theme="dark"] .fig-made { background: color-mix(in oklab, var(--accent) 7%, var(--raise)); }
+.fm-head .kick { color: var(--faint); }
+.fm-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.fm-badge { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono);
+  font-size: 10.5px; color: var(--muted); background: color-mix(in oklab, var(--ink) 5%, transparent);
+  border: 1px solid var(--hair); border-radius: 6px; padding: 2px 7px; }
+.fm-badge .i { width: 11px; height: 11px; color: var(--faint); }
+.fm-audit { display: flex; flex-wrap: wrap; gap: 4px; }
+.fm-audit .i { width: 11px; height: 11px; }
+
+.fm-prompt-wrap { display: flex; flex-direction: column; gap: 6px; }
+.fm-prompt-toggle { align-self: flex-start; display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 11px; color: var(--accent); background: none; border: 0;
+  padding: 2px 0; cursor: pointer; }
+.fm-prompt-toggle .i { width: 12px; height: 12px; }
+.fm-prompt-toggle::after { content: "\25B8"; font-size: 9px; color: var(--faint); transition: transform .15s; }
+.fm-prompt-toggle[aria-expanded="true"]::after { transform: rotate(90deg); }
+.fm-prompt { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono);
+  font-size: 11px; line-height: 1.55; color: var(--muted); background: var(--well);
+  border: 1px solid var(--hair); border-radius: 8px; padding: 9px 11px; max-height: 178px; overflow: auto; }
+
+.fm-versions { border: 1px solid var(--hair); border-radius: 8px; overflow: hidden; background: var(--well); }
+.fv-bar { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 10px; border-bottom: 1px solid var(--hair); }
+.fv-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--faint); flex: 1; }
+.fv-nav { display: inline-flex; align-items: center; gap: 4px; }
+.fv-prev, .fv-next { width: 24px; height: 24px; display: inline-flex; align-items: center;
+  justify-content: center; border: 1px solid var(--hair); border-radius: 6px; background: var(--raise);
+  color: var(--ink); font-size: 14px; line-height: 1; cursor: pointer; }
+.fv-prev:disabled, .fv-next:disabled { opacity: .4; cursor: default; }
+.fv-count { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 42px; text-align: center; }
+.fv-stage { position: relative; height: 152px; }
+.fv-slide { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; padding: 8px; }
+.fv-slide.on { display: flex; }
+/* item16 — a slide with a real round image zooms to the lightbox */
+.fv-slide.fv-zoomable { cursor: zoom-in; }
+.fv-slide.fv-zoomable:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: 6px; }
+.fv-round { position: absolute; top: 6px; left: 8px; z-index: 1; font-family: var(--mono); font-size: 10px;
+  color: var(--faint); background: color-mix(in oklab, var(--raise) 80%, transparent); padding: 1px 6px; border-radius: 5px; }
+.fv-img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; border-radius: 4px; }
+.fv-ph { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  color: color-mix(in oklab, var(--paper-ink) 55%, transparent); }
+.fv-ph .fig-svg { width: 70%; height: 80%; }
+.fv-ph-tag { position: absolute; right: 8px; bottom: 6px; font-size: 9px; font-family: var(--mono); color: var(--faint); }
+
+/* lightbox: open-in-tab links for the real files (none for the sample) */
+.lb-files { display: flex; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--hair); }
+.lb-file { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none;
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--hair)); border-radius: 6px; padding: 3px 10px; }
+.lb-file:hover { background: color-mix(in oklab, var(--accent) 10%, transparent); }
+
+/* ============================================================================
+   B — PER-STAGE TOKEN HEATMAP on the Runs stage tape. A sequential accent fill sits
+   behind each stage node keyed by --heat (0..1 = the node's share of the busiest
+   stage); the dot + connector rail keep the state colours. Driven by real
+   telemetry.per_stage for an instrumented run, a flagged sample profile for the
+   sample cockpit, and OMITTED (with an honest legend line) when a run kept none.
+   ============================================================================ */
+/* item2a — heat rides its OWN cool slate→indigo channel, distinct from BOTH --accent
+   (terracotta progress dots) and --stale (amber halt/warning), so the tint never reads as
+   "more done" or as a warning. Scoped to the run head so the tape nodes AND the legend ramp
+   inherit it; theme-aware so it stays legible on dark. */
+.run-head { --sp-heat: #42688E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .run-head { --sp-heat: #84A9CC; } }
+:root[data-theme="dark"] .run-head { --sp-heat: #84A9CC; }
+:root[data-theme="light"] .run-head { --sp-heat: #42688E; }
+/* item2a/2b — a 3px UNDERLINE bar (not a full-height block competing with the current-stage
+   marker) whose FILL WIDTH scales with the stage's token share — a redundant, non-colour
+   magnitude cue. The heat-on tape reserves a little bottom room for the bar + focus count. */
+.stage-tape.heat-on .st-node { padding-bottom: 20px; }
+.st-heat { position: absolute; left: 16px; right: 16px; bottom: 12px; height: 3px; z-index: 0;
+  border-radius: 3px; pointer-events: none; overflow: hidden;
+  background: color-mix(in oklab, var(--sp-heat) 16%, transparent); }
+.st-heat::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: calc(var(--heat, 0) * 100%); background: var(--sp-heat); border-radius: 3px; }
+/* item3d — a captured heatmap with no tokens on this stage: a faint hatch bar, not a blank. */
+.st-heat-none { position: absolute; left: 16px; right: 16px; bottom: 12px; height: 3px; z-index: 0;
+  border-radius: 3px; pointer-events: none; opacity: .5;
+  background-image: repeating-linear-gradient(45deg, var(--hair-2) 0 1px, transparent 1px 4px); }
+/* item2c — a focusable stage node: a visible ring + a hover/focus/click-pinned exact count
+   under the node (the aria-label already carries it for screen readers). */
+.st-node[role="button"] { cursor: pointer; }
+.st-node[role="button"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+.st-tok { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1; text-align: center;
+  font-family: var(--mono); font-size: 9.5px; font-weight: 600; line-height: 11px; color: var(--sp-heat);
+  opacity: 0; transition: opacity .14s; pointer-events: none; white-space: nowrap; }
+.st-node:hover .st-tok, .st-node:focus .st-tok, .st-node:focus-visible .st-tok,
+.st-node.tok-on .st-tok { opacity: 1; }
+/* item2e — reuse the subnav's scrollable mask-fade when the stage tape overflows its wrap
+   (JS wireStageTape toggles fade-l / fade-r from scrollLeft). */
+.stage-tape-wrap.fade-r { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
+.stage-tape-wrap.fade-l { -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px); mask-image: linear-gradient(90deg, transparent, #000 24px); }
+.stage-tape-wrap.fade-l.fade-r { -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+.heat-legend { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 11px; color: var(--muted); }
+.heat-legend .hl-lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--faint); }
+.heat-legend .hl-ends { font-size: 10.5px; color: var(--faint); }
+.heat-legend .hl-ramp { width: 96px; height: 8px; border-radius: 5px; border: 1px solid var(--hair);
+  background: linear-gradient(90deg, color-mix(in oklab, var(--sp-heat) 8%, transparent), var(--sp-heat)); }
+.heat-legend .hl-top { margin-left: 4px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.heat-legend.none { color: var(--stale); gap: 6px; }
+.heat-legend.none .i { width: 13px; height: 13px; color: var(--stale); flex: none; }

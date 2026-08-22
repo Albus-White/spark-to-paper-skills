@@ -1,0 +1,1102 @@
+/* ============================================================================
+   SparkBoard — "The Paper Desk / Editorial Press"
+   The shared reader shell + design system for the three tool workspaces
+   (Spark · Jury · Wiki). Extends the base cockpit token system; adds the
+   PaperRss serif reading surface, a per-tool ink accent, and the reusable
+   primitives every workspace draws from.
+
+   Load order: this file styles the shell + reader + shared primitives.
+   Per-workspace modules (spark.js / jury.js / wiki.js) add only their own
+   structural bits and lean on the primitives here.
+
+   Fonts: Fraunces (display / reading headers / editorial) is served from
+   /assets/fonts; body + UI = IBM Plex Sans (inlined by the host page in the
+   real app; system fallback in the standalone demo); apparatus = IBM Plex Mono.
+   ========================================================================== */
+
+/* ---- fonts ---------------------------------------------------------------- */
+@font-face{
+  font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;
+  src:url("/assets/fonts/fraunces-normal-latin.woff2") format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;
+  src:url("/assets/fonts/fraunces-normal-latin-ext.woff2") format("woff2");
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:"Fraunces";font-style:italic;font-weight:100 900;font-display:swap;
+  src:url("/assets/fonts/fraunces-italic-latin.woff2") format("woff2");
+}
+
+/* ============================================================================
+   1. TOKENS — extend the base desk/sheet system; add serif + reader + accents
+   ========================================================================== */
+:root{
+  color-scheme:light dark;
+
+  /* spacing + radii (aligned with base cockpit scale) */
+  --s1:4px;--s2:8px;--s3:12px;--s4:20px;--s5:32px;--s6:48px;--s7:72px;--s8:120px;
+  --r-mark:3px;--r-lift:10px;--r-pill:999px;
+  --gutter:clamp(20px,5vw,64px);
+
+  /* type families */
+  --serif:"Fraunces","Iowan Old Style","Songti SC","STSong",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans","CJK","Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;
+  --mono:"IBM Plex Mono","CJK",ui-monospace,"Cascadia Mono",Consolas,monospace;
+
+  /* type scale (editorial) */
+  --t-folio:clamp(34px,3.4vw,46px);   /* big numerals / mastheads */
+  --t-title:clamp(24px,2.4vw,32px);   /* reader h1 base is em-driven; this is chrome titles */
+  --t-lead:20px;                       /* section heads, card heads */
+  --t-body:15px;                       /* UI body */
+  --t-read:17px;                       /* reading column body (user-adjustable) */
+  --t-data:14px;                       /* telemetry, dates, mono values */
+  --t-ui:13.5px;                       /* buttons, chips, list meta */
+  --t-note:12px;                       /* apparatus, paths */
+  --t-fine:11px;                       /* tick labels, badges */
+
+  /* reading surface (PaperRss warm paper) — used inside .reader */
+  --paper-ink:#302d27;--paper-muted:#6f695e;
+  --paper-warm:#9f5843;--paper-rule:rgba(72,65,52,.22);
+  --paper-wash:rgba(95,115,85,.10);--paper-code:rgba(100,88,65,.09);
+  --paper-card:rgba(250,248,240,.97);--paper-sel:rgba(116,137,100,.24);
+  --read-fs:17px;   /* R5 item 22 — reader measure is now font-relative (34em on .reader); no fixed px cap */
+}
+
+/* per-tool ink accent — set on <html data-tool="…">
+   --accent      : the bright chroma for FILLS / borders / dots / large numerals
+   --accent-ink  : a text-only variant tuned for AA on small type. Darker terracotta/
+                   indigo/green in light; lightened again in the dark blocks below so
+                   small accent TEXT clears 4.5:1 on both #FBFAF8 and #17191E. */
+html[data-tool="spark"]{--accent:#C0552A;--accent-soft:#e8a583;--accent-ink:#9A3F1E;}
+html[data-tool="jury"]{ --accent:#4B4FA6;--accent-soft:#a9abe0;--accent-ink:#3A3E86;}
+html[data-tool="wiki"]{ --accent:#5F7355;--accent-soft:#a6b79a;--accent-ink:#47563F;}
+html:not([data-tool]){--accent:#C0552A;--accent-soft:#e8a583;--accent-ink:#9A3F1E;}
+html[data-tool="home"]{--accent:#7A756C;--accent-soft:#cbc6bd;--accent-ink:#5A554C;}   /* R4: neutral Home accent */
+/* dark: a darker ink loses contrast on a dark sheet, so lift accent TEXT instead */
+@media (prefers-color-scheme:dark){
+  html[data-tool="spark"]:not([data-theme="light"]){--accent-ink:#E8A07A;}
+  html[data-tool="jury"]:not([data-theme="light"]){ --accent-ink:#AEB0E6;}
+  html[data-tool="wiki"]:not([data-theme="light"]){ --accent-ink:#AABB9E;}
+  html:not([data-tool]):not([data-theme="light"]){--accent-ink:#E8A07A;}
+  html[data-tool="home"]:not([data-theme="light"]){--accent-ink:#C7C1B6;}
+}
+html[data-tool="spark"][data-theme="dark"]{--accent-ink:#E8A07A;}
+html[data-tool="jury"][data-theme="dark"]{ --accent-ink:#AEB0E6;}
+html[data-tool="wiki"][data-theme="dark"]{ --accent-ink:#AABB9E;}
+html:not([data-tool])[data-theme="dark"]{--accent-ink:#E8A07A;}
+html[data-tool="home"][data-theme="dark"]{--accent-ink:#C7C1B6;}
+/* R19 — a dedicated focus ring: a SOLID accent-ink stroke (contrast-tuned ≥3:1 on both
+   sheets for every tool accent), never a transparent mix. Resolves to the live accent-ink. */
+:root{--focus-ring:var(--accent-ink);}
+
+/* light surfaces (base "desk") */
+:root{
+  --ink-rgb:26 24 21;
+  --desk:#E4E2DE;
+  --desk-grad:linear-gradient(158deg,#EAE7E1 0%,#E2DFD9 46%,#DBD8D1 100%);
+  --sheet:#FBFAF8;--raise:#FFFFFF;--well:#F1EFEA;
+  --ok:#2F7A4E;--bad:#A93227;--wait:#5B45A0;--stale:#8A6410;
+  --ink:rgb(var(--ink-rgb)/1);--muted:rgb(var(--ink-rgb)/.72);
+  --faint:rgb(var(--ink-rgb)/.68);--graphite:rgb(var(--ink-rgb)/.30);
+  --hair:rgb(var(--ink-rgb)/.11);--hair-2:rgb(var(--ink-rgb)/.16);
+  --on-accent:#fff;
+  --lift-sheet:0 1px 1px rgb(40 34 26/.04),0 8px 22px -10px rgb(40 34 26/.12);
+  --lift-pop:0 1px 2px rgb(40 34 26/.06),0 18px 44px -12px rgb(40 34 26/.22);
+  --letterpress:inset 0 1px 0 rgb(255 255 255/.7),inset 0 -1px 0 rgb(40 34 26/.05);
+  --scrim:rgb(60 50 38/.30);
+  --grain-op:.5;
+}
+/* dark surfaces */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink-rgb:228 222 209;
+  --desk:#0C0D10;
+  --desk-grad:radial-gradient(120% 90% at 50% -12%,rgb(228 222 209/.045),transparent 66%),#0C0D10;
+  --sheet:#17191E;--raise:#1E2027;--well:#131519;
+  --paper-ink:#e4ded1;--paper-muted:#aaa397;--paper-warm:#d18b73;
+  --paper-rule:rgba(225,215,197,.18);--paper-card:rgba(40,42,48,.97);
+  --ok:#7FB58A;--bad:#D9736B;--wait:#9B8CD4;--stale:#C08A22;
+  --ink:rgb(var(--ink-rgb)/1);--muted:rgb(var(--ink-rgb)/.72);
+  --faint:rgb(var(--ink-rgb)/.68);--graphite:rgb(var(--ink-rgb)/.28);
+  --hair:rgb(var(--ink-rgb)/.10);--hair-2:rgb(var(--ink-rgb)/.15);
+  --on-accent:#14100D;
+  --lift-sheet:inset 0 1px 0 rgb(255 255 255/.04),0 20px 50px -26px #000;
+  --lift-pop:inset 0 1px 0 rgb(255 255 255/.05),0 28px 64px -20px #000;
+  --letterpress:inset 0 1px 0 rgb(255 255 255/.045),inset 0 -1px 0 rgb(0 0 0/.3);
+  --scrim:rgb(0 0 0/.56);
+  --grain-op:.35;
+}}
+/* explicit theme overrides (host toggles data-theme) */
+:root[data-theme="dark"]{
+  --ink-rgb:228 222 209;--desk:#0C0D10;
+  --desk-grad:radial-gradient(120% 90% at 50% -12%,rgb(228 222 209/.045),transparent 66%),#0C0D10;
+  --sheet:#17191E;--raise:#1E2027;--well:#131519;
+  --paper-ink:#e4ded1;--paper-muted:#aaa397;--paper-warm:#d18b73;
+  --paper-rule:rgba(225,215,197,.18);--paper-card:rgba(40,42,48,.97);
+  --ok:#7FB58A;--bad:#D9736B;--wait:#9B8CD4;--stale:#C08A22;
+  --ink:rgb(var(--ink-rgb)/1);--muted:rgb(var(--ink-rgb)/.72);--faint:rgb(var(--ink-rgb)/.68);
+  --graphite:rgb(var(--ink-rgb)/.28);--hair:rgb(var(--ink-rgb)/.10);--hair-2:rgb(var(--ink-rgb)/.15);
+  --on-accent:#14100D;
+  --lift-sheet:inset 0 1px 0 rgb(255 255 255/.04),0 20px 50px -26px #000;
+  --lift-pop:inset 0 1px 0 rgb(255 255 255/.05),0 28px 64px -20px #000;
+  --letterpress:inset 0 1px 0 rgb(255 255 255/.045),inset 0 -1px 0 rgb(0 0 0/.3);
+  --scrim:rgb(0 0 0/.56);--grain-op:.35;
+}
+
+/* ============================================================================
+   2. RESET + PAGE ATMOSPHERE
+   ========================================================================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:var(--sans);font-size:var(--t-body);line-height:1.5;
+  color:var(--ink);background:var(--desk-grad);background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow:hidden;
+}
+/* paper grain — a hair of tooth over everything, printers' registration warmth */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:var(--grain-op);
+  background-image:
+    radial-gradient(rgb(40 34 26/.5) .5px,transparent .5px),
+    radial-gradient(rgb(40 34 26/.35) .5px,transparent .5px);
+  background-size:3px 3px,7px 7px;background-position:0 0,2px 3px;
+  mix-blend-mode:multiply;
+}
+@media (prefers-color-scheme:dark){body::before{mix-blend-mode:screen;
+  background-image:radial-gradient(rgb(228 222 209/.4) .5px,transparent .5px),radial-gradient(rgb(228 222 209/.28) .5px,transparent .5px);}}
+:root[data-theme="dark"] body::before{mix-blend-mode:screen;
+  background-image:radial-gradient(rgb(228 222 209/.4) .5px,transparent .5px),radial-gradient(rgb(228 222 209/.28) .5px,transparent .5px);}
+:root[data-theme="light"] body::before{mix-blend-mode:multiply;
+  background-image:radial-gradient(rgb(40 34 26/.5) .5px,transparent .5px),radial-gradient(rgb(40 34 26/.35) .5px,transparent .5px);}
+
+/* R7 item22a — the fixed body grain sits BEHIND every opaque surface (the --sheet reading sheet,
+   the --raise cards), so its tooth only reads on the bare desk gutters. Lay a very faint grain
+   directly on those two surfaces so the editorial paper texture reads there too. isolation:isolate
+   turns each into its own stacking context, so the z-index:-1 ::after paints just above the surface
+   fill yet behind ALL content; pointer-events:none keeps it inert; border-radius:inherit clips it to
+   the card corners. Mirrors the body grain's dot pattern + multiply(light)/screen(dark) blend. The
+   AI bar/pop mount on document.body, so the new stacking context on .col-read never traps them. */
+.col-read,.card{isolation:isolate}
+.col-read::after,.card::after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  opacity:.03;mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(rgb(40 34 26/.5) .5px,transparent .5px),
+    radial-gradient(rgb(40 34 26/.35) .5px,transparent .5px);
+  background-size:3px 3px,7px 7px;background-position:0 0,2px 3px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .col-read::after,:root:not([data-theme="light"]) .card::after{
+    mix-blend-mode:screen;opacity:.04;
+    background-image:radial-gradient(rgb(228 222 209/.4) .5px,transparent .5px),radial-gradient(rgb(228 222 209/.28) .5px,transparent .5px);
+  }
+}
+:root[data-theme="dark"] .col-read::after,:root[data-theme="dark"] .card::after{
+  mix-blend-mode:screen;opacity:.04;
+  background-image:radial-gradient(rgb(228 222 209/.4) .5px,transparent .5px),radial-gradient(rgb(228 222 209/.28) .5px,transparent .5px);
+}
+
+/* R7 item22b — ::selection was a hardcoded sage green (--paper-sel) in all three tools; derive it
+   from the LIVE per-tool accent so Spark selects terracotta / Jury indigo / Wiki sage. --accent is
+   theme-stable (only --accent-ink shifts by theme), so one rule serves both light + dark. */
+::selection{background:color-mix(in oklab,var(--accent) 26%,transparent)}
+/* R19 — solid focus ring (drop the transparent mix); outline is never clipped by overflow */
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:4px}
+a{color:var(--accent);text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+h1,h2,h3,h4{margin:0;font-weight:600}
+
+/* ============================================================================
+   3. SHELL CHROME — top strip, tool switcher, workspace title, tabs, controls
+   ========================================================================== */
+/* reader.js builds #sb-app > #sb-appwrap(flex column) > header.strip + #sb-main.
+   These selectors MUST match those ids so #sb-main becomes the flexing, clipping
+   viewport the reader/workspaces scroll inside (body itself never scrolls). */
+#sb-app,#app{position:relative;z-index:1;height:100%}
+#sb-main,main#main{flex:1;min-height:0;position:relative;overflow:hidden}
+
+.strip{
+  display:flex;align-items:center;gap:var(--s3);height:52px;padding:0 var(--s4);
+  border-bottom:1px solid var(--hair);
+  background:color-mix(in oklab,var(--sheet) 82%,transparent);
+  backdrop-filter:saturate(1.1) blur(10px);flex:none;
+}
+.strip-l{display:flex;align-items:center;gap:var(--s3);min-width:0}
+.strip-r{display:flex;align-items:center;gap:var(--s2);margin-left:auto}
+.strip-div{width:1px;height:22px;background:var(--hair-2);margin:0 var(--s1)}
+
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);
+  font-weight:600;font-size:16px;letter-spacing:.01em;color:var(--ink);white-space:nowrap;
+  padding:4px 8px;margin-left:-4px;border-radius:8px;transition:background .15s,box-shadow .15s}
+.brand:hover{background:var(--well)}
+.brand.on{background:var(--well);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 30%,transparent)}
+.brand .mark{width:16px;height:16px;color:var(--accent)}
+
+/* R2 — the shared project / workspace selector (left of the workspace title) */
+.projbtn{display:inline-flex;align-items:center;gap:6px;max-width:24ch;height:30px;padding:0 9px;border-radius:8px;
+  font-size:var(--t-ui);font-weight:540;color:var(--muted);background:var(--well);border:1px solid var(--hair);
+  transition:color .15s,background .15s,border-color .15s}
+.projbtn:hover{color:var(--ink);border-color:var(--hair-2)}
+.projbtn[hidden]{display:none}
+.projbtn .proj-ico{color:var(--faint);flex:none}
+.projbtn .proj-lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.projbtn .proj-chev{color:var(--faint);flex:none;opacity:.7}
+.projpop{min-width:280px;max-width:min(460px,92vw);padding:6px}
+.projpop .pj-row{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;padding:9px 11px;border-radius:9px;
+  transition:background .12s}
+.projpop .pj-row:hover,.projpop .pj-row:focus-visible{background:var(--well)}
+.projpop .pj-row[aria-selected="true"]{background:color-mix(in oklab,var(--accent) 12%,transparent)}
+.projpop .pj-tick{width:16px;flex:none;color:var(--accent);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.projpop .pj-main{min-width:0;display:flex;flex-direction:column;gap:2px}
+.projpop .pj-lbl{font-size:14px;font-weight:560;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.projpop .pj-sub{font-size:var(--t-note);color:var(--faint);font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40ch}
+
+/* — the tool switcher: three press-plates, the primary navigation — */
+.toolsw{display:flex;align-items:center;gap:2px;padding:3px;border-radius:var(--r-pill);
+  background:var(--well);box-shadow:var(--letterpress);border:1px solid var(--hair)}
+.toolsw button{
+  display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 14px;border-radius:var(--r-pill);
+  font-size:var(--t-ui);font-weight:560;color:var(--muted);letter-spacing:.01em;
+  transition:color .18s,background .18s,box-shadow .18s;position:relative;
+}
+.toolsw button .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5;transition:opacity .18s}
+.toolsw button[data-t="spark"]{--tint:#C0552A}
+.toolsw button[data-t="jury"]{ --tint:#4B4FA6}
+.toolsw button[data-t="wiki"]{ --tint:#5F7355}
+.toolsw button:hover{color:var(--ink)}
+.toolsw button.sel{color:var(--tint);background:var(--raise);box-shadow:var(--lift-sheet)}
+.toolsw button.sel .dot{opacity:1;background:var(--tint)}
+
+.ws-title{display:flex;align-items:center;gap:8px;min-width:0}
+.ws-title .titlebtn{display:inline-flex;align-items:center;gap:6px;max-width:34ch;
+  font-weight:560;font-size:var(--t-ui);color:var(--ink);padding:5px 10px;border-radius:8px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;transition:background .15s}
+.ws-title .titlebtn:hover{background:var(--well)}
+/* R5 item 3a — the paper name (wrapped in .ws-name by reader.js) ellipsizes inside the button;
+   the leading doc glyph and the trailing chevron (both .i) never shrink or clip. .ws-title
+   already carries min-width:0 in its flex parent. */
+.ws-title .titlebtn .ws-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-title .titlebtn .i{flex:none}
+
+/* sub-view tabs (per workspace) */
+.subnav{display:flex;align-items:center;gap:1px;background:var(--well);border:1px solid var(--hair);
+  border-radius:9px;padding:2px}
+.subnav .tab{padding:5px 12px;border-radius:7px;font-size:var(--t-ui);font-weight:520;color:var(--muted);
+  transition:color .15s,background .15s}
+.subnav .tab:hover{color:var(--ink)}
+.subnav .tab.sel{color:var(--ink);background:var(--raise);box-shadow:var(--lift-sheet)}
+
+/* generic buttons + icon buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 14px;border-radius:9px;
+  font-size:var(--t-ui);font-weight:540;color:var(--ink);background:var(--raise);
+  border:1px solid var(--hair-2);box-shadow:var(--lift-sheet);transition:transform .12s,box-shadow .15s,border-color .15s}
+.btn:hover{border-color:color-mix(in oklab,var(--accent) 40%,var(--hair-2))}
+.btn:active{transform:translateY(1px)}
+.btn.sm{height:28px;padding:0 11px;font-size:var(--t-note)}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
+.btn.ghost{background:transparent;box-shadow:none;border-color:transparent}
+.btn.ghost:hover{background:var(--well)}
+.btn.danger{color:var(--bad)}
+/* R9 item1 — a GLOBAL disabled-button style. Without it a disabled .btn.primary (e.g. the
+   manuscript Save when the draft is clean / in sample mode) glowed full-chroma accent, reading
+   as a live CTA. Dim + strip the lift + block interaction for every disabled .btn; give the
+   primary a muted, desaturated accent wash so it still reads as "primary, but off". Tokens are
+   theme-aware (--accent/--well/--muted/--hair-2 resolve per theme), so both themes stay correct.
+   Complements — never fights — the scoped .ai-pop .aph-copy:disabled (higher specificity, and a
+   non-.btn selector) and spark.css's .fv-prev:disabled (also not a .btn), which keep their own look. */
+.btn:disabled,.btn[disabled]{opacity:.42;box-shadow:none;cursor:not-allowed;pointer-events:none}
+.btn.primary:disabled{background:color-mix(in oklab,var(--accent) 32%,var(--well));color:var(--muted);filter:saturate(.35)}
+.btn:disabled:hover{border-color:var(--hair-2)}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;
+  color:var(--muted);transition:color .15s,background .15s}
+.iconbtn:hover{color:var(--ink);background:var(--well)}
+.iconbtn b{font-family:var(--serif);font-style:italic;font-size:15px}
+.i{width:16px;height:16px;display:inline-block;fill:none;stroke:currentColor;stroke-width:1.5}
+.i.sm{width:13px;height:13px}
+
+/* lang + theme segmented icons (compact) */
+.langbtn{width:auto;padding:0 8px;font-size:var(--t-fine);font-weight:600;letter-spacing:.02em}
+.langbtn .lg-seg{opacity:.5}.langbtn .lg-seg.on{opacity:1;color:var(--accent)}.langbtn .lg-sep{opacity:.3;margin:0 2px}
+
+/* health lamps */
+.lamps{display:inline-flex;gap:5px;align-items:center}
+.lamp{width:8px;height:8px;border-radius:50%;background:var(--graphite)}
+.lamp.ok{background:var(--ok)}.lamp.bad{background:var(--bad)}.lamp.wait{background:var(--wait)}
+
+/* ============================================================================
+   4. THE READER SHELL — three columns (sidebar / list / reader)
+   ========================================================================== */
+main#main{flex:1;min-height:0;position:relative;overflow:hidden}
+.reader-shell{display:grid;grid-template-columns:var(--col0,268px) var(--col1,340px) 1fr;height:100%;min-height:0}
+.reader-shell.zen{grid-template-columns:0 0 1fr}
+.reader-shell.zen .col-side,.reader-shell.zen .col-list{opacity:0;pointer-events:none}
+/* R7 item9 — Zen is a focused read: hide the go/no-go apparatus so only kicker/title/meta/
+   AI-summary/prose remain. Covers the freshness banner, the submittable ribbon, the terms gloss,
+   and the inline status bar the SPARK agent collapsed the freshness+blocker cards into. */
+.reader-shell.zen .submit-ribbon,.reader-shell.zen .fresh-banner,
+.reader-shell.zen .reading-gloss,.reader-shell.zen .reading-statusbar{display:none}
+/* R10 item11c — the masthead .strip is a SIBLING of #sb-main, not inside .reader-shell, so the
+   .reader-shell.zen scope above never reached it and the busiest chrome survived Zen. SHELL-JS now
+   stamps data-zen on <html> in Zen, so hide the strip from the root; hover / focus-within reveals it
+   so keyboard users can still tab back into the chrome. Motion + pointer-events only — theme-agnostic,
+   and the transition also plays the reveal when Zen exits and data-zen is cleared. */
+:root[data-zen] .strip{opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .2s,transform .2s}
+:root[data-zen] .strip:hover,:root[data-zen] .strip:focus-within{opacity:1;transform:none;pointer-events:auto}
+
+.col{min-height:0;min-width:0;display:flex;flex-direction:column;position:relative}
+.col-side{background:color-mix(in oklab,var(--sheet) 55%,var(--desk));border-right:1px solid var(--hair)}
+.col-list{background:color-mix(in oklab,var(--sheet) 78%,var(--desk));border-right:1px solid var(--hair)}
+.col-read{background:var(--sheet)}
+.col-head{display:flex;align-items:center;gap:8px;height:46px;padding:0 var(--s4);flex:none;
+  font-family:var(--serif);font-size:var(--t-lead);font-weight:600;color:var(--ink);
+  border-bottom:1px solid transparent;transition:border-color .2s,background .2s}
+.col-head.scrolled{border-bottom-color:var(--hair);background:color-mix(in oklab,var(--sheet) 60%,transparent);
+  backdrop-filter:blur(8px)}
+.col-head .sub{font-family:var(--sans);font-size:var(--t-fine);font-weight:500;color:var(--faint);margin-left:auto}
+/* R6 item22 — the side-nav lists showed no scroll affordance (scrollbar fully hidden). Give
+   .col-body a thin themed scrollbar so the path/entry lists signal overflow + position. The thumb
+   uses --hair-2 (theme-aware, defined in both light + dark token blocks); --graphite on hover.
+   .reader-scroll stays immersive (unchanged). */
+.col-body{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--hair-2) transparent}
+.col-body::-webkit-scrollbar{width:7px;height:7px}
+.col-body::-webkit-scrollbar-thumb{background:var(--hair-2);border-radius:4px}
+.col-body::-webkit-scrollbar-thumb:hover{background:var(--graphite)}
+.col-body::-webkit-scrollbar-track{background:transparent}
+
+/* draggable splitters */
+.splitter{position:absolute;top:0;bottom:0;width:9px;transform:translateX(-4px);cursor:col-resize;z-index:5}
+.splitter::after{content:"";position:absolute;top:0;bottom:0;left:4px;width:1px;background:transparent;transition:background .15s}
+.splitter:hover::after,.splitter.drag::after{background:color-mix(in oklab,var(--accent) 60%,transparent)}
+.split-0{left:var(--col0)}.split-1{left:calc(var(--col0) + var(--col1))}
+.reader-shell.zen .splitter{display:none}
+
+/* — sidebar rows — */
+.side-sec{padding:var(--s4) var(--s3) var(--s2)}
+.side-sec+.side-sec{padding-top:var(--s2)}
+.side-h{font-size:var(--t-note);font-weight:640;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  padding:0 var(--s2) var(--s2)}
+.side-row{display:flex;align-items:center;gap:9px;height:32px;padding:0 var(--s2);border-radius:8px;
+  color:var(--muted);font-size:var(--t-ui);transition:color .12s,background .12s;cursor:pointer}
+.side-row:hover{background:var(--well);color:var(--ink)}
+.side-row.sel{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--ink);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 22%,transparent)}
+.side-row .ico{width:16px;height:16px;color:var(--faint);flex:none}
+.side-row.sel .ico{color:var(--accent)}
+.side-row .lbl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side-row .cnt{font-family:var(--mono);font-size:var(--t-note);color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* — list rows (feed / timeline) — */
+.list{padding:var(--s2) var(--s3) var(--s6)}
+.entry{display:flex;gap:10px;padding:12px var(--s2);border-radius:10px;cursor:pointer;position:relative;
+  transition:background .12s}
+.entry:hover{background:var(--well)}
+.entry.sel{background:var(--raise);box-shadow:var(--lift-sheet)}
+.entry.sel::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2.5px;border-radius:2px;background:var(--accent)}
+.entry .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:7px;flex:none;transition:opacity .2s}
+.entry.read .dot{opacity:0}
+.entry .body{min-width:0;flex:1}
+.entry .etitle{font-family:var(--serif);font-size:15.5px;line-height:1.32;color:var(--ink);font-weight:600;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.entry.read .etitle{font-weight:460;color:var(--muted)}
+.entry .eprev{font-size:var(--t-ui);color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden}
+.entry .efoot{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:var(--t-note);color:var(--faint)}
+.entry .efoot .src{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entry .efoot .date{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.entry .star{color:var(--paper-warm)}
+
+/* ============================================================================
+   5. THE READING SURFACE (PaperRss fidelity)
+   ========================================================================== */
+.col-read{position:relative}
+.reader-scroll{flex:1;min-height:0;overflow:auto;scrollbar-width:none;position:relative}
+.reader-scroll::-webkit-scrollbar{width:0;height:0}
+.reader{max-width:min(34em,92vw);margin:0 auto;padding:74px 34px 30vh;
+  font-size:var(--read-fs,17px);line-height:1.72;letter-spacing:.006em;color:var(--paper-ink);
+  overflow-wrap:anywhere}
+.reader .kicker{font-family:var(--sans);font-size:var(--t-fine);font-weight:640;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px}
+.reader h1{font-family:var(--serif);font-weight:700;font-size:1.95em;line-height:1.22;letter-spacing:.008em;
+  color:var(--paper-ink);margin:0 0 .35em;font-optical-sizing:auto}
+.reader .meta{font-family:var(--sans);font-size:.86em;color:var(--paper-muted);
+  display:flex;flex-wrap:wrap;gap:6px 0;align-items:center;margin-bottom:22px}
+.reader .meta .b{margin:0 8px;opacity:.5}
+.reader h2{font-family:var(--serif);font-weight:600;font-size:1.42em;line-height:1.3;margin:1.6em 0 .5em;color:var(--paper-ink)}
+.reader h3{font-family:var(--serif);font-weight:600;font-size:1.16em;margin:1.3em 0 .4em}
+.reader p{margin:0 0 1.05em}
+.reader hr{border:none;border-top:1px solid var(--paper-rule);margin:1.6em 0}
+.reader .divider{border:none;border-top:1px solid var(--paper-rule);margin:0 0 22px}
+.reader code{font-family:var(--mono);font-size:.9em;background:var(--paper-code);padding:.1em .35em;border-radius:4px}
+.reader blockquote{margin:1.2em 0;padding:.2em 0 .2em 1.1em;border-left:2px solid var(--accent);color:var(--paper-muted)}
+.reader strong{font-weight:640}
+.reader .tr{display:block;color:var(--paper-muted);border-left:2px solid var(--paper-wash);padding-left:.9em;margin:.2em 0 1.05em;font-size:.97em}
+/* R14 — wide tables / code / media must never clip the reader column at narrow widths;
+   each scrolls inside its own box instead of forcing the whole page to scroll sideways. */
+.reader table,.reader pre{display:block;max-width:100%;overflow-x:auto}
+.reader pre{padding:.7em .9em;background:var(--paper-code);border-radius:8px;line-height:1.5}
+.reader pre code{background:none;padding:0}
+.reader table{border-collapse:collapse;font-size:.94em;white-space:nowrap}
+.reader th,.reader td{border:1px solid var(--paper-rule);padding:.35em .6em;text-align:left}
+.reader img{max-width:100%;height:auto}
+/* R10 item11a — committed reading highlights: reader.js emits <mark class="sb-hl"> which had NO
+   rule, so it fell back to the UA yellow (fine on paper, detonates on the dark sheet). Tint from the
+   LIVE per-tool accent (--accent is theme-stable) over transparent, inherit the paper ink. */
+.reader mark.sb-hl{background:color-mix(in oklab,var(--accent) 22%,transparent);color:inherit;border-radius:3px;padding:0 1px}
+/* R10 item11b — jump-to-highlight confirm: reader.js adds .hl-flash to the target mark.sb-hl (or its
+   paragraph) and strips it ~1200ms later. A single decaying accent pulse; no fill-mode so a mark
+   reverts to its resting 22% tint when it ends. Reduced motion swaps the pulse for a brief static
+   tint that still confirms the landing (the mark rule needs the higher-specificity override to read
+   above its own 22% base). */
+.hl-flash{animation:hl-flash .9s ease-out}
+@keyframes hl-flash{from{background:color-mix(in oklab,var(--accent) 40%,transparent)}to{background:transparent}}
+@media (prefers-reduced-motion:reduce){
+  .hl-flash{animation:none;background:color-mix(in oklab,var(--accent) 24%,transparent);border-radius:3px}
+  .reader mark.sb-hl.hl-flash{background:color-mix(in oklab,var(--accent) 40%,transparent)}
+}
+
+/* AI summary card in reader header */
+.sum-card{background:var(--paper-card);border:1px solid var(--paper-rule);border-radius:9px;
+  padding:11px 14px;margin-bottom:22px;cursor:pointer;transition:border-color .18s}
+.sum-card:hover{border-color:color-mix(in oklab,var(--accent) 45%,var(--paper-rule))}
+.sum-head{display:flex;align-items:center;gap:8px;font-size:.92em}
+.sum-head .spark{color:var(--accent)}
+.sum-head .tt{font-weight:600;color:var(--accent-ink);font-family:var(--sans)}
+.sum-head .pv{color:var(--paper-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.sum-head .chev{margin-left:auto;color:var(--accent);opacity:.7;transition:transform .2s}
+.sum-card.open .sum-head .chev{transform:rotate(180deg)}
+.sum-body{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--paper-rule);line-height:1.62;font-size:.97em}
+.sum-card.open .sum-body{display:block}
+.sum-empty{color:var(--paper-muted);font-size:.92em}
+
+/* ============================================================================
+   6. THE POLYMORPHIC RAIL (col2 right edge): TOC ticks + backlinks/toc panel
+   ========================================================================== */
+.toc-rail{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;
+  max-height:min(46vh,300px);display:flex;flex-direction:column;gap:3px;opacity:0;z-index:4;
+  transition:opacity .28s cubic-bezier(.16,1,.3,1)}
+/* R5 item 26 — when the reader is hovered/focused, lift the ticks from invisible to a resting
+   hint so keyboard/hover users know the rail exists; direct hover/focus still goes fully opaque
+   (the opacity:1 rule below wins by equal-specificity source order). */
+.col-read:hover .toc-rail,.col-read:focus-within .toc-rail{opacity:.5}
+.toc-rail.show,.toc-rail:hover,.toc-rail:focus-within{opacity:1}
+/* R5 item 26 — each tick is the click target: full 34px rail width already, min-height lifted to a
+   >=24px hit box (the 8x3 visual <i> stays right-aligned inside the transparent padding). */
+.toc-rail .tick{flex:1;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;
+  background:none;min-height:24px}
+.toc-rail .tick i{display:block;width:8px;height:3px;border-radius:2px;background:var(--graphite);transition:width .18s,background .18s}
+.toc-rail .tick:hover i,.toc-rail .tick.cur i{width:20px;background:var(--accent)}
+
+/* docked rail panel (TOC + backlinks) — the Wiki signature dual rail */
+.rail-dock{width:var(--rail,260px);flex:none;border-left:1px solid var(--hair);background:color-mix(in oklab,var(--sheet) 70%,var(--desk));
+  overflow:auto;scrollbar-width:none;padding:var(--s4) var(--s3)}
+.rail-dock::-webkit-scrollbar{width:0}
+.rail-sec+.rail-sec{margin-top:var(--s5)}
+.rail-h{font-size:var(--t-note);font-weight:640;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.rail-link{display:block;padding:5px 8px;border-radius:7px;font-size:var(--t-ui);color:var(--muted);line-height:1.4;
+  transition:color .12s,background .12s;cursor:pointer}
+.rail-link:hover{background:var(--well);color:var(--ink)}
+/* R5 item 4 — rail items are focusable buttons this round; mirror the global :focus-visible
+   token so keyboard focus is visible (radius matched to the link's 7px). */
+.rail-link:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:7px}
+.rail-link.cur{color:var(--accent);font-weight:560}
+.rail-link .anno{display:block;font-size:var(--t-note);color:var(--faint);margin-top:1px}
+.rail-empty{font-size:var(--t-note);color:var(--faint);font-style:italic}
+
+/* floating overlay scrollbar (attach to .col-body / .reader-scroll wrappers) */
+.fscroll{position:absolute;top:6px;bottom:6px;right:2.5px;width:4.5px;border-radius:3px;background:var(--ink);
+  opacity:0;transition:opacity .12s ease-out;z-index:6;pointer-events:none}
+.fscroll.on{opacity:.18}.fscroll.hot{opacity:.28}.fscroll.drag{opacity:.36}
+
+/* ============================================================================
+   7. REUSABLE PRIMITIVES — cards, chips, badges, meters, kanban, diff, votes
+   ========================================================================== */
+.pane{height:100%;overflow:auto;padding:var(--s5) var(--gutter) var(--s7)}
+.pane-wide{max-width:1080px;margin:0 auto}
+.pane-head{display:flex;align-items:baseline;gap:12px;margin-bottom:var(--s4)}
+.pane-head h2{font-family:var(--serif);font-size:var(--t-title);font-weight:600}
+.pane-head .sub{font-size:var(--t-ui);color:var(--muted)}
+
+.card{background:var(--raise);border:1px solid var(--hair);border-radius:var(--r-lift);
+  box-shadow:var(--lift-sheet);padding:var(--s4)}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s3)}
+.card-h h3{font-family:var(--serif);font-size:var(--t-lead);font-weight:600}
+.card-h .kick{font-size:var(--t-fine);font-weight:640;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.grid{display:grid;gap:var(--s3)}
+.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-auto{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:var(--r-pill);
+  font-size:var(--t-fine);font-weight:560;color:var(--muted);background:var(--well);border:1px solid var(--hair)}
+.chip.accent{color:var(--accent-ink);background:color-mix(in oklab,var(--accent) 12%,transparent);border-color:color-mix(in oklab,var(--accent) 26%,transparent)}
+.chip.ok{color:var(--ok);background:color-mix(in oklab,var(--ok) 12%,transparent);border-color:color-mix(in oklab,var(--ok) 26%,transparent)}
+.chip.bad{color:var(--bad);background:color-mix(in oklab,var(--bad) 12%,transparent);border-color:color-mix(in oklab,var(--bad) 26%,transparent)}
+.chip.wait{color:var(--wait);background:color-mix(in oklab,var(--wait) 12%,transparent);border-color:color-mix(in oklab,var(--wait) 26%,transparent)}
+.chip.stale{color:var(--stale);background:color-mix(in oklab,var(--stale) 12%,transparent);border-color:color-mix(in oklab,var(--stale) 26%,transparent)}
+.dotb{width:6px;height:6px;border-radius:50%;background:currentColor}
+/* R5 item 28b — a 1px divider to separate chip families in a masthead (e.g. provenance/status |
+   hashtags); mirrors .strip-div. Drop a <span class="chip-div"> between chip groups. */
+.chip-div{flex:none;align-self:stretch;width:1px;min-height:16px;margin:0 var(--s1);background:var(--hair-2)}
+/* R6 item15(1) — DARK ONLY: the neutral .chip fills with --well, which in dark is DARKER than the
+   card surface (--raise), so neutral labels sink into sub-card 'holes' with weak contrast. Lift the
+   NEUTRAL chip to a translucent ink wash that sits above the card, with near-ink text; keep the 1px
+   --hair-2 border. Colored chips (accent/ok/bad/wait/stale) mix over transparent and read fine, so
+   they are excluded via :not(). Light-mode letterpress is untouched (dark-guarded). */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .chip:not(.accent):not(.ok):not(.bad):not(.wait):not(.stale){
+    background:color-mix(in oklab,var(--ink) 7%,transparent);color:rgb(var(--ink-rgb)/.82);border-color:var(--hair-2);
+  }
+}
+:root[data-theme="dark"] .chip:not(.accent):not(.ok):not(.bad):not(.wait):not(.stale){
+  background:color-mix(in oklab,var(--ink) 7%,transparent);color:rgb(var(--ink-rgb)/.82);border-color:var(--hair-2);
+}
+
+.badge{font-family:var(--mono);font-size:var(--t-fine);font-weight:600;letter-spacing:.02em;
+  padding:2px 7px;border-radius:5px;background:var(--well);color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* meter / progress */
+.meter{height:7px;border-radius:4px;background:var(--well);overflow:hidden;box-shadow:var(--letterpress)}
+.meter>i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.meter.ok>i{background:var(--ok)}.meter.bad>i{background:var(--bad)}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat .v{font-family:var(--mono);font-size:var(--t-folio);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat .v.ok{color:var(--ok)}.stat .v.bad{color:var(--bad)}.stat .v.stale{color:var(--stale)}.stat .v.wait{color:var(--wait)}.stat .v.accent{color:var(--accent)}
+.stat .k{font-size:var(--t-fine);font-weight:560;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+/* R5 item 28a — the uppercase + wide-tracking eyebrow is a Latin idiom: uppercase is a no-op on
+   CJK and the tracking just prises Hanzi apart. When the document language is Chinese, drop the
+   idiom (mild tracking, no transform). Placed after all five base rules so it wins the
+   equal-specificity cases (.card-h .kick / .reader .kicker).
+   NOTE: depends on <html lang> tracking the UI language — reader.js must set
+   document.documentElement.lang = S.lang on toggle+init, else this also fires in English. */
+:lang(zh) .kick,:lang(zh) .kicker,:lang(zh) .side-h,:lang(zh) .rail-h,:lang(zh) .stat .k{
+  letter-spacing:.02em;text-transform:none}
+
+/* kanban */
+.kanban{display:flex;gap:var(--s3);overflow-x:auto;padding-bottom:var(--s3);align-items:flex-start}
+.lane{flex:0 0 260px;background:color-mix(in oklab,var(--sheet) 65%,var(--desk));border:1px solid var(--hair);
+  border-radius:var(--r-lift);padding:var(--s2);display:flex;flex-direction:column;gap:var(--s2)}
+.lane-h{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:var(--t-ui);font-weight:600;color:var(--ink)}
+.lane-h .n{margin-left:auto;font-family:var(--mono);font-size:var(--t-fine);color:var(--faint)}
+.lane-h .swatch{width:8px;height:8px;border-radius:2px;background:var(--accent)}
+.charge{background:var(--raise);border:1px solid var(--hair);border-radius:9px;padding:11px 12px;
+  box-shadow:var(--lift-sheet);cursor:pointer;transition:transform .12s,box-shadow .15s}
+.charge:hover{transform:translateY(-1px);box-shadow:var(--lift-pop)}
+.charge .ct{font-size:var(--t-ui);font-weight:560;line-height:1.35;color:var(--ink)}
+.charge .cm{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+
+/* vote bar (jury) */
+.votebar{display:flex;height:8px;border-radius:4px;overflow:hidden;box-shadow:var(--letterpress);background:var(--well)}
+.votebar .v-ok{background:var(--ok)}.votebar .v-no{background:var(--bad)}.votebar .v-lim{background:var(--stale)}
+
+/* diff (revision inbox) */
+.diff{font-family:var(--mono);font-size:var(--t-note);line-height:1.6;border-radius:8px;overflow:hidden;border:1px solid var(--hair)}
+.diff .d-row{padding:3px 10px;white-space:pre-wrap;word-break:break-word}
+.diff .d-del{background:color-mix(in oklab,var(--bad) 12%,transparent);color:color-mix(in oklab,var(--bad) 82%,var(--ink))}
+.diff .d-add{background:color-mix(in oklab,var(--ok) 12%,transparent);color:color-mix(in oklab,var(--ok) 82%,var(--ink))}
+.diff .d-del::before{content:"− ";opacity:.6}.diff .d-add::before{content:"+ ";opacity:.6}
+
+/* persona card (jury reviewers) */
+.persona{display:flex;flex-direction:column;gap:6px;padding:var(--s3);border-radius:var(--r-lift);
+  background:var(--raise);border:1px solid var(--hair);box-shadow:var(--lift-sheet)}
+.persona .pn{font-family:var(--serif);font-weight:600;font-size:15px}
+.persona .pd{font-size:var(--t-ui);color:var(--muted);line-height:1.4}
+
+/* coverage heatmap */
+.heat{display:grid;gap:2px}
+.heat .cell{height:26px;border-radius:4px;background:var(--well);display:flex;align-items:center;justify-content:center;
+  font-size:var(--t-fine);color:var(--faint)}
+.heat .cell.thorough{background:color-mix(in oklab,var(--ok) 34%,var(--well))}
+.heat .cell.light{background:color-mix(in oklab,var(--stale) 30%,var(--well))}
+.heat .cell.skipped{background:color-mix(in oklab,var(--bad) 26%,var(--well))}
+
+/* timeline (spark seals / probe ledger / jury rounds) */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:9px;top:4px;bottom:4px;width:2px;background:var(--hair-2)}
+.tl-node{position:relative;padding:0 0 var(--s4)}
+.tl-node::before{content:"";position:absolute;left:-21px;top:3px;width:12px;height:12px;border-radius:50%;
+  background:var(--raise);border:2px solid var(--graphite)}
+.tl-node.ok::before{border-color:var(--ok);background:var(--ok)}
+.tl-node.warn::before{border-color:var(--stale);background:var(--stale)}
+.tl-node.now::before{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px color-mix(in oklab,var(--accent) 22%,transparent)}
+.tl-t{font-weight:600;font-size:var(--t-ui)}
+.tl-d{font-size:var(--t-note);color:var(--muted);margin-top:2px}
+
+/* ============================================================================
+   8. AI SELECTION POPOVER + ACTION BAR (restrained AI)
+   ========================================================================== */
+.ai-actions{position:fixed;z-index:60;display:flex;gap:4px;padding:4px 6px;border-radius:20px;
+  background:var(--paper-card);border:1px solid var(--paper-rule);box-shadow:var(--lift-pop);
+  backdrop-filter:blur(20px) saturate(1.2);animation:materialize .18s cubic-bezier(.16,1,.3,1)}
+.ai-actions button{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--paper-muted);transition:color .12s,background .12s}
+.ai-actions button:hover{color:var(--accent);background:color-mix(in oklab,var(--accent) 14%,transparent)}
+.ai-pop{position:fixed;z-index:61;width:min(350px,100vw - 40px);max-height:min(340px,100vh - 40px);overflow:auto;
+  padding:14px 16px 16px;border-radius:14px;background:var(--paper-card);border:1px solid var(--paper-rule);
+  box-shadow:var(--lift-pop);backdrop-filter:blur(20px);font-size:14px;line-height:1.58;
+  animation:materialize .2s cubic-bezier(.16,1,.3,1);transform-origin:top center}
+.ai-pop .aph{display:flex;align-items:center;gap:7px;font-weight:640;color:var(--accent);margin-bottom:8px;font-size:13px}
+.ai-pop.warm .aph{color:var(--paper-warm)}
+.ai-pop .apb{color:var(--paper-ink)}.ai-pop .apb.loading{color:var(--paper-muted)}
+
+@keyframes materialize{from{opacity:0;transform:translateY(4px) scale(.98)}to{opacity:1;transform:none}}
+
+/* ============================================================================
+   9. OVERLAYS + EMPTY STATES + MISC
+   ========================================================================== */
+.scrim{position:fixed;inset:0;background:var(--scrim);backdrop-filter:blur(2px);z-index:40}
+.pop{position:fixed;z-index:50;background:var(--raise);border:1px solid var(--hair-2);border-radius:14px;
+  box-shadow:var(--lift-pop);
+  /* R6 item1 — safety net: no overlay should clip off a short viewport. The palette (.palette,
+     not a .pop) and .needtray both manage their own scroll and keep it (.needtray wins by later
+     source order at equal specificity). */
+  max-height:90vh;overflow:auto}
+/* R6 item1 — keyHelp modal: a fixed header (.kh-head) + a scrolling body (.kh-body, wrapped by
+   reader.js) so the dialog never clips its top/bottom edges on short viewports. The outer keeps
+   the base overflow:auto as a harmless fallback — with kh-body flex:1;min-height:0 the outer
+   never actually overflows — while max-height tightens below the base 90vh. */
+.pop.keyhelp{display:flex;flex-direction:column;max-height:min(86vh,720px)}
+.pop.keyhelp .kh-head{flex:none}
+.pop.keyhelp .kh-body{flex:1;overflow-y:auto;min-height:0}
+
+/* R6 item15(2) — DARK ONLY: floating overlays lean on #000 drop-shadows that vanish on the
+   near-black desk, so they read as flat. Add a firmer 1px light outer ring over the existing
+   inset top-light, and (for the --raise-filled overlays) lift the fill one step brighter than
+   --raise so ring + fill carry the separation. Light-mode soft shadows are left untouched. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .pop,
+  :root:not([data-theme="light"]) .palette{
+    background:color-mix(in oklab,var(--ink) 5%,var(--raise));
+    box-shadow:inset 0 1px 0 rgb(255 255 255/.05),0 0 0 1px rgb(255 255 255/.10),0 28px 64px -20px #000;
+  }
+  :root:not([data-theme="light"]) .ai-pop,
+  :root:not([data-theme="light"]) .ai-actions{
+    box-shadow:inset 0 1px 0 rgb(255 255 255/.06),0 0 0 1px rgb(255 255 255/.10),0 22px 50px -22px #000;
+  }
+}
+:root[data-theme="dark"] .pop,
+:root[data-theme="dark"] .palette{
+  background:color-mix(in oklab,var(--ink) 5%,var(--raise));
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.05),0 0 0 1px rgb(255 255 255/.10),0 28px 64px -20px #000;
+}
+:root[data-theme="dark"] .ai-pop,
+:root[data-theme="dark"] .ai-actions{
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.06),0 0 0 1px rgb(255 255 255/.10),0 22px 50px -22px #000;
+}
+.empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  text-align:center;color:var(--muted);padding:var(--s6)}
+.empty .eico{width:34px;height:34px;color:var(--faint)}
+.empty .eh{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink)}
+.empty .ed{max-width:44ch;font-size:var(--t-ui);color:var(--muted);line-height:1.5}
+
+kbd{font-family:var(--mono);font-size:11px;min-width:20px;height:20px;padding:0 6px;display:inline-flex;
+  align-items:center;justify-content:center;border-radius:5px;background:var(--well);border:1px solid var(--hair-2);
+  box-shadow:0 1px 0 var(--hair-2);color:var(--muted)}
+
+/* staggered workspace reveal */
+.reveal>*{animation:rise .5s cubic-bezier(.16,1,.3,1) backwards}
+.reveal>*:nth-child(1){animation-delay:.02s}.reveal>*:nth-child(2){animation-delay:.07s}
+.reveal>*:nth-child(3){animation-delay:.12s}.reveal>*:nth-child(4){animation-delay:.17s}
+.reveal>*:nth-child(5){animation-delay:.22s}.reveal>*:nth-child(n+6){animation-delay:.26s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:9px;
+  padding:9px 16px;border-radius:var(--r-pill);background:var(--sheet);border:1px solid color-mix(in oklab,var(--accent) 30%,var(--hair));
+  box-shadow:var(--lift-pop);font-size:var(--t-ui);color:var(--ink);animation:materialize .2s}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.05s !important}}
+
+/* ============================================================================
+   10. RESPONSIVE — hold the shell together as the window narrows
+   The reader.js splitters write --col0/--col1 as INLINE custom properties, so a
+   plain `.reader-shell{--col0:…}` media rule can't win. Instead we cap the grid
+   with min(inline-var, breakpoint-cap) directly on grid-template-columns AND on
+   the splitter left offsets — the two stay locked together, and full-width 1440
+   is untouched because the caps only bite once the viewport is actually narrow.
+   ========================================================================== */
+/* the sub-view tabs: a fixed pill whose INNER track scrolls, so it shrinks first and
+   never slides under the tool switcher nor shoves the right controls off-edge. R7 —
+   an edge fade + scroll cue appear ONLY when the tabs actually overflow (.scrollable),
+   so a view is never clipped with no indication that more tabs exist off-screen. */
+.subnav{margin-inline:auto;flex-shrink:1;min-width:0;overflow:hidden;position:relative}
+.subnav-scroll{display:flex;align-items:center;gap:1px;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  scroll-behavior:smooth}
+.subnav-scroll::-webkit-scrollbar{height:0;width:0}
+.subnav .tab{flex:none;white-space:nowrap}
+.subnav.fade-r .subnav-scroll{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+.subnav.fade-l .subnav-scroll{-webkit-mask-image:linear-gradient(90deg,transparent,#000 26px);mask-image:linear-gradient(90deg,transparent,#000 26px)}
+.subnav.fade-l.fade-r .subnav-scroll{-webkit-mask-image:linear-gradient(90deg,transparent,#000 26px,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,transparent,#000 26px,#000 calc(100% - 26px),transparent)}
+/* a chevron scroll cue on the overflowing edge (pure affordance, non-interactive) */
+.subnav.scrollable::after{content:"";position:absolute;top:50%;width:12px;height:12px;transform:translateY(-50%);
+  pointer-events:none;opacity:.55;background:currentColor;color:var(--faint);
+  -webkit-mask:no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5L10.5 8 6 12.5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask:no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5L10.5 8 6 12.5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.subnav.fade-r::after{right:1px}
+.subnav.fade-r.fade-l::after{content:none}   /* mid-scroll: fades on both sides already read as scrollable */
+@media (prefers-reduced-motion:reduce){.subnav-scroll{scroll-behavior:auto}}
+.strip-l{flex:none}.strip-r{flex:none}
+/* R7 — reclaim strip space so the subnav never starves to zero (regression seen on the
+   7-tab Wiki at 1200). 1440 is above every breakpoint here and stays pristine. */
+@media (max-width:1280px){
+  .projbtn .proj-lbl,.projbtn .proj-chev{display:none}      /* icon-only project selector */
+  .projbtn{padding:0 8px;max-width:none}
+  .ws-title .titlebtn{max-width:18ch}
+  .toolsw button span[data-i]{display:none}                 /* text label hidden; the dot carries a letter monogram (name still in aria-label) */
+  .toolsw button{padding:0 10px;gap:5px}
+  /* R4 item 24 — with the text label hidden, a bare colour dot is indistinguishable to
+     no-hover / colour-blind users in a narrow window. Upgrade the dot to a compact
+     monogram disc (S/J/W) keyed on the pill's existing data-t. The letter uses the
+     pill's own text colour (theme-aware --muted, always legible on the pill) with a
+     per-tool tint ring; the selected pill fills the disc with its tint and sets the
+     letter white — ≥4.5:1 on every tint in both themes, matching the .tsw-badge. */
+  .toolsw button .dot{width:16px;height:16px;opacity:1;background:transparent;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-weight:700;font-size:10px;line-height:1;letter-spacing:0;
+    box-shadow:inset 0 0 0 1.3px color-mix(in oklab,var(--tint) 50%,transparent)}
+  .toolsw button[data-t="spark"] .dot::after{content:"S"}
+  .toolsw button[data-t="jury"] .dot::after{content:"J"}
+  .toolsw button[data-t="wiki"] .dot::after{content:"W"}
+  .toolsw button.sel .dot{background:var(--tint);color:#fff;box-shadow:none}
+  .subnav{margin-inline:8px}
+}
+/* the docked TOC/backlinks rail lives in this flex row inside .col-read */
+.read-row{display:flex;flex:1;min-height:0;width:100%}
+
+@media (max-width:1180px){
+  .reader-shell:not(.zen){grid-template-columns:min(var(--col0,268px),240px) min(var(--col1,340px),300px) 1fr}
+  .reader-shell:not(.zen) .split-0{left:min(var(--col0,268px),240px)}
+  .reader-shell:not(.zen) .split-1{left:calc(min(var(--col0,268px),240px) + min(var(--col1,340px),300px))}
+  /* R6 item16 — col0 is frozen at its cap here (drag floor == cap), so kill the dead col-resize
+     affordance on split-0; split-1 still resizes col1 (floor 280 < cap 300). */
+  .reader-shell:not(.zen) .split-0{pointer-events:none}
+  .ws-title .titlebtn{max-width:22ch}
+  .reader{padding-left:28px;padding-right:28px}
+  /* R4 item 3 — when the rail drops below the article the Wiki dock reader must not nest
+     two vertical flex scrollers: the tall rail (flex:none) would starve the reader
+     (flex:1;min-height:0) to zero height and the article would vanish entirely. Collapse
+     to ONE page scroller — .col-read itself scrolls; the article keeps its natural height
+     ABOVE the rail; article + rail stack and scroll together. Scoped to .read-row (dock
+     tools only) so the toc-rail tools (spark-reading / jury-charge) — whose .reader-scroll
+     is a direct child of .col-read, never of .read-row — keep their own inner scroller. */
+  .col-read{overflow-y:auto}
+  .read-row{flex-direction:column;flex:none}
+  .read-row>.reader-scroll{flex:none;min-height:auto;overflow:visible;order:0}
+  .read-row>.reader-scroll .reader{padding-bottom:var(--s6)}   /* trim the 30vh tail so the rail sits just below the article */
+  .read-row .rail-dock{order:1;width:100%;flex:none;border-left:none;border-top:1px solid var(--hair);
+    max-height:none;padding-top:var(--s3)}
+}
+/* R5 item 3b — below ~1100px the subnav drops to its own full-width second row so tabs like
+   '治理' stop clipping to '治'. The strip wraps; strip-l + strip-r stay on row 1, subnav
+   (order:3, basis 100%) falls to row 2 and its inner track scrolls. Strip height goes auto
+   (min 52px) so #sb-main just yields the extra height — body never scrolls sideways. */
+@media (max-width:1100px){
+  .strip{flex-wrap:wrap;height:auto;min-height:52px;row-gap:6px;padding-top:8px;padding-bottom:8px}
+  .subnav{order:3;flex:1 0 100%;width:100%;max-width:none;margin-inline:0;justify-content:flex-start}
+}
+/* R7 item4 / R9 item26 — the 1100 wrap above is the universal floor, but the multi-tab bars
+   overflow well above it: Jury (5 tabs), Wiki (7 tabs), and now Spark (5 tabs — Reading·Runs·
+   Figures·Manuscript·Governance, added this round). Their tabs vanished behind the scroll-fade —
+   with a long (≤34ch) project name eating the strip, 'Manuscript' clipped and Governance became
+   unreachable at 1440. Drop these multi-tab bars to their own full-width second row EARLIER, now
+   at ~1440px (was 1320 for jury/wiki — raised so the wrap engages before the 1440 clip and Spark
+   joins the same treatment), using the identical wrap mechanism. Full-width row 2 fits all 5/7
+   tabs with room to spare, so nothing is ever clipped. Scoped per-tool via the html[data-tool]
+   attribute reader.js sets, so this stays a superset of the ≤1100 rule for those tools; short-bar
+   tools are untouched. Same mechanism ⇒ #sb-main just yields the extra height; body never scrolls
+   sideways. The html[data-tool] prefix outranks the plain .subnav rules above (incl. the 1280
+   margin-inline:8px), so margin-inline:0 wins regardless of source order. */
+@media (max-width:1440px){
+  html[data-tool="jury"] .strip,html[data-tool="wiki"] .strip,html[data-tool="spark"] .strip{
+    flex-wrap:wrap;height:auto;min-height:52px;row-gap:6px;padding-top:8px;padding-bottom:8px}
+  html[data-tool="jury"] .subnav,html[data-tool="wiki"] .subnav,html[data-tool="spark"] .subnav{
+    order:3;flex:1 0 100%;width:100%;max-width:none;margin-inline:0;justify-content:flex-start}
+}
+@media (max-width:1080px){
+  /* R10 item10 — a narrow laptop wasted >half the window on nav chrome: col0 224 + col1 272 = 496
+     left the article ~584 at 1080, sliding under its ~578 measure target as the window shrank.
+     Drop the col1 (feed) cap 272→200 to reclaim reading width — the article now clears ~656 at 1080
+     — while col0 stays usable. split-1 tracks the same cap so the pair stays locked (splitters are
+     display:none below, but keep them consistent). 1fr absorbs the slack, so no horizontal scroll. */
+  .reader-shell:not(.zen){grid-template-columns:min(var(--col0,268px),224px) min(var(--col1,340px),200px) 1fr}
+  .reader-shell:not(.zen) .split-0{left:min(var(--col0,268px),224px)}
+  .reader-shell:not(.zen) .split-1{left:calc(min(var(--col0,268px),224px) + min(var(--col1,340px),200px))}
+  /* R6 item16 — both drag floors (240/280) exceed the responsive caps (224/200) here, so every
+     splitter is inert; remove the misleading col-resize cursor entirely. */
+  .splitter{display:none}
+  .reader{padding-top:56px;padding-left:24px;padding-right:24px}
+  .ws-title .titlebtn{max-width:16ch}
+}
+
+/* ============================================================================
+   11. CROSS-TOOL "NEEDS ME" — tab count badges + right-cluster lamps
+   ========================================================================== */
+.toolsw button .tsw-badge{margin-left:1px;min-width:15px;height:15px;padding:0 4px;border-radius:var(--r-pill);
+  font-family:var(--mono);font-size:11px;font-weight:700;line-height:1;letter-spacing:0;
+  display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:#fff;
+  font-variant-numeric:tabular-nums;box-shadow:0 1px 2px rgb(0 0 0/.22)}
+.toolsw button .tsw-badge[hidden]{display:none}
+.lamps:empty{display:none}
+/* R19 — keep the 8-9px visual lamp but give it a ≥24px hit area (transparent ::before,
+   inset:-8px → 25px) and a visible, contrasting focus ring for keyboard users. */
+.lamps .lamp.tool{width:9px;height:9px;cursor:pointer;transition:transform .12s;position:relative}
+.lamps .lamp.tool::before{content:"";position:absolute;inset:-8px;border-radius:50%}
+.lamps .lamp.tool:hover{transform:scale(1.25)}
+.lamps .lamp.tool:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;
+  box-shadow:0 0 0 3px color-mix(in oklab,var(--sheet) 60%,transparent)}
+
+/* ============================================================================
+   12. COMMAND PALETTE (⌘K / Ctrl-K)
+   ========================================================================== */
+.palette{position:fixed;z-index:80;left:50%;top:13vh;transform:translateX(-50%);width:min(560px,92vw);
+  background:var(--raise);border:1px solid var(--hair-2);border-radius:14px;box-shadow:var(--lift-pop);
+  overflow:hidden;animation:materialize .16s cubic-bezier(.16,1,.3,1)}
+.pal-in{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--hair)}
+.pal-in .i{color:var(--faint);flex:none;width:16px;height:16px}
+.pal-input{flex:1;min-width:0;border:none;background:none;outline:none;font-family:var(--sans);
+  font-size:15.5px;color:var(--ink)}
+.pal-input::placeholder{color:var(--faint)}
+.pal-list{max-height:min(46vh,380px);overflow:auto;padding:6px;scrollbar-width:thin}
+.pal-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer}
+.pal-row .pal-lbl{flex:1;min-width:0;font-size:14px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-row .pal-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;opacity:.55}
+.pal-row .pal-hint{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none}
+.pal-row.sel{background:color-mix(in oklab,var(--accent) 14%,transparent)}
+.pal-row.sel .pal-hint,.pal-row.sel .pal-dot{color:var(--accent);opacity:1}
+.pal-row.sel .pal-lbl{color:var(--ink)}
+.pal-empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* a11y helpers */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* R5 item 26 — skip-link (reader.js inserts <a class="sb-skip" href="#sb-main"> as the first
+   focusable child): off-screen until focused, then pinned top-left as a solid accent chip. */
+.sb-skip{position:absolute;left:8px;top:-48px;z-index:100;padding:8px 14px;border-radius:8px;
+  background:var(--accent);color:var(--on-accent);font-family:var(--sans);font-size:var(--t-ui);
+  font-weight:560;box-shadow:var(--lift-pop);transition:top .16s}
+.sb-skip:focus{top:8px;outline:2px solid var(--focus-ring);outline-offset:2px}
+/* the 'c' shortcut hides the parallel-translation blocks the reader already styles */
+.reader.no-tr .tr{display:none}
+
+/* R19(a) — warm the reader panel a hair in dark so it reads as paper, not slate */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .col-read{background:color-mix(in oklab,var(--paper-warm) 4%,var(--sheet))}
+}
+:root[data-theme="dark"] .col-read{background:color-mix(in oklab,var(--paper-warm) 4%,var(--sheet))}
+/* R5 item 28c — DARK ONLY: the three reader columns collapsed into one near-black band split only
+   by a hairline, so the reading sheet stopped reading as raised. Widen the value spread — darken
+   the two side wells toward the desk, lift col-read above --sheet (toward --raise) with an inset
+   top-highlight + a soft left shadow so it reads as a raised sheet. Light mode elevation is left
+   untouched (dark-guarded; these override the warm-tint rules above by source order). */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .col-side{background:color-mix(in oklab,var(--sheet) 26%,var(--desk))}
+  :root:not([data-theme="light"]) .col-list{background:color-mix(in oklab,var(--sheet) 58%,var(--desk))}
+  :root:not([data-theme="light"]) .col-read{background:color-mix(in oklab,var(--paper-warm) 5%,var(--raise));
+    box-shadow:inset 0 1px 0 rgb(255 255 255/.06),-14px 0 26px -20px rgb(0 0 0/.66)}
+}
+:root[data-theme="dark"] .col-side{background:color-mix(in oklab,var(--sheet) 26%,var(--desk))}
+:root[data-theme="dark"] .col-list{background:color-mix(in oklab,var(--sheet) 58%,var(--desk))}
+:root[data-theme="dark"] .col-read{background:color-mix(in oklab,var(--paper-warm) 5%,var(--raise));
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.06),-14px 0 26px -20px rgb(0 0 0/.66)}
+
+/* R4 item 28 — dark-mode card elevation: the --lift-sheet outer drop-shadow is pure
+   black, which is invisible on the near-black #0C0D10 desk, so cards read as flat.
+   In dark only, lift the hairline border to ~.15 alpha, strengthen the top-inset
+   highlight, and trade the black drop-shadow for a faint light ambient ring so the
+   card separates from the surface and reads as raised. Light-mode elevation is
+   untouched (guarded by the dark media query / [data-theme="dark"]). */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .card{
+  border-color:rgb(var(--ink-rgb)/.15);
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.07),0 0 0 1px rgb(var(--ink-rgb)/.05),0 14px 34px -22px rgb(0 0 0/.7);
+}}
+:root[data-theme="dark"] .card{
+  border-color:rgb(var(--ink-rgb)/.15);
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.07),0 0 0 1px rgb(var(--ink-rgb)/.05),0 14px 34px -22px rgb(0 0 0/.7);
+}
+
+/* ============================================================================
+   13. ROUND-2 SURFACES — palette subtitles (R3) · Home (R4) · welcome (R17) ·
+       keyhelp dialog (R19) · AI-pop close (R10) · needs tray (R23)
+   ========================================================================== */
+/* R3 — palette rows can carry a type+context subtitle */
+.pal-row .pal-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.pal-row.has-sub{align-items:flex-start}
+.pal-row .pal-sub{font-size:12px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.pal-row.sel .pal-sub{color:var(--muted)}
+
+/* R4 — Home cross-tool overview */
+.home-pane{height:100%;overflow:auto;padding:var(--s5) var(--gutter) var(--s7);scrollbar-width:thin}
+.home-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:var(--s4)}
+.home-head h1{font-family:var(--serif);font-size:var(--t-title);font-weight:600;color:var(--ink)}
+.home-projs{display:flex;gap:6px;flex-wrap:wrap}
+.home-chip{height:26px;padding:0 12px;border-radius:var(--r-pill);font-size:var(--t-ui);font-weight:520;color:var(--muted);
+  background:var(--well);border:1px solid var(--hair);transition:color .15s,background .15s,border-color .15s}
+.home-chip:hover{color:var(--ink);border-color:var(--hair-2)}
+.home-chip.on{color:var(--accent-ink);background:color-mix(in oklab,var(--accent) 14%,transparent);border-color:color-mix(in oklab,var(--accent) 30%,transparent)}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s4);align-items:start}
+.home-col{background:var(--raise);border:1px solid var(--hair);border-radius:var(--r-lift);box-shadow:var(--lift-sheet);
+  padding:var(--s3);display:flex;flex-direction:column;min-width:0}
+.home-ch{display:flex;align-items:center;gap:9px;padding:2px 4px 10px;border-bottom:1px solid var(--hair);margin-bottom:6px}
+.home-ch h2{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink)}
+.home-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.home-badge{font-size:var(--t-fine);font-weight:700;color:#fff;background:var(--accent);border-radius:var(--r-pill);padding:2px 8px;
+  font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.home-ch h2{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.home-all{margin-left:auto;font-size:var(--t-note);font-weight:560;color:var(--muted)}
+.home-all:hover{color:var(--ink);text-decoration:underline}
+.home-rows{display:flex;flex-direction:column;gap:1px;max-height:min(56vh,560px);overflow:auto;scrollbar-width:none}
+.home-rows::-webkit-scrollbar{width:0}
+.home-row{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 8px;border-radius:8px;transition:background .12s}
+.home-row:hover,.home-row:focus-visible{background:var(--well)}
+.home-row.hot::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+.home-row .home-rl{flex:1;min-width:0;font-size:var(--t-ui);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home-row.hot .home-rl{font-weight:560}
+.home-row .home-rm{font-size:var(--t-note);color:var(--faint);flex:none;max-width:46%;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.home-row .home-go{color:var(--faint);flex:none;opacity:0;transition:opacity .12s}
+.home-row:hover .home-go,.home-row:focus-visible .home-go{opacity:.7}
+.home-empty{padding:14px 8px;color:var(--faint);font-size:var(--t-ui);font-style:italic}
+.home-tt{opacity:.9;cursor:default}
+
+/* R12 — per-row verdict tag (tinted by tone) + right-aligned relative recency */
+.home-row .home-tag{flex:none;font-size:var(--t-fine);font-weight:600;padding:1px 8px;border-radius:var(--r-pill);
+  color:var(--muted);background:var(--well);border:1px solid var(--hair);white-space:nowrap}
+.home-row .home-tag.ok{color:var(--ok);background:color-mix(in oklab,var(--ok) 12%,transparent);border-color:color-mix(in oklab,var(--ok) 26%,transparent)}
+.home-row .home-tag.bad{color:var(--bad);background:color-mix(in oklab,var(--bad) 12%,transparent);border-color:color-mix(in oklab,var(--bad) 26%,transparent)}
+.home-row .home-tag.wait{color:var(--wait);background:color-mix(in oklab,var(--wait) 12%,transparent);border-color:color-mix(in oklab,var(--wait) 26%,transparent)}
+.home-row .home-tag.stale{color:var(--stale);background:color-mix(in oklab,var(--stale) 12%,transparent);border-color:color-mix(in oklab,var(--stale) 26%,transparent)}
+.home-row .home-rt{flex:none;font-size:var(--t-note);color:var(--faint);font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* R12 — Home attention rollup: total "needs you" across tools → opens the tray */
+.home-needs-pill{display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 12px;border-radius:var(--r-pill);
+  font-size:var(--t-ui);font-weight:600;color:var(--on-accent);background:var(--accent);border:1px solid transparent;
+  font-variant-numeric:tabular-nums;transition:filter .12s}
+.home-needs-pill:hover{filter:brightness(1.06)}
+.home-needs-pill .hnp-dot{width:6px;height:6px;border-radius:50%;background:var(--on-accent);opacity:.9}
+/* R7 — Home portfolio (All-projects triage): one card-row per paper, three tool cells */
+.home-mode{display:inline-flex;gap:6px}
+.home-portfolio{display:flex;flex-direction:column;gap:var(--s3)}
+.pf-row{display:flex;align-items:center;gap:var(--s3);background:var(--raise);border:1px solid var(--hair);
+  border-radius:var(--r-lift);box-shadow:var(--lift-sheet);padding:12px 14px;position:relative}
+.pf-row.hot{border-color:color-mix(in oklab,var(--accent) 26%,var(--hair))}
+.pf-row.hot::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+.pf-name{display:flex;align-items:center;gap:9px;flex:0 0 30%;min-width:0}
+.pf-open{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);text-align:left;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pf-open:hover{text-decoration:underline}
+.pf-badge{flex:none;font-size:var(--t-fine);font-weight:700;color:#fff;background:var(--accent);
+  border-radius:var(--r-pill);padding:2px 8px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pf-cells{display:flex;gap:8px;flex:1;min-width:0}
+.pf-cell{display:flex;align-items:center;gap:7px;flex:1;min-width:0;padding:7px 10px;border-radius:8px;
+  background:var(--well);border:1px solid var(--hair);text-align:left;transition:background .12s,border-color .12s}
+.pf-cell:hover,.pf-cell:focus-visible{border-color:var(--hair-2);background:var(--raise)}
+.pf-cell.hot{border-color:color-mix(in oklab,var(--accent) 30%,transparent);background:color-mix(in oklab,var(--accent) 8%,var(--well))}
+.pf-cell-dot{width:8px;height:8px;border-radius:50%;flex:none}
+.pf-cell-lbl{font-size:var(--t-note);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-cell.hot .pf-cell-lbl{color:var(--ink);font-weight:540}
+
+/* R12 — Home activity feed + saved-views strip (single-project mode) */
+.home-feed{margin-top:var(--s5)}
+.home-feed .home-ch{border-bottom:1px solid var(--hair);margin-bottom:6px}
+.home-feed-rows{display:flex;flex-direction:column;gap:1px}
+.home-feed-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:7px 8px;border-radius:8px;transition:background .12s}
+.home-feed-row:hover,.home-feed-row:focus-visible{background:var(--well)}
+.hf-date{flex:none;font-family:var(--mono);font-size:var(--t-note);color:var(--faint);font-variant-numeric:tabular-nums;min-width:88px}
+.hf-dot{width:8px;height:8px;border-radius:50%;flex:none}
+.hf-tool{flex:none;font-size:var(--t-note);color:var(--muted);min-width:44px}
+.hf-lbl{flex:1;min-width:0;font-size:var(--t-ui);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home-feed-row.isnew .hf-lbl{font-weight:560}
+.hf-new{flex:none;font-size:var(--t-fine);font-weight:700;color:#fff;background:var(--accent);border-radius:var(--r-pill);padding:1px 7px;letter-spacing:.02em}
+.home-views{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:var(--s4)}
+.home-views-h{font-size:var(--t-note);font-weight:600;color:var(--faint);margin-right:2px}
+.home-view-save{border-style:dashed;color:var(--muted)}
+
+@media (max-width:1080px){.home-grid{grid-template-columns:1fr}
+  .pf-row{flex-direction:column;align-items:stretch;gap:10px}
+  .pf-name{flex-basis:auto}
+  .pf-cells{flex-wrap:wrap}
+  .pf-cell{flex:1 1 30%}}
+@media (max-width:760px){.pf-cell{flex-basis:100%}.hf-date{min-width:74px}}
+
+/* R5 item2 — portfolio pipeline nodes (Draft→Review→Filed) + Next-action CTA */
+.pf-row{flex-wrap:wrap}
+.pf-node-k{display:block;font-size:var(--t-fine);font-weight:600;color:var(--faint);letter-spacing:.02em;margin-bottom:1px}
+.pf-cell.hot .pf-node-k{color:var(--accent-ink)}
+.pf-next-row{flex:1 0 100%;margin-top:8px;display:flex}
+.pf-next{flex:0 1 auto;background:color-mix(in oklab,var(--accent) 12%,var(--well));border-color:color-mix(in oklab,var(--accent) 34%,transparent)}
+.pf-next:hover,.pf-next:focus-visible{background:color-mix(in oklab,var(--accent) 18%,var(--well))}
+.pf-next-k{flex:none;font-size:var(--t-fine);font-weight:700;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.pf-next .pf-cell-lbl{color:var(--ink);font-weight:540;white-space:normal}
+
+/* R5 item27 — Home "since last visit" change banner */
+.home-banner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 12px;margin-bottom:var(--s4);
+  background:color-mix(in oklab,var(--accent) 8%,var(--raise));border:1px solid color-mix(in oklab,var(--accent) 24%,var(--hair));border-radius:var(--r-lift)}
+.home-banner-h{font-size:var(--t-note);font-weight:600;color:var(--accent-ink)}
+.home-banner-chip{height:24px;padding:0 10px;border-radius:var(--r-pill);font-size:var(--t-note);font-weight:520;color:var(--ink);
+  background:var(--well);border:1px solid var(--hair);white-space:nowrap;transition:border-color .12s,background .12s}
+.home-banner-chip:hover,.home-banner-chip:focus-visible{border-color:var(--hair-2);background:var(--raise)}
+
+/* R5 item9 — keyHelp glossary block (kh-oh inherits the .keyhelp .kh-oh eyebrow) */
+.keyhelp .kh-gloss{margin-top:14px;padding-top:12px;border-top:1px solid var(--hair)}
+.keyhelp .kh-grow{display:grid;grid-template-columns:minmax(88px,auto) 1fr;gap:2px 12px;font-size:var(--t-note);padding:3px 0}
+.keyhelp .kh-grow b{font-weight:640;color:var(--accent-ink)}
+.keyhelp .kh-grow span{color:var(--muted)}
+
+/* R5 item13 — tool-tab count badge muted under sample/couldNotRead */
+.tsw-badge.muted{opacity:.42;filter:grayscale(1)}
+
+/* R17 — first-run welcome */
+.welcome{left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,92vw);padding:30px 28px;text-align:center}
+.welcome .wc-mark{width:46px;height:46px;margin:0 auto 15px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
+.welcome .wc-mark .mark{width:23px;height:23px}
+.welcome h2{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:11px;color:var(--ink)}
+.welcome .wc-body{font-size:14.5px;line-height:1.62;color:var(--muted);margin-bottom:8px}
+.welcome .wc-hint{font-size:13px;color:var(--faint);margin-bottom:20px}
+.welcome .wc-actions{display:flex;justify-content:center}
+
+/* R19 — keyboard-shortcuts dialog: header + close + folded overview */
+.keyhelp .kh-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.keyhelp .kh-head h2{font-family:var(--serif);font-size:20px;font-weight:600;flex:1}
+.keyhelp .kh-x{flex:none}
+.keyhelp .kh-over{background:var(--well);border:1px solid var(--hair);border-radius:10px;padding:11px 13px;margin-bottom:14px}
+.keyhelp .kh-oh{font-size:var(--t-fine);font-weight:640;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.keyhelp .kh-orow{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);padding:3px 0}
+.keyhelp .kh-orow b{color:var(--ink);min-width:46px}
+.keyhelp .kh-odot{width:7px;height:7px;border-radius:50%;flex:none}
+.keyhelp .kh-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-top:1px solid var(--hair)}
+.keyhelp .kh-row .kh-k{flex:1;font-size:13.5px;color:var(--ink)}
+
+/* R10 — AI popover: title row + close */
+.ai-pop .aph .aph-t{flex:1}
+.ai-pop .aph-x{flex:none;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--paper-muted)}
+.ai-pop .aph-x:hover{color:var(--paper-ink);background:color-mix(in oklab,var(--paper-ink) 8%,transparent)}
+
+/* R20 — Copy on the AI popover header + the reader summary-card head */
+.ai-pop .aph-copy,.sum-card .sum-copy{flex:none;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;color:var(--paper-muted);transition:color .12s,background .12s}
+.ai-pop .aph-copy:hover,.sum-card .sum-copy:hover{color:var(--paper-ink);background:color-mix(in oklab,var(--paper-ink) 8%,transparent)}
+.ai-pop .aph-copy:disabled{opacity:.38;cursor:default}
+.ai-pop .aph-copy:disabled:hover{background:none;color:var(--paper-muted)}
+.sum-card .sum-copy[hidden]{display:none}
+
+/* R2 — the Undo action rendered inside a toast (single-press prev/next safety net) */
+.toast .toast-act{margin-left:4px;padding:2px 9px;border-radius:var(--r-pill);font-size:var(--t-note);font-weight:640;
+  color:var(--accent-ink);background:color-mix(in oklab,var(--accent) 13%,transparent);
+  border:1px solid color-mix(in oklab,var(--accent) 30%,transparent);transition:background .12s}
+.toast .toast-act:hover{background:color-mix(in oklab,var(--accent) 22%,transparent)}
+
+/* R23 — the "needs you" tray */
+.needtray{right:16px;top:52px;width:min(360px,92vw);max-height:min(72vh,580px);overflow:auto;padding:8px;scrollbar-width:thin}
+.needtray .nt-head{display:flex;align-items:center;gap:10px;padding:8px 10px 10px;position:sticky;top:0;background:var(--raise);z-index:1}
+.needtray .nt-head b{font-family:var(--serif);font-size:16px;font-weight:600;flex:1}
+.needtray .nt-x{flex:none}
+.needtray .nt-sec{padding:2px 2px 8px}
+.needtray .nt-sh{display:flex;align-items:center;gap:8px;font-size:var(--t-note);font-weight:640;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--faint);padding:6px 8px}
+.needtray .nt-dot{width:8px;height:8px;border-radius:50%;flex:none}
+.needtray .nt-row{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;transition:background .12s}
+.needtray .nt-row:hover,.needtray .nt-row:focus-visible{background:var(--well)}
+.needtray .nt-lbl{flex:1;min-width:0;font-size:var(--t-ui);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.needtray .nt-meta{font-size:var(--t-note);color:var(--faint);flex:none;font-family:var(--mono)}
+.needtray .nt-empty{padding:24px 12px;text-align:center;color:var(--muted);font-size:13.5px}

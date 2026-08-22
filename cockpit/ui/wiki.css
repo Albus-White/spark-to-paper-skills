@@ -1,0 +1,636 @@
+/* ============================================================================
+   SparkBoard · WIKI workspace styles — only the wiki-specific structure.
+   Everything leans on sparkboard.css primitives + tokens (so light/dark/CJK
+   are automatic). Accent is Wiki sage via html[data-tool="wiki"]. WHY-first:
+   the dual-rail extras, the concept graph, the ideation cards, coverage heat,
+   the sources import feed, the /wiki-auto inbox, and the teach panel.
+   ========================================================================== */
+
+/* ---- inline [[wikilinks]] + LaTeX spans inside the reading surface -------- */
+.reader .wl, .wl {
+  color: var(--accent); cursor: pointer;
+  border-bottom: 1px dotted color-mix(in oklab, var(--accent) 55%, transparent);
+}
+.reader .wl:hover, .wl:hover { border-bottom-style: solid; background: color-mix(in oklab, var(--accent) 10%, transparent); }
+.wl.dangling { color: var(--stale); border-bottom-style: dashed; border-color: color-mix(in oklab, var(--stale) 60%, transparent); }
+.reader code.tex, code.tex { font-family: var(--mono); font-size: .88em; background: var(--paper-wash); color: var(--paper-ink); padding: .05em .3em; border-radius: 4px; }
+
+/* header meta: force the front-matter line + chip row to stack (each full-width
+   inside the flex-wrap .meta) */
+.reader .meta > .fmline, .reader .meta > .chiprow { width: 100%; }
+.reader .meta .chiprow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+
+/* generic table wrapper — wide content scrolls in its OWN box, never the body */
+.tbl-wrap { overflow-x: auto; margin: 1.1em 0; }
+.reader table, table.cmp-table, table.ilog, .ask-a table, .prov table { border-collapse: collapse; width: 100%; font-size: .9em; }
+.reader th, .reader td { border: 1px solid var(--paper-rule); padding: 7px 10px; text-align: left; vertical-align: top; }
+.reader th { font-weight: 640; background: var(--paper-wash); }
+
+/* ---- dual-rail extras (outbound / cited source / lint) ------------------- */
+.rail-link.wl { border-bottom: none; }
+.rail-src .anno, .rail-link .anno { display: block; }
+.rail-warn { font-size: var(--t-note); line-height: 1.4; padding: 5px 8px; border-radius: 7px; margin-bottom: 5px;
+  background: color-mix(in oklab, var(--stale) 12%, transparent); color: var(--stale); }
+.rail-warn.bad { background: color-mix(in oklab, var(--bad) 12%, transparent); color: var(--bad); }
+.rail-ok { font-size: var(--t-note); color: var(--ok); padding: 5px 8px; }
+.entry .efoot .bl { font-family: var(--mono); color: var(--faint); font-size: var(--t-fine); }
+
+/* ============================================================================
+   IDEAS — the tier-sorted candidates inbox
+   ========================================================================== */
+.tier-legend { display: flex; gap: 7px; flex-wrap: wrap; margin: 4px 0 18px; }
+/* item 29d: the tier chips double as filters — button-reset so they still read as chips,
+   with a dimmed "off" state mirroring the graph legend toggles. */
+.tier-toggle { appearance: none; -webkit-appearance: none; cursor: pointer; transition: opacity .12s, filter .12s; }
+.tier-toggle:hover { filter: brightness(1.05); }
+.tier-toggle.off { opacity: .4; }
+/* item 27-wiki(3): live per-tier count pill + dimmed empty tier + empty-state line */
+.tier-cnt { margin-left: 6px; font-family: var(--mono); font-size: 10px; font-weight: 640; opacity: .75; }
+.tier-toggle.tier-empty { opacity: .32; cursor: default; pointer-events: none; filter: saturate(.4); }
+.ideas-empty { margin: 2px 0 18px; font-size: 13px; color: var(--muted); }
+/* item 11 / round8 #2: SCORED-idea handoff into Spark — draft (outline) + launch (filled) */
+.idea-actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.idea-draft { display: inline-flex; align-items: center; gap: 6px; color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 42%, var(--hair-2)); background: color-mix(in oklab, var(--accent) 8%, var(--raise)); }
+.idea-draft:hover { background: color-mix(in oklab, var(--accent) 16%, var(--raise)); border-color: var(--accent); color: var(--accent); }
+.idea-draft .i, .idea-launch .i { width: 14px; height: 14px; }   /* .idea-launch reuses .btn.primary fill/ink */
+.chip.tier-big { color: #b0472a; background: color-mix(in oklab, #C0552A 14%, transparent); border-color: color-mix(in oklab, #C0552A 30%, transparent); }
+.chip.tier-claim { color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, transparent); border-color: color-mix(in oklab, var(--accent) 30%, transparent); }
+.chip.tier-pos { color: var(--wait); background: color-mix(in oklab, var(--wait) 14%, transparent); border-color: color-mix(in oklab, var(--wait) 30%, transparent); }
+.chip.tier-low { color: var(--ok); background: color-mix(in oklab, var(--ok) 14%, transparent); border-color: color-mix(in oklab, var(--ok) 30%, transparent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chip.tier-big { color: #E2703A; } }
+:root[data-theme="dark"] .chip.tier-big { color: #E2703A; }
+
+.ideate-report { background: var(--raise); border: 1px solid var(--hair); border-radius: var(--r-lift); box-shadow: var(--lift-sheet); margin-bottom: 18px; overflow: hidden; }
+.ideate-report > summary { cursor: pointer; padding: 13px 16px; font-weight: 560; font-size: var(--t-ui); display: flex; align-items: center; gap: 9px; list-style: none; }
+.ideate-report > summary::-webkit-details-marker { display: none; }
+.ideate-report[open] > summary { border-bottom: 1px solid var(--hair); }
+.ideate-body { padding: 4px 18px 14px; font-size: 13.5px; }
+.ideate-body h3 { font-family: var(--serif); font-size: 1.02em; margin: 1em 0 .3em; }
+.ideate-body table { border-collapse: collapse; width: 100%; font-size: .92em; margin: .6em 0; }
+.ideate-body th, .ideate-body td { border: 1px solid var(--hair); padding: 5px 9px; text-align: left; }
+.ideate-body ul { margin: .3em 0; padding-left: 1.3em; }
+
+.idea-card { background: var(--raise); border: 1px solid var(--hair); border-radius: var(--r-lift); box-shadow: var(--lift-sheet); padding: var(--s4); margin-bottom: 16px; }
+.idea-card:hover { border-color: color-mix(in oklab, var(--accent) 26%, var(--hair)); }
+.idea-head { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+.idea-venue { margin-left: auto; font-family: var(--mono); font-size: var(--t-fine); color: var(--faint); }
+.idea-title { font-family: var(--serif); font-size: 1.18em; font-weight: 600; color: var(--ink); cursor: pointer; }
+.idea-title:hover { color: var(--accent); }
+.idea-pitch { font-size: var(--t-ui); color: var(--muted); margin: 5px 0 14px; line-height: 1.5; }
+
+.claim-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.claim-col { padding: 12px 14px; border-radius: 9px; font-size: 13px; line-height: 1.55; }
+.claim-col.bold { background: color-mix(in oklab, var(--accent) 8%, var(--well)); border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent); }
+.claim-col.now { background: var(--well); border: 1px solid var(--hair); }
+/* item 4: the two claim sub-heads are an uppercase mono EYEBROW (labels written directly,
+   no literal "### " markdown leaking as body text). */
+.claim-col .cc-h { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); margin-bottom: 7px; }
+.claim-col.bold .cc-h { color: var(--accent); }
+
+.ledger-h { font-size: var(--t-fine); font-weight: 640; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.ledger-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+.lg-cell { display: flex; flex-direction: column; gap: 2px; padding: 8px 11px; border-radius: 8px; background: var(--well); border: 1px solid var(--hair); min-width: 130px; }
+.lg-cell.ok { border-left: 3px solid var(--ok); }
+.lg-d { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+.lg-n { font-size: 12.5px; font-weight: 560; color: var(--ink); }
+.lg-v { font-size: 11px; color: var(--ok); font-weight: 560; }
+.lg-x { font-family: var(--mono); font-size: 11px; }
+.ledger-empty { font-size: 12.5px; color: var(--faint); font-style: italic; }
+
+.prov { margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 4px; }
+.prov > summary { cursor: pointer; font-size: 12.5px; color: var(--accent); padding: 7px 0; list-style: none; font-weight: 540; }
+.prov > summary::-webkit-details-marker { display: none; }
+.prov-b { font-size: 12.5px; line-height: 1.55; padding: 6px 2px 10px; color: var(--muted); }
+.cnt-obj { border-left: 2px solid var(--bad); padding-left: 10px; margin: 0 0 10px; }
+.cnt-keep { border-left: 2px solid var(--ok); padding-left: 10px; margin: 0; }
+.tier-wl { color: var(--muted); }
+.tier-unread { font-style: italic; color: var(--faint); margin: 6px 0 10px; }
+.tier-four { margin-bottom: 10px; }
+.fq { display: grid; grid-template-columns: 18px 130px 1fr; gap: 8px; align-items: start; padding: 3px 0; }
+.fq-m.ok { color: var(--ok); } .fq-m.bad { color: var(--bad); }
+.fq-k { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.tier-exec { margin-bottom: 10px; }
+.ex { display: grid; grid-template-columns: 120px 1fr; gap: 8px; padding: 2px 0; }
+.ex-k { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+.tier-conc { padding: 9px 11px; background: color-mix(in oklab, var(--accent) 9%, var(--well)); border-radius: 8px; color: var(--ink); margin-bottom: 8px; }
+.tier-why { font-size: 12px; color: var(--faint); }
+
+/* ============================================================================
+   GRAPH — the concept graph (SVG, layered, colored by note type)
+   ========================================================================== */
+.glegend { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; font-size: var(--t-fine); color: var(--muted); }
+.gl-item { display: inline-flex; align-items: center; gap: 6px; }
+.gl-dot { width: 10px; height: 10px; border-radius: 3px; background: var(--c, var(--accent)); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--c, var(--accent)) 60%, transparent); }
+.gl-edge { width: 20px; height: 0; border-top: 2px solid var(--graphite); }
+.gl-edge.dash { border-top-style: dashed; }
+/* R7: one legend swatch per edge kind, coloured to match the real stroke on-canvas. */
+.gl-edge.ge-synth { border-top-color: color-mix(in oklab, var(--accent) 60%, var(--graphite)); }
+.gl-edge.ge-seed { border-top-color: color-mix(in oklab, var(--wait) 62%, var(--graphite)); }
+.gl-edge.ge-ref { border-top-color: color-mix(in oklab, var(--ink) 32%, transparent); }
+.gl-edge.ge-attack { border-top-color: color-mix(in oklab, var(--stale) 62%, var(--graphite)); }
+.gl-edge.ge-probe { border-top-color: color-mix(in oklab, var(--ok) 62%, var(--graphite)); }
+.gl-edge.ge-feed { border-top-color: color-mix(in oklab, var(--paper-warm) 62%, var(--graphite)); }
+.gl-grp-h { font-family: var(--mono); font-size: 10px; font-weight: 640; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin-right: 1px; }
+.gl-sep { width: 1px; height: 16px; background: var(--hair-2); }
+
+.wgraph { position: relative; border: 1px solid var(--hair); border-radius: var(--r-lift); background: color-mix(in oklab, var(--sheet) 70%, var(--desk)); box-shadow: var(--letterpress); }
+.wgraph-scroll { overflow: auto; max-height: 64vh; padding: 12px; scrollbar-width: thin; }
+/* R22: the Graph pane fills the remaining viewport height (flex column) instead of a
+   fixed short band, so the concept graph uses the vertical space it was wasting. */
+.pane.wgraph-pane { display: flex; flex-direction: column; }
+.wgraph-pane .wgraph { flex: 1 1 auto; min-height: 340px; }
+/* Fill the tall pane, and vertically CENTRE the (inherently wide/short) graph so
+   the reclaimed height reads as used, not dead space at the bottom. `safe` keeps it
+   scroll-friendly when zoomed past the viewport; start-justify keeps wide graphs
+   left-aligned and horizontally scrollable. */
+/* item 27-wiki(2): centre BOTH axes so a small graph isn't stranded top-left; `safe` degrades to
+   start when the graph overflows, so a wide/tall graph still scrolls from its top-left corner. */
+.wgraph-pane .wgraph-scroll { max-height: none; height: 100%; display: flex; align-items: safe center; justify-content: safe center; }
+.gzoom { position: absolute; right: 12px; top: 12px; z-index: 3; display: flex; gap: 3px; background: var(--raise); border: 1px solid var(--hair-2); border-radius: 8px; padding: 3px; box-shadow: var(--lift-sheet); }
+.gzoom button { min-width: 30px; height: 26px; border-radius: 6px; font-size: 13px; color: var(--muted); }
+.gzoom button:hover { background: var(--well); color: var(--ink); }
+
+/* type → color channel (var --c drives fill/stroke/dot); readable both themes */
+.gn-paper { --c: var(--accent); }
+.gn-concept { --c: var(--wait); }
+.gn-gap { --c: var(--stale); }
+.gn-idea { --c: var(--paper-warm); }
+.gn-direction { --c: var(--ok); }
+.gn-probe { --c: var(--bad); }
+.gn-goal { --c: #6E7BA6; }
+:root[data-theme="dark"] .gn-goal, .gn-goal { --c: #8894b4; }
+:root[data-theme="light"] .gn-goal { --c: #5c6a8c; }
+/* extra note types the real corpus surfaces in the graph (sample has none of these) */
+.gn-field { --c: var(--graphite); }
+.gn-novelty { --c: #A6788F; }
+:root[data-theme="light"] .gn-novelty { --c: #8c5c74; }
+.gn-note, .gn-wiki { --c: var(--muted); }
+/* item 6(3): the /wiki-auto machine-decision ledger + other meta sidecars (default-hidden) */
+.gn-meta { --c: #7E869C; }
+:root[data-theme="light"] .gn-meta { --c: #656d84; }
+
+.gnode { cursor: pointer; }
+.gnode rect { fill: color-mix(in oklab, var(--c) 12%, var(--raise)); stroke: color-mix(in oklab, var(--c) 55%, transparent); stroke-width: 1.5; transition: fill .15s, stroke-width .15s; }
+.gnode:hover rect { fill: color-mix(in oklab, var(--c) 22%, var(--raise)); stroke-width: 2.5; }
+.gn-dot { fill: var(--c); }
+.gn-type { fill: var(--faint); font-family: var(--mono); font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; }
+/* on-node TITLE label (R12): an HTML div inside <foreignObject>, always visible,
+   wrapped to 2 lines with ellipsis, high-contrast --ink in BOTH themes, natural
+   CJK + latin wrapping — a node is identifiable without hover/click. */
+.gn-label {
+  font-family: var(--sans); font-size: 11.5px; font-weight: 560; line-height: 1.16;
+  color: var(--ink); box-sizing: border-box; height: 100%; margin-left: 3px;
+  display: -webkit-box; display: box; -webkit-box-orient: vertical; box-orient: vertical;
+  -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; word-break: break-word;
+}
+.gnode:hover .gn-label { color: var(--ink); }
+/* item 19: per-node ↗ open-in-Library glyph — hidden until the node is hovered / focused / current
+   (single-click only selects), muted then accent on its own hover; pointer cursor over the glyph. */
+.gn-open { fill: var(--faint); font-size: 13px; font-weight: 700; cursor: pointer; opacity: 0; transition: opacity .12s, fill .12s; }
+.gnode:hover .gn-open, .gnode:focus-visible .gn-open, .gnode.gn-current .gn-open { opacity: 1; }
+.gn-open:hover { fill: var(--accent); }
+
+.gedge { fill: none; stroke: currentColor; stroke-width: 1.6; color: color-mix(in oklab, var(--ink) 26%, transparent); }
+.gedge.dash { stroke-dasharray: 4 4; color: color-mix(in oklab, var(--ink) 20%, transparent); }
+/* R7: ge-seed split off from ge-synth into its own hue (sage synth vs violet seed). */
+.gedge.ge-synth { color: color-mix(in oklab, var(--accent) 48%, var(--graphite)); }
+.gedge.ge-seed { color: color-mix(in oklab, var(--wait) 52%, var(--graphite)); }
+.gedge.ge-attack { color: color-mix(in oklab, var(--stale) 55%, var(--graphite)); }
+.gedge.ge-probe { color: color-mix(in oklab, var(--ok) 55%, var(--graphite)); }
+.gedge.ge-feed { color: color-mix(in oklab, var(--paper-warm) 55%, var(--graphite)); }
+
+/* ============================================================================
+   COVERAGE — saturation heat + problems + tensions + assumptions + staleness
+   ========================================================================== */
+.cov-h { display: flex; align-items: baseline; gap: 10px; font-family: var(--serif); font-size: var(--t-lead); font-weight: 600; margin: 6px 0 12px; }
+.cov-src { font-family: var(--mono); font-size: 12px; }
+/* item 29a: inline key for the three saturation states */
+.cov-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: -4px 0 14px; font-size: 12px; color: var(--muted); }
+.cov-lg { display: inline-flex; align-items: center; gap: 6px; }
+.cov-sw { width: 10px; height: 10px; border-radius: 3px; flex: none; background: var(--muted); }
+.cov-lg.crowded .cov-sw { background: var(--stale); }
+.cov-lg.blank .cov-sw { background: var(--accent); }
+.cov-lg.messy .cov-sw { background: var(--bad); }
+.sat-grid { align-items: stretch; }
+.sat-card { border-radius: var(--r-lift); padding: 15px; border: 1px solid var(--hair); background: var(--raise); box-shadow: var(--lift-sheet); display: flex; flex-direction: column; }
+.sat-card.sat-crowded { border-top: 3px solid var(--stale); background: color-mix(in oklab, var(--stale) 6%, var(--raise)); }
+.sat-card.sat-blank { border-top: 3px solid var(--accent); background: color-mix(in oklab, var(--accent) 7%, var(--raise)); }
+.sat-card.sat-messy { border-top: 3px solid var(--bad); background: color-mix(in oklab, var(--bad) 6%, var(--raise)); }
+.sat-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.sat-crowded .sat-tag { color: var(--stale); } .sat-blank .sat-tag { color: var(--accent); } .sat-messy .sat-tag { color: var(--bad); }
+.sat-title { font-family: var(--serif); font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+.sat-pos { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+.sat-src { display: flex; flex-wrap: wrap; gap: 5px 9px; margin-bottom: 9px; font-family: var(--mono); font-size: 11.5px; }
+.sat-verdict { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin-top: auto; }
+
+/* items 14+15: a dead coverage ref (target never compiled) wears the shared .dangling
+   wikilink style plus this explicit marker, so it can't pass for a live link. */
+.cov-uncompiled { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--stale); background: color-mix(in oklab, var(--stale) 12%, transparent);
+  border-radius: 5px; padding: 0 5px; vertical-align: 1px; }
+
+.prob-list { display: flex; flex-direction: column; gap: 3px; }
+.prob-row { padding: 10px 0; border-top: 1px solid var(--hair); }
+.prob-row:first-child { border-top: none; }
+.prob-t { font-size: 13.5px; color: var(--ink); line-height: 1.4; margin-bottom: 6px; }
+.prob-f { font-family: var(--mono); font-size: 11.5px; color: var(--faint); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.tension { padding: 12px 0; border-top: 1px solid var(--hair); }
+.tension:first-child { border-top: none; }
+.t-id { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-weight: 640; color: var(--ink); margin-bottom: 8px; }
+.t-sides { display: grid; gap: 6px; margin-bottom: 6px; }
+.t-a, .t-b { font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 7px; }
+.t-a { background: color-mix(in oklab, var(--wait) 8%, var(--well)); }
+.t-b { background: color-mix(in oklab, var(--accent) 8%, var(--well)); }
+.t-same { font-size: 11.5px; color: var(--faint); font-family: var(--mono); }
+
+.assum-list { display: flex; flex-direction: column; gap: 3px; }
+.assum { padding: 11px 0; border-top: 1px solid var(--hair); }
+.assum:first-child { border-top: none; }
+.as-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 5px; }
+.as-id { font-family: var(--mono); font-weight: 700; color: var(--accent); }
+.as-t { font-size: 13.5px; color: var(--ink); flex: 1; min-width: 200px; }
+.as-by { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+
+.stale-note { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
+.stale-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.stale-k { width: 96px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.stale-v { font-family: var(--mono); font-size: 11.5px; color: var(--faint); width: 44px; text-align: right; }
+.stale-verdict { margin-top: 10px; font-size: 13px; font-weight: 560; padding: 8px 12px; border-radius: 8px; }
+.stale-verdict.ok { color: var(--ok); background: color-mix(in oklab, var(--ok) 10%, transparent); }
+.stale-verdict.warn { color: var(--stale); background: color-mix(in oklab, var(--stale) 12%, transparent); }
+
+/* ============================================================================
+   SOURCES — raw/ registry (OCR badges) + import feed + IMPORT-LOG
+   ========================================================================== */
+.src-list { display: flex; flex-direction: column; }
+.src-row { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid var(--hair); }
+.src-row:first-child { border-top: none; }
+.ocr { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--r-pill); width: 108px; flex: none; justify-content: center; }
+.ocr-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ocr-committed { color: var(--ok); background: color-mix(in oklab, var(--ok) 12%, transparent); }
+.ocr-pending { color: var(--stale); background: color-mix(in oklab, var(--stale) 14%, transparent); }
+.ocr-aborted { color: var(--bad); background: color-mix(in oklab, var(--bad) 12%, transparent); }
+.src-mid { flex: 1; min-width: 0; }
+.src-file { font-family: var(--mono); font-size: 13px; color: var(--ink); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.src-link { font-size: 11.5px; }
+.src-note { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+.cap-meter { margin: 4px 0 14px; }
+.feed-table { border: 1px solid var(--hair); border-radius: var(--r-lift); overflow: hidden; }
+.feed-row { display: grid; grid-template-columns: 34px 26px 1fr 96px 116px 92px; gap: 10px; align-items: center; padding: 11px 14px; border-top: 1px solid var(--hair); }
+.feed-row.feed-head { border-top: none; background: var(--well); font-family: var(--mono); font-size: 11px; font-weight: 640; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); padding: 8px 14px; }
+.feed-row.rec { background: color-mix(in oklab, var(--accent) 6%, transparent); }
+.feed-row.fenced { opacity: .55; }
+.fc-n { font-family: var(--mono); color: var(--faint); }
+.ft-title { display: block; font-size: 13.5px; font-weight: 560; color: var(--ink); line-height: 1.3; }
+.ft-why { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.fc-v { font-size: 12px; color: var(--muted); }
+.fc-a { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+.fc-r { display: flex; gap: 4px; flex-wrap: wrap; }
+.cbx { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--graphite); cursor: pointer; display: inline-block; transition: background .12s, border-color .12s; }
+.cbx.on { background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--raise); }
+.cbx:hover { border-color: var(--accent); }
+.fence-tag { font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--bad); letter-spacing: .04em; }
+.feed-foot { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.feed-hint { font-size: 11.5px; color: var(--faint); }
+table.ilog th, table.ilog td { border: 1px solid var(--hair); padding: 6px 10px; text-align: left; font-family: var(--mono); font-size: 12px; }
+table.ilog th { background: var(--well); color: var(--faint); font-weight: 640; }
+
+/* ============================================================================
+   INBOX — /wiki-auto machine-decision triage + reconciliation
+   ========================================================================== */
+.inbox-bar { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
+.inbox-ackall { margin-left: auto; }
+.inbox-table { border: 1px solid var(--hair); border-radius: var(--r-lift); overflow: hidden; }
+.inbox-row { display: grid; grid-template-columns: 84px 92px 150px 1fr 138px; gap: 12px; align-items: center; padding: 11px 14px; border-top: 1px solid var(--hair); }
+.inbox-row.ih { border-top: none; background: var(--well); font-family: var(--mono); font-size: 11px; font-weight: 640; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); padding: 8px 14px; }
+/* item 11: rows are focusable + scannable — a hairline rule (above) + hover + a clear
+   focus ring for the j/k roving, plus a left accent on the still-pending rows. */
+.inbox-row:not(.ih):hover { background: color-mix(in oklab, var(--well) 70%, transparent); }
+.inbox-row:focus { outline: none; }
+.inbox-row:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: -2px; border-radius: 4px; }
+.inbox-row.pending { box-shadow: inset 3px 0 0 0 color-mix(in oklab, var(--wait) 82%, transparent); }
+.inbox-row.filed { box-shadow: inset 3px 0 0 0 var(--accent); background: color-mix(in oklab, var(--accent) 5%, transparent); }
+.ir-d { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.ir-o { font-family: var(--mono); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; }
+.ir-i { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.ir-detail { display: block; font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.4; margin-top: 3px; }
+.filed-tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, transparent); border-radius: 5px; padding: 1px 6px; vertical-align: 1px; }
+/* item 10: deep-link on a jury-filed note back to its originating charge */
+.filed-from { display: inline-block; margin-top: 4px; font-family: var(--mono); font-size: 11px; color: var(--accent); cursor: pointer; }
+.filed-from:hover { text-decoration: underline; }
+/* explicit Seen / Overturn targets (item 11) — replaces the blind 3-way cycle */
+.ir-st { display: flex; gap: 5px; flex-wrap: wrap; }
+.st-act { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: var(--r-pill); font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--hair-2); background: var(--raise); color: var(--muted); transition: color .12s, background .12s, border-color .12s; }
+.st-act:hover { color: var(--ink); border-color: color-mix(in oklab, var(--accent) 40%, var(--hair-2)); }
+.st-act.ok.on { color: var(--ok); background: color-mix(in oklab, var(--ok) 12%, transparent); border-color: color-mix(in oklab, var(--ok) 30%, transparent); }
+.st-act.bad.on { color: var(--bad); background: color-mix(in oklab, var(--bad) 12%, transparent); border-color: color-mix(in oklab, var(--bad) 30%, transparent); }
+.st-act:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: 1px; }
+.st-pill { display: inline-flex; align-items: center; height: 22px; padding: 0 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; transition: filter .12s; }
+.st-pill:hover { filter: brightness(1.06); }
+.st-pill.wait { color: var(--wait); background: color-mix(in oklab, var(--wait) 14%, transparent); border: 1px solid color-mix(in oklab, var(--wait) 30%, transparent); }
+.st-pill.ok { color: var(--ok); background: color-mix(in oklab, var(--ok) 12%, transparent); border: 1px solid color-mix(in oklab, var(--ok) 28%, transparent); }
+.st-pill.bad { color: var(--bad); background: color-mix(in oklab, var(--bad) 12%, transparent); border: 1px solid color-mix(in oklab, var(--bad) 28%, transparent); }
+.reverse-receipt { font-size: 12px; color: var(--muted); margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--bad); }
+/* item 19: a small tag marking the pipeline's content language when it can't match the UI */
+.src-lang-tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--faint); background: var(--well); border: 1px solid var(--hair);
+  border-radius: var(--r-pill); padding: 0 7px; margin-right: 8px; vertical-align: 1px; }
+.recon { display: flex; flex-direction: column; }
+.recon-row { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; padding: 9px 0; border-top: 1px solid var(--hair); }
+.recon-row:first-child { border-top: none; }
+.recon-n { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); }
+.recon-claim { font-size: 13px; color: var(--ink); line-height: 1.4; }
+.recon-cmd { display: block; grid-column: 2; font-family: var(--mono); font-size: 11.5px; color: var(--muted); background: var(--well); border: 1px solid var(--hair); border-radius: 6px; padding: 5px 9px; margin-top: 5px; overflow-x: auto; white-space: pre; }
+
+/* ============================================================================
+   ASK — the teach panel docked beside a reader ("Reading First, AI Second")
+   ========================================================================== */
+.ask-wrap { display: flex; height: 100%; min-height: 0; }
+.ask-read { flex: 1; min-width: 0; display: flex; background: var(--sheet); }
+.ask-read-scroll { flex: 1; min-height: 0; overflow: auto; scrollbar-width: thin; }
+.ask-read .reader { padding: 44px 32px 22vh; }
+.ask-panel { width: 448px; flex: none; display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--hair); background: color-mix(in oklab, var(--sheet) 72%, var(--desk)); }
+.ask-head { display: flex; align-items: center; gap: 8px; padding: 16px 18px 4px; }
+.ask-head .tt { font-family: var(--serif); font-size: var(--t-lead); font-weight: 600; }
+.ask-sub { padding: 0 18px 12px; font-size: 12px; color: var(--muted); line-height: 1.45; border-bottom: 1px solid var(--hair); }
+.ask-thread { flex: 1; min-height: 0; overflow: auto; padding: 14px 18px; scrollbar-width: thin; display: flex; flex-direction: column; gap: 16px; }
+.ask-msg { display: flex; flex-direction: column; gap: 8px; }
+.ask-q { align-self: flex-end; max-width: 92%; background: color-mix(in oklab, var(--accent) 14%, var(--raise)); border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent); color: var(--ink); padding: 9px 13px; border-radius: 13px 13px 3px 13px; font-size: 13.5px; line-height: 1.45; }
+.ask-a { background: var(--raise); border: 1px solid var(--hair); box-shadow: var(--lift-sheet); border-radius: 3px 13px 13px 13px; padding: 12px 14px; font-size: 13px; line-height: 1.55; color: var(--ink); }
+.ask-a p { margin: 0 0 .7em; } .ask-a p:last-child { margin: 0; }
+.ask-foot { font-size: 12px; color: var(--muted); border-top: 1px dashed var(--hair); padding-top: 8px; margin-top: 4px; }
+.cite { display: inline-flex; align-items: center; gap: 3px; font-family: var(--mono); font-size: 11px; font-weight: 560; color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent); border-radius: 5px; padding: 1px 6px; cursor: pointer; }
+.cite:hover { background: color-mix(in oklab, var(--accent) 18%, transparent); }
+table.cmp-table { table-layout: fixed; }
+table.cmp-table th, table.cmp-table td { border: 1px solid var(--hair); padding: 6px 9px; text-align: left; font-size: 12px; vertical-align: top; overflow-wrap: anywhere; }
+table.cmp-table th { background: var(--well); font-weight: 640; }
+td.cmp-row-h { width: 74px; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--faint); background: color-mix(in oklab, var(--well) 60%, transparent); white-space: nowrap; }
+.gap-status { display: flex; flex-direction: column; }
+.gs-row { display: grid; grid-template-columns: 72px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--hair); align-items: start; }
+.gs-row:first-child { border-top: none; }
+.gs-k { font-family: var(--mono); font-size: 11px; font-weight: 640; text-transform: uppercase; letter-spacing: .04em; color: var(--faint); }
+.gs-v { font-size: 12.5px; line-height: 1.5; }
+.ask-a.notinwiki { border-color: color-mix(in oklab, var(--stale) 40%, var(--hair)); background: color-mix(in oklab, var(--stale) 6%, var(--raise)); }
+.niw-tag { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--stale); background: color-mix(in oklab, var(--stale) 14%, transparent); padding: 2px 8px; border-radius: 5px; margin-bottom: 8px; }
+.niw-missing, .niw-action { font-size: 12.5px; margin: 6px 0 0; }
+.ask-suggest { padding: 10px 18px; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ask-sug-h { font-size: 11px; font-weight: 640; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.ask-chip { font-size: 12px; padding: 5px 10px; border-radius: var(--r-pill); background: var(--well); border: 1px solid var(--hair); color: var(--muted); }
+.ask-chip:hover { color: var(--ink); border-color: color-mix(in oklab, var(--accent) 40%, var(--hair)); }
+.ask-input { display: flex; gap: 8px; padding: 12px 18px 16px; border-top: 1px solid var(--hair); }
+.ask-input input { flex: 1; height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--hair-2); background: var(--raise); color: var(--ink); font: inherit; font-size: 13px; }
+.ask-input input:focus { outline: none; border-color: color-mix(in oklab, var(--accent) 55%, var(--hair-2)); }
+
+/* ============================================================================
+   PROJECT STATUS popover (research.md Scope fence)
+   ========================================================================== */
+.wiki-status .ps-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.wiki-status .ps-h h2 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+.ps-badges { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.ps-fence { border-top: 1px solid var(--hair); padding-top: 12px; }
+.ps-k { font-family: var(--mono); font-size: 11px; font-weight: 640; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); margin: 12px 0 5px; }
+.wiki-status p { margin: 0 0 6px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.wiki-status ul { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.ps-todo { display: flex; flex-direction: column; gap: 5px; }
+.todo { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink); }
+.todo.done { color: var(--faint); text-decoration: line-through; }
+.todo .tk { color: var(--accent); font-weight: 700; }
+
+/* ============================================================================
+   LIVE-DATA affordances — the "reading <dir>" vs "sample" hint, the teach stream,
+   and the raw-md provenance panel. Theme-aware via the shell's tokens.
+   ========================================================================== */
+.wiki-srchint {
+  /* item 27-wiki(1): anchored bottom-LEFT (was right) so this fixed provenance pill no longer
+     sits over the reader's right-hand rail and occludes its last backlink row. */
+  position: fixed; left: 16px; right: auto; bottom: 12px; z-index: 30;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .01em; color: var(--faint);
+  background: color-mix(in oklab, var(--raise) 88%, transparent);
+  border: 1px solid var(--hair-2); box-shadow: var(--lift-sheet);
+  backdrop-filter: blur(3px); user-select: none;
+  /* item 21: this fixed badge sits bottom-right, directly over the Ask composer's Send
+     button at ~760px, and was swallowing the click. It is a passive provenance marker that
+     never needs to intercept pointer events, so make it click-through (supersedes item 29c's
+     hover-tooltip — a redundant tooltip is a fair trade for not blocking the primary Send). */
+  pointer-events: none;
+}
+.wiki-srchint.live { color: var(--muted); }
+.wiki-srchint .srcdot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ok) 22%, transparent); }
+
+.ask-cites { font-family: var(--mono); font-size: 11.5px; color: var(--faint); margin-bottom: 6px; }
+.ask-cites .wl { margin-right: 2px; }
+.ask-stream { font-size: 13.5px; line-height: 1.6; color: var(--ink); min-height: 1.4em; }
+.ask-stream:empty::after { content: "…"; color: var(--faint); }
+
+.prov-b.tiering-raw { font-size: 12.5px; line-height: 1.55; }
+.prov-b.tiering-raw h2, .prov-b.tiering-raw h3 { font-family: var(--serif); font-size: 13px; margin: 8px 0 4px; color: var(--ink); }
+.prov-b.tiering-raw ul { margin: 4px 0; padding-left: 18px; }
+.prov-b.tiering-raw blockquote { color: var(--faint); border-left: 2px solid var(--hair-2); padding-left: 8px; margin: 6px 0; }
+
+/* responsive: collapse the dual-column claim + ask dock on narrow viewports */
+@media (max-width: 900px) {
+  .claim-cols { grid-template-columns: 1fr; }
+  .ask-panel { width: 360px; }
+}
+
+/* ============================================================================
+   LIBRARY NAV — pinned filter/search + clear + back history + cross-folder jump
+   (R6 title/summary filter; R16 one-tap back). The list scrolls UNDER a fixed
+   filter bar so search stays reachable past ~30 notes.
+   ========================================================================== */
+.wiki-libnav { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.wiki-filter { flex: none; padding: 10px var(--s3) 8px; border-bottom: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--sheet) 78%, var(--desk)); }
+.wiki-filter-row { display: flex; align-items: center; gap: 7px; }
+.wiki-back { flex: none; width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--muted); border: 1px solid var(--hair-2); background: var(--raise); cursor: pointer; transition: color .12s, border-color .12s, background .12s; }
+.wiki-back:hover { color: var(--ink); border-color: color-mix(in oklab, var(--accent) 40%, var(--hair-2)); background: var(--well); }
+.wiki-back .i { width: 15px; height: 15px; }
+.wiki-search { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 8px;
+  border-radius: 8px; border: 1px solid var(--hair-2); background: var(--raise); transition: border-color .12s, box-shadow .12s; }
+.wiki-search:focus-within { border-color: color-mix(in oklab, var(--accent) 55%, var(--hair-2)); box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 14%, transparent); }
+.wiki-search-i { width: 14px; height: 14px; color: var(--faint); flex: none; }
+.wiki-filter-in { flex: 1; min-width: 0; border: none; background: transparent; color: var(--ink); font: inherit; font-size: 13px; padding: 0; }
+.wiki-filter-in:focus { outline: none; }
+.wiki-filter-in::placeholder { color: var(--faint); }
+.wiki-clear { flex: none; width: 18px; height: 18px; border-radius: 50%; line-height: 1; font-size: 15px; color: var(--faint);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.wiki-clear:hover { color: var(--ink); background: var(--well); }
+.wiki-filter-meta { font-family: var(--mono); font-size: var(--t-fine); color: var(--faint); margin-top: 6px; letter-spacing: .01em; }
+.wiki-filter-meta:empty { display: none; margin: 0; }
+
+/* item 26: list sort toggle + orphan-only (↩0) filter chip in the library header */
+.wiki-listctl { display: flex; align-items: center; gap: 7px; margin-top: 8px; }
+.wiki-sort, .wiki-orphan-chip { font: inherit; font-size: var(--t-fine); cursor: pointer; border-radius: var(--r-pill);
+  border: 1px solid var(--hair-2); background: var(--raise); color: var(--muted); padding: 2px 10px; transition: color .12s, border-color .12s, background .12s; }
+.wiki-sort:hover, .wiki-orphan-chip:hover { color: var(--ink); border-color: color-mix(in oklab, var(--accent) 40%, var(--hair-2)); }
+.wiki-orphan-chip { font-family: var(--mono); letter-spacing: .01em; }
+.wiki-orphan-chip.on { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 60%, transparent); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+
+/* item 8: keyboard focus is visible on note rows (roving-tabindex listbox) */
+.wiki-libnav .entry:focus { outline: none; }
+.wiki-libnav .entry:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: -2px; }
+
+/* R31: multi-hop traversal trail (navStack titles + current) — each crumb jumps back */
+.wiki-trail { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; margin-top: 7px; }
+.wiki-crumb { font-size: 11px; color: var(--muted); background: none; border: none; padding: 1px 4px; border-radius: 5px;
+  cursor: pointer; max-width: 128px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wiki-crumb:hover { color: var(--accent); background: var(--well); }
+.wiki-crumb.cur { color: var(--ink); font-weight: 560; cursor: default; }
+.wiki-crumb.cur:hover { background: none; }
+.wiki-trail-sep, .wiki-crumb-more { color: var(--faint); font-size: 10px; padding: 0 1px; }
+
+.wiki-libnav .list { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
+.wiki-nomatch { padding: 18px var(--s2); font-size: var(--t-ui); color: var(--faint); font-style: italic; text-align: center; }
+
+/* 19a: a "match in body" snippet under a row that only matched via its prose */
+.entry .ematch { font-size: 11.5px; color: var(--muted); line-height: 1.4; margin: 3px 0 1px;
+  overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.entry .ematch-lbl { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--accent); margin-right: 5px; }
+
+.wiki-xfolder { margin: 8px var(--s2) 6px; padding-top: 9px; border-top: 1px dashed var(--hair-2); }
+.wiki-xfolder-h { font-family: var(--mono); font-size: var(--t-fine); font-weight: 640; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); padding: 2px 4px 7px; }
+.wiki-xrow { display: flex; align-items: baseline; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.wiki-xrow:hover { background: var(--well); }
+.wiki-xfld { flex: none; font-family: var(--mono); font-size: 10.5px; color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent); padding: 1px 6px; border-radius: var(--r-pill); }
+.wiki-xtitle { min-width: 0; font-size: 12.5px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- hover-preview card for [[wikilinks]] (R16) -------------------------- */
+.wiki-hovercard { position: fixed; z-index: 60; width: min(320px, 74vw); pointer-events: none;
+  padding: 10px 13px; border-radius: var(--r-lift); background: var(--raise); border: 1px solid var(--hair-2);
+  box-shadow: 0 12px 32px -12px rgba(0,0,0,.36), var(--lift-sheet);
+  opacity: 0; transform: translateY(3px); transition: opacity .12s ease, transform .12s ease; }
+.wiki-hovercard.show { opacity: 1; transform: none; }
+.wh-type { font-family: var(--mono); font-size: 10.5px; font-weight: 640; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.wh-title { font-family: var(--serif); font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+.wh-line { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.wh-h { font-size: 11px; color: var(--faint); margin-top: 6px; font-family: var(--mono); }
+/* 19b: dangling-link variant — this target is not compiled yet (pending OCR in raw/) */
+.wiki-hovercard.dangling { border-color: color-mix(in oklab, var(--stale) 45%, var(--hair-2)); }
+.wh-type.wh-dang { color: var(--stale); }
+.wiki-hovercard.dangling .wh-title { color: var(--stale); }
+
+/* ============================================================================
+   GRAPH legibility — interactive legend toggles + focus-current dim (R20)
+   ========================================================================== */
+.gl-toggle { background: none; border: none; cursor: pointer; padding: 2px 5px; border-radius: 6px; color: inherit; font: inherit; font-size: var(--t-fine); transition: opacity .12s, background .12s; }
+.gl-toggle:hover { background: var(--well); color: var(--ink); }
+.gl-toggle.off { opacity: .42; }
+.gl-toggle.off .gl-dot { background: transparent; }
+.gl-focus { background: none; border: 1px solid var(--hair-2); cursor: pointer; padding: 2px 10px; border-radius: var(--r-pill);
+  color: var(--muted); font: inherit; font-size: var(--t-fine); transition: color .12s, border-color .12s, background .12s; }
+.gl-focus:hover { color: var(--ink); border-color: color-mix(in oklab, var(--accent) 40%, var(--hair-2)); }
+.gl-focus.on { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 60%, transparent); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+.gl-focus-dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid currentColor; display: inline-block; vertical-align: -1px; }
+
+.gnode { transition: opacity .2s; }
+.gnode.dim { opacity: .16; }
+.gedge.dim { opacity: .1; }
+
+/* ---- item 6: keyboard focus is visible on nodes + the scroll region --------- */
+.gnode:focus { outline: none; }
+.gnode:focus-visible rect { stroke: var(--accent); stroke-width: 2.5; }
+.gnode:focus-visible { filter: drop-shadow(0 0 3px color-mix(in oklab, var(--accent) 55%, transparent)); }
+.wgraph-scroll:focus { outline: none; }
+.wgraph-scroll:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: -2px; }
+
+/* ---- item 17: orientation cues — current-node ring, orphan border, degree badge,
+   and incident-edge highlight on node hover ---------------------------------- */
+.gnode.gn-orphan rect { stroke-dasharray: 4 3; stroke: color-mix(in oklab, var(--ink) 26%, transparent); }
+.gnode.gn-current rect { stroke: var(--accent); stroke-width: 2; }
+.gnode.gn-current { filter: drop-shadow(0 0 4px color-mix(in oklab, var(--accent) 55%, transparent)); }
+.gn-deg { fill: var(--faint); font-family: var(--mono); font-size: 9px; }
+.gnode:hover .gn-deg, .gnode.gn-current .gn-deg { fill: var(--accent); }
+.gedge.edge-hot { stroke-width: 2.8; opacity: 1; }
+.gedge.edge-mute { opacity: .2; }
+.gnode.node-mute { opacity: .38; }
+
+/* ============================================================================
+   R1 couldNotRead banner — reuses the shared amber .sample-banner (Spark), so it
+   stays theme-aware. Only the ⚠ glyph sizing is wiki-local. Never the red .cnr.
+   ========================================================================== */
+.sample-banner.wiki-cnr .sb-ic { font-size: 16px; line-height: 1; color: var(--stale); }
+
+/* R11 — a single honest footnote in place of the stripped inline "(代表性数字)"
+   fixture markers; sits under the article prose, quietly. */
+.reader .wiki-fixnote { margin: 2em 0 0; padding-top: 10px; border-top: 1px dashed var(--hair-2);
+  font-size: 12.5px; font-style: italic; color: var(--faint); line-height: 1.5; }
+
+/* item 15 — the Wiki reader's persistent, dismissible "New here?" gloss strip, mirroring the
+   Spark reader's .gov-gloss/.reading-gloss pattern but with wiki-owned classes + shared tokens.
+   Sits at the top of the reader body (under title/meta), one calm line that wraps on narrow
+   widths; the 知道了 / Got it dismiss rides the trailing edge. */
+.reader .wiki-gloss, .wiki-gloss { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px;
+  margin: 0 0 1.4em; padding: 10px 14px; border-radius: 10px;
+  background: var(--paper-wash); border: 1px solid var(--paper-rule);
+  font-family: var(--sans); font-size: 12px; line-height: 1.5; color: var(--muted); }
+.wiki-gloss .wg-h { flex: none; font-size: 10px; font-weight: 640; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint); }
+.wiki-gloss .wg-item b { color: var(--ink); font-weight: 640; margin-right: 5px; }
+.wiki-gloss .wg-dismiss { flex: none; margin-left: auto; align-self: center; }
+
+/* R9 — one-paragraph purpose intro atop the auto-review inbox. */
+.inbox-intro { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 0 0 16px;
+  padding: 12px 14px; background: var(--well); border: 1px solid var(--hair); border-radius: var(--r-lift); max-width: 78ch; }
+
+/* ============================================================================
+   R17 — corpus-wide Link health (orphans + dangling), clickable to the note.
+   ========================================================================== */
+.lh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.lh-sec { min-width: 0; }
+.lh-h { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px;
+  font-weight: 640; letter-spacing: .03em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.lh-n { margin-left: auto; font-family: var(--mono); font-weight: 700; font-size: 11px; color: var(--muted);
+  background: var(--well); border: 1px solid var(--hair); border-radius: var(--r-pill); padding: 1px 8px; }
+.lh-rows { display: flex; flex-direction: column; gap: 2px; }
+.lh-row { display: flex; align-items: baseline; gap: 8px; padding: 6px 8px; border-radius: 8px; font-size: 12.5px; }
+a.lh-row { border-bottom: none; color: inherit; }
+.lh-row:hover { background: var(--well); }
+.lh-title { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.lh-id { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-left: auto; flex: none; }
+.lh-dang .lh-from { color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.lh-arrow { color: var(--faint); flex: none; }
+.lh-target { font-family: var(--mono); font-size: 11.5px; flex: none; }
+@media (max-width: 820px) { .lh-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================================
+   item 22 — in-place note-body Translate toggle (header bar above the prose)
+   ========================================================================== */
+.wiki-trans-bar { display: flex; justify-content: flex-end; margin: 0 0 14px; }
+.wiki-trans-btn { display: inline-flex; align-items: center; gap: 6px; }
+.wiki-trans-btn .wt-lbl { font-size: 12px; }
+
+/* ============================================================================
+   item 27-wiki(4) — field-map backlinks, collapsed sub-group in the rail
+   ========================================================================== */
+.rail-fieldrefs-h { display: flex; align-items: center; gap: 6px; width: 100%; border: 0; background: transparent;
+  cursor: pointer; font: inherit; font-family: var(--mono); font-size: 11px; font-weight: 640; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--faint); padding: 6px 8px 4px; text-align: left; }
+.rail-fieldrefs-h:hover { color: var(--muted); }
+.rail-fieldrefs-h .rfr-chev { display: inline-block; width: 10px; color: var(--faint); }
+.rail-fieldrefs-h .rfr-n { color: var(--muted); font-weight: 700; }
+.rail-fieldrefs-body { display: flex; flex-direction: column; }
+
+/* ============================================================================
+   item 20 — synchronous loading skeleton for Coverage / Sources (shimmer)
+   ========================================================================== */
+.wiki-skel { display: flex; flex-direction: column; gap: 16px; }
+.wiki-skel .grid { gap: 16px; }
+.wiki-skel-bar { height: 16px; width: 42%; border-radius: 6px; }
+.wiki-skel-card { min-height: 120px; border-radius: var(--r-lift); border: 1px solid var(--hair); }
+.wiki-skel-card.tall { min-height: 168px; }
+.wiki-skel-bar, .wiki-skel-card {
+  background: linear-gradient(100deg, var(--well) 30%, color-mix(in oklab, var(--raise) 70%, var(--well)) 50%, var(--well) 70%);
+  background-size: 220% 100%; animation: wiki-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes wiki-shimmer { 0% { background-position: 180% 0; } 100% { background-position: -80% 0; } }
+@media (prefers-reduced-motion: reduce) { .wiki-skel-bar, .wiki-skel-card { animation: none; } }

@@ -1,0 +1,656 @@
+/* ============================================================================
+   SparkBoard · JURY workspace — minimal tool-specific styles.
+   Leans on sparkboard.css primitives (.card/.chip/.kanban/.charge/.votebar/.diff/
+   .persona/.heat/.timeline/.stat/.badge/.meter). Accent = Jury indigo, supplied
+   automatically by html[data-tool="jury"]. Only structural bits unique to Jury
+   live here; nothing forks the token system.
+   ========================================================================== */
+
+/* value-tone helper (numerals that carry a verdict color) */
+.v.ok{color:var(--ok)}.v.bad{color:var(--bad)}.v.stale{color:var(--stale)}
+
+/* significance=major sits on the status ramp (--bad), matching the gate-blocking KPI —
+   accent is reserved for identity (persona) and disposition (verdict) chips. (R19b) */
+.chip.j-major{color:var(--bad);background:color-mix(in oklab,var(--bad) 10%,transparent);
+  border-color:color-mix(in oklab,var(--bad) 24%,transparent)}
+
+/* the "escalated to 12" badge — a struck-gavel marker */
+.badge.j-esc{display:inline-flex;align-items:center;gap:4px;color:var(--wait);
+  background:color-mix(in oklab,var(--wait) 12%,transparent);border:1px solid color-mix(in oklab,var(--wait) 26%,transparent)}
+.badge.j-esc .i{width:12px;height:12px}
+
+/* ---- spark-chain affordance (Jury takes Spark's output straight in) ------- */
+.j-chain{display:flex;align-items:center;gap:12px;margin-bottom:var(--s4);padding:12px 16px;
+  border-radius:var(--r-lift);border:1px dashed color-mix(in oklab,var(--accent) 40%,var(--hair-2));
+  background:color-mix(in oklab,var(--accent) 6%,var(--sheet))}
+.j-chain-ico{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;color:#C0552A;background:color-mix(in oklab,#C0552A 14%,transparent)}
+.j-chain-ico .i{width:17px;height:17px;stroke:none}
+.j-chain-tx{display:flex;flex-direction:column;line-height:1.35;min-width:0}
+.j-chain-tx b{font-family:var(--serif);font-size:14.5px;font-weight:600;color:var(--ink)}
+.j-chain-tx span{font-size:var(--t-ui);color:var(--muted)}
+.j-chain .btn{margin-left:auto;flex:none}
+
+/* ---- docket header stat strip -------------------------------------------- */
+.j-stats{margin-bottom:var(--s4)}
+.j-stats .stat .v{font-size:clamp(26px,2.6vw,34px)}
+/* R28a(round4): pin the column track to the card count so a 5th card fills the row
+   instead of orphaning onto its own line (the .grid-auto auto-fit wrapped it). Higher
+   specificity than .grid-auto, so this override wins. Narrow viewports relax below. */
+.j-stats.j-stats-n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.j-stats.j-stats-n5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.j-stats.j-stats-n6{grid-template-columns:repeat(6,minmax(0,1fr))}   /* R5(20): + contested lens card */
+@media (max-width:1024px){
+  .j-stats.j-stats-n4,.j-stats.j-stats-n5,.j-stats.j-stats-n6{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .j-stats.j-stats-n4,.j-stats.j-stats-n5,.j-stats.j-stats-n6{grid-template-columns:1fr}
+}
+
+/* KPI cards — sublabel line, and the two that are clickable (gate filter / lane jump) */
+.j-kpi{position:relative}
+.j-kpisub{font-size:var(--t-fine);color:var(--muted);margin-top:5px;line-height:1.35;letter-spacing:.01em}
+.j-kpisub.bad{color:var(--bad)}
+.j-kpisub.ok{color:var(--ok)}
+.j-kpi-act{cursor:pointer;transition:border-color .15s,box-shadow .15s,background .15s}
+.j-kpi-act:hover{border-color:color-mix(in oklab,var(--accent) 42%,var(--hair-2));
+  background:color-mix(in oklab,var(--accent) 5%,var(--raise))}
+/* R22(round7): drop outline:none so the global 2px focus-visible ring applies (the old faint
+   1px border shift was low-contrast/inconsistent with every other focusable control) */
+.j-kpi-act:focus-visible{border-color:color-mix(in oklab,var(--accent) 55%,transparent)}
+/* R2(round7): projected-readiness preview appended to the gate KPI sub (dispositions not yet written) */
+.j-kpiproj{color:var(--faint);font-style:italic}
+.j-kpi-on{border-color:color-mix(in oklab,var(--accent) 55%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 34%,transparent)}
+
+/* active-filter banner (R4) */
+.j-filterbar{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4);padding:9px 14px;border-radius:9px;
+  font-size:var(--t-ui);color:var(--ink);border:1px solid color-mix(in oklab,var(--accent) 30%,var(--hair-2));
+  background:color-mix(in oklab,var(--accent) 8%,var(--sheet))}
+.j-filterbar>.i{color:var(--accent);flex:none}
+.j-filterbar .btn{margin-left:auto}
+
+/* collapsible taxonomy legend (R11) */
+.j-legend{margin-bottom:var(--s4);padding:0}
+.j-legend>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:12px 16px;
+  font-size:var(--t-ui);font-weight:600;color:var(--accent)}
+.j-legend>summary::-webkit-details-marker{display:none}
+.j-legend>summary::before{content:"▸";font-size:11px;color:var(--faint);transition:transform .15s}
+.j-legend[open]>summary::before{transform:rotate(90deg)}
+.j-legend>summary .i{color:var(--accent)}
+.j-lgcols{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4) var(--s6);padding:2px 16px 16px}
+.j-lggroup{min-width:0}
+.j-lgh{font-size:var(--t-fine);font-weight:640;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.j-lgitem{display:flex;align-items:baseline;gap:10px;padding:5px 0;font-size:var(--t-ui)}
+.j-lgitem .chip,.j-lgitem .badge{flex:none;align-self:center}
+.j-lgterm{flex:none;color:var(--ink);font-weight:560}
+.j-lggloss{flex:1;color:var(--muted);line-height:1.4}
+.j-lgitem .j-swatch{flex:none;width:9px;height:9px;border-radius:2px;align-self:center}
+
+/* Jury-scoped scroll affordance on the verdict board (.kanban rules untouched) — R12 */
+.j-board{scrollbar-width:thin;scrollbar-color:color-mix(in oklab,var(--accent) 42%,transparent) transparent}
+.j-board::-webkit-scrollbar{height:9px}
+.j-board::-webkit-scrollbar-track{background:transparent}
+.j-board::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--accent) 34%,var(--hair-2));border-radius:6px}
+.j-board::-webkit-scrollbar-thumb:hover{background:color-mix(in oklab,var(--accent) 50%,var(--hair-2))}
+.j-lane-flash{outline:2px solid color-mix(in oklab,var(--accent) 60%,transparent);outline-offset:2px;
+  border-radius:var(--r-lift);transition:outline-color .4s}
+
+/* charge card internals (the ledger row on the board) */
+.charge .j-cid{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.charge .j-sec,.j-sec{font-family:var(--mono);font-size:var(--t-fine);color:var(--faint);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.charge .cby{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:8px 0 6px}
+.j-conf{font-family:var(--mono);font-size:var(--t-fine);color:var(--muted);margin-left:2px}
+.charge .votebar{margin-top:6px}
+.j-tallyn{font-family:var(--mono);font-size:var(--t-fine);color:var(--faint);margin-top:4px;letter-spacing:.02em}
+.j-tallyn .ok{color:var(--ok)}.j-tallyn .no{color:var(--bad)}.j-tallyn .lim{color:var(--stale)}
+.j-notried{font-size:var(--t-fine);color:var(--faint);font-style:italic;margin-top:6px}
+.j-lane-muted{opacity:.72}
+.j-lane-empty{font-size:var(--t-note);color:var(--faint);text-align:center;padding:8px 0;font-style:italic}
+
+/* vote legend (trial view + charge reader) */
+.j-vlegend,.j-heatleg{display:flex;flex-wrap:wrap;gap:14px;font-size:var(--t-fine);color:var(--muted)}
+.j-vlegend span,.j-heatleg span{display:inline-flex;align-items:center;gap:5px}
+.j-vlegend .sw,.j-heatleg .sw,.j-heat-summary .sw{width:11px;height:11px;border-radius:3px;background:var(--well);flex:none}
+.j-vlegend .sw.ok{background:var(--ok)}.j-vlegend .sw.no{background:var(--bad)}.j-vlegend .sw.lim{background:var(--stale)}
+/* R21: one clear coverage ramp, shared by the heatmap cells, the legend and the summary swatches */
+.j-heatleg .sw.thorough,.j-heat-summary .sw.thorough{background:color-mix(in oklab,var(--ok) 48%,var(--well))}
+.j-heatleg .sw.light,.j-heat-summary .sw.light{background:color-mix(in oklab,var(--stale) 44%,var(--well))}
+.j-heatleg .sw.skipped,.j-heat-summary .sw.skipped{background:color-mix(in oklab,var(--bad) 42%,var(--well))}
+.j-heatleg .sw.noflag,.j-heat-summary .sw.noflag{background:color-mix(in oklab,var(--ink) 5%,transparent);border:1px solid var(--hair-2)}
+
+/* ============================================================================
+   charge reader (opened from the board) — sidebar back + list + article extras
+   ========================================================================== */
+.j-backbtn{display:inline-flex;align-items:center;gap:7px;width:100%;height:34px;padding:0 10px;border-radius:8px;
+  font-size:var(--t-ui);font-weight:560;color:var(--accent);background:color-mix(in oklab,var(--accent) 8%,transparent);
+  border:1px solid color-mix(in oklab,var(--accent) 22%,transparent);transition:background .15s}
+.j-backbtn:hover{background:color-mix(in oklab,var(--accent) 15%,transparent)}
+.side-h .j-swatch{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.j-listhead{font-size:var(--t-fine);font-weight:640;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  padding:8px var(--s2) 6px}
+.col-side .side-row .badge{flex:none}
+
+/* verdict banner (charge reader + trial cards) */
+.j-verdict{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:9px;margin:2px 0 18px;
+  border:1px solid var(--hair-2);background:var(--well)}
+.j-verdict .i{width:18px;height:18px;flex:none}
+.j-verdict .vlab{font-size:var(--t-fine);font-weight:640;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.j-verdict b{font-family:var(--serif);font-size:1.05em;font-weight:600}
+.j-verdict .vstat{margin-left:auto;font-family:var(--mono);font-size:var(--t-fine);color:var(--muted)}
+.j-verdict.v-accent{border-color:color-mix(in oklab,var(--accent) 40%,transparent);background:color-mix(in oklab,var(--accent) 10%,transparent)}
+.j-verdict.v-accent .i,.j-verdict.v-accent b{color:var(--accent)}
+.j-verdict.v-stale{border-color:color-mix(in oklab,var(--stale) 40%,transparent);background:color-mix(in oklab,var(--stale) 12%,transparent)}
+.j-verdict.v-stale .i,.j-verdict.v-stale b{color:var(--stale)}
+.j-verdict.v-bad{border-color:color-mix(in oklab,var(--bad) 38%,transparent);background:color-mix(in oklab,var(--bad) 11%,transparent)}
+.j-verdict.v-bad .i,.j-verdict.v-bad b{color:var(--bad)}
+.j-verdict.v-wait{border-color:color-mix(in oklab,var(--wait) 40%,transparent);background:color-mix(in oklab,var(--wait) 12%,transparent)}
+.j-verdict.v-wait .i,.j-verdict.v-wait b{color:var(--wait)}
+
+/* the pulled verbatim quote — the evidence_anchor a charge rests on */
+.reader blockquote.j-quote{position:relative;padding:14px 16px 14px 44px;margin:.4em 0 1.1em;
+  border-left:3px solid var(--accent);border-radius:0 8px 8px 0;background:var(--paper-code);
+  color:var(--paper-ink);font-style:normal}
+.reader .j-quote .j-qmark{position:absolute;left:14px;top:15px;width:16px;height:16px;color:var(--accent);opacity:.6;stroke:none;fill:currentColor}
+.reader .j-anchornote{font-size:.92em;color:var(--paper-muted);border:1px solid var(--paper-rule);border-radius:8px;
+  padding:10px 12px;background:color-mix(in oklab,var(--wait) 6%,transparent)}
+.reader .j-anchornote .i{color:var(--wait);vertical-align:-2px}
+.reader .j-prov{font-family:var(--mono);font-size:.82em;color:var(--paper-muted);line-height:1.7}
+.reader .j-prov code{background:var(--paper-code)}
+/* R28b(round4) — verbatim-proof badge under the evidence anchor (green when the quote
+   string-matches a held source line; amber "not located" when it can't be proven) */
+.reader .j-evbadge{display:inline-flex;align-items:center;gap:6px;margin:.1em 0 1.1em;padding:3px 10px;
+  border-radius:var(--r-pill);font-size:var(--t-fine);font-weight:560}
+.reader .j-evbadge .i{width:13px;height:13px;flex:none}
+.reader .j-evbadge code{font-family:var(--mono);background:var(--paper-code);padding:0 3px;border-radius:3px}
+.reader .j-evbadge.ok{color:color-mix(in oklab,var(--ok) 76%,var(--paper-ink));background:color-mix(in oklab,var(--ok) 13%,transparent)}
+.reader .j-evbadge.warn{color:color-mix(in oklab,var(--stale) 78%,var(--paper-ink));background:color-mix(in oklab,var(--stale) 14%,transparent)}
+/* R8(round4) — Jury → Wiki handoff affordance (files a not-yet-persisted inbox item) */
+.reader .j-wikifile{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:8px 0 20px;
+  padding-top:14px;border-top:1px dashed var(--paper-rule)}
+.reader .j-wikifile-note{font-size:var(--t-fine);font-style:italic;color:var(--paper-muted);line-height:1.4}
+
+/* ============================================================================
+   REVISIONS — two-column inbox: pending patches | applied journal (undo)
+   ========================================================================== */
+.j-revgrid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--s4);align-items:start}
+.j-colh{display:flex;align-items:center;gap:8px;font-size:var(--t-fine);font-weight:640;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:var(--s3)}
+.j-colh .i{color:var(--accent)}
+.j-revcol{min-width:0}
+.j-rev{margin-bottom:var(--s3)}
+.j-rev .card-h{margin-bottom:10px;flex-wrap:wrap;gap:7px}
+.j-rev .card-h .badge{flex:none}
+.j-revsp{flex:1}
+.j-revsum{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.35}
+.j-rationale{font-size:var(--t-ui);color:var(--muted);line-height:1.5;margin-top:10px}
+.j-rationale b{color:var(--ink);font-weight:600}
+.j-revact{display:flex;align-items:center;gap:8px;margin-top:14px}
+.j-blocked{font-size:var(--t-fine);color:var(--stale);font-style:italic;margin-left:2px}
+.j-decided{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:7px 12px;border-radius:8px;
+  font-size:var(--t-ui);font-weight:560}
+.j-decided.ok{color:var(--ok);background:color-mix(in oklab,var(--ok) 12%,transparent)}
+.j-decided.bad{color:var(--bad);background:color-mix(in oklab,var(--bad) 12%,transparent)}
+.j-decided.wait{color:var(--wait);background:color-mix(in oklab,var(--wait) 12%,transparent)}
+.j-ovtag{font-family:var(--mono);font-size:var(--t-fine);color:var(--stale)}
+.j-revact .j-override{margin-left:auto;color:var(--muted)}
+.j-revact .j-override:hover{color:var(--bad)}
+/* drafted-patch actions rendered inside the charge reader (R14) */
+.reader .j-readeract{margin:6px 0 20px}
+.reader .j-readeract .j-revact{margin-top:0}
+.reader .j-readeract .j-decided{margin-top:0}
+/* trial card scroll-into-view flash from a charge's trial link (R14) */
+.j-trial-flash{outline:2px solid color-mix(in oklab,var(--accent) 62%,transparent);outline-offset:3px;
+  animation:j-flash 1.5s ease-out}
+@keyframes j-flash{0%{background:color-mix(in oklab,var(--accent) 15%,var(--raise))}100%{background:var(--raise)}}
+
+/* applied-edit journal feed */
+.j-hist{border:1px solid var(--hair);border-radius:9px;padding:10px 12px;margin-bottom:var(--s2);background:var(--raise);box-shadow:var(--lift-sheet)}
+.j-hist-rev{opacity:.62}
+.j-histh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.j-histh .badge{flex:none}
+.j-mono{font-family:var(--mono);font-size:var(--t-fine);color:var(--muted)}
+.j-ts{font-family:var(--mono);font-size:var(--t-fine);color:var(--faint);margin-left:auto}
+.j-histh .btn{flex:none}
+.j-histdiff{font-size:11px}
+.j-histdiff .d-row{padding:2px 8px}
+
+/* ============================================================================
+   PANEL — persona cards + coverage heatmap + trial cards
+   ========================================================================== */
+.j-block{margin-bottom:var(--s6)}
+.j-blockh{font-family:var(--serif);font-size:var(--t-lead);font-weight:600;color:var(--ink);
+  padding-bottom:10px;margin-bottom:var(--s4);border-bottom:1px solid var(--hair)}
+.j-personas{align-items:start}
+.j-persona{gap:8px}
+.j-phead{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.j-phead .badge{flex:none}
+.j-persona .pn{margin-top:2px}
+.j-persona .pd{font-size:var(--t-note);line-height:1.55}
+
+/* coverage heatmap grid (reviewer × section) */
+.j-heatwrap{overflow-x:auto}
+.j-heat{gap:3px;min-width:640px;margin-bottom:14px}
+/* R5(round7): ARIA row wrappers are display:contents so role=grid > role=row > gridcell holds in
+   the DOM while the leaf cells still auto-place into the CSS grid track (layout unchanged). */
+.j-heat-row{display:contents}
+.j-hh,.j-hr{display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-size:var(--t-fine);color:var(--muted);height:26px}
+.j-hr{justify-content:flex-start;font-weight:640;color:var(--ink);padding-left:4px}
+.j-corner{background:transparent}
+.j-heat .cell{cursor:default;font-size:13px;font-weight:600}
+/* R21: fill each cell with a wash keyed to coverage depth so the map reads as a
+   heatmap and skipped cells pop; unflagged (presumed) = near-empty so absence of
+   evidence never looks like coverage. Later source order beats the sparkboard .heat wash. */
+.j-heat .cell.thorough{background:color-mix(in oklab,var(--ok) 48%,var(--well));color:color-mix(in oklab,var(--ok) 24%,var(--ink))}
+.j-heat .cell.light{background:color-mix(in oklab,var(--stale) 44%,var(--well));color:color-mix(in oklab,var(--stale) 26%,var(--ink))}
+.j-heat .cell.skipped{background:color-mix(in oklab,var(--bad) 42%,var(--well));color:color-mix(in oklab,var(--bad) 24%,var(--ink))}
+.j-heat .cell.j-noflag{background:color-mix(in oklab,var(--ink) 5%,transparent);color:var(--faint);font-weight:400}
+
+/* R21: honest one-line coverage summary above the grid */
+.j-heat-summary{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-bottom:12px;font-size:var(--t-fine);color:var(--muted)}
+.j-heat-summary .j-hs-lead{font-weight:640;color:var(--ink)}
+.j-heat-summary .j-hs{display:inline-flex;align-items:center;gap:5px}
+.j-heat-summary .j-hs.thorough{color:color-mix(in oklab,var(--ok) 70%,var(--ink))}
+.j-heat-summary .j-hs.light{color:color-mix(in oklab,var(--stale) 70%,var(--ink))}
+.j-heat-summary .j-hs.skipped{color:color-mix(in oklab,var(--bad) 72%,var(--ink))}
+.j-heat-summary .j-hs.noflag{color:var(--faint)}
+
+/* trial card */
+.j-trialnote{margin-bottom:var(--s3)}
+.j-trial{margin-bottom:var(--s4)}
+.j-th{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.j-th .badge{flex:none}
+.j-thsp{flex:1}
+.j-tsum{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:12px}
+.j-trial .j-verdict{margin-bottom:12px}
+.j-votes{max-width:420px;margin-bottom:14px}
+.j-votes .votebar{height:10px}
+.j-defense{border-left:2px solid color-mix(in oklab,var(--accent) 55%,transparent);padding:2px 0 2px 14px;margin:6px 0 12px}
+.j-defense .dh{display:flex;align-items:center;gap:8px;font-size:var(--t-ui);font-weight:600;color:var(--accent);margin-bottom:5px}
+.j-defense .dh .i{color:var(--accent)}
+.j-defense p{font-size:var(--t-ui);color:var(--muted);line-height:1.55;margin:0}
+.j-jurors{margin-top:12px;border-top:1px dashed var(--hair-2);padding-top:10px}
+.j-jurors summary{cursor:pointer;font-size:var(--t-ui);font-weight:560;color:var(--accent);list-style:none;
+  display:inline-flex;align-items:center;gap:6px}
+.j-jurors summary::-webkit-details-marker{display:none}
+.j-jurors summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.j-jurors[open] summary::before{transform:rotate(90deg)}
+.j-jlist{margin:12px 0 2px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.jv{position:relative;padding:8px 12px 8px 14px;border-radius:8px;font-size:var(--t-ui);line-height:1.5;
+  color:var(--ink);background:var(--well);border-left:3px solid var(--graphite)}
+.jv .vlabel{display:inline-block;font-family:var(--mono);font-size:var(--t-fine);font-weight:600;
+  margin-right:8px;padding:1px 6px;border-radius:4px;background:var(--raise);vertical-align:1px}
+.jv-valid{border-left-color:var(--ok)}.jv-valid .vlabel{color:var(--ok)}
+.jv-invalid{border-left-color:var(--bad)}.jv-invalid .vlabel{color:var(--bad)}
+.jv-lim{border-left-color:var(--stale)}.jv-lim .vlabel{color:var(--stale)}
+/* R17(round7): each juror carries a stable id J1…J5 */
+.jv .jv-jid{display:inline-block;font-family:var(--mono);font-size:var(--t-fine);font-weight:700;color:var(--faint);
+  margin-right:8px;vertical-align:1px}
+/* R17(round7): the jurors are a body SEPARATE from reviewers R1-R3 — one-line gloss above the trials */
+.j-jurygloss{display:flex;align-items:flex-start;gap:8px;margin:0 0 var(--s3);padding:9px 12px;border-radius:8px;
+  font-size:var(--t-ui);line-height:1.5;color:var(--muted);
+  background:color-mix(in oklab,var(--accent) 4%,var(--sheet));border:1px solid var(--hair)}
+.j-jurygloss .i{color:var(--accent);flex:none;margin-top:1px}
+.j-jurygloss span{min-width:0}
+
+/* ============================================================================
+   SHIELD — compile banner + desk-reject checklist + convergence
+   ========================================================================== */
+.j-compile{margin-bottom:var(--s4);border-left:4px solid var(--graphite)}
+.j-compile.clean{border-left-color:var(--ok)}
+.j-compile.err{border-left-color:var(--bad)}
+.j-compile.notrun{border-left-color:var(--stale);border-style:dashed}
+.j-cbig{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.j-cbig .i{width:20px;height:20px}
+.j-compile.clean .j-cbig .i{color:var(--ok)}
+.j-compile.err .j-cbig .i,.j-compile.notrun .j-cbig .i{color:var(--stale)}
+.j-cbig b{font-family:var(--serif);font-size:20px;font-weight:600}
+.j-cmode{margin-left:auto;font-family:var(--mono);font-size:var(--t-fine);color:var(--faint);
+  padding:2px 8px;border-radius:5px;background:var(--well)}
+.j-cstats{display:flex;flex-wrap:wrap;gap:var(--s5);margin-bottom:12px}
+.j-cstat{display:flex;flex-direction:column;gap:2px}
+.j-cstat .v{font-family:var(--mono);font-size:28px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.j-cstat.sm .v{font-size:22px}
+.j-cstat .k{font-size:var(--t-fine);font-weight:560;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+.j-cnote{font-family:var(--mono);font-size:var(--t-note);color:var(--muted);line-height:1.6}
+
+.j-shieldgrid{align-items:start}
+.j-block2{align-self:start}
+/* R22(round7): desk-reject mix header ('1 warning · 6 pass') above the fail→warn→pass-sorted rows */
+.j-deskcount{font-size:var(--t-fine);font-weight:560;color:var(--muted);margin:2px 0 8px;letter-spacing:.02em}
+.j-check{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid var(--hair)}
+.j-check:first-of-type{border-top:none}
+.j-ckico{width:15px;height:15px;flex:none;margin-top:2px}
+.j-check.pass .j-ckico{color:var(--ok)}
+.j-check.warn .j-ckico{color:var(--stale)}
+.j-check.fail .j-ckico{color:var(--bad)}
+.j-ckrule{font-family:var(--mono);font-size:var(--t-ui);font-weight:600;color:var(--ink)}
+.j-ckdetail{font-size:var(--t-ui);color:var(--muted);line-height:1.5;margin-top:2px}
+.j-convstats{margin-bottom:var(--s4);gap:var(--s3) var(--s2)}
+.j-stamp{display:inline-flex;align-items:center;gap:6px;font-family:var(--serif);font-weight:600;color:var(--ok);
+  padding:3px 10px;border-radius:var(--r-pill);border:1px solid color-mix(in oklab,var(--ok) 40%,transparent);
+  background:color-mix(in oklab,var(--ok) 12%,transparent)}
+.j-convtl{margin-top:6px}
+.j-convtl .tl-d{line-height:1.5}
+
+/* ============================================================================
+   EXAMPLE — worked dogfood run
+   ========================================================================== */
+.j-flow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s3) var(--s4);padding:var(--s4);margin-bottom:var(--s4);
+  border-radius:var(--r-lift);border:1px solid var(--hair);background:var(--raise);box-shadow:var(--lift-sheet)}
+.j-flownode{display:flex;flex-direction:column;gap:3px;min-width:64px}
+.j-flownode .v{font-family:var(--mono);font-size:clamp(30px,3.4vw,42px);font-weight:600;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+.j-flownode .k{font-size:var(--t-fine);font-weight:560;letter-spacing:.04em;text-transform:uppercase;color:var(--faint)}
+.j-flowarr{font-size:24px;color:var(--faint)}
+.j-flowsplit{display:flex;gap:var(--s5);padding:10px 16px;border-radius:var(--r-lift);background:var(--well)}
+.j-pdfs{margin-bottom:var(--s5)}
+.j-pdf{display:flex;align-items:center;gap:14px}
+.j-pdf-rev{border-color:color-mix(in oklab,var(--ok) 34%,var(--hair))}
+.j-pdfico{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;
+  color:var(--accent);background:color-mix(in oklab,var(--accent) 10%,transparent)}
+.j-pdf-rev .j-pdfico{color:var(--ok);background:color-mix(in oklab,var(--ok) 12%,transparent)}
+.j-pdfico .i{width:22px;height:22px}
+.j-pdfbody{min-width:0}
+.j-pdflabel{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink)}
+.j-pdfmeta{font-size:var(--t-ui);color:var(--muted);margin:3px 0 9px}
+
+/* taxonomy tables (F / A / B / engine-introduced) */
+.j-tax{margin-bottom:var(--s4);border-left:4px solid var(--graphite)}
+.j-tax-ok{border-left-color:var(--ok)}
+.j-tax-stale{border-left-color:var(--stale)}
+.j-tax-accent{border-left-color:var(--accent)}
+.j-tax-bad{border-left-color:var(--bad)}
+.j-txk{font-family:var(--mono);font-size:15px;font-weight:700}
+.j-txblurb{font-size:var(--t-ui);color:var(--muted);line-height:1.5;margin-bottom:14px}
+.j-txscroll{overflow-x:auto}
+.j-txtable{width:100%;border-collapse:collapse;font-size:var(--t-ui)}
+.j-txtable th{text-align:left;font-size:var(--t-fine);font-weight:640;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--faint);padding:0 12px 8px;border-bottom:1px solid var(--hair-2);white-space:nowrap}
+.j-txtable td{padding:11px 12px;border-top:1px solid var(--hair);vertical-align:top;line-height:1.45}
+.j-txtable tbody tr:first-child td{border-top:none}
+.j-txkey{width:1%}
+.j-txloc{color:var(--ink);min-width:220px}
+.j-txfix{color:var(--muted);min-width:200px}
+.j-txok{width:1%;white-space:nowrap}
+.j-sumcard .j-sumlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.j-sumlist li{font-size:var(--t-body);color:var(--ink);line-height:1.55}
+
+/* ---- source-switcher popover (workspace title) --------------------------- */
+.j-srcpop{width:min(440px,92vw);padding:14px}
+.j-srch{font-size:var(--t-fine);font-weight:640;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.j-srcrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;border:1px solid var(--hair)}
+.j-srcrow.sel{border-color:color-mix(in oklab,var(--accent) 34%,transparent);background:color-mix(in oklab,var(--accent) 8%,transparent)}
+.j-srcrow .i{color:var(--accent);flex:none}
+.j-srcrow b{font-family:var(--mono);font-size:var(--t-ui);color:var(--ink);display:block}
+.j-srcrow .j-mono{display:block;margin-top:2px}
+.j-srcchain{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 12px;border-radius:9px;
+  border:1px dashed color-mix(in oklab,var(--accent) 34%,var(--hair-2));font-size:var(--t-ui);color:var(--muted)}
+.j-srcchain .i{color:#C0552A;flex:none;stroke:none;fill:currentColor}
+
+/* ---- source hint (reading <dir> vs sample) — appended into .pane-head ----- */
+.j-srcnote{margin-left:auto;align-self:center;flex:none;font-family:var(--mono);font-size:var(--t-fine);
+  color:var(--accent);background:color-mix(in oklab,var(--accent) 8%,transparent);
+  border:1px solid color-mix(in oklab,var(--accent) 22%,transparent);
+  padding:2px 9px;border-radius:var(--r-pill);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;max-width:44ch}
+.j-srcnote.sample{color:var(--faint);background:var(--well);border-color:var(--hair-2)}
+
+/* ---- R13: board overflow cue — reach the lanes off the right edge --------- */
+.j-boardwrap{position:relative}
+/* right-edge fade: lanes visibly continue past the edge (blends to the desk canvas) */
+.j-board-fade{position:absolute;top:0;right:0;bottom:12px;width:64px;z-index:2;pointer-events:none;
+  opacity:0;transition:opacity .2s;background:linear-gradient(to right,transparent,var(--desk) 80%)}
+.j-boardwrap.has-more .j-board-fade{opacity:1}
+/* sticky "scroll to the off-screen lanes" chip pinned to the right rim */
+/* R7: cap the chip width (a fixed short label keeps it narrow; overflow clips as a safety net) */
+.j-board-more{position:absolute;top:6px;right:8px;z-index:3;display:inline-flex;align-items:center;gap:6px;
+  height:30px;padding:0 13px;border-radius:var(--r-pill);cursor:pointer;white-space:nowrap;
+  max-width:min(46%,220px);overflow:hidden;text-overflow:ellipsis;
+  font-size:var(--t-ui);font-weight:560;color:var(--on-accent);background:var(--accent);border:1px solid transparent;
+  box-shadow:var(--lift-pop);opacity:0;transform:translateX(6px);pointer-events:none;
+  transition:opacity .2s,transform .2s,background .15s}
+.j-boardwrap.has-more .j-board-more{opacity:1;transform:none;pointer-events:auto}
+/* R7: while the chip is shown, reserve right-side room in every lane header so the chip can
+   never sit over a lane title / count (the rightmost visible lane sits under it). */
+.j-boardwrap.has-more .lane .lane-h{padding-right:132px}
+.j-board-more:hover{background:color-mix(in oklab,var(--accent) 84%,#000)}
+.j-board-more:focus-visible{outline:2px solid color-mix(in oklab,var(--accent) 55%,transparent);outline-offset:2px}
+
+/* ---- R18: always-visible gloss caption (jargon legible without hover) ----- */
+.j-legend-cap{display:flex;align-items:center;gap:8px;margin:0 0 var(--s3);padding:9px 14px;border-radius:9px;
+  font-size:var(--t-ui);line-height:1.5;color:var(--muted);
+  background:color-mix(in oklab,var(--accent) 4%,var(--sheet));border:1px solid var(--hair)}
+.j-legend-cap .i{color:var(--accent);flex:none}
+.j-legend-cap>span{min-width:0}
+.j-legend-cap .j-legend-more{color:var(--faint)}
+
+/* ---- R14: flash the verbatim evidence when "jump to paper" scrolls to it --- */
+.reader blockquote.j-quote.j-quote-flash{animation:j-qflash 1.4s ease-out}
+@keyframes j-qflash{
+  0%{background:color-mix(in oklab,var(--accent) 24%,var(--paper-code));box-shadow:0 0 0 3px color-mix(in oklab,var(--accent) 42%,transparent)}
+  100%{background:var(--paper-code);box-shadow:0 0 0 3px transparent} }
+
+/* ---- R6: empty-docket state — "run the review", never a dead board -------- */
+.j-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;
+  max-width:520px;margin:7vh auto 0;padding:32px 28px}
+.j-empty-ico{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:14px;
+  color:var(--accent);background:color-mix(in oklab,var(--accent) 10%,var(--sheet));
+  border:1px solid color-mix(in oklab,var(--accent) 22%,var(--hair-2))}
+.j-empty-ico .i{width:26px;height:26px}
+.j-empty-title{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink)}
+.j-empty-sub{font-size:var(--t-body);color:var(--muted);line-height:1.55;max-width:44ch}
+.j-empty .btn.primary{margin-top:6px}
+.j-empty .btn.ghost{color:var(--muted)}
+
+/* ============================================================================
+   R1 — couldNotRead honesty layer: an amber banner + greyed passing metrics, so a
+   broken directory never renders a fully-passing sample as THIS manuscript.
+   ========================================================================== */
+.j-sample-banner{display:flex;align-items:center;gap:12px;margin:0 0 var(--s4);padding:12px 16px;border-radius:10px;
+  background:color-mix(in oklab,var(--stale) 15%,var(--sheet));
+  border:1px solid color-mix(in oklab,var(--stale) 46%,var(--hair))}
+.j-sample-banner .j-sb-ic{display:flex;flex:none;color:var(--stale)}
+.j-sample-banner .j-sb-ic .i{width:18px;height:18px}
+.j-sample-banner .j-sb-tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.j-sample-banner .j-sb-tx b{font-size:14px;font-weight:640;color:var(--ink)}
+.j-sample-banner .j-sb-tx span{font-size:12.5px;line-height:1.45;color:var(--muted);overflow-wrap:anywhere}
+.j-sample-banner [data-jsbdismiss]{flex:none}
+/* grey the passing metrics the banner is warning about (compile / compliance / KPIs) */
+.j-suppressed{opacity:.5;filter:grayscale(.62);transition:opacity .2s,filter .2s}
+
+/* ============================================================================
+   R15 — single go/no-go readiness verdict on the docket
+   ========================================================================== */
+.j-ready{display:flex;align-items:center;gap:10px;margin:0 0 var(--s4);padding:11px 15px;border-radius:10px;
+  border:1px solid var(--hair-2);background:var(--well)}
+.j-ready .i{width:17px;height:17px;flex:none}
+.j-ready .j-ready-eye{font-size:var(--t-fine);font-weight:640;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);flex:none}
+.j-ready .j-ready-v{font-family:var(--serif);font-size:1.02em;font-weight:600;flex:none}
+.j-ready .j-ready-d{font-size:var(--t-ui);color:var(--muted);line-height:1.4;min-width:0}
+.j-ready-clear{border-color:color-mix(in oklab,var(--ok) 42%,transparent);background:color-mix(in oklab,var(--ok) 10%,transparent)}
+.j-ready-clear .i,.j-ready-clear .j-ready-v{color:var(--ok)}
+.j-ready-blocked{border-color:color-mix(in oklab,var(--bad) 40%,transparent);background:color-mix(in oklab,var(--bad) 10%,transparent)}
+.j-ready-blocked .i,.j-ready-blocked .j-ready-v{color:var(--bad)}
+.j-ready-sample{border-style:dashed;border-color:color-mix(in oklab,var(--stale) 42%,var(--hair-2));background:color-mix(in oklab,var(--stale) 7%,var(--sheet))}
+.j-ready-sample .i,.j-ready-sample .j-ready-v{color:var(--stale)}
+/* R2(round4) — distinct AMBER state: auto-blockers clear, author decisions still pending.
+   Solid amber (a real verdict) vs the dashed/faint "can't assess" sample state above. */
+.j-ready-author{border-color:color-mix(in oklab,var(--stale) 48%,transparent);background:color-mix(in oklab,var(--stale) 12%,transparent)}
+.j-ready-author .i,.j-ready-author .j-ready-v{color:color-mix(in oklab,var(--stale) 78%,var(--ink))}
+
+/* ============================================================================
+   R6 / R2 — docket board meta row: jury-vote colour key + keyboard hint
+   ========================================================================== */
+.j-boardmeta{display:flex;align-items:center;flex-wrap:wrap;gap:8px var(--s5);margin:0 0 var(--s3)}
+.j-votekey{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.j-votekey .j-vk-lead{font-size:var(--t-fine);font-weight:640;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+.j-votekey .j-vlegend{gap:12px}
+.j-kbdhint{margin-left:auto;font-size:var(--t-fine);color:var(--faint);line-height:1.4;overflow-wrap:anywhere}
+
+/* ============================================================================
+   R2 — keyboard traversal: roving focus ring, bulk-select, on-card decision echo
+   ========================================================================== */
+.j-board .charge:focus-visible{outline:2px solid color-mix(in oklab,var(--accent) 66%,transparent);outline-offset:2px;
+  border-radius:var(--r-lift)}
+.charge.j-charge-sel{outline:2px solid color-mix(in oklab,var(--accent) 52%,transparent);outline-offset:2px;
+  background:color-mix(in oklab,var(--accent) 7%,var(--raise))}
+.charge .j-decflag{margin-left:auto;display:inline-flex;align-items:center;gap:4px;flex:none;
+  font-size:var(--t-fine);font-weight:600;padding:1px 7px;border-radius:var(--r-pill)}
+.charge .j-decflag .i{width:11px;height:11px}
+.charge .j-decflag.ok{color:var(--ok);background:color-mix(in oklab,var(--ok) 13%,transparent)}
+.charge .j-decflag.bad{color:var(--bad);background:color-mix(in oklab,var(--bad) 13%,transparent)}
+.charge .j-decflag.wait{color:var(--wait);background:color-mix(in oklab,var(--wait) 13%,transparent)}
+
+/* R6 — jury vote tally + colour key under the charge-reader verdict banner */
+.reader .j-readervote{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;margin:-8px 0 20px}
+.reader .j-readervote .votebar{width:min(240px,60%);height:10px;margin:0}
+.reader .j-readervote .j-tallyn{margin:0}
+.reader .j-readervote .j-notried{margin:0}
+/* R20b(round4) — tally-without-trial-record annotation (amber, honest) */
+.reader .j-readervote .j-tallyonly{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-fine);
+  font-style:italic;color:var(--stale)}
+.reader .j-readervote .j-tallyonly .i{width:13px;height:13px;flex:none}
+
+/* ============================================================================
+   R18 — coverage skim-gap cells are buttons that reach the charges they blocked
+   ========================================================================== */
+.j-heat .cell.j-cell-act{cursor:pointer;position:relative;transition:box-shadow .12s,filter .12s}
+.j-heat .cell.j-cell-act:hover{filter:brightness(1.06);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 55%,transparent)}
+.j-heat .cell.j-cell-act:focus-visible{outline:2px solid color-mix(in oklab,var(--accent) 66%,transparent);outline-offset:1px}
+/* R5(round7): the I-NN badge is now a non-interactive span (the whole cell is the single control),
+   so it must not swallow the click or read as its own button. */
+.j-heat .cell .j-cellchip{position:absolute;right:2px;bottom:2px;font-family:var(--mono);font-size:9px;font-weight:700;
+  line-height:1;padding:1px 3px;border-radius:4px;pointer-events:none;color:var(--on-accent);background:var(--bad);
+  border:none;letter-spacing:.02em}
+
+/* ============================================================================
+   R9 — newcomer gloss strip under the convergence card
+   ========================================================================== */
+.j-conv-gloss{display:flex;align-items:flex-start;gap:8px;margin:2px 0 6px;padding:9px 12px;border-radius:8px;
+  font-size:var(--t-ui);line-height:1.5;color:var(--muted);
+  background:color-mix(in oklab,var(--accent) 4%,var(--sheet));border:1px solid var(--hair)}
+.j-conv-gloss .i{color:var(--accent);flex:none;margin-top:1px}
+.j-conv-gloss span{min-width:0}
+
+/* ============================================================================
+   R11 — the sample pill gets AA-contrast amber when a dir is actually open (a
+   degraded read), reserving the lowest-contrast gray for the intentional no-dir demo.
+   ========================================================================== */
+.j-srcnote.sample.j-srcnote-degraded{color:color-mix(in oklab,var(--stale) 72%,var(--ink));
+  background:color-mix(in oklab,var(--stale) 12%,var(--sheet));
+  border-color:color-mix(in oklab,var(--stale) 46%,var(--hair))}
+
+/* ============================================================================
+   R5 — degraded reviewer (6) · bulk bar (7) · provenance (10) · contested lens +
+   dropped-audit (20) · which-source evidence badge (21) · compile-with-warnings (25)
+   ========================================================================== */
+/* (6) a degraded/unverified reviewer must read differently from a verified one */
+.chip.j-persona-unv{display:inline-flex;align-items:center;gap:4px;
+  color:color-mix(in oklab,var(--stale) 82%,var(--ink));
+  background:color-mix(in oklab,var(--stale) 10%,transparent);
+  border-color:color-mix(in oklab,var(--stale) 52%,transparent)}    /* the amber ring */
+.chip.j-persona-unv .i{color:var(--stale);flex:none}
+.chip.j-degraded-caveat{display:inline-flex;align-items:center;gap:4px;
+  color:color-mix(in oklab,var(--stale) 82%,var(--ink));
+  background:color-mix(in oklab,var(--stale) 12%,transparent);
+  border-color:color-mix(in oklab,var(--stale) 34%,transparent)}
+.chip.j-degraded-caveat .i{color:var(--stale);flex:none}
+
+/* (7) sticky bulk-action bar — floats above the docket while ≥1 charge is selected */
+.j-bulkbar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:40;
+  display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;
+  font-size:var(--t-ui);color:var(--ink);
+  background:color-mix(in oklab,var(--accent) 10%,var(--sheet));
+  border:1px solid color-mix(in oklab,var(--accent) 40%,var(--hair-2));
+  box-shadow:0 8px 30px color-mix(in oklab,var(--ink) 22%,transparent)}
+.j-bulkbar[hidden]{display:none}
+.j-bulk-n{font-weight:650;color:var(--accent);margin-right:2px}
+.j-bulkbar kbd{font-family:var(--mono);font-size:var(--t-fine);padding:1px 5px;border-radius:5px;margin-right:3px;
+  background:color-mix(in oklab,var(--accent) 14%,var(--well));
+  border:1px solid color-mix(in oklab,var(--accent) 30%,transparent)}
+
+/* (10) provenance deep-link back to the Spark run */
+.reader .j-provsrc{margin:.4em 0 0}
+.reader .j-provsrc .i{color:var(--accent)}
+
+/* (20) contested lens — badge, filter bar, and the dropped-without-trial audit rows */
+.chip.j-contested{display:inline-flex;align-items:center;gap:4px;
+  color:color-mix(in oklab,var(--wait) 82%,var(--ink));
+  background:color-mix(in oklab,var(--wait) 10%,transparent);
+  border-color:color-mix(in oklab,var(--wait) 30%,transparent)}
+.chip.j-contested .i{color:var(--wait);flex:none}
+.j-filterbar-contested{border-color:color-mix(in oklab,var(--wait) 34%,var(--hair-2));
+  background:color-mix(in oklab,var(--wait) 8%,var(--sheet))}
+.j-filterbar-contested>.i{color:var(--wait)}
+.j-dropaudit{border-left:3px solid color-mix(in oklab,var(--bad) 40%,var(--hair-2))}
+
+/* (21) the neutral (weaker) evidence badge — matched a drafted-patch record, not an anchor */
+.reader .j-evbadge.neutral{color:var(--paper-muted);
+  background:color-mix(in oklab,var(--paper-ink) 6%,transparent)}
+
+/* (25) compile head: amber when it built but carries layout warnings (never green) */
+.j-compile.warn{border-left-color:var(--stale)}
+.j-compile.warn .j-cbig .i{color:var(--stale)}
+
+/* ---- narrow-viewport reflow ---------------------------------------------- */
+@media (max-width:900px){
+  .j-revgrid{grid-template-columns:1fr}
+  .j-shieldgrid{grid-template-columns:1fr}
+  .j-flowsplit{width:100%}
+  .j-lgcols{grid-template-columns:1fr}
+  .j-kbdhint{margin-left:0;flex-basis:100%}
+  .j-bulkbar{left:8px;right:8px;transform:none;justify-content:center;flex-wrap:wrap}
+}
+
+/* R21(round7): on a SHORT viewport, condense the docket preamble so at least one kanban lane's
+   top clears the fold — fold the handoff card to a single row (drop its sub-line), tighten the
+   readiness / KPI / gloss vertical rhythm, and hide the keymap hint (still on the board's
+   aria-keyshortcuts + the ? help) that otherwise wraps to its own row. */
+@media (max-height:760px){
+  .j-chain{padding:8px 14px;margin-bottom:var(--s3)}
+  .j-chain-tx span{display:none}
+  .j-ready{padding:8px 14px;margin-bottom:var(--s3)}
+  .j-stats{margin-bottom:var(--s3)}
+  .j-stats .j-kpi{padding:11px 14px}
+  .j-stats .stat .v{font-size:clamp(22px,2.2vw,27px)}
+  .j-legend-cap{padding:7px 13px;margin-bottom:var(--s2)}
+  .j-boardmeta{gap:4px var(--s5);margin-bottom:var(--s2)}
+  .j-kbdhint{display:none}
+}
+
+/* ============================ Round 6 additions =========================== */
+/* R14: author-required · dropped split tile — two numbers, each bound to its word,
+   at a smaller-than-folio size so neither reads as half of a single '2 · 4' figure. */
+.j-kpi-route .j-rstat{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:5px 10px}
+.j-rpair{display:inline-flex;align-items:baseline;gap:5px}
+.j-rk{font-size:var(--t-fine);font-weight:560;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+.j-rv{font-family:var(--mono);font-size:22px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.j-rv.stale{color:var(--stale)}
+.j-rv.bad{color:var(--bad)}
+.j-rsep{color:var(--graphite);font-size:16px;line-height:1;align-self:center}
+:lang(zh) .j-rk{letter-spacing:normal;text-transform:none}
+
+/* R19: honest provenance stamp when a generated card's text can't be relocalized */
+.j-src-tag{display:inline-block;margin-left:6px;padding:0 5px;border-radius:5px;font-family:var(--mono);
+  font-size:var(--t-fine);color:var(--faint);background:var(--well);border:1px solid var(--hair);vertical-align:1px}
+
+/* R27: coverage skim-gap caveat — the verdict rests on a section no reviewer covered */
+.j-covgap{display:flex;align-items:flex-start;gap:8px;margin:0 0 var(--s3);padding:9px 12px;border-radius:8px;
+  border:1px solid color-mix(in oklab,var(--stale) 42%,var(--hair-2));
+  background:color-mix(in oklab,var(--stale) 10%,transparent);font-size:var(--t-ui);line-height:1.45;color:var(--ink)}
+.j-covgap .i{color:var(--stale);flex:none;margin-top:1px}
+.j-covgap-meta{color:var(--muted);font-family:var(--mono);font-size:var(--t-note)}
+/* R12(round10): compact on-card coverage-gap chip — amber icon, matches the banner tone */
+.j-covgap-chip .i{color:var(--stale)}
+.j-conv-terminal{color:var(--muted)}
+
+/* R31(f): the Shield must show content on first paint — don't let the shared .reveal
+   rise transition hold its single child invisible during the entrance animation. */
+.pane.j-shieldpane.reveal>*{animation:none}
+
+/* R6(round9): mirror the Shield fix — the Worked Example pane is a single-child
+   .reveal too, so the shared rise strands its lone child invisible on real-dir data. */
+.pane.j-expane.reveal>*{animation:none}
